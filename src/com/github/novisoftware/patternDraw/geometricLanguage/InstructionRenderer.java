@@ -8,11 +8,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Stack;
+
+import javax.swing.JFrame;
 
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 import com.github.novisoftware.patternDraw.geometryLanguage.primitives.Path;
+import com.github.novisoftware.patternDraw.gui.SettingWindow;
 import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 
@@ -23,11 +27,24 @@ public class InstructionRenderer extends AbstractRenderer {
 	ArrayList<String> svgBuff;
 	SvgInstruction s;
 	Stack<ObjectHolder> stack;
+	HashMap<String, ObjectHolder> variables;
 	ArrayList<Path> pathList;
 	/**
 	 * デバッグ用。最後に実行したトークン。
 	 */
 	Token lastToken;
+	/**
+	 * 状態変数。入力待ちかどうか。
+	 */
+	boolean isWaitSetting = false;
+	JFrame waitFrame;
+
+	Runnable resetWait = new Runnable() {
+		public void run() {
+			isWaitSetting = false;
+			waitFrame = null;
+		}
+	};
 
 	public InstructionRenderer(TokenList tokenList) {
 		this.tokenList = tokenList;
@@ -38,8 +55,11 @@ public class InstructionRenderer extends AbstractRenderer {
 		this.svgBuff = svgBuff;
 		this.s = s;
 		this.stack = new Stack<ObjectHolder>();
+		this.variables = new HashMap<String, ObjectHolder>();
 		this.counter = 0;
 		this.pathList = new ArrayList<Path>();
+		this.evalToken = new Stack<ArrayList<Token>>();
+		this.evalTokenCounter = new Stack<Integer>();
 	}
 
 	void Debug(String s) {
@@ -47,6 +67,13 @@ public class InstructionRenderer extends AbstractRenderer {
 	}
 
 	public void runSingleToken(Token token) throws InvalidProgramException {
+		if (isWaitSetting) {
+			if (waitFrame != null) {
+				waitFrame.setVisible(true);
+			}
+			return;
+		}
+
 		String tokenStr = token.getToken();
 		lastToken = token;
 		Debug("stack depth = " + stack.size() + " token = " + tokenStr);
@@ -65,6 +92,36 @@ public class InstructionRenderer extends AbstractRenderer {
 				posList.add(new Pos(x, y));
 			}
 			stack.push(new ObjectHolder(posList.get(0), posList));
+		} else if (tokenStr.equals("input_params")) {
+			// 一旦仮にNOP。
+		} else if (tokenStr.equals("param")) {
+			ObjectHolder o1 = stack.pop();
+			TypeDesc t = o1.getTypeDesc();
+			String varName = null;
+			if (t == TypeDesc.STRING) {
+				varName = o1.getAs_string();
+			}
+			else {
+				throw new InvalidProgramException("Invalid operand type", token);
+			}
+			ObjectHolder o2 = stack.pop();
+			TypeDesc t2 = o2.getTypeDesc();
+			String message = null;
+			if (t2 == TypeDesc.STRING) {
+				message = o2.getAs_string();
+			}
+			else {
+				throw new InvalidProgramException("Invalid operand type", token);
+			}
+			final SettingWindow setting = new SettingWindow(
+					varName,
+					message,
+					this.variables,
+					resetWait);
+			this.isWaitSetting = true;
+			this.waitFrame = setting;
+			setting.setVisible(true);
+			setting.repaint();
 		} else if (tokenStr.equals("duplicate")) {
 			ObjectHolder o = stack.pop();
 			stack.push(o);
@@ -183,7 +240,8 @@ public class InstructionRenderer extends AbstractRenderer {
 				boolean isFill = false;
 				String fillColor = null;
 
-				// String strokeColor, String strokeWidth, boolean isFill, String fillColor
+				// String strokeColor, String strokeWidth, boolean isFill,
+				// String fillColor
 
 				Path path = new Path(line, strokeColor, strokeWidth, isFill, fillColor);
 
@@ -198,34 +256,93 @@ public class InstructionRenderer extends AbstractRenderer {
 			ArrayList<Pos> posList = stack.pop().clone().getAs_pos();
 			Debug("draw ... pos is " + posList.size());
 			// this.localPolyLine(g, svgBuff, s, posList, false);
+		} else if (tokenStr.equals("set")) {
+			// 変数名
+			ObjectHolder aObj = stack.pop();
+			// 内容
+			ObjectHolder bObj = stack.pop();
+			this.variables.put(aObj.getAs_string(), bObj);
+		} else if (this.variables.containsKey(tokenStr)) {
+			// } else if (tokenStr.equals("get")) {
+			// 変数名
+			ObjectHolder aObj = this.variables.get(tokenStr);
+			if (aObj == null) {
+				throw new InvalidProgramException("no variable: " + tokenStr, token);
+			}
+			stack.push(aObj);
+
+			/*
+			ObjectHolder aObj = stack.pop();
+			ObjectHolder bObj = this.variables.get(aObj.getAs_string());
+			if (bObj == null) {
+				throw new InvalidProgramException("no variable: " + aObj.getAs_string(), token);
+			}
+			stack.push(bObj);
+			*/
 		} else {
 			stack.push(new ObjectHolder(tokenStr));
 		}
 	}
 
+	Stack<ArrayList<Token>> evalToken;
+	Stack<Integer> evalTokenCounter;
+
 	public boolean step() throws InvalidProgramException {
 		Debug("this.counter = " + this.counter);
 
-		int n = tokenList.getList().size();
-		Token token = tokenList.getList().get(this.counter);
-		this.counter ++;
-		this.runSingleToken(token);
+		Token token;
+		if (!this.evalToken.isEmpty()) {
+			ArrayList<Token> wk = evalToken.pop();
+			ArrayList<Token> wk2 = (ArrayList<Token>) wk.subList(1, wk.size());
+			if (wk2.size() > 0) {
+				evalToken.push(wk2);
+			}
+			token = wk.get(0);
+		} else {
+			token = tokenList.getList().get(this.counter);
+			this.counter++;
+		}
+		if (token.getToken().equals("begin_quote")) {
+			ArrayList<Token> quotedTokenList = new ArrayList<Token>();
+			int depth = 0;
+			while (true) {
+				this.counter++;
+				Token work = tokenList.getList().get(this.counter);
+				if (work.getToken().equals("begin_quote")) {
+					depth++;
+				} else if (work.getToken().equals("end_quote")) {
+					if (depth == 0) {
+						break;
+					} else {
+						depth--;
+					}
+				}
+				quotedTokenList.add(work);
+			}
+			stack.push(new ObjectHolder(quotedTokenList.get(0), quotedTokenList));
+		} else if (token.getToken().equals("eval")) {
 
+		} else {
+			this.runSingleToken(token);
+		}
+
+		// 続きがあるかどうかを返り値にする
+		int n = tokenList.getList().size();
 		return this.counter < n;
 	}
 
 	public void run() throws InvalidProgramException {
 		this.init(g, svgBuff, s);
 		Debug("stack machine start.");
-		while(true) {
+		while (true) {
 			try {
-				if (this.step()==false) {
+				if (this.step() == false) {
 					break;
 				}
 			} catch (InvalidProgramException e) {
-				Token errorToken =  e.getCausedToken();
+				Token errorToken = e.getCausedToken();
 
-				System.err.println("Exception: "+ e.toString());
+				System.err.println("Exception: " + e.toString());
 				System.err.println(errorToken.getToken());
 				System.err.println("in line " + errorToken.getLineNumber());
 				e.printStackTrace();
@@ -245,13 +362,12 @@ public class InstructionRenderer extends AbstractRenderer {
 
 		int r = 5;
 
-	    Ellipse2D ellipse = new Ellipse2D.Double(wx1 -r , wy1 -r , r*2, r*2);
-	    g.fill(ellipse);
+		Ellipse2D ellipse = new Ellipse2D.Double(wx1 - r, wy1 - r, r * 2, r * 2);
+		g.fill(ellipse);
 	}
 
-
 	public void preview(Graphics2D g) {
-		ArrayList<ObjectHolder> a= new ArrayList<ObjectHolder>();
+		ArrayList<ObjectHolder> a = new ArrayList<ObjectHolder>();
 		int n = stack.size();
 		for (int i = 0; i < n; i++) {
 			a.add(stack.elementAt(i));
@@ -273,26 +389,50 @@ public class InstructionRenderer extends AbstractRenderer {
 			g.drawString("last token  = " + lastToken.getToken(), 20, 10);
 		}
 
-		int y = 24;
-		for (ObjectHolder o : a) {
-			TypeDesc t = o.getTypeDesc();
-			String addInfo = "";
-			if (t == TypeDesc.LINE_LIST) {
-				addInfo = "("+ o.getAs_line().size() + ")";
-			}
-			else if (t == TypeDesc.POS_LIST) {
-				addInfo = "("+ o.getAs_pos().size() + ")";
-			}
-			else if (t == TypeDesc.STRING) {
-				addInfo = o.getAs_string();
-			}
+		{
+			g.drawString("variable", 400, 25);
+			int y = 40;
+			for (String key : this.variables.keySet()) {
+				ObjectHolder o = this.variables.get(key);
 
-			g.drawString("" + t + " " + addInfo, 20, y);
+				TypeDesc t = o.getTypeDesc();
+				String addInfo = "";
+				if (t == TypeDesc.LINE_LIST) {
+					addInfo = "(" + o.getAs_line().size() + ")";
+				} else if (t == TypeDesc.POS_LIST) {
+					addInfo = "(" + o.getAs_pos().size() + ")";
+				} else if (t == TypeDesc.STRING) {
+					addInfo = o.getAs_string();
+				}
 
-			y += 20;
+				g.drawString("" + key + " " + addInfo, 400, y);
+
+				y += 20;
+			}
 		}
 
 
+		{
+			// スタックの内容表示
+			int y = 24;
+			for (ObjectHolder o : a) {
+				TypeDesc t = o.getTypeDesc();
+				String addInfo = "";
+				if (t == TypeDesc.LINE_LIST) {
+					addInfo = "(" + o.getAs_line().size() + ")";
+				} else if (t == TypeDesc.POS_LIST) {
+					addInfo = "(" + o.getAs_pos().size() + ")";
+				} else if (t == TypeDesc.STRING) {
+					addInfo = o.getAs_string();
+				}
+
+				g.drawString("" + t + " " + addInfo, 20, y);
+
+				y += 20;
+			}
+		}
+
+		// スタックに入っている図形情報をプレビューレンダリングする
 		for (ObjectHolder o : a) {
 			TypeDesc t = o.getTypeDesc();
 
@@ -312,10 +452,10 @@ public class InstructionRenderer extends AbstractRenderer {
 		Color fg2 = new Color(0.7f, 0.7f, 0.7f);
 		g.setColor(fg2);
 
-
 		for (Path p : pathList) {
 			p.render(g, null, null);
 		}
+
 
 
 	}
@@ -323,18 +463,19 @@ public class InstructionRenderer extends AbstractRenderer {
 	public void render__old(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
 		this.init(g, svgBuff, s);
 		Debug("stack machine start.");
-		while(true) {
+		while (true) {
 			try {
-				if (this.step()==false) {
+				if (this.step() == false) {
 					break;
 				}
 			} catch (InvalidProgramException e) {
-				Token errorToken =  e.getCausedToken();
+				Token errorToken = e.getCausedToken();
 
-				System.err.println("Exception: "+ e.toString());
+				System.err.println("Exception: " + e.toString());
 				System.err.println(errorToken.getToken());
 				System.err.println("in line " + errorToken.getLineNumber());
 				e.printStackTrace();
 			}
 		}
-}}
+	}
+}

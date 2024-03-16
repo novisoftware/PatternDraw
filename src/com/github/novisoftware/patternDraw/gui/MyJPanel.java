@@ -4,11 +4,13 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.InstructionRenderer;
+import com.github.novisoftware.patternDraw.geometricLanguage.InvalidProgramException;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 
 public class MyJPanel extends JPanel {
@@ -18,6 +20,29 @@ public class MyJPanel extends JPanel {
 	public MyJPanel(InstructionRenderer renderer, BufferedImage buffer) {
 		this.renderer = renderer;
 		this.buffer = buffer;
+
+		final MyJPanel panel = this;
+
+		Runnable r = new Runnable() {
+			boolean normal = true;
+
+			public void run() {
+				if (normal) {
+					try {
+						if (renderer.step() == false) {
+							normal = false;
+						}
+						panel.repaint();
+					} catch (InvalidProgramException e) {
+						normal = false;
+						// とりあえず print する。
+						e.printStackTrace();
+					}
+				}
+			}
+		};
+
+		this.addMouseListener(new MyMouseListener(r));
 	}
 
 	public void paint(Graphics graphics) {

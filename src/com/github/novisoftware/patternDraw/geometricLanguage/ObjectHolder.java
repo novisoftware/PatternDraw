@@ -5,31 +5,43 @@ import java.util.ArrayList;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 
-class ObjectHolder implements Cloneable {
+public class ObjectHolder implements Cloneable {
 	private final TypeDesc typeDesc;
 	private final String as_string;
 	private final ArrayList<Line> as_line;
 	private final ArrayList<Pos> as_pos;
+	private final ArrayList<Token> as_token;
 
-	ObjectHolder(String s) {
+	public ObjectHolder(String s) {
 		this.typeDesc = TypeDesc.STRING;
 		this.as_line = null;
 		this.as_pos = null;
 		this.as_string = s;
+		this.as_token = null;
 	}
 
-	ObjectHolder(Line dummy, ArrayList<Line> p) {
+	public ObjectHolder(Line dummy, ArrayList<Line> p) {
 		this.typeDesc = TypeDesc.LINE_LIST;
 		this.as_line = p;
 		this.as_pos = null;
 		this.as_string = null;
+		this.as_token = null;
 	}
 
-	ObjectHolder(Pos dummy, ArrayList<Pos> p) {
+	public ObjectHolder(Pos dummy, ArrayList<Pos> p) {
 		this.typeDesc = TypeDesc.POS_LIST;
 		this.as_line = null;
 		this.as_pos = p;
 		this.as_string = null;
+		this.as_token = null;
+	}
+
+	public ObjectHolder(Token dummy, ArrayList<Token> p) {
+		this.typeDesc = TypeDesc.POS_LIST;
+		this.as_line = null;
+		this.as_pos = null;
+		this.as_string = null;
+		this.as_token = p;
 	}
 
 	/**
@@ -51,6 +63,13 @@ class ObjectHolder implements Cloneable {
 	 */
 	public ArrayList<Pos> getAs_pos() {
 		return as_pos;
+	}
+
+	/**
+	 * @return as_token
+	 */
+	public ArrayList<Token> getAs_token() {
+		return as_token;
 	}
 
 	/**
