@@ -23,8 +23,12 @@ public class FileReadUtil {
 				continue;
 			}
 
-			for (String token : line.split("\\s")) {
-				list.add(new Token(token, lineNumber));
+			if (line.length() > 0) {
+				for (String token : line.split("\\s")) {
+					System.out.println("line: " + lineNumber + " token: \"" + token + "\"" );
+
+					list.add(new Token(token, lineNumber));
+				}
 			}
 		}
 		br.close();

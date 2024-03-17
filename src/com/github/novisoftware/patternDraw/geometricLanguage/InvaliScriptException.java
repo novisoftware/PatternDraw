@@ -1,9 +1,9 @@
 package com.github.novisoftware.patternDraw.geometricLanguage;
 
-public class InvalidProgramException extends Exception {
+public class InvaliScriptException extends Exception {
 	private final Token causedToken;
 
-	InvalidProgramException(String message, Token causedToken) {
+	InvaliScriptException(String message, Token causedToken) {
 		super(message);
 		this.causedToken = causedToken;
 	}

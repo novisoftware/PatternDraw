@@ -27,8 +27,13 @@ public class InstructionRenderer extends AbstractRenderer {
 	ArrayList<String> svgBuff;
 	SvgInstruction s;
 	Stack<ObjectHolder> stack;
+	HashMap<String, String> paramMessages;
 	HashMap<String, ObjectHolder> variables;
+	HashMap<String, ObjectHolder> initialVariables;
 	ArrayList<Path> pathList;
+	String currentStrokeColor = "black";
+	String currentStrokeWidth = "1";
+
 	/**
 	 * デバッグ用。最後に実行したトークン。
 	 */
@@ -37,6 +42,9 @@ public class InstructionRenderer extends AbstractRenderer {
 	 * 状態変数。入力待ちかどうか。
 	 */
 	boolean isWaitSetting = false;
+	/**
+	 * 入力待ちの場合の入力ウィンドウ。
+	 */
 	JFrame waitFrame;
 
 	Runnable resetWait = new Runnable() {
@@ -46,16 +54,18 @@ public class InstructionRenderer extends AbstractRenderer {
 		}
 	};
 
-	public InstructionRenderer(TokenList tokenList) {
+	public InstructionRenderer(TokenList tokenList, HashMap<String, ObjectHolder> initialVariables) {
 		this.tokenList = tokenList;
+		this.initialVariables = initialVariables;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void init(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
 		this.g = g;
 		this.svgBuff = svgBuff;
 		this.s = s;
 		this.stack = new Stack<ObjectHolder>();
-		this.variables = new HashMap<String, ObjectHolder>();
+		this.variables = initialVariables != null ? (HashMap<String, ObjectHolder>)initialVariables.clone() : new HashMap<String, ObjectHolder>();
 		this.counter = 0;
 		this.pathList = new ArrayList<Path>();
 		this.evalToken = new Stack<ArrayList<Token>>();
@@ -66,18 +76,15 @@ public class InstructionRenderer extends AbstractRenderer {
 		System.out.println(s);
 	}
 
-	public void runSingleToken(Token token) throws InvalidProgramException {
-		if (isWaitSetting) {
-			if (waitFrame != null) {
-				waitFrame.setVisible(true);
-			}
-			return;
-		}
-
+	public void runSingleToken(Token token) throws InvaliScriptException {
 		String tokenStr = token.getToken();
 		lastToken = token;
 		Debug("stack depth = " + stack.size() + " token = " + tokenStr);
-		if (tokenStr.equals("series_on_circle")) {
+		if (tokenStr.equals("duplicate")) {
+			ObjectHolder o = stack.pop();
+			stack.push(o);
+			stack.push(o.clone());
+		} else if (tokenStr.equals("series_on_circle")) {
 			/*
 			 * 円周上に並んだ系列を作る
 			 */
@@ -97,35 +104,55 @@ public class InstructionRenderer extends AbstractRenderer {
 		} else if (tokenStr.equals("param")) {
 			ObjectHolder o1 = stack.pop();
 			TypeDesc t = o1.getTypeDesc();
-			String varName = null;
+			String message = null;
 			if (t == TypeDesc.STRING) {
-				varName = o1.getAs_string();
-			}
-			else {
-				throw new InvalidProgramException("Invalid operand type", token);
+				message = o1.getAs_string();
+			} else {
+				throw new InvaliScriptException("Invalid operand type", token);
 			}
 			ObjectHolder o2 = stack.pop();
 			TypeDesc t2 = o2.getTypeDesc();
-			String message = null;
+			String varName = null;
 			if (t2 == TypeDesc.STRING) {
-				message = o2.getAs_string();
+				varName = o2.getAs_string();
+			} else {
+				throw new InvaliScriptException("Invalid operand type", token);
 			}
-			else {
-				throw new InvalidProgramException("Invalid operand type", token);
+			if (this.variables.get(varName) == null) {
+				System.out.println(varName + " is not defined.  wait to set variable.");
+				final SettingWindow setting = new SettingWindow(message, varName, this.variables, resetWait);
+				this.isWaitSetting = true;
+				this.waitFrame = setting;
+				setting.setVisible(true);
+				setting.repaint();
 			}
-			final SettingWindow setting = new SettingWindow(
-					varName,
-					message,
-					this.variables,
-					resetWait);
-			this.isWaitSetting = true;
-			this.waitFrame = setting;
-			setting.setVisible(true);
-			setting.repaint();
-		} else if (tokenStr.equals("duplicate")) {
-			ObjectHolder o = stack.pop();
-			stack.push(o);
-			stack.push(o.clone());
+		} else if (tokenStr.equals("default")) {
+			ObjectHolder o1 = stack.pop();
+			TypeDesc t = o1.getTypeDesc();
+			String message = null;
+			if (t == TypeDesc.STRING) {
+				message = o1.getAs_string();
+			} else {
+				throw new InvaliScriptException("Invalid operand type", token);
+			}
+			ObjectHolder o2 = stack.pop();
+			TypeDesc t2 = o2.getTypeDesc();
+			String value = null;
+			if (t2 == TypeDesc.STRING) {
+				value = o2.getAs_string();
+			} else {
+				throw new InvaliScriptException("Invalid operand type", token);
+			}
+			ObjectHolder o3 = stack.pop();
+			TypeDesc t3 = o3.getTypeDesc();
+			String varName = null;
+			if (t3 == TypeDesc.STRING) {
+				varName = o3.getAs_string();
+			} else {
+				throw new InvaliScriptException("Invalid operand type", token);
+			}
+			this.paramMessages.put(varName, message);
+			this.variables.put(varName, new ObjectHolder(value));
 		} else if (tokenStr.equals("close_list")) {
 			/*
 			 * 系列を閉じる
@@ -141,7 +168,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				a.add(a.get(0));
 				stack.push(new ObjectHolder(a.get(0), a));
 			} else {
-				throw new InvalidProgramException("Wrong Type " + t + " in stack.", token);
+				throw new InvaliScriptException("Wrong Type " + t + " in stack.", token);
 			}
 		} else if (tokenStr.equals("rotate_list")) {
 			/*
@@ -160,7 +187,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				Collections.rotate(a, n);
 				stack.push(new ObjectHolder(a.get(0), a));
 			} else {
-				throw new InvalidProgramException("Wrong Type " + t + " in stack.", token);
+				throw new InvaliScriptException("Wrong Type " + t + " in stack.", token);
 			}
 		} else if (tokenStr.equals("reverse_list")) {
 			/*
@@ -177,7 +204,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				Collections.reverse(a);
 				stack.push(new ObjectHolder(a.get(0), a));
 			} else {
-				throw new InvalidProgramException("Wrong Type " + t + " in stack.", token);
+				throw new InvaliScriptException("Wrong Type " + t + " in stack.", token);
 			}
 		} else if (tokenStr.equals("zipper_from_2_series")) {
 			ObjectHolder aObj = stack.pop();
@@ -235,8 +262,8 @@ public class InstructionRenderer extends AbstractRenderer {
 			Debug("draw ... line is " + a.size());
 			for (Line line : a) {
 				localDrawLine(g, svgBuff, s, line);
-				String strokeColor = "black";
-				String strokeWidth = "1";
+				String strokeColor = currentStrokeColor;
+				String strokeWidth = currentStrokeWidth;
 				boolean isFill = false;
 				String fillColor = null;
 
@@ -262,23 +289,24 @@ public class InstructionRenderer extends AbstractRenderer {
 			// 内容
 			ObjectHolder bObj = stack.pop();
 			this.variables.put(aObj.getAs_string(), bObj);
+		} else if (tokenStr.startsWith("'")) {
+			// 変数名だと解釈させず、stack に push する。
+			stack.push(new ObjectHolder(tokenStr.substring(1)));
 		} else if (this.variables.containsKey(tokenStr)) {
-			// } else if (tokenStr.equals("get")) {
+			// 変数を参照する
 			// 変数名
 			ObjectHolder aObj = this.variables.get(tokenStr);
 			if (aObj == null) {
-				throw new InvalidProgramException("no variable: " + tokenStr, token);
+				throw new InvaliScriptException("no variable: " + tokenStr, token);
 			}
 			stack.push(aObj);
 
 			/*
-			ObjectHolder aObj = stack.pop();
-			ObjectHolder bObj = this.variables.get(aObj.getAs_string());
-			if (bObj == null) {
-				throw new InvalidProgramException("no variable: " + aObj.getAs_string(), token);
-			}
-			stack.push(bObj);
-			*/
+			 * ObjectHolder aObj = stack.pop(); ObjectHolder bObj =
+			 * this.variables.get(aObj.getAs_string()); if (bObj == null) {
+			 * throw new InvalidProgramException("no variable: " +
+			 * aObj.getAs_string(), token); } stack.push(bObj);
+			 */
 		} else {
 			stack.push(new ObjectHolder(tokenStr));
 		}
@@ -287,7 +315,16 @@ public class InstructionRenderer extends AbstractRenderer {
 	Stack<ArrayList<Token>> evalToken;
 	Stack<Integer> evalTokenCounter;
 
-	public boolean step() throws InvalidProgramException {
+	public boolean step() throws InvaliScriptException {
+		if (isWaitSetting) {
+			Debug("Waiting input.");
+
+			if (waitFrame != null) {
+				waitFrame.setVisible(true);
+			}
+			return true;
+		}
+
 		Debug("this.counter = " + this.counter);
 
 		Token token;
@@ -321,7 +358,7 @@ public class InstructionRenderer extends AbstractRenderer {
 			}
 			stack.push(new ObjectHolder(quotedTokenList.get(0), quotedTokenList));
 		} else if (token.getToken().equals("eval")) {
-
+			// TODO
 		} else {
 			this.runSingleToken(token);
 		}
@@ -331,7 +368,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		return this.counter < n;
 	}
 
-	public void run() throws InvalidProgramException {
+	public void run() throws InvaliScriptException {
 		this.init(g, svgBuff, s);
 		Debug("stack machine start.");
 		while (true) {
@@ -339,7 +376,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				if (this.step() == false) {
 					break;
 				}
-			} catch (InvalidProgramException e) {
+			} catch (InvaliScriptException e) {
 				Token errorToken = e.getCausedToken();
 
 				System.err.println("Exception: " + e.toString());
@@ -347,10 +384,20 @@ public class InstructionRenderer extends AbstractRenderer {
 				System.err.println("in line " + errorToken.getLineNumber());
 				e.printStackTrace();
 			}
+			while (this.isWaitSetting) {
+				// 入力中状態の場合、ポーリングで解除を待つ
+				try {
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+				}
+			}
 		}
 	}
 
 	public void render(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
+		System.out.println("pathList size is " + pathList.size());
+
+
 		for (Path p : pathList) {
 			p.render(g, svgBuff, s);
 		}
@@ -411,7 +458,6 @@ public class InstructionRenderer extends AbstractRenderer {
 			}
 		}
 
-
 		{
 			// スタックの内容表示
 			int y = 24;
@@ -423,7 +469,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				} else if (t == TypeDesc.POS_LIST) {
 					addInfo = "(" + o.getAs_pos().size() + ")";
 				} else if (t == TypeDesc.STRING) {
-					addInfo = o.getAs_string();
+					addInfo = "\"" + o.getAs_string() + "\"";
 				}
 
 				g.drawString("" + t + " " + addInfo, 20, y);
@@ -456,8 +502,6 @@ public class InstructionRenderer extends AbstractRenderer {
 			p.render(g, null, null);
 		}
 
-
-
 	}
 
 	public void render__old(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
@@ -468,7 +512,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				if (this.step() == false) {
 					break;
 				}
-			} catch (InvalidProgramException e) {
+			} catch (InvaliScriptException e) {
 				Token errorToken = e.getCausedToken();
 
 				System.err.println("Exception: " + e.toString());

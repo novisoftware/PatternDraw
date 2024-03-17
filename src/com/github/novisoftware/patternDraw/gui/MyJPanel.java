@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.InvalidProgramException;
+import com.github.novisoftware.patternDraw.geometricLanguage.InvaliScriptException;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 
 public class MyJPanel extends JPanel {
@@ -33,7 +33,7 @@ public class MyJPanel extends JPanel {
 							normal = false;
 						}
 						panel.repaint();
-					} catch (InvalidProgramException e) {
+					} catch (InvaliScriptException e) {
 						normal = false;
 						// とりあえず print する。
 						e.printStackTrace();

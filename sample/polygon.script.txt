@@ -1,5 +1,5 @@
 # 入力項目
-N "N角形のNを指定してください" param
+'N "N角形のNを指定してください" param
 input_params
 
 # N角形の頂点をスタックにpushする。

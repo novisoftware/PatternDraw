@@ -1,7 +1,10 @@
 package com.github.novisoftware.patternDraw.geometryLanguage.primitives;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.Main;
 import com.github.novisoftware.patternDraw.geometry.Line;
@@ -58,11 +61,37 @@ public class Path implements Renderer {
 		return (y - Main.IMAGE_HEIGHT / 2) / SCALING / SCALE2;
 	}
 
+	HashMap<String, Color> colorCache = new HashMap<String, Color>();
+
+	Color getColor(String s) {
+		Color cachedColor = colorCache.get(s);
+		if (cachedColor != null) {
+			return cachedColor;
+		}
+
+		if (s.startsWith("#")) {
+			Color c = Color.decode(s.substring(1));
+			colorCache.put(s, c);
+			return c;
+		}
+
+		return null;
+	}
+
+
 
 	public void localDrawLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, double dx0, double dy0,
 			double dx1, double dy1) {
 
 		if (g != null) {
+			Color color = this.getColor(this.strokeColor);
+			if (color != null) {
+				g.setColor(color);
+			}
+
+			BasicStroke stroke = new BasicStroke((float)(Double.parseDouble(this.strokeWidth)));
+			g.setStroke(stroke);
+
 			int wx1 = x2int(dx0);
 			int wy1 = y2int(dy0);
 			int wx2 = x2int(dx1);
