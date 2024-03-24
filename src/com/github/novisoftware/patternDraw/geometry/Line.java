@@ -22,6 +22,10 @@ public class Line {
 		this.y1 = b.getY();
 	}
 
+	public Line translateLine(double x, double y) {
+		return new Line(this.x0 + x, this.y0 + y, this.x1 + x, this.y1 + y);
+	}
+
 	// y = a * x + b で表したときの a。
 	public double a() {
 		if (this.x0 == this.x1) {

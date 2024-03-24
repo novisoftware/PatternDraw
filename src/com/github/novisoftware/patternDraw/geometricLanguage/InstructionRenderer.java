@@ -4,9 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Stack;
@@ -23,9 +21,9 @@ import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 public class InstructionRenderer extends AbstractRenderer {
 	TokenList tokenList;
 	int counter;
-	Graphics2D g;
-	ArrayList<String> svgBuff;
-	SvgInstruction s;
+	private Graphics2D g;
+	private ArrayList<String> svgBuff;
+	private SvgInstruction s;
 	Stack<ObjectHolder> stack;
 	HashMap<String, String> paramMessages;
 	HashMap<String, ObjectHolder> variables;
@@ -33,6 +31,18 @@ public class InstructionRenderer extends AbstractRenderer {
 	ArrayList<Path> pathList;
 	String currentStrokeColor = "black";
 	String currentStrokeWidth = "1";
+	double translateX;
+	double translateY;
+
+	public void setTranslate(double x, double y) {
+		this.translateX = x;
+		this.translateY = y;
+	}
+
+	public void addTranslate(double x, double y) {
+		this.translateX += x;
+		this.translateY += y;
+	}
 
 	/**
 	 * デバッグ用。最後に実行したトークン。
@@ -65,11 +75,15 @@ public class InstructionRenderer extends AbstractRenderer {
 		this.svgBuff = svgBuff;
 		this.s = s;
 		this.stack = new Stack<ObjectHolder>();
-		this.variables = initialVariables != null ? (HashMap<String, ObjectHolder>)initialVariables.clone() : new HashMap<String, ObjectHolder>();
+		this.variables = initialVariables != null ? (HashMap<String, ObjectHolder>) initialVariables.clone()
+				: new HashMap<String, ObjectHolder>();
+		this.paramMessages = new HashMap<String, String>();
 		this.counter = 0;
 		this.pathList = new ArrayList<Path>();
 		this.evalToken = new Stack<ArrayList<Token>>();
 		this.evalTokenCounter = new Stack<Integer>();
+		this.translateX = 0;
+		this.translateY = 0;
 	}
 
 	void Debug(String s) {
@@ -88,14 +102,41 @@ public class InstructionRenderer extends AbstractRenderer {
 			/*
 			 * 円周上に並んだ系列を作る
 			 */
-			double theta = stack.pop().getDoubleValue();
-			double r = stack.pop().getDoubleValue();
+			double theta = stack.pop().getAs_double();
+			double r = stack.pop().getAs_double();
 			int n = stack.pop().getIntValue();
 
 			ArrayList<Pos> posList = new ArrayList<Pos>();
 			for (int i = 0; i < n; i++) {
 				double x = r * Math.cos(2 * Math.PI * i / n + theta);
 				double y = r * Math.sin(2 * Math.PI * i / n + theta);
+				posList.add(new Pos(x, y));
+			}
+			stack.push(new ObjectHolder(posList.get(0), posList));
+		} else if (tokenStr.equals("n_series_on_circle")) {
+			/*
+			 * 円周上に並んだ系列を作る（２）
+			 */
+			int nn = stack.pop().getIntValue();
+			// 分割数
+			int n = stack.pop().getIntValue();
+			double[] theta = new double[nn];
+			double[] f = new double[nn];
+			double[] r = new double[nn];
+			for (int k = 0; k < nn; k++) {
+				theta[k] = stack.pop().getAs_double();
+				f[k] = stack.pop().getAs_double();
+				r[k] = stack.pop().getAs_double();
+			}
+
+			ArrayList<Pos> posList = new ArrayList<Pos>();
+			for (int i = 0; i < n; i++) {
+				double x = 0;
+				double y = 0;
+				for (int k = 0; k < nn; k++) {
+					x += r[k] * Math.cos(f[k] * (2 * Math.PI * i + theta[k]) / n);
+					y += r[k] * Math.sin(f[k] * (2 * Math.PI * i + theta[k]) / n);
+				}
 				posList.add(new Pos(x, y));
 			}
 			stack.push(new ObjectHolder(posList.get(0), posList));
@@ -127,14 +168,6 @@ public class InstructionRenderer extends AbstractRenderer {
 				setting.repaint();
 			}
 		} else if (tokenStr.equals("default")) {
-			ObjectHolder o1 = stack.pop();
-			TypeDesc t = o1.getTypeDesc();
-			String message = null;
-			if (t == TypeDesc.STRING) {
-				message = o1.getAs_string();
-			} else {
-				throw new InvaliScriptException("Invalid operand type", token);
-			}
 			ObjectHolder o2 = stack.pop();
 			TypeDesc t2 = o2.getTypeDesc();
 			String value = null;
@@ -143,6 +176,16 @@ public class InstructionRenderer extends AbstractRenderer {
 			} else {
 				throw new InvaliScriptException("Invalid operand type", token);
 			}
+
+			ObjectHolder o1 = stack.pop();
+			TypeDesc t = o1.getTypeDesc();
+			String message = null;
+			if (t == TypeDesc.STRING) {
+				message = o1.getAs_string();
+			} else {
+				throw new InvaliScriptException("Invalid operand type", token);
+			}
+
 			ObjectHolder o3 = stack.pop();
 			TypeDesc t3 = o3.getTypeDesc();
 			String varName = null;
@@ -153,6 +196,21 @@ public class InstructionRenderer extends AbstractRenderer {
 			}
 			this.paramMessages.put(varName, message);
 			this.variables.put(varName, new ObjectHolder(value));
+		} else if (tokenStr.equals("rand")) {
+			double randomNumber = Math.random();
+			stack.push(new ObjectHolder(randomNumber));
+			// stack.push(new ObjectHolder("" + randomNumber));
+		} else if (tokenStr.equals("round")) {
+			double a = stack.pop().getAs_double();
+			stack.push(new ObjectHolder(String.format("%d", Math.round(a))));
+		} else if (tokenStr.equals("*")) {
+			double a = stack.pop().getAs_double();
+			double b = stack.pop().getAs_double();
+			stack.push(new ObjectHolder(a*b));
+		} else if (tokenStr.equals("+")) {
+			double a = stack.pop().getAs_double();
+			double b = stack.pop().getAs_double();
+			stack.push(new ObjectHolder(a+b));
 		} else if (tokenStr.equals("close_list")) {
 			/*
 			 * 系列を閉じる
@@ -261,7 +319,9 @@ public class InstructionRenderer extends AbstractRenderer {
 			ArrayList<Line> a = stack.pop().getAs_line();
 			Debug("draw ... line is " + a.size());
 			for (Line line : a) {
-				localDrawLine(g, svgBuff, s, line);
+				Line line2 = line.translateLine(this.translateX, this.translateY);
+
+				localDrawLine(g, svgBuff, s, line2);
 				String strokeColor = currentStrokeColor;
 				String strokeWidth = currentStrokeWidth;
 				boolean isFill = false;
@@ -274,7 +334,11 @@ public class InstructionRenderer extends AbstractRenderer {
 
 				this.pathList.add(path);
 			}
+		} else if (tokenStr.equals("translate")) {
+			double y = stack.pop().getAs_double();
+			double x = stack.pop().getAs_double();
 
+			this.addTranslate(x, y);
 		} else if (tokenStr.equals("pos_to_fill")) {
 			ArrayList<Pos> posList = stack.pop().clone().getAs_pos();
 			Debug("draw ... pos is " + posList.size());
@@ -369,7 +433,6 @@ public class InstructionRenderer extends AbstractRenderer {
 	}
 
 	public void run() throws InvaliScriptException {
-		this.init(g, svgBuff, s);
 		Debug("stack machine start.");
 		while (true) {
 			try {
@@ -397,7 +460,6 @@ public class InstructionRenderer extends AbstractRenderer {
 	public void render(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
 		System.out.println("pathList size is " + pathList.size());
 
-
 		for (Path p : pathList) {
 			p.render(g, svgBuff, s);
 		}
@@ -417,7 +479,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		ArrayList<ObjectHolder> a = new ArrayList<ObjectHolder>();
 		int n = stack.size();
 		for (int i = 0; i < n; i++) {
-			a.add(stack.elementAt(i));
+			a.add(stack.elementAt(n - 1 - i));
 		}
 
 		// TODO
@@ -460,7 +522,8 @@ public class InstructionRenderer extends AbstractRenderer {
 
 		{
 			// スタックの内容表示
-			int y = 24;
+			// int y = 24;
+			int y = 40;
 			for (ObjectHolder o : a) {
 				TypeDesc t = o.getTypeDesc();
 				String addInfo = "";
@@ -470,6 +533,12 @@ public class InstructionRenderer extends AbstractRenderer {
 					addInfo = "(" + o.getAs_pos().size() + ")";
 				} else if (t == TypeDesc.STRING) {
 					addInfo = "\"" + o.getAs_string() + "\"";
+				} else if (t == TypeDesc.DOUBLE) {
+					try {
+						addInfo = "\"" + o.getAs_double() + "\"";
+					} catch (InvaliScriptException e) {
+						addInfo = "(内部エラー" + e.toString() + ")";
+					}
 				}
 
 				g.drawString("" + t + " " + addInfo, 20, y);
