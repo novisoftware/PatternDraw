@@ -1,0 +1,20 @@
+# ひとで
+'NN "頂点数" 3 rand 4 * + rand 4 * + round default
+'N "分割数" 20 default
+'T "角度" 2pi rand * default
+
+# 中心の座標
+0.5 rand * 2pi rand * rt_pos
+# スタックを複製
+duplicate
+
+NN  1  T  series_on_circle close_list
+N pos_to_walk
+swap
+
+NN  1  T  series_on_circle close_list 1 rotate_list
+swap
+N pos_to_walk
+
+line_from_2_series
+line_to_draw

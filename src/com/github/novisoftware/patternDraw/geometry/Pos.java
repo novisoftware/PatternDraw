@@ -36,4 +36,11 @@ public class Pos {
 	public void setY(double y) {
 		this.y = y;
 	}
+
+
+	public Pos mix(Pos pos2, double ratio) {
+		double r0 = 1 - ratio;
+		return new Pos(this.x*r0 + pos2.x*ratio,
+				this.y*r0 + pos2.y*ratio);
+	}
 }

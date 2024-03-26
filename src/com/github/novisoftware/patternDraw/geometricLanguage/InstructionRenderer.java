@@ -98,6 +98,11 @@ public class InstructionRenderer extends AbstractRenderer {
 			ObjectHolder o = stack.pop();
 			stack.push(o);
 			stack.push(o.clone());
+		} else if (tokenStr.equals("swap")) {
+			ObjectHolder o1 = stack.pop();
+			ObjectHolder o2 = stack.pop();
+			stack.push(o1);
+			stack.push(o2);
 		} else if (tokenStr.equals("series_on_circle")) {
 			/*
 			 * 円周上に並んだ系列を作る
@@ -142,6 +147,7 @@ public class InstructionRenderer extends AbstractRenderer {
 			stack.push(new ObjectHolder(posList.get(0), posList));
 		} else if (tokenStr.equals("input_params")) {
 			// 一旦仮にNOP。
+			// 入力欄を表示する箇所にしたい。
 		} else if (tokenStr.equals("param")) {
 			ObjectHolder o1 = stack.pop();
 			TypeDesc t = o1.getTypeDesc();
@@ -173,6 +179,8 @@ public class InstructionRenderer extends AbstractRenderer {
 			String value = null;
 			if (t2 == TypeDesc.STRING) {
 				value = o2.getAs_string();
+			} else if (t2 == TypeDesc.DOUBLE) {
+				value = "" + o2.getAs_double();
 			} else {
 				throw new InvaliScriptException("Invalid operand type", token);
 			}
@@ -203,6 +211,10 @@ public class InstructionRenderer extends AbstractRenderer {
 		} else if (tokenStr.equals("round")) {
 			double a = stack.pop().getAs_double();
 			stack.push(new ObjectHolder(String.format("%d", Math.round(a))));
+		} else if (tokenStr.equals("pi")) {
+			stack.push(new ObjectHolder(Math.PI));
+		} else if (tokenStr.equals("2pi")) {
+			stack.push(new ObjectHolder(2*Math.PI));
 		} else if (tokenStr.equals("*")) {
 			double a = stack.pop().getAs_double();
 			double b = stack.pop().getAs_double();
@@ -211,6 +223,44 @@ public class InstructionRenderer extends AbstractRenderer {
 			double a = stack.pop().getAs_double();
 			double b = stack.pop().getAs_double();
 			stack.push(new ObjectHolder(a+b));
+		} else if (tokenStr.equals("pos")) {
+			double y = stack.pop().getAs_double();
+			double x = stack.pop().getAs_double();
+			ArrayList<Pos> posList = new ArrayList<Pos>();
+			posList.add(new Pos(x, y));
+			stack.push(new ObjectHolder(posList.get(0), posList));
+		} else if (tokenStr.equals("rt_pos")) {
+			double t = stack.pop().getAs_double();
+			double r = stack.pop().getAs_double();
+			double x = r * Math.cos(t);
+			double y = -r * Math.sin(t);
+			ArrayList<Pos> posList = new ArrayList<Pos>();
+			posList.add(new Pos(x, y));
+			stack.push(new ObjectHolder(posList.get(0), posList));
+		} else if (tokenStr.equals("pos_to_walk")) {
+			// 分割数
+			int n = stack.pop().getIntValue();
+			ArrayList<Pos> posList1 = stack.pop().getAs_pos();
+			ArrayList<Pos> posList2 = stack.pop().getAs_pos();
+
+			int size1 = posList1.size();
+			int size2 = posList2.size();
+			int sz = Integer.max(size1, size2);
+
+			ArrayList<Pos> newPosList = new ArrayList<Pos>();
+
+			for (int i=0;i<sz;i++) {
+				Pos pos1 = posList1.get(i % size1);
+				Pos pos2 = posList2.get(i % size2);
+
+				for (int j=0 ; j <= n; j++) {
+					newPosList.add(pos1.mix(pos2, (double)j/n));
+				}
+				for (int j=n ; j >= 0; j--) {
+					newPosList.add(pos1.mix(pos2, (double)j/n));
+				}
+			}
+			stack.push(new ObjectHolder(newPosList.get(0), newPosList));
 		} else if (tokenStr.equals("close_list")) {
 			/*
 			 * 系列を閉じる
@@ -483,6 +533,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		}
 
 		// TODO
+		// ここでサイズを決めるのは妥当か?
 		int width = 700;
 		int height = 700;
 

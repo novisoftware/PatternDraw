@@ -82,8 +82,16 @@ public class Main {
 		}
 
 		if (pngFilename != null) {
+			int X_REPEAT = 1;
+			int Y_REPEAT = 1;
+			if (variables.containsKey("X_REPEAT")) {
+				X_REPEAT = variables.get("X_REPEAT").getIntValue();
+			}
+			if (variables.containsKey("Y_REPEAT")) {
+				Y_REPEAT = variables.get("Y_REPEAT").getIntValue();
+			}
 			final InstructionRenderer pngRenderer = new InstructionRenderer(tokenList, variables);
-			PngUtil.outPng(pngFilename, pngRenderer, IMAGE_WIDTH, IMAGE_HEIGHT);
+			PngUtil.outPng(pngFilename, pngRenderer, IMAGE_WIDTH, IMAGE_HEIGHT, X_REPEAT, Y_REPEAT);
 		}
 
 		if (svgFilename != null || pngFilename != null) {

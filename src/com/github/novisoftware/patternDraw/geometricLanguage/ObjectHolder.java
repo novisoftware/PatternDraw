@@ -113,7 +113,7 @@ public class ObjectHolder implements Cloneable {
 		return Double.parseDouble(this.as_string);
 	}
 
-	int getIntValue() {
+	public int getIntValue() {
 		return Integer.parseInt(this.as_string);
 	}
 
