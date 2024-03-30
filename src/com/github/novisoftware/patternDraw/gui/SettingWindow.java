@@ -5,13 +5,11 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.LinkedHashMap;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.ObjectHolder;
@@ -20,16 +18,44 @@ import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
 public class SettingWindow extends JFrame2 {
+	static class OnFixActionListener implements ActionListener {
+		SettingWindow settingWindow;
+		OnFixActionListener(SettingWindow settingWindow) {
+			this.settingWindow = settingWindow;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			for (String varName : settingWindow.items.keySet()) {
+				JTextField field = settingWindow.textFields.get(varName);
+				ObjectHolder value = new ObjectHolder(field.getText());
+				settingWindow.variables.put(varName, value);
+			}
+			settingWindow.callback.run();
+			settingWindow.dispose();
+		}
+	}
+
+
 	static int WINDOW_POS_X = 20;
 	static int WINDOW_POS_Y = 20;
 	static int WINDOW_WIDTH = 600;
 	static int WINDOW_HEIGHT = 250;
 
-	public SettingWindow(final String itemName,
-			final String varName,
+	final LinkedHashMap<String, String> items;
+	final HashMap<String, ObjectHolder> variables;
+	final Runnable callback;
+	final HashMap<String,JTextField> textFields;
+
+	public SettingWindow(
+			final LinkedHashMap<String, String> items,
 			final HashMap<String, ObjectHolder> variables,
 			final Runnable callback) {
 		super();
+
+		this.items = items;
+		this.variables = variables;
+		this.callback = callback;
 
 		// this.display = display;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -47,13 +73,19 @@ public class SettingWindow extends JFrame2 {
 		check_simplyConnected.setBackground(Preference.BG_COLOR);
 		check_simplyConnected.setSelected(true);
 
-		pane.add(new JLabel2("条件を指定します。"));
-		// 不可視の水平線を作成する (レイアウトの調整)
-		addHorizontalRule(pane, 5);
+		this.textFields = new HashMap<String,JTextField>();
 
-		pane.add(new JLabel2(itemName));
-		JTextField field = new JTextField(10);
-		pane.add(field);
+		pane.add(new JLabel2("条件を指定します。"));
+		for (String varName : items.keySet()) {
+			// 不可視の水平線を作成する (レイアウトの調整)
+			addHorizontalRule(pane, 5);
+
+			pane.add(new JLabel2(items.get(varName)));
+			JTextField field = new JTextField(10);
+			pane.add(field);
+
+			textFields.put(varName, field);
+		}
 
 
 		// 不可視の水平線を作成する (レイアウトの調整)
@@ -62,18 +94,27 @@ public class SettingWindow extends JFrame2 {
 		JButton runButton = new JButton("決定");
 		pane.add(runButton);
 
+
+		runButton.addActionListener(new OnFixActionListener(this));
+
+		/*
 		final SettingWindow thisFrame = this;
+
 		runButton.addActionListener(
 				new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						ObjectHolder value = new ObjectHolder(field.getText());
-						variables.put(varName, value);
+						for (String varName : items.keySet()) {
+							JTextField field = textFields.get(varName);
+							ObjectHolder value = new ObjectHolder(field.getText());
+							variables.put(varName, value);
+						}
 						callback.run();
 						thisFrame.dispose();
 					}
 				}
 				);
+		*/
 
 		this.setVisible(true);
 	}

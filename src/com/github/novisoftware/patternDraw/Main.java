@@ -36,7 +36,7 @@ public class Main {
 		for (int i =0; i < args.length; i++) {
 
 			if (args[i].startsWith("--")) {
-				if (args[i].equals("debug")) {
+				if (args[i].equals("--debug")) {
 					isDebugMode = true;
 				}
 				else {
@@ -108,24 +108,29 @@ public class Main {
 			System.exit(0);
 		}
 
-		final InstructionRenderer renderer = new InstructionRenderer(tokenList, variables);
+		if (isDebugMode) {
+			final InstructionRenderer renderer = new InstructionRenderer(tokenList, variables);
 
-		BufferedImage bimg = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
-		Graphics2D g = (Graphics2D) bimg.getGraphics();
-		Color fg = new Color(0.7f, 0.7f, 0.7f);
-		Color bg = new Color(1f, 1f, 1f);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setBackground(bg);
-		g.clearRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
-		g.setColor(fg);
+			BufferedImage bimg = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = (Graphics2D) bimg.getGraphics();
+			Color fg = new Color(0.7f, 0.7f, 0.7f);
+			Color bg = new Color(1f, 1f, 1f);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setBackground(bg);
+			g.clearRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+			g.setColor(fg);
 
-		renderer.init(g, null, null);
+			renderer.init(g, null, null);
 
-		final MyJPanel panel = new MyJPanel(renderer, bimg);
-		final MyJFrame frame = new MyJFrame(panel);
-		frame.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
-		frame.setTitle("PatternDraw - " + scriptPath);
-		frame.setVisible(true);
-		frame.repaint();
+			final MyJPanel panel = new MyJPanel(renderer, bimg);
+			final MyJFrame frame = new MyJFrame(panel);
+			frame.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+			frame.setTitle("PatternDraw - " + scriptPath);
+			frame.setVisible(true);
+			frame.repaint();
+		}
+		else {
+
+		}
 	}
 }

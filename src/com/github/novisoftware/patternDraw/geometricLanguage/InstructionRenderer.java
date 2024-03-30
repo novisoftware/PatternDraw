@@ -7,6 +7,7 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Stack;
 
 import javax.swing.JFrame;
@@ -25,7 +26,7 @@ public class InstructionRenderer extends AbstractRenderer {
 	private ArrayList<String> svgBuff;
 	private SvgInstruction s;
 	Stack<ObjectHolder> stack;
-	HashMap<String, String> paramMessages;
+	LinkedHashMap<String, String> paramMessages;
 	HashMap<String, ObjectHolder> variables;
 	HashMap<String, ObjectHolder> initialVariables;
 	ArrayList<Path> pathList;
@@ -64,6 +65,15 @@ public class InstructionRenderer extends AbstractRenderer {
 		}
 	};
 
+	public LinkedHashMap<String, String> getParamMessages() {
+		return this.paramMessages;
+	}
+
+	public HashMap<String, ObjectHolder> getVariables() {
+		return this.variables;
+	}
+
+
 	public InstructionRenderer(TokenList tokenList, HashMap<String, ObjectHolder> initialVariables) {
 		this.tokenList = tokenList;
 		this.initialVariables = initialVariables;
@@ -77,7 +87,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		this.stack = new Stack<ObjectHolder>();
 		this.variables = initialVariables != null ? (HashMap<String, ObjectHolder>) initialVariables.clone()
 				: new HashMap<String, ObjectHolder>();
-		this.paramMessages = new HashMap<String, String>();
+		this.paramMessages = new LinkedHashMap<String, String>();
 		this.counter = 0;
 		this.pathList = new ArrayList<Path>();
 		this.evalToken = new Stack<ArrayList<Token>>();
@@ -145,9 +155,6 @@ public class InstructionRenderer extends AbstractRenderer {
 				posList.add(new Pos(x, y));
 			}
 			stack.push(new ObjectHolder(posList.get(0), posList));
-		} else if (tokenStr.equals("input_params")) {
-			// 一旦仮にNOP。
-			// 入力欄を表示する箇所にしたい。
 		} else if (tokenStr.equals("param")) {
 			ObjectHolder o1 = stack.pop();
 			TypeDesc t = o1.getTypeDesc();
@@ -165,14 +172,7 @@ public class InstructionRenderer extends AbstractRenderer {
 			} else {
 				throw new InvaliScriptException("Invalid operand type", token);
 			}
-			if (this.variables.get(varName) == null) {
-				System.out.println(varName + " is not defined.  wait to set variable.");
-				final SettingWindow setting = new SettingWindow(message, varName, this.variables, resetWait);
-				this.isWaitSetting = true;
-				this.waitFrame = setting;
-				setting.setVisible(true);
-				setting.repaint();
-			}
+			this.paramMessages.put(varName, message);
 		} else if (tokenStr.equals("default")) {
 			ObjectHolder o2 = stack.pop();
 			TypeDesc t2 = o2.getTypeDesc();
@@ -204,6 +204,25 @@ public class InstructionRenderer extends AbstractRenderer {
 			}
 			this.paramMessages.put(varName, message);
 			this.variables.put(varName, new ObjectHolder(value));
+		} else if (tokenStr.equals("input_params")) {
+			boolean isFullyDefined = true;
+			for (String key : this.paramMessages.keySet()) {
+				if (! this.variables.containsKey(key)) {
+					isFullyDefined = false;
+				}
+			}
+
+			if (! isFullyDefined) {
+				System.out.println("wait to set variable.");
+				final SettingWindow setting = new SettingWindow(this.paramMessages, this.variables, resetWait);
+				this.isWaitSetting = true;
+				this.waitFrame = setting;
+				setting.setVisible(true);
+				setting.repaint();
+			}
+			// 一旦仮にNOP。
+			// 入力欄を表示する箇所にしたい。
+
 		} else if (tokenStr.equals("rand")) {
 			double randomNumber = Math.random();
 			stack.push(new ObjectHolder(randomNumber));
