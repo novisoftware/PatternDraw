@@ -30,10 +30,20 @@ public class Main {
 		String svgFilename = null;
 		String pngFilename = null;
 		String scriptPath = null;
+		boolean isDebugMode = false;
 
 		HashMap<String, ObjectHolder> variables = new HashMap<String, ObjectHolder>();
 		for (int i =0; i < args.length; i++) {
-			if (args[i].startsWith("-")) {
+
+			if (args[i].startsWith("--")) {
+				if (args[i].equals("debug")) {
+					isDebugMode = true;
+				}
+				else {
+					usage();
+					System.exit(1);
+				}
+			} else if (args[i].startsWith("-")) {
 				String a = args[i].substring(1);
 				String[] v = a.split("=");
 				if (v.length != 2) {

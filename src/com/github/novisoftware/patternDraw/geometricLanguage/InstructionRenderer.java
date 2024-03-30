@@ -219,10 +219,18 @@ public class InstructionRenderer extends AbstractRenderer {
 			double a = stack.pop().getAs_double();
 			double b = stack.pop().getAs_double();
 			stack.push(new ObjectHolder(a*b));
+		} else if (tokenStr.equals("/")) {
+			double a = stack.pop().getAs_double();
+			double b = stack.pop().getAs_double();
+			stack.push(new ObjectHolder(b/a));
 		} else if (tokenStr.equals("+")) {
 			double a = stack.pop().getAs_double();
 			double b = stack.pop().getAs_double();
 			stack.push(new ObjectHolder(a+b));
+		} else if (tokenStr.equals("-")) {
+			double a = stack.pop().getAs_double();
+			double b = stack.pop().getAs_double();
+			stack.push(new ObjectHolder(b-a));
 		} else if (tokenStr.equals("pos")) {
 			double y = stack.pop().getAs_double();
 			double x = stack.pop().getAs_double();
@@ -324,8 +332,10 @@ public class InstructionRenderer extends AbstractRenderer {
 			ArrayList<Pos> c = new ArrayList<Pos>();
 			int n = a.size();
 			for (int i = 0; i < n; i++) {
-				c.add(b.get(0));
-				c.add(a.get(0));
+				// c.add(b.get(0));
+				// c.add(a.get(0));
+				c.add(b.get(i));
+				c.add(a.get(i));
 			}
 			stack.push(new ObjectHolder(c.get(0), c));
 		} else if (tokenStr.equals("line_from_2_series")) {
