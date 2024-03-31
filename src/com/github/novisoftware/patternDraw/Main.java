@@ -5,14 +5,19 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.TokenList;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.gui.MyJFrame;
+import com.github.novisoftware.patternDraw.gui.MyJFrame2;
 import com.github.novisoftware.patternDraw.gui.MyJPanel;
+import com.github.novisoftware.patternDraw.gui.MyJPanel2;
+import com.github.novisoftware.patternDraw.gui.SettingWindow;
 import com.github.novisoftware.patternDraw.png.PngUtil;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 import com.github.novisoftware.patternDraw.svg.SvgUtil;
@@ -36,7 +41,8 @@ public class Main {
 		for (int i =0; i < args.length; i++) {
 
 			if (args[i].startsWith("--")) {
-				if (args[i].equals("--debug")) {
+				String opt = args[i].substring("--".length());
+				if (opt.equals("debug")) {
 					isDebugMode = true;
 				}
 				else {
@@ -130,7 +136,42 @@ public class Main {
 			frame.repaint();
 		}
 		else {
+			// パラメーター設定用部分の前後で切り分ける
+			ArrayList<TokenList> a = tokenList.separateWithKey("input_params");
+			TokenList headList = null;
+			TokenList bodyList = null;
+			if (a.size() == 2) {
+				headList = a.get(0);
+				bodyList = a.get(1);
+			} else {
+				bodyList = a.get(0);
+			}
 
+			// パラメーター用
+			final InstructionRenderer renderer = new InstructionRenderer(headList, variables);
+			renderer.init(null, null, null);
+			renderer.run();
+			ArrayList<Parameter> params = renderer.getParams();
+			HashMap<String, ObjectHolder> inputVariables = renderer.getVariables();
+
+
+			// 描画用
+			final InstructionRenderer renderer2 = new InstructionRenderer(bodyList, inputVariables);
+			BufferedImage bimg = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+			final MyJPanel2 panel = new MyJPanel2(renderer2, bimg);
+			final SettingWindow setting = new SettingWindow(params, inputVariables, panel, false);
+
+			final MyJFrame2 frame = new MyJFrame2(panel);
+
+			frame.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+			frame.setTitle("PatternDraw - " + scriptPath);
+
+			setting.setLocation(10, 20);
+			frame.setLocation(10 + 10 + SettingWindow.WINDOW_WIDTH, 20);
+
+			setting.setVisible(true);
+			frame.setVisible(true);
+			frame.repaint();
 		}
 	}
 }

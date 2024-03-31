@@ -7,7 +7,11 @@ public class TokenList {
 	private final ArrayList<Token> tokenList;
 
 	public TokenList(String path) throws IOException {
-		tokenList = FileReadUtil.readTokenList(path);
+		this.tokenList = FileReadUtil.readTokenList(path);
+	}
+
+	public TokenList(ArrayList<Token> tokenList) {
+		this.tokenList = tokenList;
 	}
 
 	/**
@@ -15,8 +19,8 @@ public class TokenList {
 	 * @param key
 	 * @return
 	 */
-	public ArrayList<ArrayList<Token>> separateWithKey(String key) {
-		ArrayList<ArrayList<Token>> ret = new ArrayList<ArrayList<Token>>();
+	public ArrayList<TokenList> separateWithKey(String key) {
+		ArrayList<TokenList> ret = new ArrayList<TokenList>();
 		ArrayList<Token> before = new ArrayList<Token>();
 		ArrayList<Token> after = new ArrayList<Token>();
 		boolean isFound = false;
@@ -33,9 +37,9 @@ public class TokenList {
 			}
 		}
 
-		ret.add(before);
+		ret.add(new TokenList(before));
 		if (after.size() > 0) {
-			ret.add(after);
+			ret.add(new TokenList(after));
 		}
 
 		return ret;

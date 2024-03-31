@@ -1,6 +1,12 @@
 package com.github.novisoftware.patternDraw.geometricLanguage;
 
-class Token {
+/**
+ * トークン。
+ * スクリプトの実行のためには文字列だけを使う。
+ * エラーを発生させる際に文字列と行番号を使用したい。
+ *
+ */
+public class Token {
 	private final int lineNumber;
 	private final String token;
 

@@ -12,6 +12,9 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 import com.github.novisoftware.patternDraw.geometryLanguage.primitives.Path;
@@ -26,7 +29,7 @@ public class InstructionRenderer extends AbstractRenderer {
 	private ArrayList<String> svgBuff;
 	private SvgInstruction s;
 	Stack<ObjectHolder> stack;
-	LinkedHashMap<String, String> paramMessages;
+	ArrayList<Parameter> params;
 	HashMap<String, ObjectHolder> variables;
 	HashMap<String, ObjectHolder> initialVariables;
 	ArrayList<Path> pathList;
@@ -65,8 +68,8 @@ public class InstructionRenderer extends AbstractRenderer {
 		}
 	};
 
-	public LinkedHashMap<String, String> getParamMessages() {
-		return this.paramMessages;
+	public ArrayList<Parameter> getParams() {
+		return this.params;
 	}
 
 	public HashMap<String, ObjectHolder> getVariables() {
@@ -87,7 +90,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		this.stack = new Stack<ObjectHolder>();
 		this.variables = initialVariables != null ? (HashMap<String, ObjectHolder>) initialVariables.clone()
 				: new HashMap<String, ObjectHolder>();
-		this.paramMessages = new LinkedHashMap<String, String>();
+		this.params = new ArrayList<Parameter>();
 		this.counter = 0;
 		this.pathList = new ArrayList<Path>();
 		this.evalToken = new Stack<ArrayList<Token>>();
@@ -103,7 +106,7 @@ public class InstructionRenderer extends AbstractRenderer {
 	public void runSingleToken(Token token) throws InvaliScriptException {
 		String tokenStr = token.getToken();
 		lastToken = token;
-		Debug("stack depth = " + stack.size() + " token = " + tokenStr);
+		// Debug("stack depth = " + stack.size() + " token = " + tokenStr);
 		if (tokenStr.equals("duplicate")) {
 			ObjectHolder o = stack.pop();
 			stack.push(o);
@@ -155,12 +158,29 @@ public class InstructionRenderer extends AbstractRenderer {
 				posList.add(new Pos(x, y));
 			}
 			stack.push(new ObjectHolder(posList.get(0), posList));
-		} else if (tokenStr.equals("param")) {
+		} else if (tokenStr.equals("param")
+				|| tokenStr.startsWith("param-")
+				|| tokenStr.equals("default")
+				|| tokenStr.startsWith("default-")
+				) {
+			String defaultValue = null;
+			if (tokenStr.startsWith("default")) {
+				ObjectHolder o22 = stack.pop();
+				TypeDesc t22 = o22.getTypeDesc();
+				if (t22 == TypeDesc.STRING) {
+					defaultValue = o22.getAs_string();
+				} else if (t22 == TypeDesc.DOUBLE) {
+					defaultValue = "" + o22.getAs_double();
+				} else {
+					throw new InvaliScriptException("Invalid operand type", token);
+				}
+			}
+
 			ObjectHolder o1 = stack.pop();
 			TypeDesc t = o1.getTypeDesc();
-			String message = null;
+			String description = null;
 			if (t == TypeDesc.STRING) {
-				message = o1.getAs_string();
+				description = o1.getAs_string();
 			} else {
 				throw new InvaliScriptException("Invalid operand type", token);
 			}
@@ -172,49 +192,77 @@ public class InstructionRenderer extends AbstractRenderer {
 			} else {
 				throw new InvaliScriptException("Invalid operand type", token);
 			}
-			this.paramMessages.put(varName, message);
-		} else if (tokenStr.equals("default")) {
-			ObjectHolder o2 = stack.pop();
-			TypeDesc t2 = o2.getTypeDesc();
-			String value = null;
-			if (t2 == TypeDesc.STRING) {
-				value = o2.getAs_string();
-			} else if (t2 == TypeDesc.DOUBLE) {
-				value = "" + o2.getAs_double();
-			} else {
-				throw new InvaliScriptException("Invalid operand type", token);
-			}
 
-			ObjectHolder o1 = stack.pop();
-			TypeDesc t = o1.getTypeDesc();
-			String message = null;
-			if (t == TypeDesc.STRING) {
-				message = o1.getAs_string();
-			} else {
-				throw new InvaliScriptException("Invalid operand type", token);
-			}
+			boolean isSlider = false;
+			Double sliderMin = null;
+			Double sliderMax = null;
 
-			ObjectHolder o3 = stack.pop();
-			TypeDesc t3 = o3.getTypeDesc();
-			String varName = null;
-			if (t3 == TypeDesc.STRING) {
-				varName = o3.getAs_string();
-			} else {
-				throw new InvaliScriptException("Invalid operand type", token);
-			}
-			this.paramMessages.put(varName, message);
-			this.variables.put(varName, new ObjectHolder(value));
-		} else if (tokenStr.equals("input_params")) {
-			boolean isFullyDefined = true;
-			for (String key : this.paramMessages.keySet()) {
-				if (! this.variables.containsKey(key)) {
-					isFullyDefined = false;
+			boolean isEnum = false;
+			ArrayList<String> enums = null;
+
+			// param-default[0]-slider[0,6.28318530718]
+			if (tokenStr.indexOf('-') != -1) {
+				int dIndex = tokenStr.indexOf('-');
+				String subStr = tokenStr.substring(dIndex + 1);
+				if (subStr.startsWith("slider")) {
+					String subStr2 = subStr.substring("slider".length());
+					String[] optInOperator = subStr2.split("\\[|\\]|,");
+					Debug("subStr2 = " + subStr2);
+					for (int i = 0 ; i < optInOperator.length ; i ++) {
+						Debug("optInOperator[i] = " + optInOperator[i]);
+					}
+
+					isSlider = true;
+					sliderMin = Double.parseDouble(optInOperator[1]);
+					sliderMax = Double.parseDouble(optInOperator[2]);
+				}
+				else if (subStr.startsWith("enum")) {
+					String subStr2 = subStr.substring("enum".length());
+					String[] paraInOperator_ = subStr2.split("[\\[\\],]");
+					ArrayList<String> paraInOperator = new ArrayList<String>();
+					for (String s : paraInOperator_) {
+						if (s.length() > 0) {
+							paraInOperator.add(s);
+						}
+					}
+
+					isEnum = true;
+					enums = paraInOperator;
 				}
 			}
 
+			Debug("varName = " + varName);
+			Debug("description = " + description);
+			Debug("defaultValue = " + defaultValue);
+
+			/// isSlider = false;
+
+			Parameter parameter = null;
+			if (isSlider) {
+				parameter = new SliderParameter(varName, description, defaultValue, sliderMin, sliderMax);
+			}
+			else if (isEnum) {
+				parameter = new EnumParameter(varName, description, defaultValue, enums);
+			}
+			else {
+				parameter = new Parameter(varName, description, defaultValue);
+			}
+
+			this.params.add(parameter);
+
+			if (defaultValue != null) {
+				this.variables.put(varName, new ObjectHolder(defaultValue));
+			}
+		} else if (tokenStr.equals("input_params")) {
+			boolean isFullyDefined = true;
+			for (Parameter param : this.params) {
+				if (! this.variables.containsKey(param.getName())) {
+					isFullyDefined = false;
+				}
+			}
 			if (! isFullyDefined) {
-				System.out.println("wait to set variable.");
-				final SettingWindow setting = new SettingWindow(this.paramMessages, this.variables, resetWait);
+				// Debug("wait to set variable.");
+				final SettingWindow setting = new SettingWindow(this.params, this.variables, resetWait, true);
 				this.isWaitSetting = true;
 				this.waitFrame = setting;
 				setting.setVisible(true);
@@ -366,8 +414,7 @@ public class InstructionRenderer extends AbstractRenderer {
 			ArrayList<Pos> b = bObj.getAs_pos();
 
 			if (a.size() != b.size()) {
-				System.out.println("error. Excepted same size list.");
-				System.exit(1);
+				throw new InvaliScriptException("error. Excepted same size list.", token);
 			}
 			ArrayList<Line> ret = new ArrayList<Line>();
 			int n = a.size();
@@ -468,7 +515,7 @@ public class InstructionRenderer extends AbstractRenderer {
 			return true;
 		}
 
-		Debug("this.counter = " + this.counter);
+		// Debug("this.counter = " + this.counter);
 
 		Token token;
 		if (!this.evalToken.isEmpty()) {
