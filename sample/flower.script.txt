@@ -9,6 +9,7 @@
 # 'X "倍数" -6  default
 'X "倍数" 6  default
 'R "ずらし" 60 default
+input_params
 
 # r freq theta
 # 0.2

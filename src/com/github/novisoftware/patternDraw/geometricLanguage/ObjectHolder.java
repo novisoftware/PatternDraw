@@ -2,6 +2,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage;
 
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 

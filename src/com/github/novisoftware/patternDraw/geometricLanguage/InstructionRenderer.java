@@ -15,6 +15,8 @@ import javax.swing.JFrame;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
+import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
+import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 import com.github.novisoftware.patternDraw.geometryLanguage.primitives.Path;

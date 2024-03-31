@@ -1,8 +1,12 @@
-package com.github.novisoftware.patternDraw.geometricLanguage;
+package com.github.novisoftware.patternDraw.geometricLanguage.token;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * トークン列
+ *
+ */
 public class TokenList {
 	private final ArrayList<Token> tokenList;
 
@@ -15,7 +19,7 @@ public class TokenList {
 	}
 
 	/**
-	 * 指定されたワードの前後で分割する
+	 * 指定されたワードの前後でトークン列を分割する
 	 * @param key
 	 * @return
 	 */
