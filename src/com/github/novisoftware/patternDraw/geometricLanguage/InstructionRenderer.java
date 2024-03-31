@@ -118,6 +118,14 @@ public class InstructionRenderer extends AbstractRenderer {
 			ObjectHolder o2 = stack.pop();
 			stack.push(o1);
 			stack.push(o2);
+		} else if (tokenStr.equals("pick")) {
+			//「 1 pick 」がduplicate と同一。
+
+			int n = stack.pop().getIntValue();
+			int sz = stack.size();
+
+			ObjectHolder o1 = stack.get(sz - n);
+			stack.push(o1);
 		} else if (tokenStr.equals("series_on_circle")) {
 			/*
 			 * 円周上に並んだ系列を作る
@@ -391,6 +399,63 @@ public class InstructionRenderer extends AbstractRenderer {
 			} else {
 				throw new InvaliScriptException("Wrong Type " + t + " in stack.", token);
 			}
+		} else if (tokenStr.equals("sub_sequence")) {
+			/*
+			 * 系列の一部を取り出す
+			 */
+			int length = stack.pop().getIntValue();
+			int start = stack.pop().getIntValue();
+
+			ObjectHolder o = stack.pop();
+			TypeDesc t = o.getTypeDesc();
+			if (t == TypeDesc.LINE_LIST) {
+				ArrayList<Line> a = o.getAs_line();
+				ArrayList<Line> sub = new ArrayList<Line>();
+				sub.addAll(a.subList(start, start+length));
+				stack.push(new ObjectHolder(sub.get(0), sub));
+			} else if (t == TypeDesc.POS_LIST) {
+				ArrayList<Pos> a = o.getAs_pos();
+				ArrayList<Pos> sub = new ArrayList<Pos>();
+				sub.addAll(a.subList(start, start+length));
+				stack.push(new ObjectHolder(sub.get(0), sub));
+			} else {
+				throw new InvaliScriptException("Wrong Type " + t + " in stack.", token);
+			}
+		} else if (tokenStr.equals("apply_as_texture")) {
+			// テクスチャ側
+			ArrayList<Pos> series2 = stack.pop().getAs_pos();
+			ArrayList<Pos> texturePosList = Pos.move_to_origin(series2);
+
+			// ベース側
+			ArrayList<Pos> series1 = stack.pop().getAs_pos();
+			//
+			ArrayList<Pos> result = new ArrayList<Pos>();
+
+
+			Pos textureStartPos = texturePosList.get(0);
+			Pos textureEndPos = texturePosList.get(texturePosList.size()-1);
+			double textureTh = textureEndPos.atan(textureStartPos);
+			double textureLength = textureEndPos.distance(textureStartPos);
+
+			int n = series1.size();
+			for (int i = 0; i < n ; i++) {
+				Pos startPos1 = series1.get(i);
+				Pos endPos1 = series1.get((i+1)%n);
+
+				double baseTh = endPos1.atan(startPos1);
+				double baseLength = endPos1.distance(startPos1);
+
+				double ratio = baseLength / textureLength;
+
+				ArrayList<Pos> work1 = Pos.rotate(texturePosList, - baseTh + textureTh);
+				ArrayList<Pos> work2 = Pos.scale(work1, ratio);
+				ArrayList<Pos> work3 = Pos.move(work2, startPos1);
+				// ArrayList<Pos> work3 = work2;
+
+				result.addAll(work3);
+			}
+
+			stack.push(new ObjectHolder(result.get(0), result));
 		} else if (tokenStr.equals("zipper_from_2_series")) {
 			ObjectHolder aObj = stack.pop();
 			ObjectHolder bObj = stack.pop();
@@ -565,6 +630,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		while (true) {
 			try {
 				if (this.step() == false) {
+					Debug("END.");
 					break;
 				}
 			} catch (InvaliScriptException e) {
@@ -624,7 +690,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		g.setColor(fg);
 
 		if (lastToken != null) {
-			g.drawString("last token  = " + lastToken.getToken(), 20, 10);
+			g.drawString("last token = " + lastToken.getToken(), 20, 10);
 		}
 
 		{
@@ -653,7 +719,12 @@ public class InstructionRenderer extends AbstractRenderer {
 			// スタックの内容表示
 			// int y = 24;
 			int y = 40;
+			int workCounter = 0;
+
 			for (ObjectHolder o : a) {
+				workCounter++;
+				g.setColor(Color.getHSBColor(0.5f + workCounter * 0.38f, 0.9f, 0.5f));
+
 				TypeDesc t = o.getTypeDesc();
 				String addInfo = "";
 				if (t == TypeDesc.LINE_LIST) {
@@ -677,7 +748,11 @@ public class InstructionRenderer extends AbstractRenderer {
 		}
 
 		// スタックに入っている図形情報をプレビューレンダリングする
+		int workCounter = 0;
 		for (ObjectHolder o : a) {
+			workCounter++;
+			g.setColor(Color.getHSBColor(0.5f + workCounter * 0.38f, 0.9f, 0.5f));
+
 			TypeDesc t = o.getTypeDesc();
 
 			if (t == TypeDesc.LINE_LIST) {
