@@ -261,7 +261,9 @@ public class InstructionRenderer extends AbstractRenderer {
 			this.params.add(parameter);
 
 			if (defaultValue != null) {
-				this.variables.put(varName, new ObjectHolder(defaultValue));
+				if (! this.variables.containsKey(varName)) {
+					this.variables.put(varName, new ObjectHolder(defaultValue));
+				}
 			}
 		} else if (tokenStr.equals("input_params")) {
 			boolean isFullyDefined = true;
@@ -308,6 +310,9 @@ public class InstructionRenderer extends AbstractRenderer {
 			double a = stack.pop().getAs_double();
 			double b = stack.pop().getAs_double();
 			stack.push(new ObjectHolder(b-a));
+		} else if (tokenStr.equals("sin")) {
+			double a = stack.pop().getAs_double();
+			stack.push(new ObjectHolder(Math.sin(a)));
 		} else if (tokenStr.equals("pos")) {
 			double y = stack.pop().getAs_double();
 			double x = stack.pop().getAs_double();
