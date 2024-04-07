@@ -11,11 +11,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.gui.editor.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
-import com.github.novisoftware.patternDraw.gui.editor.util.Value;
 
 
 public class GraphNodeElement extends ElementIcon {

@@ -17,8 +17,8 @@ import com.github.novisoftware.patternDraw.gui.editor.parts.ControlBlock;
 import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
 import com.github.novisoftware.patternDraw.gui.editor.parts.GraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
-import com.github.novisoftware.patternDraw.gui.editor.util.Value;
 
 public class NetworkDataModel {
 	/**

@@ -3,9 +3,9 @@ package com.github.novisoftware.patternDraw.gui.editor.parts;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
-import com.github.novisoftware.patternDraw.gui.editor.util.Value;
-import com.github.novisoftware.patternDraw.gui.editor.util.Value.ValueType;
 
 
 

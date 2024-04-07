@@ -1,6 +1,8 @@
-package com.github.novisoftware.patternDraw.gui.editor.util;
+package com.github.novisoftware.patternDraw.gui.editor.typeSystem;
 
 import java.util.HashMap;
+
+import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 
 public class Value {

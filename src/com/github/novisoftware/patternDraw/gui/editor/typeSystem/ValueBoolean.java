@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.util;
+package com.github.novisoftware.patternDraw.gui.editor.typeSystem;
 
 public class ValueBoolean extends Value {
 	public ValueBoolean(Boolean b) {

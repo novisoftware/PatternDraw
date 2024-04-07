@@ -10,9 +10,9 @@ import java.util.List;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
-import com.github.novisoftware.patternDraw.gui.editor.util.Value;
 import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
 import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.EditFrame.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.parts.ControlBlock;

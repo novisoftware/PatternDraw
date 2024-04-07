@@ -10,6 +10,10 @@ import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.gui.editor.OutputFrame;
 import com.github.novisoftware.patternDraw.gui.editor.parts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueNumeric;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueString;
 
 
 public class Rpn {

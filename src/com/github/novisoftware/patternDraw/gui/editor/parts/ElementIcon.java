@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.gui.editor.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
-import com.github.novisoftware.patternDraw.gui.editor.util.Value;
 
 public abstract class ElementIcon implements IconGuiInterface {
 	protected final EditPanel editPanel;
