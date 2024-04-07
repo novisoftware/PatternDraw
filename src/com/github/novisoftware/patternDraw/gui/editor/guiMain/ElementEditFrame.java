@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor;
+package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,24 +21,16 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.EditFrame.MListener;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ControlBlock;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.parts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ControlBlock;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.parts.IconGuiInterface;
 
 /**
  *

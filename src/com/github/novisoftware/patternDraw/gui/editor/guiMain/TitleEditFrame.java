@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor;
+package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,8 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;

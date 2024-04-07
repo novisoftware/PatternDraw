@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor;
+package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -11,11 +11,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.github.novisoftware.patternDraw.gui.editor.parts.ControlBlock;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.parts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 
 public class EditFrame extends JFrame {

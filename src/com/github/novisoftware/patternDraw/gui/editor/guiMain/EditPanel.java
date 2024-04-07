@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor;
+package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,9 +10,10 @@ import java.util.TreeSet;
 
 import javax.swing.JPanel;
 
-import com.github.novisoftware.patternDraw.gui.editor.EditFrame.MListener;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.util.NetworkDataModel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
 
 public class EditPanel extends JPanel {
 	/**

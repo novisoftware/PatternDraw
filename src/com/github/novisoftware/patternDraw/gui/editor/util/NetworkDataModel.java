@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor;
+package com.github.novisoftware.patternDraw.gui.editor.util;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -13,12 +13,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.github.novisoftware.patternDraw.gui.editor.parts.ControlBlock;
-import com.github.novisoftware.patternDraw.gui.editor.parts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.parts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 public class NetworkDataModel {
 	/**
@@ -642,7 +643,7 @@ public class NetworkDataModel {
 
 	}
 
-	void runProgram() {
+	public void runProgram() {
 		OutputFrame.clear();
 		Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
 

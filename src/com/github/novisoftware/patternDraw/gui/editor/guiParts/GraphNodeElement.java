@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.parts;
+package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -10,7 +10,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.gui.editor.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;

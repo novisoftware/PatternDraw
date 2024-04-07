@@ -1,10 +1,10 @@
-package com.github.novisoftware.patternDraw.gui.editor.parts;
+package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.gui.editor.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;

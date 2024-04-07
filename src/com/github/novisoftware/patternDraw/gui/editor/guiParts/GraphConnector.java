@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.parts;
+package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
