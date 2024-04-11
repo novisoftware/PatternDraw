@@ -19,6 +19,7 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Common;
  */
 public class GraphConnector implements IconGuiInterface {
 	private String paraName;
+	private String paraDescription;
 	public Value.ValueType valueType;
 	private AbstractGraphNodeElement node;
 	private int index;
@@ -78,10 +79,15 @@ public class GraphConnector implements IconGuiInterface {
 		}
 	}
 
-	public GraphConnector(AbstractGraphNodeElement abstractGraphNodeElement, String paraName, ValueType valueType, int index) {
+	public GraphConnector(AbstractGraphNodeElement abstractGraphNodeElement,
+			String paraName,
+			ValueType valueType,
+			String paraDescription,
+			int index) {
 		this.node = abstractGraphNodeElement;
 		this.valueType = valueType;
 		this.paraName = paraName;
+		this.paraDescription = paraDescription;
 		this.index = index;
 	}
 }

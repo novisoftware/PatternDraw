@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueBoolean;
@@ -140,7 +141,7 @@ public class Rpn {
 			 */
 			String paraName = getParamName(s);
 			if (paraName != null) {
-				RpnGraphNodeElement src = ele.paramMapObj.get(paraName);
+				AbstractGraphNodeElement src = ele.paramMapObj.get(paraName);
 				stack.push(src.workValue);
 				continue;
 			}
@@ -518,18 +519,5 @@ public class Rpn {
 		}
 
 		return null;
-
-
-/*
-				for (Connector connector : this.connectors) {
-					Element src = t.paramMapObj.get(connector.getParaName());
-					if (src != null) {
-						g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
-					}
-				}
-*/
 	}
-
-
-
 }

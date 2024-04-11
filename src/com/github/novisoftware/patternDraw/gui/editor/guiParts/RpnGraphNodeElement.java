@@ -9,7 +9,10 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
-
+/**
+ * ノードに閉じたミクロなRPN式(逆ポーランド記法の式)で計算をします。
+ *
+ */
 public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
@@ -20,6 +23,27 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 
 	public String str() {
 		return String.format("RPN_ELEMENT: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(outputType), escape(getRpnString()));
+	}
+
+	/**
+	 * 要素のRPN式。RPNは逆ポーランド記法。
+	 */
+	private Rpn rpn;
+
+	public void setRpnString (String rpnString) {
+		this.rpn = new Rpn(rpnString);
+	}
+
+	public Rpn getRpn() {
+		return this.rpn;
+	}
+
+	public String getRpnString() {
+		return this.rpn.getFormula();
+	}
+
+	public String getRepresentExpression() {
+		return this.rpn.getDisplayString();
 	}
 
 	public RpnGraphNodeElement(EditPanel EditPanel, String s) {
@@ -40,28 +64,25 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 
 	public void buildParameterList(String s0) {
 		ArrayList<String> a = Rpn.s2a(s0);
-//		params = new ArrayList<>();
 		connectors = new ArrayList<>();
 
 		int index = 0;
 		for (String s : a) {
 			String paraName = Rpn.getParamName(s);
 			if (paraName != null) {
-//				params.add(paraName);
 				String paraType = Rpn.getParamType(s);
 				Value.ValueType valueType = null;
 				if (paraType != null) {
 					valueType = Value.str2valueType.get(paraType);
 				}
 
-				connectors.add(new GraphConnector(this, paraName, valueType, index));
+				connectors.add(new GraphConnector(this, paraName, valueType, "", index));
 				index ++;
-				// System.out.println("param add: " + paraName);
 			}
 		}
 
 		this.paramMapInfo = new HashMap<String,String>();
-		this.paramMapObj = new HashMap<String,RpnGraphNodeElement>();
+		this.paramMapObj = new HashMap<String,AbstractGraphNodeElement>();
 		this.paramSatisfied = false;
 	}
 

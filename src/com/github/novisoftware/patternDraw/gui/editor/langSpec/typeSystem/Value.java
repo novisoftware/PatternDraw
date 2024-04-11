@@ -93,6 +93,12 @@ public class Value {
 		if (valueKind == ValueType.NUMERIC) {
 			return new ValueNumeric(s);
 		}
+		if (valueKind == ValueType.FLOAT) {
+			return new ValueFloat(s);
+		}
+		if (valueKind == ValueType.INTEGER) {
+			return new ValueInteger(s);
+		}
 		if (valueKind == ValueType.STRING) {
 			return new ValueString(s);
 		}

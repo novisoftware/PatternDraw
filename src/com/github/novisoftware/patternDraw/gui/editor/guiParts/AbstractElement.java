@@ -120,27 +120,6 @@ public abstract class AbstractElement implements IconGuiInterface {
 	}
 
 	/**
-	 * 要素のRPN式。RPNは逆ポーランド記法。
-	 */
-	private Rpn rpn;
-
-	public void setRpnString (String rpnString) {
-		this.rpn = new Rpn(rpnString);
-	}
-
-	public Rpn getRpn() {
-		return this.rpn;
-	}
-
-	public String getRpnString() {
-		return this.rpn.getFormula();
-	}
-
-	public String getRepresentExpression() {
-		return this.rpn.getDisplayString();
-	}
-
-	/**
 	 * 中心のX座標を取得します。
 	 *
 	 * @return 中心のX座標

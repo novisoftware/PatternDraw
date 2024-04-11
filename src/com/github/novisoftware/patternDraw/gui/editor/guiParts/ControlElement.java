@@ -81,6 +81,37 @@ public class ControlElement extends AbstractElement {
 
 	// Looper looper;
 
+
+	/**
+	 * 要素のRPN式。RPNは逆ポーランド記法。
+	 */
+	private Rpn rpn;
+
+	public void setRpnString (String rpnString) {
+		this.rpn = new Rpn(rpnString);
+	}
+
+	public Rpn getRpn() {
+		return this.rpn;
+	}
+
+	public String getRpnString() {
+		return this.rpn.getFormula();
+	}
+
+	public String getRepresentExpression() {
+		return this.rpn.getDisplayString();
+	}
+
+
+
+
+
+
+
+
+
+
 	/***
 	 * 実行時の初期化
 	 */

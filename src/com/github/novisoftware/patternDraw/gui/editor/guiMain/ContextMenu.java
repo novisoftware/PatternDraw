@@ -17,6 +17,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
@@ -108,7 +109,7 @@ class ContextMenu extends JPopupMenu {
 										RpnGraphNodeElement ele = (RpnGraphNodeElement)ei;
 
 										for (GraphConnector connector : ele.connectors) {
-											RpnGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
+											AbstractGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
 											if (src == icon) {
 												ele.paramMapInfo.remove(connector.getParaName());
 												ele.paramMapObj.remove(connector.getParaName());

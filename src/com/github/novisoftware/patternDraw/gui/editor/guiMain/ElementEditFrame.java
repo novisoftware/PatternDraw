@@ -151,9 +151,16 @@ public class ElementEditFrame extends JFrame {
 		layout.setConstraints(messageDisp, gbc);
 		this.add(messageDisp);
 
-
-		Debug.println("ElementEdit", "RPN to Edit is " + element.getRpnString());
-		rpnArray = element.getRpn().getArray();
+		if (element instanceof ControlElement) {
+			ControlElement e = (ControlElement)element;
+			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
+			rpnArray = e.getRpn().getArray();
+		}
+		else if (element instanceof RpnGraphNodeElement) {
+			RpnGraphNodeElement e = (RpnGraphNodeElement)element;
+			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
+			rpnArray = e.getRpn().getArray();
+		}
 
 		int n = 1;
 		if (element.getKindId() == KindId.CONSTANT
@@ -290,9 +297,17 @@ public class ElementEditFrame extends JFrame {
 			buttonOk.addActionListener(
 					new ActionListener() {
 						@Override
-						public void actionPerformed(ActionEvent e) {
+						public void actionPerformed(ActionEvent ev) {
 							System.out.println("Set RPN:" +  RpnUtil.a2s(tf.rpnArray));
-							tf.targetElement.setRpnString(RpnUtil.a2s(tf.rpnArray));
+							AbstractElement te = tf.targetElement;
+							if (te instanceof ControlElement) {
+								ControlElement e = (ControlElement)te;
+								e.setRpnString(RpnUtil.a2s(tf.rpnArray));
+							}
+							else if (te instanceof RpnGraphNodeElement) {
+								RpnGraphNodeElement e = (RpnGraphNodeElement)te;
+								e.setRpnString(RpnUtil.a2s(tf.rpnArray));
+							}
 							tf.dispose();
 							editPanel.repaint();
 						}

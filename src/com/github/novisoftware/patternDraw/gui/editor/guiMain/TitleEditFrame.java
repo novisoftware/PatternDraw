@@ -22,6 +22,8 @@ import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
@@ -146,9 +148,16 @@ public class TitleEditFrame extends JFrame {
 		layout.setConstraints(messageDisp, gbc);
 		this.add(messageDisp);
 
-
-		Debug.println("ElementEdit", "RPN to Edit is " + element.getRpnString());
-		rpnArray = element.getRpn().getArray();
+		if (element instanceof ControlElement) {
+			ControlElement e = (ControlElement)element;
+			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
+			rpnArray = e.getRpn().getArray();
+		}
+		else if (element instanceof RpnGraphNodeElement) {
+			RpnGraphNodeElement e = (RpnGraphNodeElement)element;
+			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
+			rpnArray = e.getRpn().getArray();
+		}
 
 		int n = 1;
 		if (element.getKindId() == KindId.CONSTANT
@@ -279,9 +288,21 @@ public class TitleEditFrame extends JFrame {
 			buttonOk.addActionListener(
 					new ActionListener() {
 						@Override
-						public void actionPerformed(ActionEvent e) {
+						public void actionPerformed(ActionEvent ev) {
 							System.out.println("Set RPN:" +  RpnUtil.a2s(tf.rpnArray));
-							tf.targetElement.setRpnString(RpnUtil.a2s(tf.rpnArray));
+							AbstractElement te = tf.targetElement;
+							if (te instanceof ControlElement) {
+								ControlElement e = (ControlElement)te;
+								e.setRpnString(RpnUtil.a2s(tf.rpnArray));
+							}
+							else if (te instanceof RpnGraphNodeElement) {
+								RpnGraphNodeElement e = (RpnGraphNodeElement)te;
+								e.setRpnString(RpnUtil.a2s(tf.rpnArray));
+							}
+							else {
+								System.err.println("考慮不足。要点検。 Fnc Element に Rpn 設定している。");
+							}
+
 							tf.dispose();
 							editPanel.repaint();
 						}
