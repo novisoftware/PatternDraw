@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.InvaliScriptException;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 
 public class MyJPanel2 extends JPanel implements Runnable {

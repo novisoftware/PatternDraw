@@ -7,13 +7,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 

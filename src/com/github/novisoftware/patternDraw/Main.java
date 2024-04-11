@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.InvaliScriptException;
-import com.github.novisoftware.patternDraw.geometricLanguage.ObjectHolder;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.gui.MyJFrame;

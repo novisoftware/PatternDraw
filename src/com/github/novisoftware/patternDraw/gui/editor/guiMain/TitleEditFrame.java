@@ -20,8 +20,8 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
@@ -39,7 +39,7 @@ public class TitleEditFrame extends JFrame {
 	final int LINES = 14;
 
 	ArrayList<String> rpnArray;
-	final ElementIcon targetElement;
+	final AbstractElement targetElement;
 
 	abstract class InputChecker {
 		boolean isOk = false;
@@ -112,7 +112,7 @@ public class TitleEditFrame extends JFrame {
 
 	JLabel messageDisp;
 
-	public TitleEditFrame(final ElementIcon element, final EditPanel editPanel) {
+	public TitleEditFrame(final AbstractElement element, final EditPanel editPanel) {
 		Common.setIconImage(this);
 		this.targetElement = element;
 		this.setTitle(element.getKindString() + " を編集");

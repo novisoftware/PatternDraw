@@ -1,7 +1,8 @@
-package com.github.novisoftware.patternDraw.geometricLanguage;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem;
 
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;

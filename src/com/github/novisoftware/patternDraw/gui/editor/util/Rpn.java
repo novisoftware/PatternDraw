@@ -9,11 +9,11 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueBoolean;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueNumeric;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueString;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueNumeric;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueString;
 
 
 public class Rpn {
@@ -126,7 +126,7 @@ public class Rpn {
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
 
-	public Value doCaliculate(GraphNodeElement ele, HashMap<String, Value> variables) {
+	public Value doCaliculate(RpnGraphNodeElement ele, HashMap<String, Value> variables) {
 		Stack<Value> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
@@ -140,7 +140,7 @@ public class Rpn {
 			 */
 			String paraName = getParamName(s);
 			if (paraName != null) {
-				GraphNodeElement src = ele.paramMapObj.get(paraName);
+				RpnGraphNodeElement src = ele.paramMapObj.get(paraName);
 				stack.push(src.workValue);
 				continue;
 			}
@@ -176,14 +176,14 @@ public class Rpn {
 				variables.put(name,v);
 				stack.push(v);
 
-				GraphNodeElement.debugVariables();
+				RpnGraphNodeElement.debugVariables();
 			}
 			else if (s.equals(":recall-variable")) {
 				String name = stringStack.pop();
 				Value v =variables.get(name);
 				stack.push(v);
 
-				GraphNodeElement.debugVariables();
+				RpnGraphNodeElement.debugVariables();
 			}
 			else if (s.equals(":as-numeric")) {
 				stack.push(new ValueNumeric(stack.pop().toString()));

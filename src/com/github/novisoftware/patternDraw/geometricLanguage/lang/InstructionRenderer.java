@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -12,6 +12,8 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
@@ -27,18 +29,18 @@ import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 public class InstructionRenderer extends AbstractRenderer {
 	TokenList tokenList;
 	int counter;
-	private Graphics2D g;
-	private ArrayList<String> svgBuff;
-	private SvgInstruction s;
+	public Graphics2D g;
+	public ArrayList<String> svgBuff;
+	public SvgInstruction s;
 	Stack<ObjectHolder> stack;
 	ArrayList<Parameter> params;
 	HashMap<String, ObjectHolder> variables;
 	HashMap<String, ObjectHolder> initialVariables;
-	ArrayList<Path> pathList;
-	String currentStrokeColor = "black";
-	String currentStrokeWidth = "1";
-	double translateX;
-	double translateY;
+	public ArrayList<Path> pathList;
+	public String currentStrokeColor = "black";
+	public String currentStrokeWidth = "1";
+	public double translateX;
+	public double translateY;
 
 	public void setTranslate(double x, double y) {
 		this.translateX = x;

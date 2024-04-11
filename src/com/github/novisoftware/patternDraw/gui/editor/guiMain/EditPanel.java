@@ -10,7 +10,7 @@ import java.util.TreeSet;
 
 import javax.swing.JPanel;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.util.NetworkDataModel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
@@ -30,8 +30,8 @@ public class EditPanel extends JPanel {
 	IconGuiInterface workLineFrom = null;
 	int workLineX, workLineY;
 
-	public ElementIcon getElementIcon(String name) {
-		for (ElementIcon t : networkDataModel.getElements()) {
+	public AbstractElement getElementIcon(String name) {
+		for (AbstractElement t : networkDataModel.getElements()) {
 			if (t.id.equals(name)) {
 				return t;
 			}
@@ -42,7 +42,7 @@ public class EditPanel extends JPanel {
 	public Set<String> getToneNames() {
 		TreeSet<String> s = new TreeSet<>();
 
-		for (ElementIcon t : networkDataModel.getElements()) {
+		for (AbstractElement t : networkDataModel.getElements()) {
 			s.add(t.id);
 		}
 
@@ -72,7 +72,7 @@ public class EditPanel extends JPanel {
 		 */
 		g2.setColor(Color.GRAY);
 		for (int phase = 0; phase < 2; phase++) {
-			for (ElementIcon t : networkDataModel.getElements()) {
+			for (AbstractElement t : networkDataModel.getElements()) {
 				t.paintWithPhase(g2, phase);
 			}
 		}
@@ -80,7 +80,7 @@ public class EditPanel extends JPanel {
 
 	IconGuiInterface checkXY(int x, int y) {
 		IconGuiInterface hit = null;
-		for (ElementIcon t : networkDataModel.getElements()) {
+		for (AbstractElement t : networkDataModel.getElements()) {
 			IconGuiInterface check = t.getTouchedObject(x, y);
 			if (check != null) {
 				// System.out.println("h mouse(" + x + "," + y +") obj(" + t.x +

@@ -1,11 +1,11 @@
-package com.github.novisoftware.patternDraw.geometricLanguage;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 
 public class InvaliScriptException extends Exception {
 	private final Token causedToken;
 
-	InvaliScriptException(String message, Token causedToken) {
+	public InvaliScriptException(String message, Token causedToken) {
 		super(message);
 		this.causedToken = causedToken;
 	}

@@ -3,8 +3,8 @@ package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 
 
@@ -20,7 +20,7 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 public class GraphConnector implements IconGuiInterface {
 	private String paraName;
 	public Value.ValueType valueType;
-	private GraphNodeElement node;
+	private AbstractGraphNodeElement node;
 	private int index;
 
 	static final int Y_INTERVAL = 24;
@@ -29,7 +29,7 @@ public class GraphConnector implements IconGuiInterface {
 
 	static private Common.StringWidthUtil strUtil = new Common.StringWidthUtil();
 
-	public GraphNodeElement getNode() {
+	public AbstractGraphNodeElement getNode() {
 		return this.node;
 	}
 
@@ -78,8 +78,8 @@ public class GraphConnector implements IconGuiInterface {
 		}
 	}
 
-	public GraphConnector(GraphNodeElement element, String paraName, ValueType valueType, int index) {
-		this.node = element;
+	public GraphConnector(AbstractGraphNodeElement abstractGraphNodeElement, String paraName, ValueType valueType, int index) {
+		this.node = abstractGraphNodeElement;
 		this.valueType = valueType;
 		this.paraName = paraName;
 		this.index = index;

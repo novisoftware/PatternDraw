@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
-public abstract class ElementIcon implements IconGuiInterface {
+public abstract class AbstractElement implements IconGuiInterface {
 	protected final EditPanel editPanel;
 
-	ElementIcon(EditPanel editPanel) {
+	AbstractElement(EditPanel editPanel) {
 		this.editPanel = editPanel;
 
 		if (string2kind == null) {
@@ -31,7 +31,7 @@ public abstract class ElementIcon implements IconGuiInterface {
 			}
 		}
 
-		this.debugId = ElementIcon.getDebugId();
+		this.debugId = AbstractElement.getDebugId();
 	}
 
 	static HashMap<String, KindId> string2kind;
@@ -82,7 +82,7 @@ public abstract class ElementIcon implements IconGuiInterface {
 	/**
 	 * 要素が値を持つ場合の、値の型(文字列表現)。
 	 */
-	protected String type;
+	protected String outputType;
 	/**
 	 * 要素が値を持つ場合の、値の型。
 	 */
@@ -106,13 +106,13 @@ public abstract class ElementIcon implements IconGuiInterface {
 	 * @param kindString セットするkindString
 	 */
 	public void setKindString(String kindString) {
-		if (! ElementIcon.string2kind.containsKey(kindString)) {
+		if (! AbstractElement.string2kind.containsKey(kindString)) {
 			System.err.println("未定義の種別が指定: " + kindString);
 			System.exit(1);
 		}
 		Debug.println("setKindString", kindString);
 		this.kindString = kindString;
-		this.kindId = ElementIcon.string2kind.get(kindString);
+		this.kindId = AbstractElement.string2kind.get(kindString);
 	}
 
 	public KindId getKindId() {
@@ -191,6 +191,6 @@ public abstract class ElementIcon implements IconGuiInterface {
 
 	public abstract String str();
 	public abstract ArrayList<String> optStr();
-	public abstract ElementIcon getCopy();
+	public abstract AbstractElement getCopy();
 	public abstract void paintWithPhase(Graphics2D g, int phase);
 }

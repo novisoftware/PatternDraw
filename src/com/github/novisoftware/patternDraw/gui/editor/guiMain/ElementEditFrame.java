@@ -21,14 +21,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
@@ -44,7 +44,7 @@ public class ElementEditFrame extends JFrame {
 	final int LINES = 14;
 
 	ArrayList<String> rpnArray;
-	final ElementIcon targetElement;
+	final AbstractElement targetElement;
 
 	abstract class InputChecker {
 		boolean isOk = false;
@@ -117,7 +117,7 @@ public class ElementEditFrame extends JFrame {
 
 	JLabel messageDisp;
 
-	public ElementEditFrame(final ElementIcon element, final EditPanel editPanel) {
+	public ElementEditFrame(final AbstractElement element, final EditPanel editPanel) {
 		Common.setIconImage(this);
 		this.targetElement = element;
 		this.setTitle(element.getKindString() + " を編集");

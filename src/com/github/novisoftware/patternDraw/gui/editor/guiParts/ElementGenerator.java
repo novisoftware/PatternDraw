@@ -6,18 +6,18 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDef;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
@@ -39,23 +39,6 @@ public class ElementGenerator {
 
 	static final String CONST_REG__META_NEW_VARIABLE = "\\{new-variable\\}";
 	static final String CONST_STR__META_NEW_VARIABLE = reg2str(CONST_REG__META_NEW_VARIABLE);
-
-	/**
-	 * 重複しない名前を生成する(やっつけ仕事)。
-	 *
-	 * @param set
-	 * @param base
-	 * @return
-	 */
-	static String generateUniqName(List<String> set, String base) {
-		for (char c = 'a' ; c < 'z' ; c ++) {
-			if (! set.contains(base + c)) {
-				return base + c;
-			}
-		}
-
-		return null;
-	}
 
 	/**
 	// メニュー要素を展開する
@@ -84,7 +67,7 @@ public class ElementGenerator {
 			else if (nParts.dispName.indexOf(ElementGenerator.CONST_STR__META_NEW_VARIABLE) != -1) {
 				Debug.println("match " + ElementGenerator.CONST_STR__META_NEW_VARIABLE);
 
-				String newVariableName = generateUniqName(editPanel.networkDataModel.nameOfvaliables, "");
+				String newVariableName = Common.generateUniqName(editPanel.networkDataModel.nameOfvaliables, "");
 				ElementGenerator add = nParts.getCopy();
 
 				add.dispName = add.dispName.replaceAll(ElementGenerator.CONST_REG__META_NEW_VARIABLE , newVariableName);
@@ -113,7 +96,7 @@ public class ElementGenerator {
 	/**
 	 * 種類
 	 */
-	public String typeName;
+	public String outputType;
 
 	/**
 	 * 式
@@ -128,105 +111,76 @@ public class ElementGenerator {
 	public int width;
 	public int height;
 
-
-	/*
-	public ElementIcon getNewElement(String name, int x, int y) {
-		if (this.kindName.equals("制御")) {
-			Controller element = new Controller(this.editPanel);
-
-			element.id = name;
-			element.x = x;
-			element.y = y;
-			element.w = this.width;
-			element.h = this.height;
-			element.setKindString(this.kindName);
-			element.type = this.typeName;
-			element.setRpnString(ElementIcon.unescape(this.rpn));
-			element.buildParameterList(element.getRpnString());
-
-			return element;
-		}
-		else {
-			GraphNodeElement element = new GraphNodeElement(this.editPanel);
-
-			element.id = name;
-			element.x = x;
-			element.y = y;
-			element.w = this.width;
-			element.h = this.height;
-			element.setKindString(this.kindName);
-			element.type = this.typeName;
-			element.setRpnString(ElementIcon.unescape(this.rpn));
-			element.buildParameterList(element.getRpnString());
-
-			return element;
-		}
-	}
-	*/
-
+	/**
+	 * 編集パネルに新しいエレメントを追加する
+	 *
+	 * @param editPanel
+	 * @param x
+	 * @param y
+	 */
 	public void createNewElement(EditPanel editPanel, int x, int y) {
-		ArrayList<ElementIcon> eleList = editPanel.networkDataModel.getElements();
+		ArrayList<AbstractElement> eleList = editPanel.networkDataModel.getElements();
 
 		if (this.kindName.equals("制御")) {
-			if (this.typeName.equals("IF")) {
-				ControlBlock element = new ControlBlock(this.editPanel);
+			if (this.outputType.equals("IF")) {
+				ControlElement controlBlock = new ControlElement(this.editPanel);
 				String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
 
-				element.id = name;
-				element.x = x;
-				element.y = y;
-				element.w = this.width;
-				element.h = this.height;
-				element.setKindString(this.kindName);
-				element.type = this.typeName;
-				element.setRpnString(ElementIcon.unescape(this.rpn));
+				controlBlock.id = name;
+				controlBlock.x = x;
+				controlBlock.y = y;
+				controlBlock.w = this.width;
+				controlBlock.h = this.height;
+				controlBlock.setKindString(this.kindName);
+				controlBlock.outputType = this.outputType;
+				controlBlock.setRpnString(AbstractElement.unescape(this.rpn));
 				// element.buildParameterList(element.getRpnString());
 
-				eleList.add(element);
+				eleList.add(controlBlock);
 
 
-				ControlBlock element2 = new ControlBlock(this.editPanel);
+				ControlElement controlBlock2 = new ControlElement(this.editPanel);
 				String name2 = editPanel.networkDataModel.generateUniqueName("THEN" + "0");
 
-				element2.id = name2;
-				element2.x = x + element.w;
-				element2.y = y;
-				element2.w = this.width;
-				element2.h = this.height;
-				element2.setKindString(this.kindName);
-				element2.type = "THEN";
-				element2.setRpnString(ElementIcon.unescape(this.rpn));
+				controlBlock2.id = name2;
+				controlBlock2.x = x + controlBlock.w;
+				controlBlock2.y = y;
+				controlBlock2.w = this.width;
+				controlBlock2.h = this.height;
+				controlBlock2.setKindString(this.kindName);
+				controlBlock2.outputType = "THEN";
+				controlBlock2.setRpnString(AbstractElement.unescape(this.rpn));
 				// element2.buildParameterList(element.getRpnString());
 
-				eleList.add(element2);
+				eleList.add(controlBlock2);
 
-				HashSet<ControlBlock> controllerGroup = new HashSet<ControlBlock>();
-				controllerGroup.add(element);
-				controllerGroup.add(element2);
+				HashSet<ControlElement> controllerGroup = new HashSet<ControlElement>();
+				controllerGroup.add(controlBlock);
+				controllerGroup.add(controlBlock2);
 
-				element.controllerGroup = controllerGroup;
-				element2.controllerGroup = controllerGroup;
+				controlBlock.controllerGroup = controllerGroup;
+				controlBlock2.controllerGroup = controllerGroup;
 			}
 			else {
 				String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
-				ControlBlock element = new ControlBlock(this.editPanel);
+				ControlElement controlBlock = new ControlElement(this.editPanel);
 
-				element.id = name;
-				element.x = x;
-				element.y = y;
-				element.w = this.width;
-				element.h = this.height;
-				element.setKindString(this.kindName);
-				element.type = this.typeName;
-				element.setRpnString(ElementIcon.unescape(this.rpn));
+				controlBlock.id = name;
+				controlBlock.x = x;
+				controlBlock.y = y;
+				controlBlock.w = this.width;
+				controlBlock.h = this.height;
+				controlBlock.setKindString(this.kindName);
+				controlBlock.outputType = this.outputType;
+				controlBlock.setRpnString(AbstractElement.unescape(this.rpn));
 				// element.buildParameterList(element.getRpnString());
 
-				eleList.add(element);
+				eleList.add(controlBlock);
 			}
 		}
 		else {
 			String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
-			GraphNodeElement element = new GraphNodeElement(this.editPanel);
+			RpnGraphNodeElement element = new RpnGraphNodeElement(this.editPanel);
 
 			element.id = name;
 			element.x = x;
@@ -234,8 +188,9 @@ public class ElementGenerator {
 			element.w = this.width;
 			element.h = this.height;
 			element.setKindString(this.kindName);
-			element.type = this.typeName;
-			element.setRpnString(ElementIcon.unescape(this.rpn));
+			element.outputType = this.outputType;
+			// 演算式
+			element.setRpnString(AbstractElement.unescape(this.rpn));
 			element.buildParameterList(element.getRpnString());
 
 			eleList.add(element);
@@ -252,7 +207,7 @@ public class ElementGenerator {
 		ElementGenerator parts = new ElementGenerator(editPanel);
 		parts.description = this.description;
 		parts.kindName = this.kindName;
-		parts.typeName = this.typeName;
+		parts.outputType = this.outputType;
 		parts.dispName = this.dispName;
 		parts.rpn = this.rpn;
 		parts.width = this.width;
@@ -261,6 +216,20 @@ public class ElementGenerator {
 		return parts;
 	}
 
+	public ElementGenerator(EditPanel editPanel, FunctionDef f) {
+		this.editPanel = editPanel;
+
+
+
+	}
+
+	/**
+	 * テキストファイルの記載内容から ElementGenerator のリストを作成する。
+	 *
+	 * @param editPanel
+	 * @param filename
+	 * @return
+	 */
 	public static ArrayList<ElementGenerator> loadElementPartsList(EditPanel editPanel, String filename) {
 		ArrayList<ElementGenerator> list = new ArrayList<>();
 
@@ -315,7 +284,7 @@ public class ElementGenerator {
 					ElementGenerator parts = new ElementGenerator(editPanel);
 					parts.description = workDescription;
 					parts.kindName = workKindName;
-					parts.typeName = workTypeName;
+					parts.outputType = workTypeName;
 					parts.dispName = workDispName;
 					parts.rpn = workRPN;
 					parts.width = workWidth;

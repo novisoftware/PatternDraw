@@ -24,30 +24,30 @@ import com.github.novisoftware.dentakuTest.util.IconImage;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
-public class ControlBlock extends ElementIcon {
+public class ControlElement extends AbstractElement {
 	/**
 	 * 制御用の箱の集まり・かたまり
 	 */
-	public HashSet<ControlBlock> controllerGroup;
+	public HashSet<ControlElement> controllerGroup;
 
 	public String str() {
-		return String.format("CONTROL: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(type), escape(getRpnString()));
+		return String.format("CONTROL: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(outputType), escape(getRpnString()));
 	}
 
 	public ArrayList<String> optStr() {
@@ -56,11 +56,11 @@ public class ControlBlock extends ElementIcon {
 		return ret;
 	}
 
-	public ControlBlock(EditPanel EditPanel) {
+	public ControlElement(EditPanel EditPanel) {
 		super(EditPanel);
 	}
 
-	public ControlBlock(EditPanel EditPanel, String s) {
+	public ControlElement(EditPanel EditPanel, String s) {
 		super(EditPanel);
 
 		String a[] =s.split(" ");
@@ -70,13 +70,13 @@ public class ControlBlock extends ElementIcon {
 		this.h = Integer.parseInt(a[4], 10);
 		this.id = unescape(a[5]);
 		this.setKindString(unescape(a[6]));
-		this.type = unescape(a[7]);
+		this.outputType = unescape(a[7]);
 		this.setRpnString(unescape(a[8]));
 //		buildParameterList(this.getRpnString());
 	}
 
 	public String getControlType() {
-		return this.type;
+		return this.outputType;
 	}
 
 	// Looper looper;
@@ -100,7 +100,7 @@ public class ControlBlock extends ElementIcon {
 			}
 			else if (r.startsWith("<")) {
 				r.replaceAll("[<>]", "");
-				Value v = GraphNodeElement.variables.get(r);
+				Value v = RpnGraphNodeElement.variables.get(r);
 				stack.push(v);
 			}
 			else {
@@ -116,8 +116,8 @@ public class ControlBlock extends ElementIcon {
 	}
 
 	@Override
-	public ControlBlock getCopy() {
-		ControlBlock ret = new ControlBlock(this.editPanel, this.str());
+	public ControlElement getCopy() {
+		ControlElement ret = new ControlElement(this.editPanel, this.str());
 
 		return ret;
 	}
@@ -136,7 +136,7 @@ public class ControlBlock extends ElementIcon {
 	 */
 	@Override
 	public void paintWithPhase(Graphics2D g2, int phase) {
-		ControlBlock t = this;
+		ControlElement t = this;
 
 		// 結線
 		if (phase == 0) {
@@ -152,7 +152,7 @@ public class ControlBlock extends ElementIcon {
 				g2.drawString(t.getDebugIdString(), t.x + 30, t.y + 9);
 			}
 
-			String typeDisplay = t.getKindString() + ": " + t.type;
+			String typeDisplay = t.getKindString() + ": " + t.outputType;
 
 			g2.setColor(Color.GRAY);
 			g2.drawString(typeDisplay, t.x + 30, t.y - 9);
@@ -163,7 +163,7 @@ public class ControlBlock extends ElementIcon {
 			*/
 
 			if ( t.getKindString().equals("制御")  ) {
-				if (t.type.equals("REPEAT") || t.type.equals("IF")) {
+				if (t.outputType.equals("REPEAT") || t.outputType.equals("IF")) {
 					g2.setColor(colorLine);
 					g2.fillRect(t.x, t.y, MARK_WIDTH, t.h);
 				}
@@ -171,10 +171,10 @@ public class ControlBlock extends ElementIcon {
 				g2.setColor(colorBorder);
 				g2.drawRect(t.x, t.y, t.w, t.h);
 
-				if (t.type.equals("REPEAT")) {
+				if (t.outputType.equals("REPEAT")) {
 					BufferedImage image = Common.getImage(IconImage.LOOP, this);
 					g2.drawImage(image, t.x - 50, t.y, null);
-				} else if (t.type.equals("IF")) {
+				} else if (t.outputType.equals("IF")) {
 					BufferedImage image = Common.getImage(IconImage.IF, this);
 					g2.drawImage(image, t.x - 50, t.y, null);
 				}
@@ -241,7 +241,7 @@ public class ControlBlock extends ElementIcon {
 	 *
 	 * 含まれるかは、見た目で囲まれるかを判定する
 	 */
-	public boolean includes(ElementIcon e) {
+	public boolean includes(AbstractElement e) {
 		return (this.x < e.x
 				&& e.x+e.w < this.x + this.w
 				&& this.y < e.y
@@ -261,14 +261,14 @@ public class ControlBlock extends ElementIcon {
 			this.x += x;
 			this.y += y;
 
-			HashMap<ControlBlock, ArrayList<ElementIcon>> map = this.editPanel.networkDataModel.controlled_head;
+			HashMap<ControlElement, ArrayList<AbstractElement>> map = this.editPanel.networkDataModel.controlled_head;
 
 			if (map.containsKey(this)) {
-				for (ElementIcon ei : map.get(this)) {
-					if (ei instanceof GraphNodeElement) {
-						Integer groupId = ((GraphNodeElement)ei).groupHead;
+				for (AbstractElement ei : map.get(this)) {
+					if (ei instanceof RpnGraphNodeElement) {
+						Integer groupId = ((RpnGraphNodeElement)ei).groupHead;
 						if (groupId != null) {
-							for (ElementIcon ei2 : this.editPanel.networkDataModel.graphGroup.get(groupId)) {
+							for (AbstractElement ei2 : this.editPanel.networkDataModel.graphGroup.get(groupId)) {
 								ei2.dragged(x, y);
 							}
 						}
@@ -301,11 +301,11 @@ public class ControlBlock extends ElementIcon {
 			*/
 
 			// 暫定。
-			ArrayList<ElementIcon> cList = this.editPanel.networkDataModel.control_contains.get(this);
+			ArrayList<AbstractElement> cList = this.editPanel.networkDataModel.control_contains.get(this);
 			if (cList != null) {
-				for (ElementIcon ei : cList) {
-					if (ei instanceof ControlBlock) {
-						ControlBlock other = (ControlBlock)ei;
+				for (AbstractElement ei : cList) {
+					if (ei instanceof ControlElement) {
+						ControlElement other = (ControlElement)ei;
 
 						// if (this.x < other.x && this.y < other.y && other.x + other.w < this.x + this.w && other.y + other.h < this.y + this.h) {
 							// other.dragged(x, y);
@@ -318,7 +318,7 @@ public class ControlBlock extends ElementIcon {
 
 			if (requetOrigin) {
 				if (controllerGroup != null) {
-					for (ControlBlock c : controllerGroup) {
+					for (ControlElement c : controllerGroup) {
 						if (c != this) {
 //							Debug.println("controller", "recursive drag.");
 							c.dragMode = this.dragMode;
@@ -361,7 +361,7 @@ public class ControlBlock extends ElementIcon {
 			}
 
 			if (controllerGroup != null) {
-				for (ControlBlock c : controllerGroup) {
+				for (ControlElement c : controllerGroup) {
 					if (c != this) {
 						if (c.y == this.y && c.x > this.x) {
 							c.x += this.w - w_old;
@@ -383,7 +383,7 @@ public class ControlBlock extends ElementIcon {
 			StringBuilder sb = new StringBuilder();
 			sb.append("CONTROL_GROUP:");
 
-			for (ControlBlock c : controllerGroup) {
+			for (ControlElement c : controllerGroup) {
 				sb.append(' ');
 				sb.append(c.id);
 			}

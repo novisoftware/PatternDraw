@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.typeSystem;
+package com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem;
 
 public class ValueString extends Value {
 	public ValueString(String s) {

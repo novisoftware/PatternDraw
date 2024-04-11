@@ -15,11 +15,11 @@ import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
-import com.github.novisoftware.patternDraw.gui.editor.typeSystem.Value;
 
 public class NetworkDataModel {
 	/**
@@ -28,7 +28,7 @@ public class NetworkDataModel {
 	public String title = "";
 
 	private String filename;
-	private ArrayList<ElementIcon> elements = new ArrayList<ElementIcon>();
+	private ArrayList<AbstractElement> elements = new ArrayList<AbstractElement>();
 	protected EditPanel editPanel;
 
 	/**
@@ -40,19 +40,19 @@ public class NetworkDataModel {
 	/**
 	 *  実行順情報: 制御用エレメントの配下のエレメント
 	 */
-	public HashMap<ControlBlock, ArrayList<ElementIcon>> control_contains;
+	public HashMap<ControlElement, ArrayList<AbstractElement>> control_contains;
 	//
 	/**
 	 * 実行順情報: ルート要素。 GUI上では「地べたに置かれた要素」が該当する。
 	 */
-	ArrayList<ElementIcon> rootElement;
+	ArrayList<AbstractElement> rootElement;
 
 	// elementに表示用の「単連結グループID」をつける
-	public HashMap<Integer,ArrayList<GraphNodeElement>> graphGroup;
-	public HashMap<ControlBlock, ArrayList<ElementIcon>> controlled_head;
-	public HashMap<ControlBlock, ArrayList<ElementIcon>> controlled_all;
+	public HashMap<Integer,ArrayList<RpnGraphNodeElement>> graphGroup;
+	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_head;
+	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_all;
 
-	public ArrayList<ElementIcon> getElements() {
+	public ArrayList<AbstractElement> getElements() {
 		return elements;
 	}
 
@@ -81,7 +81,7 @@ public class NetworkDataModel {
 		}
 
 		HashSet<String> nameSet = new HashSet<>();
-		for (ElementIcon to :  this.getElements()) {
+		for (AbstractElement to :  this.getElements()) {
 			nameSet.add(to.id);
 		}
 
@@ -103,9 +103,9 @@ public class NetworkDataModel {
 	 * 位置関係の比較
 	 *
 	 */
-	class posComparator implements java.util.Comparator<ElementIcon> {
+	class posComparator implements java.util.Comparator<AbstractElement> {
 		@Override
-		public int compare(ElementIcon o1, ElementIcon o2) {
+		public int compare(AbstractElement o1, AbstractElement o2) {
 			// 上から下の順にソートする
 			if (o1.y < o2.y) {
 				return -1;
@@ -146,17 +146,17 @@ public class NetworkDataModel {
 //			ArrayList<Element> returnList, HashMap<Element,HashMap<String,Integer>> name2index
 			) {
 		// 上から下の順にソートした Element
-		TreeSet<ElementIcon> positionSortedElements = new TreeSet<>(new posComparator());
+		TreeSet<AbstractElement> positionSortedElements = new TreeSet<>(new posComparator());
 		positionSortedElements.addAll(elements);
 
 		// 変数名の一覧(設定された変数のみを対象にする)
 		nameOfvaliables = new ArrayList<>();
 
 		// 変数名の一覧を作成する
-		for (ElementIcon elementIcon : positionSortedElements) {
-			if (elementIcon instanceof GraphNodeElement) {
-				if (((GraphNodeElement)elementIcon).getKindString().equals("変数を設定")) {
-					String rep = ((GraphNodeElement)elementIcon).getRepresentExpression();
+		for (AbstractElement elementIcon : positionSortedElements) {
+			if (elementIcon instanceof RpnGraphNodeElement) {
+				if (((RpnGraphNodeElement)elementIcon).getKindString().equals("変数を設定")) {
+					String rep = ((RpnGraphNodeElement)elementIcon).getRepresentExpression();
 					if (! nameOfvaliables.contains(rep)) {
 						nameOfvaliables.add(rep);
 					}
@@ -172,15 +172,15 @@ public class NetworkDataModel {
 		// グラフ構造を解析して、評価順をきめる
 
 		// 幅優先探索での追加順
-		ArrayList<GraphNodeElement> addOrder = new ArrayList<>();
+		ArrayList<RpnGraphNodeElement> addOrder = new ArrayList<>();
 
 		// 他の要素を参照していない要素
 		// 「計算済の値」の集合の初期値
-		HashMap<GraphNodeElement,Integer> addSet0 = new HashMap<>();
+		HashMap<RpnGraphNodeElement,Integer> addSet0 = new HashMap<>();
 		int workCounter = 0;
-		for (ElementIcon elementIcon : positionSortedElements) {
-			if (elementIcon instanceof GraphNodeElement) {
-				GraphNodeElement referFrom = ((GraphNodeElement)elementIcon);
+		for (AbstractElement elementIcon : positionSortedElements) {
+			if (elementIcon instanceof RpnGraphNodeElement) {
+				RpnGraphNodeElement referFrom = ((RpnGraphNodeElement)elementIcon);
 				if (referFrom.paramMapObj.size() == 0) {
 					// 単連結のグラフを区別したいので、異なる番号を振っておく
 					addSet0.put(referFrom, workCounter);
@@ -195,29 +195,29 @@ public class NetworkDataModel {
 		// 単連結グラフに分解
 
 		// 幅優先探索で、計算済の値の段階数を増やしていく
-		ArrayList<Set<GraphNodeElement>> addSet = new ArrayList<>();
+		ArrayList<Set<RpnGraphNodeElement>> addSet = new ArrayList<>();
 		addSet.add(addSet0.keySet());
 
-		HashMap<GraphNodeElement,Integer> foundSet = new HashMap<>();
+		HashMap<RpnGraphNodeElement,Integer> foundSet = new HashMap<>();
 		foundSet.putAll(addSet0);
 
 		// グループの合流。数字をマージする
 		HashMap<Integer,Integer> mergeInfo = new HashMap<>();
 
 		while (true) {
-			HashMap<GraphNodeElement,Integer> nextAddSet = new HashMap<>();
+			HashMap<RpnGraphNodeElement,Integer> nextAddSet = new HashMap<>();
 
-			for (ElementIcon elementIcon : positionSortedElements) {
-				if (elementIcon instanceof GraphNodeElement) {
-					GraphNodeElement element = ((GraphNodeElement)elementIcon);
+			for (AbstractElement elementIcon : positionSortedElements) {
+				if (elementIcon instanceof RpnGraphNodeElement) {
+					RpnGraphNodeElement element = ((RpnGraphNodeElement)elementIcon);
 					if (foundSet.containsKey(element)) {
 						continue;
 					}
 					boolean isOk = true;
 					int num = -1;
-					for (ElementIcon e_ : element.paramMapObj.values()) {
-						if (e_ instanceof GraphNodeElement) {
-							GraphNodeElement e = (GraphNodeElement)e_;
+					for (AbstractElement e_ : element.paramMapObj.values()) {
+						if (e_ instanceof RpnGraphNodeElement) {
+							RpnGraphNodeElement e = (RpnGraphNodeElement)e_;
 
 							if (!foundSet.containsKey(e)) {
 								isOk = false;
@@ -261,9 +261,9 @@ public class NetworkDataModel {
 		}
 
 		Debug.println("evaluate", "--------------------------------------------- 単連結グラフ 作業状態");
-		HashMap<GraphNodeElement,Integer> groupIdBuild = new HashMap<>();
+		HashMap<RpnGraphNodeElement,Integer> groupIdBuild = new HashMap<>();
 		// デバッグ確認用
-		for (GraphNodeElement element: foundSet.keySet()) {
+		for (RpnGraphNodeElement element: foundSet.keySet()) {
 			int groupIdWork = foundSet.get(element);
 			if ( mergeInfo.containsKey(groupIdWork)) {
 				groupIdWork = mergeInfo.get(groupIdWork);
@@ -280,7 +280,7 @@ public class NetworkDataModel {
 			}
 			Debug.println("evaluate", "------------------------------ id: " + i);
 
-			for (GraphNodeElement element: groupIdBuild.keySet()) {
+			for (RpnGraphNodeElement element: groupIdBuild.keySet()) {
 				if (groupIdBuild.get(element).equals(i)) {
 					Debug.println("evaluate",  "ID: " + element.id + "  groupId:" + i);
 				}
@@ -290,7 +290,7 @@ public class NetworkDataModel {
 		/////////////////////////////////////////////
 		// 単連結グループIDの番号を詰める
 		TreeSet<Integer> groupIdSet = new TreeSet<>();
-		for (GraphNodeElement element: groupIdBuild.keySet()) {
+		for (RpnGraphNodeElement element: groupIdBuild.keySet()) {
 			groupIdSet.add(groupIdBuild.get(element));
 		}
 
@@ -302,8 +302,8 @@ public class NetworkDataModel {
 		}
 
 		// 切り詰めた番号を割り振る
-		HashMap<GraphNodeElement,Integer> groupId2 = new HashMap<>();
-		for (GraphNodeElement element: groupIdBuild.keySet()) {
+		HashMap<RpnGraphNodeElement,Integer> groupId2 = new HashMap<>();
+		for (RpnGraphNodeElement element: groupIdBuild.keySet()) {
 			groupId2.put(element, groupIdTrim.get(groupIdBuild.get(element)));
 		}
 
@@ -316,7 +316,7 @@ public class NetworkDataModel {
 		for (int i : groupIdSet2) {
 			Debug.println("evaluate", "------------------------------ id: " + i);
 
-			for (GraphNodeElement element: addOrder) {
+			for (RpnGraphNodeElement element: addOrder) {
 				if (groupId2.get(element).equals(i)) {
 					Debug.println("evaluate",  "ID: " + element.id + "  groupId:" + i);
 				}
@@ -325,11 +325,11 @@ public class NetworkDataModel {
 
 		// elementに表示用の「単連結グループID」をつける
 		graphGroup = new HashMap<>();
-		for (GraphNodeElement element : addOrder) {
+		for (RpnGraphNodeElement element : addOrder) {
 			int id = groupId2.get(element);
 			if (!graphGroup.containsKey(id)) {
 				element.groupHead = id;
-				ArrayList<GraphNodeElement> list = new ArrayList<>();
+				ArrayList<RpnGraphNodeElement> list = new ArrayList<>();
 				list.add(element);
 				graphGroup.put(id, list);
 			}
@@ -343,7 +343,7 @@ public class NetworkDataModel {
 		Debug.println("evaluate", "-");
 		Debug.println("evaluate", "-");
 
-		HashMap<ElementIcon,ControlBlock> elementToControl = new HashMap<>();
+		HashMap<AbstractElement,ControlElement> elementToControl = new HashMap<>();
 
 		// controlオブジェクトと、制御対象になるオブジェクトの一式
 		controlled_head = new HashMap<>();
@@ -351,11 +351,11 @@ public class NetworkDataModel {
 		// group と control の関係をスキャンする
 		//
 		for (int groupId : graphGroup.keySet()) {
-			GraphNodeElement headElement = graphGroup.get(groupId).get(0);
+			RpnGraphNodeElement headElement = graphGroup.get(groupId).get(0);
 
-			for (ElementIcon elementIcon : positionSortedElements) {
-				if (elementIcon instanceof ControlBlock) {
-					ControlBlock control = ((ControlBlock)elementIcon);
+			for (AbstractElement elementIcon : positionSortedElements) {
+				if (elementIcon instanceof ControlElement) {
+					ControlElement control = ((ControlElement)elementIcon);
 
 					// TODO
 					// 複数のcontrolに含まれる場合がある
@@ -363,7 +363,7 @@ public class NetworkDataModel {
 						elementToControl.put(headElement, control);
 
 						if (! controlled_head.containsKey(control)) {
-							ArrayList<ElementIcon> list = new ArrayList<>();
+							ArrayList<AbstractElement> list = new ArrayList<>();
 							list.add(headElement);
 							controlled_head.put(control, list);
 						}
@@ -382,24 +382,24 @@ public class NetworkDataModel {
 		// 実行順(計算順)を作成
 
 		// 単連結グラフ先頭ノード
-		HashSet<GraphNodeElement> headElementSet = new HashSet<GraphNodeElement>();
+		HashSet<RpnGraphNodeElement> headElementSet = new HashSet<RpnGraphNodeElement>();
 		for (int groupId = 1; groupId <= graphGroup.size() ; groupId++) {
-			GraphNodeElement headElement = graphGroup.get(groupId).get(0);
+			RpnGraphNodeElement headElement = graphGroup.get(groupId).get(0);
 			headElementSet.add(headElement);
 		}
 
 		// ControlとControlの包含関係を作る。
 		// Control と Control の関係をスキャンする
-		HashMap<ControlBlock,ArrayList<ControlBlock>> controlContains = new HashMap<ControlBlock,ArrayList<ControlBlock>>();
+		HashMap<ControlElement,ArrayList<ControlElement>> controlContains = new HashMap<ControlElement,ArrayList<ControlElement>>();
 
-		HashSet<ElementIcon> nonRoot = new HashSet<ElementIcon>();
+		HashSet<AbstractElement> nonRoot = new HashSet<AbstractElement>();
 
-		for (ElementIcon ei0 : positionSortedElements) {
-			if (!(ei0 instanceof ControlBlock)) {
+		for (AbstractElement ei0 : positionSortedElements) {
+			if (!(ei0 instanceof ControlElement)) {
 				continue;
 			}
-			ControlBlock c0 = ((ControlBlock)ei0);
-			for (ElementIcon ei1 : positionSortedElements) {
+			ControlElement c0 = ((ControlElement)ei0);
+			for (AbstractElement ei1 : positionSortedElements) {
 				if (ei0 == ei1) {
 					continue;
 				}
@@ -411,16 +411,16 @@ public class NetworkDataModel {
 					continue;
 				}
 				*/
-				if (!(ei1 instanceof ControlBlock)) {
+				if (!(ei1 instanceof ControlElement)) {
 					continue;
 				}
-				ControlBlock c1 = (ControlBlock)ei1;
+				ControlElement c1 = (ControlElement)ei1;
 
 				if (c0.includes(c1)) {
 					// 包含関係表現用オブジェクトに追加
-					ArrayList<ControlBlock> a = controlContains.get(c0);
+					ArrayList<ControlElement> a = controlContains.get(c0);
 					if (a == null) {
-						a = new ArrayList<ControlBlock>();
+						a = new ArrayList<ControlElement>();
 						controlContains.put(c0, a);
 					}
 					a.add(c1);
@@ -431,7 +431,7 @@ public class NetworkDataModel {
 
 		// elementがどのcontrolにぶら下がるかを調べる:
 		// デバッグ用情報のみ事前出力 0
-		for (ElementIcon ei1 : positionSortedElements) {
+		for (AbstractElement ei1 : positionSortedElements) {
 //			ControlBlock c1 = (ControlBlock)ei1;
 
 			Debug.println("evaluete", "pre0: " + ei1.id);
@@ -442,7 +442,7 @@ public class NetworkDataModel {
 
 		// elementがどのcontrolにぶら下がるかを調べる:
 		// デバッグ用情報のみ事前出力 0
-		for (ElementIcon ei1 : this.getElements()) {
+		for (AbstractElement ei1 : this.getElements()) {
 //			ControlBlock c1 = (ControlBlock)ei1;
 
 			Debug.println("evaluete", "pre1: " + ei1.id);
@@ -451,35 +451,35 @@ public class NetworkDataModel {
 
 
 		// デバッグ用情報のみ事前出力 1
-		for (ElementIcon ei1 : positionSortedElements) {
-			if (!(ei1 instanceof ControlBlock)) {
+		for (AbstractElement ei1 : positionSortedElements) {
+			if (!(ei1 instanceof ControlElement)) {
 				continue;
 			}
-			ControlBlock c1 = (ControlBlock)ei1;
+			ControlElement c1 = (ControlElement)ei1;
 
 			Debug.println("evaluete", "pre: contol block --- " + c1.id);
 		}
 
 		// elementがどのcontrolにぶら下がるかを調べる
-		HashMap<ElementIcon, ControlBlock> controlElementIn = new HashMap<ElementIcon,ControlBlock>();
-		for (ElementIcon ei0 : positionSortedElements) {
-			if (!( headElementSet.contains(ei0) || ei0 instanceof ControlBlock)) {
+		HashMap<AbstractElement, ControlElement> controlElementIn = new HashMap<AbstractElement,ControlElement>();
+		for (AbstractElement ei0 : positionSortedElements) {
+			if (!( headElementSet.contains(ei0) || ei0 instanceof ControlElement)) {
 				continue;
 			}
 
 			Debug.println("evaluate", "包含関係のチェック対象: " + ei0.getDebugIdString());
 
-			for (ElementIcon ei1 : positionSortedElements) {
+			for (AbstractElement ei1 : positionSortedElements) {
 				if (ei0 == ei1) {
 					continue;
 				}
-				if (!(ei1 instanceof ControlBlock)) {
+				if (!(ei1 instanceof ControlElement)) {
 					continue;
 				}
-				ControlBlock c1 = (ControlBlock)ei1;
+				ControlElement c1 = (ControlElement)ei1;
 
 				if (c1.includes(ei0)) {
-					ControlBlock c = controlElementIn.get(ei0);
+					ControlElement c = controlElementIn.get(ei0);
 					if (c == null) {
 						controlElementIn.put(ei0, c1);
 						Debug.println("evaluate", "包含関係 " + ei0.getDebugIdString() + " is in " + c1.getDebugIdString());
@@ -508,37 +508,37 @@ public class NetworkDataModel {
 		// 実行順構造
 
 		// 作業用のリスト。このリストの内容を、実行順構造に追加していく。
-		ArrayList<ElementIcon> workList = new ArrayList<ElementIcon>();
-		for (ElementIcon ei0 : positionSortedElements) {
+		ArrayList<AbstractElement> workList = new ArrayList<AbstractElement>();
+		for (AbstractElement ei0 : positionSortedElements) {
 			if (headElementSet.contains(ei0)) {
 				workList.add(ei0);
 			}
-			else if (ei0 instanceof ControlBlock) {
+			else if (ei0 instanceof ControlElement) {
 				workList.add(ei0);
 			}
 		}
 
 		// 実行順情報: 地べたに置かれた要素
-		this.rootElement = new ArrayList<ElementIcon>();
-		for (ElementIcon ei0 : workList) {
+		this.rootElement = new ArrayList<AbstractElement>();
+		for (AbstractElement ei0 : workList) {
 			if (controlElementIn.get(ei0) == null) {
 				rootElement.add(ei0);
 			}
 		}
 
 		// 実行順情報: 制御用エレメントの配下のエレメント
-		this.control_contains = new HashMap<ControlBlock, ArrayList<ElementIcon>>();
-		for (ElementIcon ei0 : positionSortedElements) {
-			if (!(ei0 instanceof ControlBlock)) {
+		this.control_contains = new HashMap<ControlElement, ArrayList<AbstractElement>>();
+		for (AbstractElement ei0 : positionSortedElements) {
+			if (!(ei0 instanceof ControlElement)) {
 				continue;
 			}
-			ControlBlock c0 = (ControlBlock)ei0;
+			ControlElement c0 = (ControlElement)ei0;
 
-			for (ElementIcon ei1 : positionSortedElements) {
+			for (AbstractElement ei1 : positionSortedElements) {
 				if ( controlElementIn.get(ei1) == c0) {
-					ArrayList<ElementIcon> a = control_contains.get(c0);
+					ArrayList<AbstractElement> a = control_contains.get(c0);
 					if (a == null) {
-						a = new ArrayList<ElementIcon>();
+						a = new ArrayList<AbstractElement>();
 						control_contains.put(c0, a);
 					}
 					a.add(ei1);
@@ -547,33 +547,33 @@ public class NetworkDataModel {
 		}
 	}
 
-	Value evaluateOneGraph(GraphNodeElement headElement) {
-		ArrayList<GraphNodeElement> eList = graphGroup.get(headElement.groupHead);
+	Value evaluateOneGraph(RpnGraphNodeElement headElement) {
+		ArrayList<RpnGraphNodeElement> eList = graphGroup.get(headElement.groupHead);
 		Debug.println("evaluate", "GRPAH GROUP ---  " + headElement.groupHead + "   items: " + eList.size());
-		for(GraphNodeElement element : eList) {
+		for(RpnGraphNodeElement element : eList) {
 			Debug.println("evaluate", "begin: " + element.id);
 			element.evaluate();
 			Debug.println("evaluate", "end: " + element.id);
 		}
 
-		GraphNodeElement e = eList.get(eList.size() - 1);
+		RpnGraphNodeElement e = eList.get(eList.size() - 1);
 		return e.workValue;
 	}
 
-	void evaluateControll(ControlBlock control) {
+	void evaluateControll(ControlElement control) {
 		Debug.println("evaluate", "------------------------ CONTROL"  + "  " + control.id);
 		if (control.getControlType().equals("REPEAT")) {
 			ControllBase c = control.init();
 			Debug.println("evaluate", "------------------------ REPEAT"  + "  " + c.getDebugString());
 			while( c.hasNext() ) {
-				ArrayList<ElementIcon> eList = control_contains.get(control);
-				for(ElementIcon e0 : eList) {
-					if (e0 instanceof GraphNodeElement) {
-						GraphNodeElement element = ((GraphNodeElement) e0);
+				ArrayList<AbstractElement> eList = control_contains.get(control);
+				for(AbstractElement e0 : eList) {
+					if (e0 instanceof RpnGraphNodeElement) {
+						RpnGraphNodeElement element = ((RpnGraphNodeElement) e0);
 						evaluateOneGraph(element);
 					}
-					else if (e0 instanceof ControlBlock) {
-						evaluateControll((ControlBlock)e0);
+					else if (e0 instanceof ControlElement) {
+						evaluateControll((ControlElement)e0);
 					}
 				}
 
@@ -583,13 +583,13 @@ public class NetworkDataModel {
 		else if(control.getControlType().equals("IF")) {
 			Value lastValue = null;
 			{
-				ArrayList<ElementIcon> eList = control_contains.get(control);
-				for(ElementIcon e0 : eList) {
-					if (e0 instanceof GraphNodeElement) {
-						GraphNodeElement element = ((GraphNodeElement) e0);
+				ArrayList<AbstractElement> eList = control_contains.get(control);
+				for(AbstractElement e0 : eList) {
+					if (e0 instanceof RpnGraphNodeElement) {
+						RpnGraphNodeElement element = ((RpnGraphNodeElement) e0);
 						lastValue = evaluateOneGraph(element);
 					}
-					else if (e0 instanceof ControlBlock) {
+					else if (e0 instanceof ControlElement) {
 						Debug.println("RUN", "INVALID STRUCTURE. 妥当でない構造。");
 					}
 				}
@@ -597,9 +597,9 @@ public class NetworkDataModel {
 			Debug.println("RUN", "last value is " + lastValue + (lastValue != null ? ("  " + lastValue.toDebugString()):""));
 
 
-			ControlBlock thenBlock = null;
-			ControlBlock elseBlock = null;
-			for(ControlBlock c : control.controllerGroup) {
+			ControlElement thenBlock = null;
+			ControlElement elseBlock = null;
+			for(ControlElement c : control.controllerGroup) {
 				if (c.getControlType().equals("THEN")) {
 					thenBlock = c;
 				}
@@ -611,14 +611,14 @@ public class NetworkDataModel {
 			if (thenBlock != null) {
 				if (lastValue != null && lastValue.valueType == Value.ValueType.BOOLEAN  && lastValue.sameTo(true)) {
 					Debug.println("RUN", "THEN節");
-					ArrayList<ElementIcon> eList = control_contains.get(thenBlock);
-					for(ElementIcon e0 : eList) {
-						if (e0 instanceof GraphNodeElement) {
-							GraphNodeElement element = ((GraphNodeElement) e0);
+					ArrayList<AbstractElement> eList = control_contains.get(thenBlock);
+					for(AbstractElement e0 : eList) {
+						if (e0 instanceof RpnGraphNodeElement) {
+							RpnGraphNodeElement element = ((RpnGraphNodeElement) e0);
 							evaluateOneGraph(element);
 						}
-						else if (e0 instanceof ControlBlock) {
-							evaluateControll((ControlBlock)e0);
+						else if (e0 instanceof ControlElement) {
+							evaluateControll((ControlElement)e0);
 						}
 					}
 				}
@@ -627,14 +627,14 @@ public class NetworkDataModel {
 				if (lastValue != null && lastValue.valueType == Value.ValueType.BOOLEAN  && lastValue.sameTo(false)) {
 					Debug.println("RUN", "ELSE節");
 
-					ArrayList<ElementIcon> eList = control_contains.get(elseBlock);
-					for(ElementIcon e0 : eList) {
-						if (e0 instanceof GraphNodeElement) {
-							GraphNodeElement element = ((GraphNodeElement) e0);
+					ArrayList<AbstractElement> eList = control_contains.get(elseBlock);
+					for(AbstractElement e0 : eList) {
+						if (e0 instanceof RpnGraphNodeElement) {
+							RpnGraphNodeElement element = ((RpnGraphNodeElement) e0);
 							evaluateOneGraph(element);
 						}
-						else if (e0 instanceof ControlBlock) {
-							evaluateControll((ControlBlock)e0);
+						else if (e0 instanceof ControlElement) {
+							evaluateControll((ControlElement)e0);
 						}
 					}
 				}
@@ -653,9 +653,9 @@ public class NetworkDataModel {
 		Debug.println("evaluate", "--------------------------------------------- 「実行」★");
 
 
-		for (ElementIcon elementIcon : this.rootElement) {
-			if (elementIcon instanceof GraphNodeElement) {
-				evaluateOneGraph((GraphNodeElement)elementIcon);
+		for (AbstractElement elementIcon : this.rootElement) {
+			if (elementIcon instanceof RpnGraphNodeElement) {
+				evaluateOneGraph((RpnGraphNodeElement)elementIcon);
 				/*
 				ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
 				for(GraphNodeElement element : eList) {
@@ -665,8 +665,8 @@ public class NetworkDataModel {
 				}
 				*/
 			}
-			else if(elementIcon instanceof ControlBlock) {
-				evaluateControll((ControlBlock)elementIcon);
+			else if(elementIcon instanceof ControlElement) {
+				evaluateControll((ControlElement)elementIcon);
 			}
 		}
 	}
@@ -677,7 +677,7 @@ public class NetworkDataModel {
 		try {
 			reader = new BufferedReader(new FileReader( new File(filename) ));
 			ArrayList<String> refInfo = new ArrayList<>();
-			HashMap<String, ControlBlock> controllerMap = new HashMap<String, ControlBlock>();
+			HashMap<String, ControlElement> controllerMap = new HashMap<String, ControlElement>();
 
 			while( true ) {
 				String line = reader.readLine();
@@ -687,11 +687,11 @@ public class NetworkDataModel {
 				if (line.startsWith("TITLE:")) {
 					this.title = line.substring("TITLE:".length());
 				}
-				if (line.startsWith("ELEMENT:")) {
-					this.getElements().add(new GraphNodeElement(this.editPanel, line));
+				if (line.startsWith("RPNELEMENT:")) {
+					this.getElements().add(new RpnGraphNodeElement(this.editPanel, line));
 				}
 				if (line.startsWith("CONTROL:")) {
-					ControlBlock c = new ControlBlock(this.editPanel, line);
+					ControlElement c = new ControlElement(this.editPanel, line);
 					this.getElements().add(c);
 
 					controllerMap.put(c.id, c);
@@ -700,17 +700,17 @@ public class NetworkDataModel {
 					refInfo.add(line);
 				}
 				if (line.startsWith("CONTROL_GROUP:")) {
-					HashSet<ControlBlock> controllerGroup = new HashSet<ControlBlock>();
+					HashSet<ControlElement> controllerGroup = new HashSet<ControlElement>();
 					for (String id : line.substring("CONTROL_GROUP:".length()).split(" ")) {
 						if (id.equals("")) {
 							continue;
 						}
 						// String t_ = t.replaceAll(" ", "");
-						ControlBlock c = controllerMap.get(id);
+						ControlElement c = controllerMap.get(id);
 						Debug.println("LOAD", "Control_Group   id='" + id + "'  obj=" + c);
 						controllerGroup.add(c);
 					}
-					for (ControlBlock c : controllerGroup) {
+					for (ControlElement c : controllerGroup) {
 						Debug.println("LOAD", "c = " + (c));
 
 						c.controllerGroup = controllerGroup;
@@ -719,10 +719,10 @@ public class NetworkDataModel {
 			}
 			reader.close();
 
-			HashMap<String, GraphNodeElement> s2t = new HashMap<>();
-			for( ElementIcon t : getElements()) {
-				if (t instanceof GraphNodeElement) {
-					s2t.put(t.id, (GraphNodeElement)t);
+			HashMap<String, RpnGraphNodeElement> s2t = new HashMap<>();
+			for( AbstractElement t : getElements()) {
+				if (t instanceof RpnGraphNodeElement) {
+					s2t.put(t.id, (RpnGraphNodeElement)t);
 				}
 			}
 			for(String line : refInfo) {
@@ -730,8 +730,8 @@ public class NetworkDataModel {
 				String name = a[1];
 				String parameterName = a[2];
 				String targetName = a[3];
-				GraphNodeElement t = s2t.get(name);
-				GraphNodeElement targetObj = s2t.get(targetName);
+				RpnGraphNodeElement t = s2t.get(name);
+				RpnGraphNodeElement targetObj = s2t.get(targetName);
 				t.paramMapInfo.put(parameterName, targetName);
 				t.paramMapObj.put(parameterName, targetObj);
 			}
@@ -749,17 +749,17 @@ public class NetworkDataModel {
 			writer = new BufferedWriter(new FileWriter( new File(filename) ));
 			writer.write("");
 			writer.write("TITLE:" + this.title + "\n");
-			for (ElementIcon n : getElements()) {
+			for (AbstractElement n : getElements()) {
 				writer.write( n.str() + '\n' );
 			}
-			for (ElementIcon n : getElements()) {
+			for (AbstractElement n : getElements()) {
 				for (String s : n.optStr()) {
 					writer.write( s + '\n' );
 				}
 			}
-			for (ElementIcon n : getElements()) {
-				if (n instanceof ControlBlock) {
-					String s = ((ControlBlock)n).contollerGroup_str();
+			for (AbstractElement n : getElements()) {
+				if (n instanceof ControlElement) {
+					String s = ((ControlElement)n).contollerGroup_str();
 					if (s != null) {
 						writer.write( s + '\n' );
 					}

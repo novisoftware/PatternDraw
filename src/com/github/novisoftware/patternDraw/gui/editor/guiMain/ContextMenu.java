@@ -10,13 +10,13 @@ import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
@@ -34,7 +34,7 @@ class ContextMenu extends JPopupMenu {
 		JMenuItem menuItem;
 
 		if (icon != null) {
-			if (icon instanceof GraphNodeElement) {
+			if (icon instanceof RpnGraphNodeElement) {
 				menuItem = new JMenuItem("テスト");
 				menuItem.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent e) {
@@ -45,8 +45,8 @@ class ContextMenu extends JPopupMenu {
 		}
 
 		if (icon != null) {
-			if (icon instanceof GraphNodeElement) {
-				final GraphNodeElement tone = (GraphNodeElement)icon;
+			if (icon instanceof RpnGraphNodeElement) {
+				final RpnGraphNodeElement tone = (RpnGraphNodeElement)icon;
 				if (tone.hasParameter()) {
 					menuItem = new JMenuItem("参照を全て削除");
 					menuItem.addActionListener(new ActionListener() {
@@ -78,14 +78,14 @@ class ContextMenu extends JPopupMenu {
 		}
 
 		if (icon != null) {
-			if (icon instanceof ElementIcon) {
-				ElementIcon ti = (ElementIcon)icon;
+			if (icon instanceof AbstractElement) {
+				AbstractElement ti = (AbstractElement)icon;
 
 				// 複製
 				menuItem = new JMenuItem("複製");
 				menuItem.addActionListener(new ActionListener() {
 							public void actionPerformed(ActionEvent ev) {
-								ElementIcon c = ti.getCopy();
+								AbstractElement c = ti.getCopy();
 								c.y = ti.y + ti.h + 3;
 								c.id = editPanel.networkDataModel.generateUniqueName(c.id);;
 
@@ -99,16 +99,16 @@ class ContextMenu extends JPopupMenu {
 				// 削除
 				menuItem = new JMenuItem("削除");
 				menuItem.addActionListener(new ActionListener() {
-							void removeIcon(ElementIcon icon) {
+							void removeIcon(AbstractElement icon) {
 								// オブジェクト一覧から削除
 								editPanel.networkDataModel.getElements().remove(icon);
 								// 参照を削除
-								for (ElementIcon ei: editPanel.networkDataModel.getElements()) {
-									if (ei instanceof GraphNodeElement) {
-										GraphNodeElement ele = (GraphNodeElement)ei;
+								for (AbstractElement ei: editPanel.networkDataModel.getElements()) {
+									if (ei instanceof RpnGraphNodeElement) {
+										RpnGraphNodeElement ele = (RpnGraphNodeElement)ei;
 
 										for (GraphConnector connector : ele.connectors) {
-											GraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
+											RpnGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
 											if (src == icon) {
 												ele.paramMapInfo.remove(connector.getParaName());
 												ele.paramMapObj.remove(connector.getParaName());
@@ -120,8 +120,8 @@ class ContextMenu extends JPopupMenu {
 							}
 
 							public void actionPerformed(ActionEvent event) {
-								if (ti instanceof ControlBlock && ((ControlBlock)ti).controllerGroup != null) {
-									for (ControlBlock c : ((ControlBlock)ti).controllerGroup) {
+								if (ti instanceof ControlElement && ((ControlElement)ti).controllerGroup != null) {
+									for (ControlElement c : ((ControlElement)ti).controllerGroup) {
 										this.removeIcon(c);
 									}
 								}

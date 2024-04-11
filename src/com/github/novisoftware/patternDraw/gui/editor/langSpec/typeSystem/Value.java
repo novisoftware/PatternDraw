@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.typeSystem;
+package com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem;
 
 import java.util.HashMap;
 
@@ -12,23 +12,24 @@ public class Value {
 	 *
 	 * <ul>
 	 * <li> ANY	       何でもよい
-	 * <ul>
 	 * <li> NUMERIC    多倍長小数
-	 * <ul>
 	 * <li> INTEGER    多倍長整数
-	 * </ul>
 	 * <li> STRING     文字列
 	 * <li> BOOLEAN    真偽値
-	 * </ul>
+	 * <li> POS_LIST   座標のリスト
+	 * <li> LINE_LIST  線分のリスト
 	 * <li> NONE       値が存在しない
 	 * </ul>
 	 *
 	 */
 	public enum ValueType {
 		NUMERIC,
+		FLOAT,
 		INTEGER,
 		BOOLEAN,
 		STRING,
+		POS_LIST,
+		LINE_LIST,
 		ANY,
 		NONE
 	}
@@ -40,17 +41,23 @@ public class Value {
 	static {
 		str2valueType = new HashMap<String, ValueType>();
 		str2valueType.put("INTEGER", ValueType.INTEGER);
+		str2valueType.put("FLOAT", ValueType.FLOAT);
 		str2valueType.put("NUMERIC", ValueType.NUMERIC);
 		str2valueType.put("BOOLEAN", ValueType.BOOLEAN);
 		str2valueType.put("STRING", ValueType.STRING);
+		str2valueType.put("POS_LIST", ValueType.POS_LIST);
+		str2valueType.put("LINE_LIST", ValueType.LINE_LIST);
 		str2valueType.put("ANY", ValueType.ANY);
 		str2valueType.put("NONE", ValueType.NONE);
 
 		valueType2str = new HashMap<ValueType, String>();
 		valueType2str.put(ValueType.INTEGER  , "INTEGER");
 		valueType2str.put(ValueType.NUMERIC  , "NUMERIC");
+		valueType2str.put(ValueType.FLOAT    , "FLOAT");
 		valueType2str.put(ValueType.BOOLEAN  , "BOOLEAN");
 		valueType2str.put(ValueType.STRING   , "STRING");
+		valueType2str.put(ValueType.POS_LIST   , "POS_LIST");
+		valueType2str.put(ValueType.LINE_LIST  , "LINE_LIST");
 		valueType2str.put(ValueType.ANY      , "ANY");
 		valueType2str.put(ValueType.NONE     , "NONE");
 	}
@@ -59,16 +66,16 @@ public class Value {
 	public static boolean isAcceptable(ValueType send, ValueType accept) {
 		Debug.println("VALUE", "SEND " + send + "  acccept " + accept);
 
-		if (send == ValueType.NONE) {
+		if (send.equals(ValueType.NONE)) {
 			return false;
 		}
-		if (accept == ValueType.ANY) {
+		if (accept.equals(ValueType.ANY)) {
 			return true;
 		}
-		if (send == accept) {
+		if (send.equals(accept)) {
 			return true;
 		}
-		if (send ==ValueType.INTEGER && accept == ValueType.NUMERIC) {
+		if (send.equals(ValueType.INTEGER) && accept.equals(ValueType.NUMERIC)) {
 			return true;
 		}
 
@@ -100,6 +107,8 @@ public class Value {
 				return null;
 			}
 		}
+		// 注:
+		// 上記以外は本メソッドでは作成をサポートしない
 		return null;
 	}
 

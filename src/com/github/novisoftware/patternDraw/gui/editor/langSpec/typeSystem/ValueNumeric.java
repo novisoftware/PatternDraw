@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.typeSystem;
+package com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem;
 
 import java.math.BigDecimal;
 

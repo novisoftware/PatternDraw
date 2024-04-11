@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.ObjectHolder;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Int2Double;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;

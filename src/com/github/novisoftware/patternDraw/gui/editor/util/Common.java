@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -20,8 +21,8 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 public class Common {
 	public static final String FRAME_TITLE_BASE = "pattern drawing: ";
 
-//	public static final String RESOURCE_FRAME_ICON = "/iconimage/icon2.png";
-	public static final String RESOURCE_FRAME_ICON = "/iconimage/app_icon.png";
+	public static final String RESOURCE_FRAME_ICON = "/iconimage/icon2.png";
+//	public static final String RESOURCE_FRAME_ICON = "/iconimage/app_icon.png";
 
 	public static final ImageIcon iconChecked = createCheckedMark(true);
 	public static final ImageIcon iconUnchecked = createCheckedMark(false);
@@ -180,6 +181,24 @@ public class Common {
 
 	public static String trim(String src) {
 		return src.replaceFirst("^ +", "").replaceFirst(" +$", "");
+	}
+
+	/**
+	 * 重複しない名前を生成する。
+	 *
+	 * @param set
+	 * @param base
+	 * @return
+	 */
+	public static String generateUniqName(List<String> set, String base) {
+		// やっつけ仕事
+		for (char c = 'a' ; c <= 'z' ; c ++) {
+			if (! set.contains(base + c)) {
+				return base + c;
+			}
+		}
+
+		return null;
 	}
 
 }

@@ -11,10 +11,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlBlock;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementIcon;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 
@@ -48,8 +49,8 @@ public class EditFrame extends JFrame {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
 				if (obj != null) {
-					if (obj instanceof ElementIcon) {
-						ElementIcon element = (ElementIcon)obj;
+					if (obj instanceof AbstractElement) {
+						AbstractElement element = (AbstractElement)obj;
 						ElementEditFrame f = new ElementEditFrame(element, editPanel__);
 						f.setVisible(true);
 					}
@@ -70,8 +71,8 @@ public class EditFrame extends JFrame {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			IconGuiInterface t__ = editPanel__.checkXY(e.getX(), e.getY());
-			if (t__ instanceof ElementIcon) {
-				ElementIcon t = (ElementIcon)t__;
+			if (t__ instanceof AbstractElement) {
+				AbstractElement t = (AbstractElement)t__;
 
 				if (t != null) {
 					handled = t;
@@ -79,7 +80,7 @@ public class EditFrame extends JFrame {
 					old_y = e.getY();
 					// System.out.println("h " + t.id);
 
-					ElementIcon hd = t;
+					AbstractElement hd = t;
 
 					if (e.getButton() == MouseEvent.BUTTON3) {
 						editPanel__.workLineFrom = hd;
@@ -114,7 +115,7 @@ public class EditFrame extends JFrame {
 				return;
 			}
 
-			if (handled instanceof ControlBlock && editPanel__.workLineFrom != null) {
+			if (handled instanceof ControlElement && editPanel__.workLineFrom != null) {
 				/*
 				Controller from = (Controller)handled;
 				// 仮実装
@@ -147,13 +148,13 @@ public class EditFrame extends JFrame {
 			}
 
 			// fromがTone、toが端子の場合
-			else if (handled instanceof GraphNodeElement && editPanel__.workLineFrom != null) {
-				GraphNodeElement from = (GraphNodeElement)handled;
+			else if (handled instanceof RpnGraphNodeElement && editPanel__.workLineFrom != null) {
+				RpnGraphNodeElement from = (RpnGraphNodeElement)handled;
 				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
 				if (t != null && t != from && t instanceof GraphConnector) {
 					GraphConnector conn = (GraphConnector)t;
 					if (conn.getNode() != from) {
-						GraphNodeElement to = conn.getNode();
+						AbstractGraphNodeElement to = conn.getNode();
 
 						to.paramMapInfo.put(conn.getParaName(), from.id);
 						to.paramMapObj.put(conn.getParaName(), from);
@@ -168,9 +169,9 @@ public class EditFrame extends JFrame {
 			else if (handled instanceof GraphConnector && editPanel__.workLineFrom != null) {
 				GraphConnector conn = (GraphConnector)handled;
 				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
-				if (t != null && t != conn && t != conn.getNode() && t instanceof GraphNodeElement) {
+				if (t != null && t != conn && t != conn.getNode() && t instanceof RpnGraphNodeElement) {
 					// fromがオブジェクト、toが端子の場合
-					GraphNodeElement element = (GraphNodeElement)t;
+					RpnGraphNodeElement element = (RpnGraphNodeElement)t;
 
 					conn.getNode().paramMapInfo.put(conn.getParaName(), element.id);
 					conn.getNode().paramMapObj.put(conn.getParaName(), element);
@@ -181,8 +182,8 @@ public class EditFrame extends JFrame {
 			}
 
 			// fromがTone、toが端子の場合
-			else if (handled instanceof GraphNodeElement && editPanel__.workLineFrom == null) {
-				GraphNodeElement from = (GraphNodeElement)handled;
+			else if (handled instanceof RpnGraphNodeElement && editPanel__.workLineFrom == null) {
+				RpnGraphNodeElement from = (RpnGraphNodeElement)handled;
 				// if (from.groupHead != null) {
 					editPanel__.networkDataModel.evaluate();
 					editPanel__.repaint();
@@ -210,8 +211,8 @@ public class EditFrame extends JFrame {
 					editPanel__.workLineY = e.getY();
 				}
 				else {
-					if (handled instanceof ElementIcon) {
-						ElementIcon h = (ElementIcon)handled;
+					if (handled instanceof AbstractElement) {
+						AbstractElement h = (AbstractElement)handled;
 
 						// 差分をアイコンオブジェクトに通知する
 						h.dragged(e.getX() - old_x, e.getY() - old_y);
