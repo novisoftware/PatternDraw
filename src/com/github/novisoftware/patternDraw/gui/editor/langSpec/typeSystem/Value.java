@@ -34,6 +34,37 @@ public class Value {
 		NONE
 	}
 
+	public static String valueTypeToDescString(ValueType valueType) {
+		if (ValueType.NUMERIC.equals(valueType)) {
+			return "任意精度";
+		}
+		if (ValueType.FLOAT.equals(valueType)) {
+			return "浮動小数点";
+		}
+		if (ValueType.INTEGER.equals(valueType)) {
+			return "整数";
+		}
+		if (ValueType.STRING.equals(valueType)) {
+			return "文字列";
+		}
+		if (ValueType.POS_LIST.equals(valueType)) {
+			return "点";
+		}
+		if (ValueType.LINE_LIST.equals(valueType)) {
+			return "線";
+		}
+		if (ValueType.ANY.equals(valueType)) {
+			return "任意";
+		}
+		if (ValueType.NONE.equals(valueType)) {
+			return "値なし";
+		}
+
+		// こない
+		return "";
+	}
+
+
 	public static HashMap<String, ValueType> str2valueType;
 
 	public static HashMap<ValueType, String> valueType2str;

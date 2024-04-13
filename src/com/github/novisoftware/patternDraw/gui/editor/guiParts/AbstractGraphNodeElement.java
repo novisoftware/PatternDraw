@@ -85,6 +85,10 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 	abstract String getRepresentExpression();
 
+	/**
+	 *
+	 */
+	public abstract void evaluate();
 
 	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
@@ -123,7 +127,12 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 		if (phase == 1) {
 			g2.setFont(font);
 			g2.setColor(Color.GRAY);
-			g2.drawString(e.getKindString(), e.x + 30, e.y - 9);
+			String boxTitle = e.getKindString();
+			if (e.getKindId() == KindId.CONSTANT) {
+				// 整数とか浮動小数点とかの区別を表示する
+				boxTitle += " - " + Value.valueTypeToDescString(this.getValueType());
+			}
+			g2.drawString(boxTitle, e.x + 30, e.y - 9);
 
 			g2.setColor(color);
 			if ( // t.getKindString().equals("入力")
@@ -135,7 +144,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 				g2.drawImage(image, e.x + 20, e.y + 5, null);
 
 				g2.setColor(Color.BLACK);
-				g2.drawString(e.outputType, e.x + 50, e.y + e.h * 2 / 3 + 5 );
+				g2.drawString(e.getOutputType(), e.x + 50, e.y + e.h * 2 / 3 + 5 );
 			}
 			else if ( e.getKindId() == KindId.DISPLAY // t.getKindString().equals("表示")
 					) {

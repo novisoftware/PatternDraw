@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,15 +6,15 @@ import java.util.List;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDef;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueFloat;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValuePosList;
 
-public class SeriesOnCircle  implements FunctionDef {
-	public static final String NAME = "line_to_draw";
+public class SeriesOnCircle  implements FunctionDefInterface {
+	public static final String NAME = "series_on_circle";
 
 	@Override
 	public String getName() {
@@ -28,7 +28,7 @@ public class SeriesOnCircle  implements FunctionDef {
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.INTEGER, ValueType.POS_LIST};
+		ValueType[] ret = {ValueType.INTEGER, ValueType.FLOAT, ValueType.FLOAT};
 		return ret;
 	}
 
@@ -50,7 +50,7 @@ public class SeriesOnCircle  implements FunctionDef {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) throws InvaliScriptException {
+	public Value exec(List<Value> param, InstructionRenderer _t) throws InvaliScriptException {
 		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
 		double r = ((ValueFloat)(param.get(1))).getInternal();
 		double theta = ((ValueFloat)(param.get(2))).getInternal();

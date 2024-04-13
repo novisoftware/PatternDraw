@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiMain;
+package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +11,7 @@ import javax.swing.JPopupMenu;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
@@ -22,13 +22,13 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 
-class ContextMenu extends JPopupMenu {
+public class ContextMenu extends JPopupMenu {
 	private static final long serialVersionUID = 1L;
 
 	int x;
 	int y;
 
-	ContextMenu(final EditPanel editPanel, final IconGuiInterface icon, int x, int y) {
+	public ContextMenu(final EditPanel editPanel, final IconGuiInterface icon, int x, int y) {
 		this.x = x;
 		this.y = y;
 
@@ -198,7 +198,8 @@ class ContextMenu extends JPopupMenu {
 		String input = "../partsElement.txt";
 
 		if (partsList == null) {
-			partsList = ElementGenerator.loadElementPartsList(editPanel, input);
+			MenuGenerator g = new MenuGenerator();
+			partsList = g.generateMenuList(editPanel, input);
 		}
 
 		/*

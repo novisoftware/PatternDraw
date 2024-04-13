@@ -8,7 +8,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 
-public interface FunctionDef {
+public interface FunctionDefInterface {
 	/**
 	 * @return 関数名
 	 */

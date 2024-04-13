@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,13 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRen
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDef;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValuePosList;
 
-public class PosToWalk implements FunctionDef {
+public class PosToWalk implements FunctionDefInterface {
 	public static final String NAME = "pos_to_walk";
 
 	@Override
@@ -23,7 +23,7 @@ public class PosToWalk implements FunctionDef {
 
 	@Override
 	public String getDescription() {
-		return "";
+		return "複数の座標の系列を辿ります。";
 	}
 
 	@Override

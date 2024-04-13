@@ -21,17 +21,25 @@ public class Preference {
 			"游ゴシック"
 	};
 
+
+
 	/**
 	 * GUIの文字表示に使用するフォント
 	 */
-	public static Font LABEL_FONT = initLabelFont();
+	private static int LABEL_FONT_SIZE = 18;
+	private static int OK_BUTTON_FONT_SIZE = 24;
+	private static int CANCEL_BUTTON_FONT_SIZE = 24;
+
+	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
+	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
+	public static Font CANCEL_BUTTON_FONT = initLabelFont(CANCEL_BUTTON_FONT_SIZE);
 
 	/**
 	 * GUIの文字表示に使用するフォントを探す処理。
 	 *
 	 * @return GUI表示に使用するフォント
 	 */
-	private static Font initLabelFont() {
+	private static Font initLabelFont(int size) {
 		// 使用可能なフォント一覧
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		HashSet<String> avalrableFonts = new HashSet<String>();
@@ -44,10 +52,10 @@ public class Preference {
 
 		for (String fontName : preferenceFontName) {
 			if (avalrableFonts.contains(fontName)) {
-				return new Font(fontName,  Font.BOLD, 18);
+				return new Font(fontName,  Font.BOLD, size);
 			}
 		}
-		return new Font(Font.SANS_SERIF, Font.BOLD, 18);
+		return new Font(Font.SANS_SERIF, Font.BOLD, size);
 	}
 
 	/**

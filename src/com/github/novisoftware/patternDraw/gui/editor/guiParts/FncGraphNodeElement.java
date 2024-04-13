@@ -5,12 +5,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDef;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
@@ -19,6 +19,9 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 public class FncGraphNodeElement extends AbstractGraphNodeElement {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
+
+	final String functionName;
+	final FunctionDefInterface function;
 
 	public String str() {
 		return String.format(
@@ -29,8 +32,16 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 				h,
 				escape(id),
 				escape(getKindString()),
-				escape(outputType),
+				escape(Value.valueType2str.get(this.valueType)),
 				escape(functionName));
+	}
+
+	public FncGraphNodeElement(EditPanel EditPanel, String functionName, FunctionDefInterface f) {
+		super(EditPanel);
+		this.functionName = functionName;
+		this.function = f;
+		this.valueType = f.getReturnType();
+		buildParameterList(this.function);
 	}
 
 	public FncGraphNodeElement(EditPanel EditPanel, String s) throws LangSpecException {
@@ -43,18 +54,14 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		this.h = Integer.parseInt(a[4], 10);
 		this.id = unescape(a[5]);
 		this.setKindString(unescape(a[6]));
-		this.outputType = unescape(a[7]);
-		this.valueType = Value.str2valueType.get(this.outputType);
+		String strOutputType = unescape(a[7]);
+		this.valueType = Value.str2valueType.get(strOutputType);
 		this.functionName = unescape(a[8]);
 		this.function = FunctionUtil.getFunctionDef(this.functionName);
 		buildParameterList(this.function);
 	}
 
-	final String functionName;
-	final FunctionDef function;
-
-
-	public void buildParameterList(FunctionDef f) {
+	public void buildParameterList(FunctionDefInterface f) {
 		connectors = new ArrayList<>();
 
 		String[] connNames = f.getParameterNames();
@@ -70,6 +77,7 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		this.paramSatisfied = false;
 	}
 
+	@Override
 	public void evaluate() {
 		if (this.paramSatisfied) {
 			ArrayList<Value> args = new ArrayList<Value>();

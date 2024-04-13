@@ -13,10 +13,14 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.FncGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
@@ -48,7 +52,7 @@ public class NetworkDataModel {
 	ArrayList<AbstractElement> rootElement;
 
 	// elementに表示用の「単連結グループID」をつける
-	public HashMap<Integer,ArrayList<RpnGraphNodeElement>> graphGroup;
+	public HashMap<Integer,ArrayList<AbstractGraphNodeElement>> graphGroup;
 	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_head;
 	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_all;
 
@@ -155,7 +159,8 @@ public class NetworkDataModel {
 		// 変数名の一覧を作成する
 		for (AbstractElement elementIcon : positionSortedElements) {
 			if (elementIcon instanceof RpnGraphNodeElement) {
-				if (((RpnGraphNodeElement)elementIcon).getKindString().equals("変数を設定")) {
+				if (((RpnGraphNodeElement)elementIcon).getKindId().equals(KindId.VARIABLE_SET)) {
+				// if (((RpnGraphNodeElement)elementIcon).getKindString().equals("変数を設定")) {
 					String rep = ((RpnGraphNodeElement)elementIcon).getRepresentExpression();
 					if (! nameOfvaliables.contains(rep)) {
 						nameOfvaliables.add(rep);
@@ -172,15 +177,15 @@ public class NetworkDataModel {
 		// グラフ構造を解析して、評価順をきめる
 
 		// 幅優先探索での追加順
-		ArrayList<RpnGraphNodeElement> addOrder = new ArrayList<>();
+		ArrayList<AbstractGraphNodeElement> addOrder = new ArrayList<>();
 
 		// 他の要素を参照していない要素
 		// 「計算済の値」の集合の初期値
-		HashMap<RpnGraphNodeElement,Integer> addSet0 = new HashMap<>();
+		HashMap<AbstractGraphNodeElement,Integer> addSet0 = new HashMap<>();
 		int workCounter = 0;
 		for (AbstractElement elementIcon : positionSortedElements) {
-			if (elementIcon instanceof RpnGraphNodeElement) {
-				RpnGraphNodeElement referFrom = ((RpnGraphNodeElement)elementIcon);
+			if (elementIcon instanceof AbstractGraphNodeElement) {
+				AbstractGraphNodeElement referFrom = ((AbstractGraphNodeElement)elementIcon);
 				if (referFrom.paramMapObj.size() == 0) {
 					// 単連結のグラフを区別したいので、異なる番号を振っておく
 					addSet0.put(referFrom, workCounter);
@@ -195,48 +200,61 @@ public class NetworkDataModel {
 		// 単連結グラフに分解
 
 		// 幅優先探索で、計算済の値の段階数を増やしていく
-		ArrayList<Set<RpnGraphNodeElement>> addSet = new ArrayList<>();
+		ArrayList<Set<AbstractGraphNodeElement>> addSet = new ArrayList<>();
 		addSet.add(addSet0.keySet());
 
-		HashMap<RpnGraphNodeElement,Integer> foundSet = new HashMap<>();
+		HashMap<AbstractGraphNodeElement,Integer> foundSet = new HashMap<>();
 		foundSet.putAll(addSet0);
 
 		// グループの合流。数字をマージする
-		HashMap<Integer,Integer> mergeInfo = new HashMap<>();
+		HashMap<Integer,Integer> mergeInfo_old = new HashMap<>();
+		ArrayList<Integer> mergeFrom = new ArrayList<Integer>();
+		ArrayList<Integer> mergeTo = new ArrayList<Integer>();
 
 		while (true) {
-			HashMap<RpnGraphNodeElement,Integer> nextAddSet = new HashMap<>();
+			HashMap<AbstractGraphNodeElement,Integer> nextAddSet = new HashMap<>();
 
 			for (AbstractElement elementIcon : positionSortedElements) {
-				if (elementIcon instanceof RpnGraphNodeElement) {
-					RpnGraphNodeElement element = ((RpnGraphNodeElement)elementIcon);
+				if (elementIcon instanceof AbstractGraphNodeElement) {
+					AbstractGraphNodeElement element = ((AbstractGraphNodeElement)elementIcon);
+					// 入力を持つノードを対象に処理をする
 					if (foundSet.containsKey(element)) {
 						continue;
 					}
 					boolean isOk = true;
 					int num = -1;
 					for (AbstractElement e_ : element.paramMapObj.values()) {
-						if (e_ instanceof RpnGraphNodeElement) {
-							RpnGraphNodeElement e = (RpnGraphNodeElement)e_;
+						if (e_ instanceof AbstractGraphNodeElement) {
+							// 入力ノード
+							AbstractGraphNodeElement e = (AbstractGraphNodeElement)e_;
 
 							if (!foundSet.containsKey(e)) {
+								// 入力ノードが、発見済みの集合に含まれていない場合は後回し
 								isOk = false;
 								break;
 							}
 							else {
+								// 入力ノードが、発見済みの集合に含まれている場合のみ
 								int m = foundSet.get(e);
 								if (num == -1) {
+									// TODO これは常にNOPになるはず
 									num = m;
 								}
 								if (m < num) {
-									if (! mergeInfo.containsKey(num) || mergeInfo.get(num) > m) {
-										mergeInfo.put(num, m);
+									mergeFrom.add(num);
+									mergeTo.add(m);
+
+									if (! mergeInfo_old.containsKey(num) || mergeInfo_old.get(num) > m) {
+										mergeInfo_old.put(num, m);
 										Debug.println("evaluate.mergeInfo", "" + num + " -> " + m);
 									}
 									num = m;
 								}
 								else if (num < m) {
-									mergeInfo.put(m, num);
+									mergeFrom.add(m);
+									mergeTo.add(num);
+
+									mergeInfo_old.put(m, num);
 									Debug.println("evaluate.mergeInfo", "" + m + " -> " + num);
 								}
 							}
@@ -261,16 +279,42 @@ public class NetworkDataModel {
 		}
 
 		Debug.println("evaluate", "--------------------------------------------- 単連結グラフ 作業状態");
-		HashMap<RpnGraphNodeElement,Integer> groupIdBuild = new HashMap<>();
+		HashMap<AbstractGraphNodeElement,Integer> groupIdBuild = new HashMap<>();
 		// デバッグ確認用
-		for (RpnGraphNodeElement element: foundSet.keySet()) {
+		/*
+		for (AbstractGraphNodeElement element: foundSet.keySet()) {
 			int groupIdWork = foundSet.get(element);
-			if ( mergeInfo.containsKey(groupIdWork)) {
-				groupIdWork = mergeInfo.get(groupIdWork);
+			if ( mergeInfo_old.containsKey(groupIdWork)) {
+				groupIdWork = mergeInfo_old.get(groupIdWork);
 			}
 			groupIdBuild.put(element,groupIdWork);
 			Debug.println("evaluate",  "ID: " + element.id + "  groupId(raw):" + foundSet.get(element) + "  groupId:" + groupIdWork);
 		}
+		*/
+
+		// 番号の付け替え
+		for (AbstractGraphNodeElement element: foundSet.keySet()) {
+			int groupIdWork = foundSet.get(element);
+			groupIdBuild.put(element,groupIdWork);
+		}
+		int n = mergeFrom.size();
+		for (int i = 0; i < n; i++) {
+			int from = mergeFrom.get(i);
+			int to = mergeTo.get(i);
+
+			for (AbstractGraphNodeElement element: foundSet.keySet()) {
+				int t = groupIdBuild.get(element);
+				if (t == from) {
+					groupIdBuild.put(element, to);
+				}
+			}
+		}
+		// デバッグ確認用
+		for (AbstractGraphNodeElement element: foundSet.keySet()) {
+			int groupIdWork = groupIdBuild.get(element);
+			Debug.println("evaluate",  "ID: " + element.id + "  groupId(raw):" + foundSet.get(element) + "  groupId:" + groupIdWork);
+		}
+
 
 		Debug.println("evaluate", "--------------------------------------------- 単連結グラフ(連番整列前)");
 		// デバッグ確認用
@@ -280,7 +324,7 @@ public class NetworkDataModel {
 			}
 			Debug.println("evaluate", "------------------------------ id: " + i);
 
-			for (RpnGraphNodeElement element: groupIdBuild.keySet()) {
+			for (AbstractGraphNodeElement element: groupIdBuild.keySet()) {
 				if (groupIdBuild.get(element).equals(i)) {
 					Debug.println("evaluate",  "ID: " + element.id + "  groupId:" + i);
 				}
@@ -290,7 +334,7 @@ public class NetworkDataModel {
 		/////////////////////////////////////////////
 		// 単連結グループIDの番号を詰める
 		TreeSet<Integer> groupIdSet = new TreeSet<>();
-		for (RpnGraphNodeElement element: groupIdBuild.keySet()) {
+		for (AbstractGraphNodeElement element: groupIdBuild.keySet()) {
 			groupIdSet.add(groupIdBuild.get(element));
 		}
 
@@ -302,8 +346,8 @@ public class NetworkDataModel {
 		}
 
 		// 切り詰めた番号を割り振る
-		HashMap<RpnGraphNodeElement,Integer> groupId2 = new HashMap<>();
-		for (RpnGraphNodeElement element: groupIdBuild.keySet()) {
+		HashMap<AbstractGraphNodeElement,Integer> groupId2 = new HashMap<>();
+		for (AbstractGraphNodeElement element: groupIdBuild.keySet()) {
 			groupId2.put(element, groupIdTrim.get(groupIdBuild.get(element)));
 		}
 
@@ -316,7 +360,7 @@ public class NetworkDataModel {
 		for (int i : groupIdSet2) {
 			Debug.println("evaluate", "------------------------------ id: " + i);
 
-			for (RpnGraphNodeElement element: addOrder) {
+			for (AbstractGraphNodeElement element: addOrder) {
 				if (groupId2.get(element).equals(i)) {
 					Debug.println("evaluate",  "ID: " + element.id + "  groupId:" + i);
 				}
@@ -325,11 +369,11 @@ public class NetworkDataModel {
 
 		// elementに表示用の「単連結グループID」をつける
 		graphGroup = new HashMap<>();
-		for (RpnGraphNodeElement element : addOrder) {
+		for (AbstractGraphNodeElement element : addOrder) {
 			int id = groupId2.get(element);
 			if (!graphGroup.containsKey(id)) {
 				element.groupHead = id;
-				ArrayList<RpnGraphNodeElement> list = new ArrayList<>();
+				ArrayList<AbstractGraphNodeElement> list = new ArrayList<>();
 				list.add(element);
 				graphGroup.put(id, list);
 			}
@@ -351,7 +395,7 @@ public class NetworkDataModel {
 		// group と control の関係をスキャンする
 		//
 		for (int groupId : graphGroup.keySet()) {
-			RpnGraphNodeElement headElement = graphGroup.get(groupId).get(0);
+			AbstractGraphNodeElement headElement = graphGroup.get(groupId).get(0);
 
 			for (AbstractElement elementIcon : positionSortedElements) {
 				if (elementIcon instanceof ControlElement) {
@@ -382,9 +426,9 @@ public class NetworkDataModel {
 		// 実行順(計算順)を作成
 
 		// 単連結グラフ先頭ノード
-		HashSet<RpnGraphNodeElement> headElementSet = new HashSet<RpnGraphNodeElement>();
+		HashSet<AbstractGraphNodeElement> headElementSet = new HashSet<AbstractGraphNodeElement>();
 		for (int groupId = 1; groupId <= graphGroup.size() ; groupId++) {
-			RpnGraphNodeElement headElement = graphGroup.get(groupId).get(0);
+			AbstractGraphNodeElement headElement = graphGroup.get(groupId).get(0);
 			headElementSet.add(headElement);
 		}
 
@@ -547,16 +591,24 @@ public class NetworkDataModel {
 		}
 	}
 
-	Value evaluateOneGraph(RpnGraphNodeElement headElement) {
-		ArrayList<RpnGraphNodeElement> eList = graphGroup.get(headElement.groupHead);
+	Value evaluateOneGraph(AbstractGraphNodeElement headElement) {
+		ArrayList<AbstractGraphNodeElement> eList = graphGroup.get(headElement.groupHead);
 		Debug.println("evaluate", "GRPAH GROUP ---  " + headElement.groupHead + "   items: " + eList.size());
-		for(RpnGraphNodeElement element : eList) {
+		for(AbstractGraphNodeElement element : eList) {
 			Debug.println("evaluate", "begin: " + element.id);
 			element.evaluate();
+			/*
+			if (element instanceof RpnGraphNodeElement) {
+				((RpnGraphNodeElement)element).evaluate();
+			} else if (element instanceof FncGraphNodeElement) {
+				// TODO 副作用先
+				((FncGraphNodeElement)element).evaluate(null);
+			}
+			*/
 			Debug.println("evaluate", "end: " + element.id);
 		}
 
-		RpnGraphNodeElement e = eList.get(eList.size() - 1);
+		AbstractGraphNodeElement e = eList.get(eList.size() - 1);
 		return e.workValue;
 	}
 
@@ -654,8 +706,8 @@ public class NetworkDataModel {
 
 
 		for (AbstractElement elementIcon : this.rootElement) {
-			if (elementIcon instanceof RpnGraphNodeElement) {
-				evaluateOneGraph((RpnGraphNodeElement)elementIcon);
+			if (elementIcon instanceof AbstractGraphNodeElement) {
+				evaluateOneGraph((AbstractGraphNodeElement)elementIcon);
 				/*
 				ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
 				for(GraphNodeElement element : eList) {
@@ -686,20 +738,18 @@ public class NetworkDataModel {
 				}
 				if (line.startsWith("TITLE:")) {
 					this.title = line.substring("TITLE:".length());
-				}
-				if (line.startsWith("RPNELEMENT:")) {
+				} else if (line.startsWith("RPNELEMENT:")) {
 					this.getElements().add(new RpnGraphNodeElement(this.editPanel, line));
-				}
-				if (line.startsWith("CONTROL:")) {
+				} else if (line.startsWith("FNCELEMENT:")) {
+					this.getElements().add(new FncGraphNodeElement(this.editPanel, line));
+				} else if (line.startsWith("CONTROL:")) {
 					ControlElement c = new ControlElement(this.editPanel, line);
 					this.getElements().add(c);
 
 					controllerMap.put(c.id, c);
-				}
-				if (line.startsWith("REF:")) {
+				} else if (line.startsWith("REF:")) {
 					refInfo.add(line);
-				}
-				if (line.startsWith("CONTROL_GROUP:")) {
+				} else if (line.startsWith("CONTROL_GROUP:")) {
 					HashSet<ControlElement> controllerGroup = new HashSet<ControlElement>();
 					for (String id : line.substring("CONTROL_GROUP:".length()).split(" ")) {
 						if (id.equals("")) {
@@ -739,6 +789,8 @@ public class NetworkDataModel {
 			System.err.println("新規にファイルを作成します。" + filename);
 		} catch (IOException e) {
 			System.err.println("途中でエラーが発生しました。処理を継続します。" + e.toString());
+		} catch (LangSpecException e) {
+			System.err.println("途中でエラーが発生しました。該当ノードは作成せず、処理を継続します。" + e.toString());
 		}
 	}
 

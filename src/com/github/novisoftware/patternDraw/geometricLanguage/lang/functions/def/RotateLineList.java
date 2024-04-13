@@ -1,6 +1,7 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
@@ -8,15 +9,15 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptEx
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Line;
-import com.github.novisoftware.patternDraw.geometryLanguage.primitives.Path;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDef;
+import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueLineList;
 
-// line_to_draw
-public class LineToDraw implements FunctionDef {
-	public static final String NAME = "line_to_draw";
+public class RotateLineList  implements FunctionDefInterface {
+	public static final String NAME = "rotate_line_list";
 
 	@Override
 	public String getName() {
@@ -25,7 +26,7 @@ public class LineToDraw implements FunctionDef {
 
 	@Override
 	public String getDescription() {
-		return "線分のリストを描画します。";
+		return "座標の系列の並び順をローテートします。";
 	}
 
 	@Override
@@ -36,41 +37,32 @@ public class LineToDraw implements FunctionDef {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"lines"};
+		String[] ret = {"n", "positions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"線分のリスト"};
+		String[] ret = {"ローテートさせる数", "座標の系列"};
 		return ret;
 	}
 
 	@Override
 	public ValueType getReturnType() {
-		return null;
+		return ValueType.POS_LIST;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) throws InvaliScriptException {
-		// TODO 副作用先は、どのように持たせるのが良いか？
+	public Value exec(List<Value> param, InstructionRenderer t) {
+		/*
+		 * 系列をローテートさせる
+		 */
+		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
 		ArrayList<Line> a = ((ValueLineList)(param.get(1))).getInternal();
-		for (Line line : a) {
-			Line line2 = line.translateLine(t.translateX, t.translateY);
+		Collections.rotate((ArrayList<Line>)a.clone(), n);
 
-			t.localDrawLine(t.g, t.svgBuff, t.s, line2);
-			String strokeColor = t.currentStrokeColor;
-			String strokeWidth = t.currentStrokeWidth;
-			boolean isFill = false;
-			String fillColor = null;
-
-			// String strokeColor, String strokeWidth, boolean isFill,
-			// String fillColor
-
-			Path path = new Path(line, strokeColor, strokeWidth, isFill, fillColor);
-
-			t.pathList.add(path);
-		}
-		return null;
+		return new ValueLineList(a);
 	}
+
 }

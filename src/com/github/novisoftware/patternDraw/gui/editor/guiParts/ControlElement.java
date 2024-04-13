@@ -24,8 +24,8 @@ import com.github.novisoftware.dentakuTest.util.IconImage;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementGenerator;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
@@ -44,10 +44,12 @@ public class ControlElement extends AbstractElement {
 	/**
 	 * 制御用の箱の集まり・かたまり
 	 */
+	public String controlType;
+
 	public HashSet<ControlElement> controllerGroup;
 
 	public String str() {
-		return String.format("CONTROL: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(outputType), escape(getRpnString()));
+		return String.format("CONTROL: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(controlType), escape(getRpnString()));
 	}
 
 	public ArrayList<String> optStr() {
@@ -70,13 +72,13 @@ public class ControlElement extends AbstractElement {
 		this.h = Integer.parseInt(a[4], 10);
 		this.id = unescape(a[5]);
 		this.setKindString(unescape(a[6]));
-		this.outputType = unescape(a[7]);
+		this.controlType = unescape(a[7]);
 		this.setRpnString(unescape(a[8]));
 //		buildParameterList(this.getRpnString());
 	}
 
 	public String getControlType() {
-		return this.outputType;
+		return this.controlType;
 	}
 
 	// Looper looper;
@@ -102,14 +104,6 @@ public class ControlElement extends AbstractElement {
 	public String getRepresentExpression() {
 		return this.rpn.getDisplayString();
 	}
-
-
-
-
-
-
-
-
 
 
 	/***
@@ -183,7 +177,7 @@ public class ControlElement extends AbstractElement {
 				g2.drawString(t.getDebugIdString(), t.x + 30, t.y + 9);
 			}
 
-			String typeDisplay = t.getKindString() + ": " + t.outputType;
+			String typeDisplay = t.getKindString() + ": " + t.controlType;
 
 			g2.setColor(Color.GRAY);
 			g2.drawString(typeDisplay, t.x + 30, t.y - 9);
@@ -194,7 +188,7 @@ public class ControlElement extends AbstractElement {
 			*/
 
 			if ( t.getKindString().equals("制御")  ) {
-				if (t.outputType.equals("REPEAT") || t.outputType.equals("IF")) {
+				if (t.controlType.equals("REPEAT") || t.controlType.equals("IF")) {
 					g2.setColor(colorLine);
 					g2.fillRect(t.x, t.y, MARK_WIDTH, t.h);
 				}
@@ -202,10 +196,10 @@ public class ControlElement extends AbstractElement {
 				g2.setColor(colorBorder);
 				g2.drawRect(t.x, t.y, t.w, t.h);
 
-				if (t.outputType.equals("REPEAT")) {
+				if (t.controlType.equals("REPEAT")) {
 					BufferedImage image = Common.getImage(IconImage.LOOP, this);
 					g2.drawImage(image, t.x - 50, t.y, null);
-				} else if (t.outputType.equals("IF")) {
+				} else if (t.controlType.equals("IF")) {
 					BufferedImage image = Common.getImage(IconImage.IF, this);
 					g2.drawImage(image, t.x - 50, t.y, null);
 				}

@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,13 +10,13 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDef;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueLineList;
 
-public class RotatePointList  implements FunctionDef {
+public class RotatePointList  implements FunctionDefInterface {
 	public static final String NAME = "rotate_point_list";
 
 	@Override
@@ -54,7 +54,7 @@ public class RotatePointList  implements FunctionDef {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) {
+	public Value exec(List<Value> param, InstructionRenderer _t) {
 		/*
 		 * 系列をローテートさせる
 		 */

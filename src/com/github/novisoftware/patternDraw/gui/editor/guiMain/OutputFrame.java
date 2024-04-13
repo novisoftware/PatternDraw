@@ -8,7 +8,7 @@ import javax.swing.JTextArea;
 
 import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ElementGenerator;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementGenerator;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;

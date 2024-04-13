@@ -12,6 +12,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
@@ -147,9 +148,9 @@ public class EditFrame extends JFrame {
 				*/
 			}
 
-			// fromがTone、toが端子の場合
-			else if (handled instanceof RpnGraphNodeElement && editPanel__.workLineFrom != null) {
-				RpnGraphNodeElement from = (RpnGraphNodeElement)handled;
+			// fromがElement、toが端子の場合
+			else if (handled instanceof AbstractGraphNodeElement && editPanel__.workLineFrom != null) {
+				AbstractGraphNodeElement from = (AbstractGraphNodeElement)handled;
 				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
 				if (t != null && t != from && t instanceof GraphConnector) {
 					GraphConnector conn = (GraphConnector)t;
@@ -169,9 +170,9 @@ public class EditFrame extends JFrame {
 			else if (handled instanceof GraphConnector && editPanel__.workLineFrom != null) {
 				GraphConnector conn = (GraphConnector)handled;
 				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
-				if (t != null && t != conn && t != conn.getNode() && t instanceof RpnGraphNodeElement) {
+				if (t != null && t != conn && t != conn.getNode() && t instanceof AbstractGraphNodeElement) {
 					// fromがオブジェクト、toが端子の場合
-					RpnGraphNodeElement element = (RpnGraphNodeElement)t;
+					AbstractGraphNodeElement element = (AbstractGraphNodeElement)t;
 
 					conn.getNode().paramMapInfo.put(conn.getParaName(), element.id);
 					conn.getNode().paramMapObj.put(conn.getParaName(), element);
@@ -181,7 +182,7 @@ public class EditFrame extends JFrame {
 				}
 			}
 
-			// fromがTone、toが端子の場合
+			// fromがElement、toが端子の場合
 			else if (handled instanceof RpnGraphNodeElement && editPanel__.workLineFrom == null) {
 				RpnGraphNodeElement from = (RpnGraphNodeElement)handled;
 				// if (from.groupHead != null) {

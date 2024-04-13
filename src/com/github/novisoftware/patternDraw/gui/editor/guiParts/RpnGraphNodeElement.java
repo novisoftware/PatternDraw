@@ -22,7 +22,11 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 	}
 
 	public String str() {
-		return String.format("RPN_ELEMENT: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(outputType), escape(getRpnString()));
+		return String.format("RPN_ELEMENT: %d %d %d %d %s %s %s %s",
+								x, y, w, h, escape(id),
+								escape(getKindString()),
+								escape(Value.valueType2str.get(valueType)),
+								escape(getRpnString()));
 	}
 
 	/**
@@ -56,8 +60,8 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 		this.h = Integer.parseInt(a[4], 10);
 		this.id = unescape(a[5]);
 		this.setKindString(unescape(a[6]));
-		this.outputType = unescape(a[7]);
-		this.valueType = Value.str2valueType.get(this.outputType);
+		String strOutputType = unescape(a[7]);
+		this.valueType = Value.str2valueType.get(strOutputType);
 		this.setRpnString(unescape(a[8]));
 		buildParameterList(this.getRpnString());
 	}
@@ -86,6 +90,7 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 		this.paramSatisfied = false;
 	}
 
+	@Override
 	public void evaluate() {
 		this.workValue = this.getRpn().doCaliculate(this, variables);
 	}

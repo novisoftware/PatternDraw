@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
@@ -82,7 +83,13 @@ public abstract class AbstractElement implements IconGuiInterface {
 	/**
 	 * 要素が値を持つ場合の、値の型(文字列表現)。
 	 */
-	protected String outputType;
+	private String outputType;
+
+	public String getOutputType() {
+		return Value.valueType2str.get(this.valueType);
+	}
+
+
 	/**
 	 * 要素が値を持つ場合の、値の型。
 	 */
@@ -94,6 +101,14 @@ public abstract class AbstractElement implements IconGuiInterface {
 	public Value.ValueType getValueType() {
 		return this.valueType;
 	}
+
+	/**
+	 * 要素が値を持つ場合の、値の型。
+	 */
+	public void setValueType(Value.ValueType valueType) {
+		this.valueType = valueType;
+	}
+
 
 	/**
 	 * @return kindString

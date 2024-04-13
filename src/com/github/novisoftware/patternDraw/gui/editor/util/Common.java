@@ -1,6 +1,7 @@
 package com.github.novisoftware.patternDraw.gui.editor.util;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -17,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
 public class Common {
 	public static final String FRAME_TITLE_BASE = "pattern drawing: ";

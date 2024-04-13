@@ -2,6 +2,10 @@ package com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem;
 
 import java.math.BigInteger;
 
+/**
+ * 整数。多倍長整数( java.math.BigInteger )を内部で使用しています。
+ *
+ */
 public class ValueInteger extends Value {
 	public ValueInteger(String s) {
 		super(ValueType.INTEGER);
