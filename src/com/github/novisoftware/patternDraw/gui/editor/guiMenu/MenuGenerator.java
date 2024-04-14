@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
@@ -43,13 +45,13 @@ public class MenuGenerator {
 	}
 
 	/**
-	 * テキストファイルの記載内容から ElementGenerator のリストを作成する。
+	 * テキストファイルの記載内容から ElementFactory のリストを作成する。
 	 *
 	 * @param editPanel
 	 * @param filename
 	 * @return
 	 */
-	public ArrayList<ElementFactory> generateMenuList(EditPanel editPanel, String filename) {
+	public ArrayList<ElementFactory> generateMenuList(EditPanel editPanel) {
 		ArrayList<ElementFactory> list = new ArrayList<>();
 
 		// ファイルから読み込む
@@ -57,7 +59,12 @@ public class MenuGenerator {
 
 		try {
 			int lineNumber = 0;
-			reader = new BufferedReader(new FileReader(new File(filename)));
+			String path = "/resource/elementGenerateMenuDef.txt";
+			InputStream is = getClass().getResourceAsStream(path);
+			reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+
+			// String input = "../partsElement.txt";
+			// reader = new BufferedReader(new FileReader(new File(filename)));
 			while (true) {
 				lineNumber++;
 				String line = reader.readLine();

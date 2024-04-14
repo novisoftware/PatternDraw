@@ -195,11 +195,9 @@ public class ContextMenu extends JPopupMenu {
 
 	static ArrayList<ElementFactory> partsList = null;
 	static public JMenu elementGenerateMenu(final EditPanel editPanel, int x, int y) {
-		String input = "../partsElement.txt";
-
 		if (partsList == null) {
 			MenuGenerator g = new MenuGenerator();
-			partsList = g.generateMenuList(editPanel, input);
+			partsList = g.generateMenuList(editPanel);
 		}
 
 		/*

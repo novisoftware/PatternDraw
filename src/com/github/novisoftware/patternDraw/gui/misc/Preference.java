@@ -28,7 +28,7 @@ public class Preference {
 	 */
 	private static int LABEL_FONT_SIZE = 18;
 	private static int OK_BUTTON_FONT_SIZE = 24;
-	private static int CANCEL_BUTTON_FONT_SIZE = 24;
+	private static int CANCEL_BUTTON_FONT_SIZE = 20;
 
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
 	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
