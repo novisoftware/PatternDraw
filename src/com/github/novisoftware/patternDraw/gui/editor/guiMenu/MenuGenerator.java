@@ -54,17 +54,15 @@ public class MenuGenerator {
 	public ArrayList<ElementFactory> generateMenuList(EditPanel editPanel) {
 		ArrayList<ElementFactory> list = new ArrayList<>();
 
-		// ファイルから読み込む
-		BufferedReader reader;
-
 		try {
-			int lineNumber = 0;
+			// リソースからファイルから読み込む
 			String path = "/resource/elementGenerateMenuDef.txt";
 			InputStream is = getClass().getResourceAsStream(path);
-			reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
 
-			// String input = "../partsElement.txt";
-			// reader = new BufferedReader(new FileReader(new File(filename)));
+			// lineNumberは、記載誤りがあった場合に、それが何行目かをデバッグ出力するために使う。
+			int lineNumber = 0;
+
 			while (true) {
 				lineNumber++;
 				String line = reader.readLine();
