@@ -107,7 +107,6 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 
 		this.paramMapInfo = new HashMap<String,String>();
 		this.paramMapObj = new HashMap<String,AbstractGraphNodeElement>();
-		this.paramSatisfied = false;
 	}
 
 	@Override

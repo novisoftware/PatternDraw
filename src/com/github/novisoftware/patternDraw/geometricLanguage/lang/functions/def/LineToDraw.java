@@ -53,8 +53,7 @@ public class LineToDraw implements FunctionDefInterface {
 
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws InvaliScriptException {
-		// TODO 副作用先は、どのように持たせるのが良いか？
-		ArrayList<Line> a = ((ValueLineList)(param.get(1))).getInternal();
+		ArrayList<Line> a = ((ValueLineList)(param.get(0))).getInternal();
 		for (Line line : a) {
 			// Line line2 = line.translateLine(t.translateX, t.translateY);
 			// t.localDrawLine(t.g, t.svgBuff, t.s, line2);
@@ -71,8 +70,11 @@ public class LineToDraw implements FunctionDefInterface {
 
 			if (t != null) {
 				t.pathList.add(path);
+				System.out.println("pathList added." );
 			}
 		}
+		System.out.println("pathList added (" + a.size() + ")" );
+
 		return null;
 	}
 }

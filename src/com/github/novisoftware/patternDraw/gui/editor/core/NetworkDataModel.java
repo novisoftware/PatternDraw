@@ -607,7 +607,9 @@ public class NetworkDataModel {
 			*/
 			if (element instanceof RpnGraphNodeElement) {
 				((RpnGraphNodeElement)element).evaluate();
+				Debug.println("rpn evaluate is called");
 			} else if (element instanceof FncGraphNodeElement) {
+				Debug.println("fnc evaluate is called");
 				((FncGraphNodeElement)element).evaluate(OutputGraphicsFrame.getRenderer());
 				OutputGraphicsFrame.getInstance().repaint();
 			}
@@ -618,7 +620,7 @@ public class NetworkDataModel {
 		return e.workValue;
 	}
 
-	void evaluateControll(ControlElement control) {
+	void evaluateControl(ControlElement control) {
 		Debug.println("evaluate", "------------------------ CONTROL"  + "  " + control.id);
 		if (control.getControlType().equals("REPEAT")) {
 			ControllBase c = control.init();
@@ -631,7 +633,7 @@ public class NetworkDataModel {
 						evaluateOneGraph(element);
 					}
 					else if (e0 instanceof ControlElement) {
-						evaluateControll((ControlElement)e0);
+						evaluateControl((ControlElement)e0);
 					}
 				}
 
@@ -676,7 +678,7 @@ public class NetworkDataModel {
 							evaluateOneGraph(element);
 						}
 						else if (e0 instanceof ControlElement) {
-							evaluateControll((ControlElement)e0);
+							evaluateControl((ControlElement)e0);
 						}
 					}
 				}
@@ -692,7 +694,7 @@ public class NetworkDataModel {
 							evaluateOneGraph(element);
 						}
 						else if (e0 instanceof ControlElement) {
-							evaluateControll((ControlElement)e0);
+							evaluateControl((ControlElement)e0);
 						}
 					}
 				}
@@ -703,6 +705,7 @@ public class NetworkDataModel {
 
 	public void runProgram() {
 		OutputTextFrame.clear();
+		OutputGraphicsFrame.reset();
 		Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
 
 
@@ -724,9 +727,11 @@ public class NetworkDataModel {
 				*/
 			}
 			else if(elementIcon instanceof ControlElement) {
-				evaluateControll((ControlElement)elementIcon);
+				evaluateControl((ControlElement)elementIcon);
 			}
 		}
+
+		OutputGraphicsFrame.refresh();
 	}
 
 	public void load() {
@@ -744,9 +749,9 @@ public class NetworkDataModel {
 				}
 				if (line.startsWith("TITLE:")) {
 					this.title = line.substring("TITLE:".length());
-				} else if (line.startsWith("RPNELEMENT:")) {
+				} else if (line.startsWith("RPN_ELEMENT:")) {
 					this.getElements().add(new RpnGraphNodeElement(this.editPanel, line));
-				} else if (line.startsWith("FNCELEMENT:")) {
+				} else if (line.startsWith("FNC_ELEMENT:")) {
 					this.getElements().add(new FncGraphNodeElement(this.editPanel, line));
 				} else if (line.startsWith("CONTROL:")) {
 					ControlElement c = new ControlElement(this.editPanel, line);
@@ -771,16 +776,21 @@ public class NetworkDataModel {
 
 						c.controllerGroup = controllerGroup;
 					}
+				} else {
+					System.err.println("UNKNOWN LINE: " + line);
 				}
 			}
 			reader.close();
 
+			System.out.println("make s2t. getElements size = " + getElements().size());
 			HashMap<String, AbstractGraphNodeElement> s2t = new HashMap<>();
 			for( AbstractElement t : getElements()) {
 				if (t instanceof AbstractGraphNodeElement) {
 					s2t.put(t.id, (AbstractGraphNodeElement)t);
+					System.out.println("  name = " + t.id);
 				}
 			}
+			System.out.println();
 			for(String line : refInfo) {
 				String[] a = line.split(" ");
 				String name = a[1];
@@ -788,6 +798,9 @@ public class NetworkDataModel {
 				String targetName = a[3];
 				AbstractGraphNodeElement t = s2t.get(name);
 				AbstractGraphNodeElement targetObj = s2t.get(targetName);
+				System.out.println("LINE = " + line);
+				System.out.println("  name = " + name);
+				System.out.println("  paramMapInfo = " + t.paramMapInfo);
 				t.paramMapInfo.put(parameterName, targetName);
 				t.paramMapObj.put(parameterName, targetObj);
 			}

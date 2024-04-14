@@ -10,6 +10,8 @@ import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueFloat;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextFrame;
@@ -188,7 +190,18 @@ public class Rpn {
 				RpnGraphNodeElement.debugVariables();
 			}
 			else if (s.equals(":as-numeric")) {
-				stack.push(new ValueNumeric(stack.pop().toString()));
+				if (ele.getValueType().equals(Value.ValueType.INTEGER)) {
+					stack.push(new ValueInteger(stack.pop().toString()));
+				}
+				else if (ele.getValueType().equals(Value.ValueType.FLOAT)) {
+					stack.push(new ValueFloat(stack.pop().toString()));
+				}
+				else if (ele.getValueType().equals(Value.ValueType.NUMERIC )) {
+					stack.push(new ValueNumeric(stack.pop().toString()));
+				}
+
+				// 旧実装
+				// stack.push(new ValueNumeric(stack.pop().toString()));
 			}
 			else if (s.equals("-")) {
 				Value b = stack.pop();

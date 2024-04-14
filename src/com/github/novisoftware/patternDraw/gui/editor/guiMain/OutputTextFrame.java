@@ -57,7 +57,7 @@ public class OutputTextFrame extends JFrame {
 
 	    this.setSize(600, 600);
 		this.setVisible(true);
-		this.setTitle(Common.FRAME_TITLE_BASE + " アプトプット");
+		this.setTitle(Common.FRAME_TITLE_BASE + " テキストの出力");
 
 		Common.setIconImage(this);
 	}

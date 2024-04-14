@@ -28,12 +28,13 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		System.out.println("this.valueType: " + this.getValueType());
 
 		return String.format(
-				"FNC_ELEMENT: %d %d %d %d %s %s",
+				"FNC_ELEMENT: %d %d %d %d %s %s %s",
 				x,
 				y,
 				w,
 				h,
 				escape(id),
+				escape(getKindString()),
 				escape(functionName));
 	}
 
@@ -53,7 +54,8 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		this.w = Integer.parseInt(a[3], 10);
 		this.h = Integer.parseInt(a[4], 10);
 		this.id = unescape(a[5]);
-		this.functionName = unescape(a[8]);
+		this.setKindString(unescape(a[6]));
+		this.functionName = unescape(a[7]);
 		this.function = FunctionUtil.getFunctionDef(this.functionName);
 		buildParameterList(this.function);
 	}
@@ -71,7 +73,6 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 
 		this.paramMapInfo = new HashMap<String,String>();
 		this.paramMapObj = new HashMap<String,AbstractGraphNodeElement>();
-		this.paramSatisfied = false;
 	}
 
 	@Override
@@ -85,22 +86,25 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 	}
 
 	public void evaluate(InstructionRenderer target) {
-		if (this.paramSatisfied) {
-			ArrayList<Value> args = new ArrayList<Value>();
+		ArrayList<Value> args = new ArrayList<Value>();
 
-			for (String paraName : this.function.getParameterNames()) {
-				args.add(this.paramMapObj.get(paraName).workValue);
+		for (String paraName : this.function.getParameterNames()) {
+			AbstractGraphNodeElement pObj = this.paramMapObj.get(paraName);
+			if (pObj == null) {
+				System.out.println("param not satisfied.");
+				return;
 			}
-			// TODO 副作用先のオブジェクトを持たせる
-			try {
-				this.workValue = this.function.exec(args, target);
-			} catch (InvaliScriptException e) {
-				// TODO もう少し適切なエラーハンドリング
-				e.printStackTrace();
-			}
+
+			args.add(this.paramMapObj.get(paraName).workValue);
 		}
-
-		// this.workValue = this.getRpn().doCaliculate(this, variables);
+		// TODO 副作用先のオブジェクトを持たせる
+		try {
+			System.out.println("呼び出し元");
+			this.workValue = this.function.exec(args, target);
+		} catch (InvaliScriptException e) {
+			// TODO もう少し適切なエラーハンドリング
+			e.printStackTrace();
+		}
 	}
 
 	@Override

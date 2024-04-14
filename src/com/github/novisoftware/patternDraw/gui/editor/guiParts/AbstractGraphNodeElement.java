@@ -52,7 +52,6 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 	// 外部パラメタパラメタ関連
 	public HashMap<String,String> paramMapInfo;
 	public HashMap<String,AbstractGraphNodeElement> paramMapObj;
-	boolean paramSatisfied;
 
 	public ArrayList<GraphConnector> connectors;
 
@@ -226,7 +225,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			if (this.editPanel.isVisibleDebugInfo) {
 				g2.setFont(font);
 				g2.setColor(Color.RED);
-				g2.drawString("" + e.id  /* e.getDebugIdString() */, e.x + 30, e.y + 9);
+				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
 			}
 		}
 
