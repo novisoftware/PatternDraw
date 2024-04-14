@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
 /**
  * ノードに閉じたミクロなRPN式(逆ポーランド記法の式)で計算をします。

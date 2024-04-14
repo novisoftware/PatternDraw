@@ -17,11 +17,11 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Typ
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
+import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.geometryLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.gui.SettingWindow;
 import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;

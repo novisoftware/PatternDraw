@@ -2,7 +2,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 
 public class FunctionUtil {
 	public static FunctionDefInterface getFunctionDef(String str) throws LangSpecException {

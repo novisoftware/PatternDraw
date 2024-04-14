@@ -6,9 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementGenerator.DefType;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.DefType;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 
 public class MenuGenerator {
@@ -49,8 +49,8 @@ public class MenuGenerator {
 	 * @param filename
 	 * @return
 	 */
-	public ArrayList<ElementGenerator> generateMenuList(EditPanel editPanel, String filename) {
-		ArrayList<ElementGenerator> list = new ArrayList<>();
+	public ArrayList<ElementFactory> generateMenuList(EditPanel editPanel, String filename) {
+		ArrayList<ElementFactory> list = new ArrayList<>();
 
 		// ファイルから読み込む
 		BufferedReader reader;
@@ -93,7 +93,7 @@ public class MenuGenerator {
 					defType = DefType.TYPE_RPNDEF;
 				} else if (line.startsWith("---->DEFINE")) {
 					if (defType.equals(DefType.TYPE_RPNDEF)) {
-						ElementGenerator parts = new ElementGenerator(editPanel, DefType.TYPE_RPNDEF);
+						ElementFactory parts = new ElementFactory(editPanel, DefType.TYPE_RPNDEF);
 						parts.description = workDescription;
 						parts.kindName = workKindName;
 						parts.controlType = workControlTypeName;
@@ -106,7 +106,7 @@ public class MenuGenerator {
 						list.add(parts);
 						resetWorkValues();
 					} else if (defType.equals(DefType.TYPE_FNCDEF)) {
-						ElementGenerator parts = new ElementGenerator(editPanel, DefType.TYPE_FNCDEF);
+						ElementFactory parts = new ElementFactory(editPanel, DefType.TYPE_FNCDEF);
 						parts.description = workDescription;
 						parts.kindName = workKindName;
 						parts.valueType = Value.str2valueType.get(workTypeName);

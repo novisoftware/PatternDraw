@@ -3,8 +3,6 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.FncGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
@@ -12,21 +10,23 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.util.Common;
+import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
+import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementGenerator;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 
-public class ElementGenerator {
+public class ElementFactory {
 	final protected EditPanel editPanel;
 
-	public ElementGenerator(EditPanel editPanel, DefType defType) {
+	public ElementFactory(EditPanel editPanel, DefType defType) {
 		this.editPanel = editPanel;
 		this.defType = defType;
 	}
@@ -49,30 +49,30 @@ public class ElementGenerator {
 	 * @param partsList 展開前のパーツリスト
 	 * @return 展開後のパーツリスト
 	 */
-	public static ArrayList<ElementGenerator> partsListExtend(EditPanel editPanel, ArrayList<ElementGenerator> partsList) {
+	public static ArrayList<ElementFactory> partsListExtend(EditPanel editPanel, ArrayList<ElementFactory> partsList) {
 		// 定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する。
-		ArrayList<ElementGenerator> expandedParts = new ArrayList<>();
-		for (final ElementGenerator nParts : partsList) {
-			if (nParts.dispName.indexOf(ElementGenerator.CONST_STR__META_EXIST_VARIABLE) != -1) {
-				Debug.println("match " + ElementGenerator.CONST_STR__META_EXIST_VARIABLE);
+		ArrayList<ElementFactory> expandedParts = new ArrayList<>();
+		for (final ElementFactory nParts : partsList) {
+			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
+				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
 
 				for (String varName : editPanel.networkDataModel.nameOfvaliables) {
-					ElementGenerator add = nParts.getCopy();
+					ElementFactory add = nParts.getCopy();
 
-					add.dispName = add.dispName.replaceAll(ElementGenerator.CONST_REG__META_EXIST_VARIABLE, varName);
-					add.rpn = add.rpn.replaceAll(ElementGenerator.CONST_REG__META_EXIST_VARIABLE,  varName);
+					add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE, varName);
+					add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE,  varName);
 //					Debug.println("expand rpn: " + add.rpn);
 					expandedParts.add(add);
 				}
 			}
-			else if (nParts.dispName.indexOf(ElementGenerator.CONST_STR__META_NEW_VARIABLE) != -1) {
-				Debug.println("match " + ElementGenerator.CONST_STR__META_NEW_VARIABLE);
+			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
+				Debug.println("match " + ElementFactory.CONST_STR__META_NEW_VARIABLE);
 
 				String newVariableName = Common.generateUniqName(editPanel.networkDataModel.nameOfvaliables, "");
-				ElementGenerator add = nParts.getCopy();
+				ElementFactory add = nParts.getCopy();
 
-				add.dispName = add.dispName.replaceAll(ElementGenerator.CONST_REG__META_NEW_VARIABLE , newVariableName);
-				add.rpn = add.rpn.replaceAll(ElementGenerator.CONST_REG__META_NEW_VARIABLE,  newVariableName);
+				add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE , newVariableName);
+				add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE,  newVariableName);
 				Debug.println("expand rpn: " + add.rpn);
 				expandedParts.add(add);
 			}
@@ -248,8 +248,8 @@ public class ElementGenerator {
 	 *
 	 * @return
 	 */
-	public ElementGenerator getCopy() {
-		ElementGenerator parts = new ElementGenerator(editPanel, this.defType);
+	public ElementFactory getCopy() {
+		ElementFactory parts = new ElementFactory(editPanel, this.defType);
 		parts.description = this.description;
 		parts.kindName = this.kindName;
 		parts.valueType = this.valueType;

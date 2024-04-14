@@ -10,11 +10,11 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueInteger;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueLineList;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueLineList;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 
 public class RotateLineList  implements FunctionDefInterface {
 	public static final String NAME = "rotate_line_list";

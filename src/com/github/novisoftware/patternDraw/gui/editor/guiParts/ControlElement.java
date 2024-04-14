@@ -9,36 +9,23 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
-/*
-import com.github.novisoftware.dentakuTest.calculation.Rpn;
-import com.github.novisoftware.dentakuTest.calculation.RpnUtil;
-import com.github.novisoftware.dentakuTest.calculation.Value;
-import com.github.novisoftware.dentakuTest.calculation.ValueNumeric;
-import com.github.novisoftware.dentakuTest.gui.EditPanel;
-import com.github.novisoftware.dentakuTest.gui.parts.controlSub.ControllBase;
-import com.github.novisoftware.dentakuTest.gui.parts.controlSub.Looper;
-import com.github.novisoftware.dentakuTest.util.Common;
-import com.github.novisoftware.dentakuTest.util.Debug;
-import com.github.novisoftware.dentakuTest.util.IconImage;
-*/
-
-import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
+import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
+import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementGenerator;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
-import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
 public class ControlElement extends AbstractElement {
 	/**

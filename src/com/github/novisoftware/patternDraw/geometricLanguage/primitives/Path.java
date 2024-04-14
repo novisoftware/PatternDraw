@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometryLanguage.primitives;
+package com.github.novisoftware.patternDraw.geometricLanguage.primitives;
 
 import java.awt.BasicStroke;
 import java.awt.Color;

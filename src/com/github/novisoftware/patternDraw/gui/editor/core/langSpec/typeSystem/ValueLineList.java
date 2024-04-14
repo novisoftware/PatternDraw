@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 
 import java.util.ArrayList;
 

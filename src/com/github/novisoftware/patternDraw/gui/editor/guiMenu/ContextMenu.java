@@ -9,17 +9,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import com.github.novisoftware.patternDraw.gui.editor.util.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 
 
 public class ContextMenu extends JPopupMenu {
@@ -193,7 +193,7 @@ public class ContextMenu extends JPopupMenu {
 	}
 
 
-	static ArrayList<ElementGenerator> partsList = null;
+	static ArrayList<ElementFactory> partsList = null;
 	static public JMenu elementGenerateMenu(final EditPanel editPanel, int x, int y) {
 		String input = "../partsElement.txt";
 
@@ -212,13 +212,13 @@ public class ContextMenu extends JPopupMenu {
 
 		// メニュー要素を展開する
 		// (定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する)
-		ArrayList<ElementGenerator> expandedParts = ElementGenerator.partsListExtend(editPanel, partsList);
+		ArrayList<ElementFactory> expandedParts = ElementFactory.partsListExtend(editPanel, partsList);
 
 		JMenu menu = new JMenu("部品を追加");
 		HashMap<String,JMenu> workHm2 = new HashMap<>();
 
 		// メニュー組み立て
-		for (final ElementGenerator nParts : expandedParts) {
+		for (final ElementFactory nParts : expandedParts) {
 			String n = nParts.dispName;
 			JMenuItem menuItem;
 			if (n.indexOf('/') == -1) {

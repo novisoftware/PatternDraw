@@ -9,11 +9,11 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptEx
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
+import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.util.Rpn;
 
 
 public class FncGraphNodeElement extends AbstractGraphNodeElement {

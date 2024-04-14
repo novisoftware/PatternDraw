@@ -1,12 +1,12 @@
-package com.github.novisoftware.patternDraw.gui.editor.langSpec.functions;
+package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions;
 
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 
 public interface FunctionDefInterface {
 	/**

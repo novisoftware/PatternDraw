@@ -7,12 +7,12 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRen
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
+import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.geometry.Line;
-import com.github.novisoftware.patternDraw.geometryLanguage.primitives.Path;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueLineList;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueLineList;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 
 // line_to_draw
 public class LineToDraw implements FunctionDefInterface {

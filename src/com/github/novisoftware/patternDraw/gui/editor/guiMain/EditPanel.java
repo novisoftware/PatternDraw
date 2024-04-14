@@ -12,7 +12,7 @@ import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.util.NetworkDataModel;
+import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
 
 public class EditPanel extends JPanel {

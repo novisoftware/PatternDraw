@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.util;
+package com.github.novisoftware.patternDraw.gui.editor.core;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -8,13 +8,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueBoolean;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueNumeric;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.ValueString;
+import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 
 public class Rpn {

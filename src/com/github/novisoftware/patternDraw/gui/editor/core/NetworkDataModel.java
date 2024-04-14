@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.util;
+package com.github.novisoftware.patternDraw.gui.editor.core;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
@@ -22,8 +23,8 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
+import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 public class NetworkDataModel {
 	/**
