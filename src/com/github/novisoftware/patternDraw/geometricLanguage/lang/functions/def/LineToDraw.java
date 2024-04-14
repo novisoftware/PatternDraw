@@ -30,7 +30,7 @@ public class LineToDraw implements FunctionDefInterface {
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.INTEGER, ValueType.POS_LIST};
+		ValueType[] ret = {ValueType.POS_LIST};
 		return ret;
 	}
 

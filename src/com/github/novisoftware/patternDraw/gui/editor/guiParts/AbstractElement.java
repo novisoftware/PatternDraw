@@ -80,35 +80,18 @@ public abstract class AbstractElement implements IconGuiInterface {
 
 	/** 表示・識別に使用する名前 */
 	public String id;
+
 	/**
 	 * 要素が値を持つ場合の、値の型(文字列表現)。
 	 */
-	private String outputType;
-
 	public String getOutputType() {
-		return Value.valueType2str.get(this.valueType);
-	}
-
-
-	/**
-	 * 要素が値を持つ場合の、値の型。
-	 */
-	protected Value.ValueType valueType;
-
-	/**
-	 * 要素が値を持つ場合の、値の型。
-	 */
-	public Value.ValueType getValueType() {
-		return this.valueType;
+		return Value.valueType2str.get(this.getValueType());
 	}
 
 	/**
 	 * 要素が値を持つ場合の、値の型。
 	 */
-	public void setValueType(Value.ValueType valueType) {
-		this.valueType = valueType;
-	}
-
+	abstract public Value.ValueType getValueType();
 
 	/**
 	 * @return kindString

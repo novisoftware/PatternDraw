@@ -9,6 +9,9 @@ public class FunctionUtil {
 		if (str.equals(LineToDraw.NAME)) {
 			return new LineToDraw();
 		}
+		if (str.equals(LineFrom1Series.NAME)) {
+			return new LineFrom1Series();
+		}
 		if (str.equals(PosToWalk.NAME)) {
 			return new PosToWalk();
 		}

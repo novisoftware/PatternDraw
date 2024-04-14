@@ -242,7 +242,9 @@ public class EditFrame extends JFrame {
 				| UnsupportedLookAndFeelException e) {
 			// 処理不要
 		}
-		OutputFrame outputFrame = OutputFrame.getInstance();
+		OutputTextFrame outputFrame = OutputTextFrame.getInstance();
+		OutputGraphicsFrame outputGraphicsFrame = OutputGraphicsFrame.getInstance();
+		outputGraphicsFrame.setVisible(true);
 
 		EditFrame frame = new EditFrame(args[0]);
 		frame.setSize(1500, 800);

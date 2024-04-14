@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
@@ -24,15 +25,15 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 	final FunctionDefInterface function;
 
 	public String str() {
+		System.out.println("this.valueType: " + this.getValueType());
+
 		return String.format(
-				"FNC_ELEMENT: %d %d %d %d %s %s %s %s",
+				"FNC_ELEMENT: %d %d %d %d %s %s",
 				x,
 				y,
 				w,
 				h,
 				escape(id),
-				escape(getKindString()),
-				escape(Value.valueType2str.get(this.valueType)),
 				escape(functionName));
 	}
 
@@ -40,7 +41,6 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		super(EditPanel);
 		this.functionName = functionName;
 		this.function = f;
-		this.valueType = f.getReturnType();
 		buildParameterList(this.function);
 	}
 
@@ -53,9 +53,6 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		this.w = Integer.parseInt(a[3], 10);
 		this.h = Integer.parseInt(a[4], 10);
 		this.id = unescape(a[5]);
-		this.setKindString(unescape(a[6]));
-		String strOutputType = unescape(a[7]);
-		this.valueType = Value.str2valueType.get(strOutputType);
 		this.functionName = unescape(a[8]);
 		this.function = FunctionUtil.getFunctionDef(this.functionName);
 		buildParameterList(this.function);
@@ -79,6 +76,15 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 
 	@Override
 	public void evaluate() {
+		this.evaluate(null);
+	}
+
+	@Override
+	public Value.ValueType getValueType() {
+		return function.getReturnType();
+	}
+
+	public void evaluate(InstructionRenderer target) {
 		if (this.paramSatisfied) {
 			ArrayList<Value> args = new ArrayList<Value>();
 
@@ -87,7 +93,7 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 			}
 			// TODO 副作用先のオブジェクトを持たせる
 			try {
-				this.workValue = this.function.exec(args, null);
+				this.workValue = this.function.exec(args, target);
 			} catch (InvaliScriptException e) {
 				// TODO もう少し適切なエラーハンドリング
 				e.printStackTrace();

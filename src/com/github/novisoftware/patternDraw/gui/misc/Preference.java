@@ -17,10 +17,9 @@ public class Preference {
 	 */
 	static String[] preferenceFontName = {
 			"UD デジタル 教科書体 N-B",
-//			"メイリオ",
+			"メイリオ",
 			"游ゴシック"
 	};
-
 
 
 	/**
@@ -29,10 +28,12 @@ public class Preference {
 	private static int LABEL_FONT_SIZE = 18;
 	private static int OK_BUTTON_FONT_SIZE = 24;
 	private static int CANCEL_BUTTON_FONT_SIZE = 20;
+	private static int COSOLE_FONT_SIZE = 16;
 
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
 	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
 	public static Font CANCEL_BUTTON_FONT = initLabelFont(CANCEL_BUTTON_FONT_SIZE);
+	public static Font CONSOLE_FONT = initLabelFont(COSOLE_FONT_SIZE);
 
 	/**
 	 * GUIの文字表示に使用するフォントを探す処理。
@@ -80,21 +81,11 @@ public class Preference {
 	 */
 	public static final BasicStroke boldStroke = new BasicStroke(3f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
 	public static final Color boldFgStrokeColor = new Color(0.4f, 0.4f, 0.4f);
-	/**
-	 * 三角形の塗りつぶし色
-	 */
+
+	// 塗りつぶしの色の候補
 	// public static final Color boldFgFillColor_for3 = new Color(0.8f, 0.8f, 1f);
-	/**
-	 * 四角形の塗りつぶし色
-	 */
 	// public static final Color boldFgFillColor_for4 = new Color(1f, 0.8f, 0.8f);
-	/**
-	 * 五角形の塗りつぶし色
-	 */
 	// public static final Color boldFgFillColor_for5 = new Color(0.7f, 0.9f, 0.8f);
-	/**
-	 * 該当しない場合の塗りつぶし色
-	 */
 	// public static final Color boldFgFillColor_dumb = new Color(0.75f, 0.75f, 0.75f);
 
 	/**

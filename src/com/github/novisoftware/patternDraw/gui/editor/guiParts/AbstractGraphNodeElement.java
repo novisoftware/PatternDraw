@@ -104,13 +104,13 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			for (GraphConnector connector : this.connectors) {
 				AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
 				if (src != null) {
-					if (Value.isAcceptable(src.valueType, connector.valueType) ) {
+					if (Value.isAcceptable(src.getValueType(), connector.valueType) ) {
 						g2.setColor(Color.GRAY);
 					}
 					else {
 						g2.setColor(Color.RED);
 
-						Debug.println("PAINT", "invalid type src:" + src.valueType + " acceptor:" + connector.valueType);
+						Debug.println("PAINT", "invalid type src:" + src.getValueType()  + " receive:" + connector.valueType);
 					}
 					g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
 				}

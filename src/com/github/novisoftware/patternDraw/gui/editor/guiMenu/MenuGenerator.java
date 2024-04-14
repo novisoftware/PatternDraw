@@ -8,6 +8,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.DefType;
@@ -27,13 +30,13 @@ public class MenuGenerator {
 	private ArrayList<String> workList;
 
 	void resetWorkValues() {
-		workDescription = "";
-		workKindName = "";
-		workTypeName = "";
-		workControlTypeName = "";
-		workDispName = "";
-		workFncName = "";
-		workRPN = "";
+		workDescription = null;
+		workKindName = null;
+		workTypeName = null;
+		workControlTypeName = null;
+		workDispName = null;
+		workFncName = null;
+		workRPN = null;
 		workWidth = 120;
 		workHeight = 60;
 		defType = DefType.TYPE_UNDEF;
@@ -99,11 +102,14 @@ public class MenuGenerator {
 				} else if (line.startsWith("---->DEFINE")) {
 					if (defType.equals(DefType.TYPE_RPNDEF)) {
 						ElementFactory parts = new ElementFactory(editPanel, DefType.TYPE_RPNDEF);
+						parts.dispName = workDispName;
 						parts.description = workDescription;
 						parts.kindName = workKindName;
 						parts.controlType = workControlTypeName;
 						parts.valueType = Value.str2valueType.get(workTypeName);
-						parts.dispName = workDispName;
+						if (parts.valueType == null) {
+							System.err.println("設定誤り: " + parts.dispName);
+						}
 						parts.rpn = workRPN;
 						parts.width = workWidth;
 						parts.height = workHeight;
@@ -111,12 +117,14 @@ public class MenuGenerator {
 						list.add(parts);
 						resetWorkValues();
 					} else if (defType.equals(DefType.TYPE_FNCDEF)) {
+						FunctionDefInterface tmpFunc = FunctionUtil.getFunctionDef(workFncName);
+
 						ElementFactory parts = new ElementFactory(editPanel, DefType.TYPE_FNCDEF);
-						parts.description = workDescription;
+						parts.dispName = workDispName != null ? workDispName : tmpFunc.getName();
+						parts.description = workDescription != null ? workDescription : tmpFunc.getDescription();
+						parts.valueType = tmpFunc.getReturnType();
 						parts.kindName = workKindName;
-						parts.valueType = Value.str2valueType.get(workTypeName);
-						parts.dispName = workDispName;
-						parts.rpn = workRPN;
+						parts.rpn = "";
 						parts.fncName = workFncName;
 						parts.width = workWidth;
 						parts.height = workHeight;
@@ -140,6 +148,9 @@ public class MenuGenerator {
 			reader.close();
 		} catch (IOException e) {
 			System.err.println("途中でエラーが発生しました。" + e.toString());
+		} catch (LangSpecException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
 		}
 
 		return list;

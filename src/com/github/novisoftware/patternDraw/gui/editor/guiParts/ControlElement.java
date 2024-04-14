@@ -12,6 +12,7 @@ import java.util.Stack;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
@@ -404,4 +405,9 @@ public class ControlElement extends AbstractElement {
 		}
 	}
 
+	@Override
+	public ValueType getValueType() {
+		// TODO 自動生成されたメソッド・スタブ
+		return ValueType.NONE;
+	}
 }

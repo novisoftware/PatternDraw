@@ -16,7 +16,8 @@ import java.util.TreeSet;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputFrame;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsFrame;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextFrame;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.FncGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
@@ -479,8 +480,10 @@ public class NetworkDataModel {
 		for (AbstractElement ei1 : positionSortedElements) {
 //			ControlBlock c1 = (ControlBlock)ei1;
 
-			Debug.println("evaluete", "pre0: " + ei1.id);
-			Debug.println("evaluete", "pre0: " + ei1.str());
+			if (ei1 != null) {
+				Debug.println("evaluete", "pre0: " + ei1.id);
+				Debug.println("evaluete", "pre0: " + ei1.str());
+			}
 		}
 
 
@@ -490,8 +493,10 @@ public class NetworkDataModel {
 		for (AbstractElement ei1 : this.getElements()) {
 //			ControlBlock c1 = (ControlBlock)ei1;
 
-			Debug.println("evaluete", "pre1: " + ei1.id);
-			Debug.println("evaluete", "pre1: " + ei1.str());
+			if (ei1 != null) {
+				Debug.println("evaluete", "pre1: " + ei1.id);
+				Debug.println("evaluete", "pre1: " + ei1.str());
+			}
 		}
 
 
@@ -597,15 +602,15 @@ public class NetworkDataModel {
 		Debug.println("evaluate", "GRPAH GROUP ---  " + headElement.groupHead + "   items: " + eList.size());
 		for(AbstractGraphNodeElement element : eList) {
 			Debug.println("evaluate", "begin: " + element.id);
-			element.evaluate();
 			/*
+			element.evaluate();
+			*/
 			if (element instanceof RpnGraphNodeElement) {
 				((RpnGraphNodeElement)element).evaluate();
 			} else if (element instanceof FncGraphNodeElement) {
-				// TODO 副作用先
-				((FncGraphNodeElement)element).evaluate(null);
+				((FncGraphNodeElement)element).evaluate(OutputGraphicsFrame.getRenderer());
+				OutputGraphicsFrame.getInstance().repaint();
 			}
-			*/
 			Debug.println("evaluate", "end: " + element.id);
 		}
 
@@ -697,7 +702,7 @@ public class NetworkDataModel {
 	}
 
 	public void runProgram() {
-		OutputFrame.clear();
+		OutputTextFrame.clear();
 		Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
 
 
@@ -770,10 +775,10 @@ public class NetworkDataModel {
 			}
 			reader.close();
 
-			HashMap<String, RpnGraphNodeElement> s2t = new HashMap<>();
+			HashMap<String, AbstractGraphNodeElement> s2t = new HashMap<>();
 			for( AbstractElement t : getElements()) {
-				if (t instanceof RpnGraphNodeElement) {
-					s2t.put(t.id, (RpnGraphNodeElement)t);
+				if (t instanceof AbstractGraphNodeElement) {
+					s2t.put(t.id, (AbstractGraphNodeElement)t);
 				}
 			}
 			for(String line : refInfo) {
@@ -781,8 +786,8 @@ public class NetworkDataModel {
 				String name = a[1];
 				String parameterName = a[2];
 				String targetName = a[3];
-				RpnGraphNodeElement t = s2t.get(name);
-				RpnGraphNodeElement targetObj = s2t.get(targetName);
+				AbstractGraphNodeElement t = s2t.get(name);
+				AbstractGraphNodeElement targetObj = s2t.get(targetName);
 				t.paramMapInfo.put(parameterName, targetName);
 				t.paramMapObj.put(parameterName, targetObj);
 			}

@@ -263,7 +263,7 @@ public class ElementEditFrame extends JFrame {
 								radioButton.addChangeListener(new ChangeListener() {
 									public void stateChanged(ChangeEvent e) {
 										if (radioButton.isSelected()) {
-											element.setValueType(valueTypes[idx]);
+											((RpnGraphNodeElement)element).setValueType(valueTypes[idx]);
 											if (ValueType.INTEGER.equals(valueTypes[idx])) {
 												p.setInputChecker(new IntegerChecker());
 											} else {

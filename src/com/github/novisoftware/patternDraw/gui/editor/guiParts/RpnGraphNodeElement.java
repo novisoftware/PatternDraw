@@ -50,6 +50,26 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 		return this.rpn.getDisplayString();
 	}
 
+	/**
+	 * 要素が値を持つ場合の、値の型。
+	 */
+	protected Value.ValueType valueType;
+
+	/**
+	 * 要素が値を持つ場合の、値の型。
+	 */
+	public void setValueType(Value.ValueType valueType) {
+		this.valueType = valueType;
+	}
+
+	/**
+	 * 要素が値を持つ場合の、値の型。
+	 */
+	@Override
+	public Value.ValueType getValueType() {
+		return this.valueType;
+	}
+
 	public RpnGraphNodeElement(EditPanel EditPanel, String s) {
 		super(EditPanel);
 

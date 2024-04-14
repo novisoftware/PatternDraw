@@ -16,13 +16,14 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
-public class OutputFrame extends JFrame {
-	static private OutputFrame singleton;
+public class OutputTextFrame extends JFrame {
+	static private OutputTextFrame singleton;
 
-	static public OutputFrame getInstance() {
+	static public OutputTextFrame getInstance() {
 		if (singleton == null) {
-			singleton = new OutputFrame();
+			singleton = new OutputTextFrame();
 		}
 
 		return singleton;
@@ -45,8 +46,9 @@ public class OutputFrame extends JFrame {
 
 	public final JTextArea textArea;
 
-	private OutputFrame() {
+	private OutputTextFrame() {
 		textArea = new JTextArea();
+		textArea.setFont(Preference.CONSOLE_FONT);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 //		p.add(a);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
