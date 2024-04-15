@@ -18,12 +18,12 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
-public class OutputTextFrame extends JFrame {
-	static private OutputTextFrame singleton;
+public class OutputTextWindow extends JFrame {
+	static private OutputTextWindow singleton;
 
-	static public OutputTextFrame getInstance() {
+	static public OutputTextWindow getInstance() {
 		if (singleton == null) {
-			singleton = new OutputTextFrame();
+			singleton = new OutputTextWindow();
 		}
 
 		return singleton;
@@ -46,7 +46,7 @@ public class OutputTextFrame extends JFrame {
 
 	public final JTextArea textArea;
 
-	private OutputTextFrame() {
+	private OutputTextWindow() {
 		textArea = new JTextArea();
 		textArea.setFont(Preference.CONSOLE_FONT);
 		JScrollPane scrollPane = new JScrollPane(textArea);

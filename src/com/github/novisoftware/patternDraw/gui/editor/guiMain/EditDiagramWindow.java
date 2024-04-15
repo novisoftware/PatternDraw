@@ -1,6 +1,9 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Dimension;
+import java.awt.MouseInfo;
+import java.awt.Point;
+import java.awt.PointerInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -57,6 +60,9 @@ public class EditDiagramWindow extends JFrame {
 		// ただし、 Popup が閉じるのを確実には拾えていないので、何回か押す必要がある場合が発生する。
 		public boolean isPopupExists = false;
 
+		/**
+		 * 定数値の編集用のウィンドウは、疑似的なモーダル画面にする。
+		 */
 		final EditDiagramPanel editPanel__;
 		MListener(EditDiagramPanel editPanel) {
 			this.editPanel__ = editPanel;
@@ -66,7 +72,6 @@ public class EditDiagramWindow extends JFrame {
 				@Override
 				public void windowClosed(WindowEvent e) {
 					thisMListener.inputWindow = null;
-					System.out.println("CLOSE");
 				}
 
 				@Override
@@ -121,16 +126,24 @@ public class EditDiagramWindow extends JFrame {
 					if (obj instanceof RpnGraphNodeElement) {
 						RpnGraphNodeElement element = (RpnGraphNodeElement)obj;
 						if (element.getKindId() == KindId.CONSTANT) {
+							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+							Point p = pointerInfo.getLocation();
+
 							InputConstantWindow f = new InputConstantWindow(element, editPanel__);
 							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 							f.addWindowListener(inputWindowCloseListener);
+							f.setLocation(p);
 							f.setVisible(true);
 							this.inputWindow = f;
 
 						}else {
+							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+							Point p = pointerInfo.getLocation();
+
 							InputOtherTypeWindow f = new InputOtherTypeWindow(element, editPanel__);
 							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 							f.addWindowListener(inputWindowCloseListener);
+							f.setLocation(p);
 							f.setVisible(true);
 							this.inputWindow = f;
 						}
@@ -352,8 +365,8 @@ public class EditDiagramWindow extends JFrame {
 				| UnsupportedLookAndFeelException e) {
 			// 処理不要
 		}
-		OutputTextFrame outputFrame = OutputTextFrame.getInstance();
-		OutputGraphicsFrame outputGraphicsFrame = OutputGraphicsFrame.getInstance();
+		OutputTextWindow outputFrame = OutputTextWindow.getInstance();
+		OutputGraphicsWindow outputGraphicsFrame = OutputGraphicsWindow.getInstance();
 		outputGraphicsFrame.setVisible(true);
 
 		EditDiagramWindow frame = new EditDiagramWindow(args[0]);

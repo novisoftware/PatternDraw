@@ -148,6 +148,7 @@ public class MenuGenerator {
 			reader.close();
 		} catch (IOException e) {
 			System.err.println("途中でエラーが発生しました。" + e.toString());
+			System.exit(1);
 		} catch (LangSpecException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();

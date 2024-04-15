@@ -23,15 +23,15 @@ import com.github.novisoftware.patternDraw.gui.MyJPanel;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
-public class OutputGraphicsFrame extends JFrame {
+public class OutputGraphicsWindow extends JFrame {
 	static public int IMAGE_WIDTH = 800;
 	static public int IMAGE_HEIGHT = 800;
 
-	static private OutputGraphicsFrame singleton;
+	static private OutputGraphicsWindow singleton;
 
-	static public OutputGraphicsFrame getInstance() {
+	static public OutputGraphicsWindow getInstance() {
 		if (singleton == null) {
-			singleton = new OutputGraphicsFrame();
+			singleton = new OutputGraphicsWindow();
 		}
 
 		return singleton;
@@ -85,7 +85,7 @@ public class OutputGraphicsFrame extends JFrame {
 	}
 
 	static public InstructionRenderer getRenderer() {
-		return OutputGraphicsFrame.getInstance().panel.renderer;
+		return OutputGraphicsWindow.getInstance().panel.renderer;
 	}
 
 	/*
@@ -94,7 +94,7 @@ public class OutputGraphicsFrame extends JFrame {
 	}
 	*/
 
-	private OutputGraphicsFrame() {
+	private OutputGraphicsWindow() {
 		final InstructionRenderer renderer = new InstructionRenderer(new TokenList(new ArrayList<Token>()), new HashMap<String, ObjectHolder>());
 		BufferedImage buffer = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 

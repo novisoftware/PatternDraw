@@ -14,7 +14,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueString;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextFrame;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
@@ -80,6 +80,16 @@ public class Rpn {
 	 */
 	public ArrayList<String> getArray() {
 		return array;
+	}
+
+	/**
+	 *
+	 * @return array
+	 */
+	public ArrayList<String> getArrayCopy() {
+		ArrayList<String> ret = new ArrayList<String>();
+		ret.addAll(array);
+		return ret;
 	}
 
 	/**
@@ -150,7 +160,7 @@ public class Rpn {
 			}
 
 			if (s.equals(":print")) {
-				OutputTextFrame.println(stack.pop().toString());
+				OutputTextWindow.println(stack.pop().toString());
 //				System.out.println(stack.pop().internal.toString());
 			}
 			else if (s.equals(":input:integer")) {

@@ -80,11 +80,12 @@ public class InputConstantWindow extends JFrame2 {
 		addHorizontalRule__test(pane, 5);
 
 		Debug.println("ElementEdit", "RPN to Edit is " + element.getRpnString());
-		rpnArray = element.getRpn().getArray();
+		rpnArray = element.getRpn().getArrayCopy();
 
 		/////////////////////////
 		// 型を切り替えるためのラジオボタン
 
+		// TODO: 「やめる」としたときに、型の切り換えも元に戻す。
 		final Value.ValueType[] valueTypes = {
 				Value.ValueType.INTEGER,
 				Value.ValueType.FLOAT,

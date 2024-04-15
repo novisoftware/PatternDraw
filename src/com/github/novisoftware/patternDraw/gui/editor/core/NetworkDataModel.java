@@ -16,8 +16,8 @@ import java.util.TreeSet;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsFrame;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextFrame;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.FncGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
@@ -610,8 +610,8 @@ public class NetworkDataModel {
 				Debug.println("rpn evaluate is called");
 			} else if (element instanceof FncGraphNodeElement) {
 				Debug.println("fnc evaluate is called");
-				((FncGraphNodeElement)element).evaluate(OutputGraphicsFrame.getRenderer());
-				OutputGraphicsFrame.getInstance().repaint();
+				((FncGraphNodeElement)element).evaluate(OutputGraphicsWindow.getRenderer());
+				OutputGraphicsWindow.getInstance().repaint();
 			}
 			Debug.println("evaluate", "end: " + element.id);
 		}
@@ -704,8 +704,8 @@ public class NetworkDataModel {
 	}
 
 	public void runProgram() {
-		OutputTextFrame.clear();
-		OutputGraphicsFrame.reset();
+		OutputTextWindow.clear();
+		OutputGraphicsWindow.reset();
 		Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
 
 
@@ -731,7 +731,7 @@ public class NetworkDataModel {
 			}
 		}
 
-		OutputGraphicsFrame.refresh();
+		OutputGraphicsWindow.refresh();
 	}
 
 	public void load() {
