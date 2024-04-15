@@ -4,30 +4,37 @@ import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputOtherTypeWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 
-public class EditFrame extends JFrame {
-	EditPanel editPanel;
+public class EditDiagramWindow extends JFrame {
+	EditDiagramPanel editPanel;
 
-	public EditFrame(String filename) {
+	public EditDiagramWindow(String filename) {
 		Common.setIconImage(this);
 
 		this.setSize(1500, 700);
-		this.editPanel = new EditPanel(filename);
+		this.editPanel = new EditDiagramPanel(filename);
 		this.setTitle(Common.FRAME_TITLE_BASE + " 編集画面: " + this.editPanel.networkDataModel.title);
 		this.editPanel.setPreferredSize(new Dimension(1500,2000));
 		this.editPanel.setSize(1500,2000);
@@ -39,29 +46,122 @@ public class EditFrame extends JFrame {
 	}
 
 
+
 	public static class MListener implements MouseListener, MouseMotionListener {
-		final EditPanel editPanel__;
-		MListener(EditPanel editPanel) {
+		JFrame inputWindow = null;
+		WindowListener inputWindowCloseListener;
+
+		// Popupを閉じたくて押したときに、また Popupが開かないように制御したい
+		// この変数が true の場合は Popup を開かない。
+		// TODO
+		// ただし、 Popup が閉じるのを確実には拾えていないので、何回か押す必要がある場合が発生する。
+		public boolean isPopupExists = false;
+
+		final EditDiagramPanel editPanel__;
+		MListener(EditDiagramPanel editPanel) {
 			this.editPanel__ = editPanel;
+
+			final MListener thisMListener = this;
+			this.inputWindowCloseListener = new WindowListener() {
+				@Override
+				public void windowClosed(WindowEvent e) {
+					thisMListener.inputWindow = null;
+					System.out.println("CLOSE");
+				}
+
+				@Override
+				public void windowOpened(WindowEvent e) {
+				}
+
+				@Override
+				public void windowClosing(WindowEvent e) {
+				}
+
+				@Override
+				public void windowIconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeiconified(WindowEvent e) {
+				}
+
+				@Override
+				public void windowActivated(WindowEvent e) {
+				}
+
+				@Override
+				public void windowDeactivated(WindowEvent e) {
+				}
+			};
+		}
+
+		/**
+		 * 入力中のウィンドウがある場合は、それを表に出すだけにする
+		 *
+		 * @return
+		 */
+		private boolean commonCheck() {
+			if (this.inputWindow != null) {
+				// 入力中のウィンドウがある場合は、それを表に出すだけにする
+				this.inputWindow.setVisible(true);
+				return true;
+			}
+			return false;
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			if (commonCheck()) {
+				return;
+			}
+
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
 				if (obj != null) {
-					if (obj instanceof AbstractElement) {
-						AbstractElement element = (AbstractElement)obj;
-						ElementEditFrame f = new ElementEditFrame(element, editPanel__);
-						f.setVisible(true);
+					if (obj instanceof RpnGraphNodeElement) {
+						RpnGraphNodeElement element = (RpnGraphNodeElement)obj;
+						if (element.getKindId() == KindId.CONSTANT) {
+							InputConstantWindow f = new InputConstantWindow(element, editPanel__);
+							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+							f.addWindowListener(inputWindowCloseListener);
+							f.setVisible(true);
+							this.inputWindow = f;
+
+						}else {
+							InputOtherTypeWindow f = new InputOtherTypeWindow(element, editPanel__);
+							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+							f.addWindowListener(inputWindowCloseListener);
+							f.setVisible(true);
+							this.inputWindow = f;
+						}
+					}
+					// TODO: FuncGraphNode の場合は、特に反応させないけれど、
+					// なにか設定したほうが良いか自体から、考える。
+				}
+				else {
+					if (isPopupExists) {
+						// Popupを閉じたくて押したときに、また Popupが開かないように制御したい
+						isPopupExists = false;
+					} else {
+						isPopupExists = true;
+						JMenu generateMenu = ContextMenu.elementGenerateMenu(this.editPanel__, this, e.getX(), e.getY());
+						JPopupMenu popup = new JPopupMenu();
+						popup.add(generateMenu);
+						popup.show( editPanel__, e.getX(), e.getY() );
 					}
 				}
 			}
 			else if (e.getButton() == MouseEvent.BUTTON3) {
-				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
-				// nullでも、nullでなくても
-				ContextMenu popup = new ContextMenu(editPanel__, t, e.getX(), e.getY());
-				popup.show( editPanel__, e.getX(), e.getY() );
+				if (isPopupExists) {
+					// Popupを閉じたくて押したときに、また Popupが開かないように制御したい
+					isPopupExists = false;
+				} else {
+					isPopupExists = true;
+					IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
+					// nullでも、nullでなくても
+					ContextMenu popup = new ContextMenu(editPanel__, t, e.getX(), e.getY());
+					popup.show( editPanel__, e.getX(), e.getY() );
+				}
 			}
 
 		}
@@ -71,6 +171,10 @@ public class EditFrame extends JFrame {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if (commonCheck()) {
+				return;
+			}
+
 			IconGuiInterface t__ = editPanel__.checkXY(e.getX(), e.getY());
 			if (t__ instanceof AbstractElement) {
 				AbstractElement t = (AbstractElement)t__;
@@ -108,6 +212,9 @@ public class EditFrame extends JFrame {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			if (commonCheck()) {
+				return;
+			}
 			if (handled == null) {
 				editPanel__.workLineFrom = null;
 				editPanel__.networkDataModel.evaluate();
@@ -206,6 +313,9 @@ public class EditFrame extends JFrame {
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			if (commonCheck()) {
+				return;
+			}
 			if (handled != null) {
 				if (editPanel__.workLineFrom != null) {
 					editPanel__.workLineX = e.getX();
@@ -246,7 +356,7 @@ public class EditFrame extends JFrame {
 		OutputGraphicsFrame outputGraphicsFrame = OutputGraphicsFrame.getInstance();
 		outputGraphicsFrame.setVisible(true);
 
-		EditFrame frame = new EditFrame(args[0]);
+		EditDiagramWindow frame = new EditDiagramWindow(args[0]);
 		frame.setSize(1500, 800);
 		frame.setVisible(true);
 	}

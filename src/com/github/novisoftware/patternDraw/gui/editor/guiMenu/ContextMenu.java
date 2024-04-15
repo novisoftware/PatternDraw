@@ -11,7 +11,8 @@ import javax.swing.JPopupMenu;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
@@ -28,7 +29,7 @@ public class ContextMenu extends JPopupMenu {
 	int x;
 	int y;
 
-	public ContextMenu(final EditPanel editPanel, final IconGuiInterface icon, int x, int y) {
+	public ContextMenu(final EditDiagramPanel editPanel, final IconGuiInterface icon, int x, int y) {
 		this.x = x;
 		this.y = y;
 
@@ -137,9 +138,11 @@ public class ContextMenu extends JPopupMenu {
 			}
 		}
 
+		/*
 		if (icon == null) {
 			this.add( ContextMenu.elementGenerateMenu(editPanel, x, y) );
 		}
+		*/
 
 		if (icon == null) {
 			this.addSeparator();
@@ -194,7 +197,7 @@ public class ContextMenu extends JPopupMenu {
 
 
 	static ArrayList<ElementFactory> partsList = null;
-	static public JMenu elementGenerateMenu(final EditPanel editPanel, int x, int y) {
+	static public JMenu elementGenerateMenu(final EditDiagramPanel editPanel, final MListener mListener, int x, int y) {
 		if (partsList == null) {
 			MenuGenerator g = new MenuGenerator();
 			partsList = g.generateMenuList(editPanel);
@@ -244,6 +247,9 @@ public class ContextMenu extends JPopupMenu {
 						nParts.createNewElement(editPanel, x, y);
 						editPanel.networkDataModel.evaluate();
 						editPanel.repaint();
+
+						// 閉じるので。
+						mListener.isPopupExists = false;
 
 						/*
 						ElementIcon t =

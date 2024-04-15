@@ -17,16 +17,16 @@ import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 
 public class ElementFactory {
-	final protected EditPanel editPanel;
+	final protected EditDiagramPanel editPanel;
 
-	public ElementFactory(EditPanel editPanel, DefType defType) {
+	public ElementFactory(EditDiagramPanel editPanel, DefType defType) {
 		this.editPanel = editPanel;
 		this.defType = defType;
 	}
@@ -49,7 +49,7 @@ public class ElementFactory {
 	 * @param partsList 展開前のパーツリスト
 	 * @return 展開後のパーツリスト
 	 */
-	public static ArrayList<ElementFactory> partsListExtend(EditPanel editPanel, ArrayList<ElementFactory> partsList) {
+	public static ArrayList<ElementFactory> partsListExtend(EditDiagramPanel editPanel, ArrayList<ElementFactory> partsList) {
 		// 定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する。
 		ArrayList<ElementFactory> expandedParts = new ArrayList<>();
 		for (final ElementFactory nParts : partsList) {
@@ -142,7 +142,7 @@ public class ElementFactory {
 	 * @param x
 	 * @param y
 	 */
-	public void createNewElement(EditPanel editPanel, int x, int y) {
+	public void createNewElement(EditDiagramPanel editPanel, int x, int y) {
 		ArrayList<AbstractElement> eleList = editPanel.networkDataModel.getElements();
 
 		if (this.defType.equals(DefType.TYPE_RPNDEF)) {

@@ -13,9 +13,9 @@ import javax.swing.JPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditFrame.MListener;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 
-public class EditPanel extends JPanel {
+public class EditDiagramPanel extends JPanel {
 	/**
 	 * JPanel上にデバッグ情報を表示する
 	 */
@@ -96,7 +96,7 @@ public class EditPanel extends JPanel {
 		return hit;
 	}
 
-	EditPanel(String filename) {
+	EditDiagramPanel(String filename) {
 		this.networkDataModel = new NetworkDataModel(this, filename);
 		this.networkDataModel.load();
 		this.networkDataModel.evaluate();

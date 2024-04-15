@@ -30,6 +30,8 @@ public class Preference {
 	private static int CANCEL_BUTTON_FONT_SIZE = 20;
 	private static int COSOLE_FONT_SIZE = 16;
 
+	public static String OK_BUTTON_STRING = "これに決める";
+	public static String CANCEL_BUTTON_STRING = "やめる";
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
 	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
 	public static Font CANCEL_BUTTON_FONT = initLabelFont(CANCEL_BUTTON_FONT_SIZE);

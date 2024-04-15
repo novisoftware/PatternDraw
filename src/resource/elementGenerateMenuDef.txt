@@ -1,0 +1,379 @@
+
+# パーツ定義です。
+
+
+KIND: 演算子
+TYPE: POS_LIST
+DISPNAME: 点の集まり/円周上に並んだ点
+DESCRIPTION: 円周上に点を並べて配置します。
+FUNCTION: series_on_circle
+---->DEFINE
+
+KIND: 演算子
+TYPE: POS_LIST
+DISPNAME: 点の集まり/並び順をローテート
+DESCRIPTION: 座標の系列の並び順をローテートします。
+FUNCTION: rotate_point_list
+---->DEFINE
+
+
+KIND: 演算子
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりを辿る
+DESCRIPTION: 複数の座標の系列を辿ります。
+FUNCTION: pos_to_walk
+---->DEFINE
+
+
+KIND: 演算子
+TYPE: LINE_LIST
+DISPNAME: 線の集まり/並び順をローテート
+DESCRIPTION: 座標の系列の並び順をローテートします。
+FUNCTION: rotate_line_list
+---->DEFINE
+
+KIND: 演算子
+TYPE: LINE_LIST
+DISPNAME: 線の集まり/点を線で結ぶ
+DESCRIPTION: 点を線で結びます。
+FUNCTION: line_from_1_series
+---->DEFINE
+
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 線の集まり/描画
+DESCRIPTION: 線分のリストを描画します。
+FUNCTION: line_to_draw
+---->DEFINE
+
+
+
+
+KIND: 定数
+TYPE: INTEGER
+DISPNAME: 定数/整数 0
+DESCRIPTION: 定数値です。
+0;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: INTEGER
+DISPNAME: 定数/整数 1
+DESCRIPTION: 定数値です。
+1;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: INTEGER
+DISPNAME: 定数/整数 2
+DESCRIPTION: 定数値です。
+2;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: FLOAT
+DISPNAME: 定数/浮動小数点 1
+DESCRIPTION: 定数値です。
+1;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: STRING
+DISPNAME: 定数/文字列
+DESCRIPTION: 文字列の定数値です。
+文字列の定数;定数
+-->RPN
+---->DEFINE
+
+KIND: 変数を設定
+TYPE: NONE
+DISPNAME: 変数/新しい変数に設定 {new-variable}
+DESCRIPTION: 新しい変数
+<value:ANY> '{new-variable};変数名 :set-variable
+-->RPN
+---->DEFINE
+
+KIND: 変数を設定
+TYPE: NONE
+DISPNAME: 変数/既存の変数を書き換え/{exist-variable}
+DESCRIPTION: 変数を設定します。
+<value:ANY> '{exist-variable} :set-variable
+-->RPN
+---->DEFINE
+
+KIND: 変数を参照
+TYPE: NONE
+DISPNAME: 変数/既存の変数を参照/{exist-variable}
+DESCRIPTION: 変数を参照します。
+'{exist-variable} :recall-variable
+-->RPN
+---->DEFINE
+
+
+KIND: 入力
+TYPE: INTEGER
+DISPNAME: 入力/整数値
+DESCRIPTION: 整数値を入力します。
+:input:integer
+-->RPN
+---->DEFINE
+
+
+KIND: 演算子
+TYPE: NUMERIC
+DISPNAME: 演算子(計算する)/加算(足す)
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 2つの入力を加算します。
+<input1:NUMERIC>
+<input2:NUMERIC>
++
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: NUMERIC
+DISPNAME: 演算子(計算する)/減算(引く)
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力1から入力2を減算します。
+<input1:NUMERIC>
+<input2:NUMERIC>
+-
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: NUMERIC
+DISPNAME: 演算子(計算する)/乗算(かける)
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 2つの入力を乗算します。
+<input1:NUMERIC>
+<input2:NUMERIC>
+*
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: NUMERIC
+DISPNAME: 演算子(計算する)/除算(割る)
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 2つの入力を乗算します。
+<input1:NUMERIC>
+<input2:NUMERIC>
+/
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: NUMERIC
+DISPNAME: 演算子(計算する)/剰余(あまり)
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 2つの入力の剰余を求めます。
+<input1:NUMERIC>
+<input2:NUMERIC>
+%
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 比較/＞
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aがbより大きい場合、真になります。
+<input1:NUMERIC>
+<input2:NUMERIC>
+>
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 比較/≧
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aがb以上の場合、真になります。
+<input1:NUMERIC>
+<input2:NUMERIC>
+>=
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 比較/＝
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aとbが等しい場合、真になります。
+<input1:NUMERIC>
+<input2:NUMERIC>
+==
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 比較/≠
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aとbが異なる場合、真になります。
+<input1:NUMERIC>
+<input2:NUMERIC>
+!=
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 比較/≦
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aがb以下の場合、真になります。
+<input1:NUMERIC>
+<input2:NUMERIC>
+<=
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 比較/＜
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aがbより小さい場合、真になります。
+<input1:NUMERIC>
+<input2:NUMERIC>
+<
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/AND
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aとbの両方が真の場合、真になります。
+<input1:BOOLEAN>
+<input2:BOOLEAN>
+:and
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/OR
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aとbのどちらかが真の場合、真になります。
+<input1:BOOLEAN>
+<input2:BOOLEAN>
+:or
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/XOR
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: aとbのどちらか片方だけが真の場合、真になります。
+<input1:BOOLEAN>
+<input2:BOOLEAN>
+:xor
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/NOT
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力が偽の場合、真になります。
+<input1:BOOLEAN>
+:not
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/NAND
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 論理演算子NANDです。
+<input1:BOOLEAN>
+:nand
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/NOR
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 論理演算子NORです。
+<input1:BOOLEAN>
+:nor
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 論理演算/XNOR
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 論理演算子XNORです。
+<input1:BOOLEAN>
+:xnor
+-->RPN
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 副作用/表示
+DESCRIPTION: コンソールに表示します
+<input:ANY>
+:print
+-->RPN
+---->DEFINE
+
+KIND: 制御
+TYPE: NONE
+CONTROLE_TYPE: REPEAT
+DISPNAME: 制御/繰り返し(添字なし固定回数ループ)
+WIDTH: 600
+HEIGHT: 300
+DESCRIPTION: 繰り返します。
+1;開始 10;終了 :loop
+-->RPN
+---->DEFINE
+
+KIND: 制御
+TYPE: NONE
+CONTROLE_TYPE: IF
+DISPNAME: 制御/条件実行(IF文)
+WIDTH: 400
+HEIGHT: 300
+DESCRIPTION: 与えられた条件が真の場合実行します。
+:if
+-->RPN
+---->DEFINE
+
+KIND: 制御
+TYPE: NONE
+CONTROLE_TYPE: FOREACH
+DISPNAME: 制御/列挙
+WIDTH: 800
+HEIGHT: 400
+DESCRIPTION: 繰り返します。
+1;開始 100;終了 :loop
+-->RPN
+---->DEFINE

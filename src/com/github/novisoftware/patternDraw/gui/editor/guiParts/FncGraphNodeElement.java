@@ -14,7 +14,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 
 
 public class FncGraphNodeElement extends AbstractGraphNodeElement {
@@ -38,14 +38,14 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 				escape(functionName));
 	}
 
-	public FncGraphNodeElement(EditPanel EditPanel, String functionName, FunctionDefInterface f) {
+	public FncGraphNodeElement(EditDiagramPanel EditPanel, String functionName, FunctionDefInterface f) {
 		super(EditPanel);
 		this.functionName = functionName;
 		this.function = f;
 		buildParameterList(this.function);
 	}
 
-	public FncGraphNodeElement(EditPanel EditPanel, String s) throws LangSpecException {
+	public FncGraphNodeElement(EditDiagramPanel EditPanel, String s) throws LangSpecException {
 		super(EditPanel);
 
 		String a[] =s.split(" ");

@@ -7,13 +7,13 @@ import java.util.HashMap;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 public abstract class AbstractElement implements IconGuiInterface {
-	protected final EditPanel editPanel;
+	protected final EditDiagramPanel editPanel;
 
-	AbstractElement(EditPanel editPanel) {
+	AbstractElement(EditDiagramPanel editPanel) {
 		this.editPanel = editPanel;
 
 		if (string2kind == null) {

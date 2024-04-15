@@ -15,7 +15,7 @@ import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsFrame;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextFrame;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
@@ -35,7 +35,7 @@ public class NetworkDataModel {
 
 	private String filename;
 	private ArrayList<AbstractElement> elements = new ArrayList<AbstractElement>();
-	protected EditPanel editPanel;
+	protected EditDiagramPanel editPanel;
 
 	/**
 	 *  変数名の一覧(設定された変数のみを対象にする)
@@ -62,7 +62,7 @@ public class NetworkDataModel {
 		return elements;
 	}
 
-	public NetworkDataModel(EditPanel editPanel, String filename) {
+	public NetworkDataModel(EditDiagramPanel editPanel, String filename) {
 		this.editPanel = editPanel;
 		this.filename = filename;
 	}

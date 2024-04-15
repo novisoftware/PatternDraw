@@ -14,7 +14,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
@@ -46,11 +46,11 @@ public class ControlElement extends AbstractElement {
 		return ret;
 	}
 
-	public ControlElement(EditPanel EditPanel) {
+	public ControlElement(EditDiagramPanel EditPanel) {
 		super(EditPanel);
 	}
 
-	public ControlElement(EditPanel EditPanel, String s) {
+	public ControlElement(EditDiagramPanel EditPanel, String s) {
 		super(EditPanel);
 
 		String a[] =s.split(" ");

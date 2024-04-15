@@ -12,7 +12,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecExcept
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.DefType;
 import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 
@@ -54,7 +54,7 @@ public class MenuGenerator {
 	 * @param filename
 	 * @return
 	 */
-	public ArrayList<ElementFactory> generateMenuList(EditPanel editPanel) {
+	public ArrayList<ElementFactory> generateMenuList(EditDiagramPanel editPanel) {
 		ArrayList<ElementFactory> list = new ArrayList<>();
 
 		try {

@@ -55,4 +55,11 @@ public class JFrame2 extends JFrame {
 		hr.setPreferredSize(new Dimension((int)this.getSize().getWidth() * 2, width));
 		c.add(hr);
 	}
+
+	protected void addHorizontalRule__test(Container c, int width) {
+		Box hr = Box.createHorizontalBox();
+		// hr.setPreferredSize(new Dimension(WINDOW_WIDTH * 2, width));
+		hr.setPreferredSize(new Dimension((int)2000, width));
+		c.add(hr);
+	}
 }
