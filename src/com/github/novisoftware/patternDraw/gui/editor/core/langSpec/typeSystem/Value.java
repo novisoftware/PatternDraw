@@ -8,10 +8,13 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 public class Value {
 
 	/**
-	 * 値の型
+	 * 値の型。
+	 * 単精度浮動小数点や、精度に限定のある整数型は使用しない。
+	 * 大は小を兼ねるというか、この処理系は遅いので、単精度を使っても速くなる期待がないため。
 	 *
 	 * <ul>
 	 * <li> ANY	       何でもよい
+	 * <li> FLOAT      倍精度浮動小数点(注: 単精度をサポートしない)
 	 * <li> NUMERIC    多倍長小数
 	 * <li> INTEGER    多倍長整数
 	 * <li> STRING     文字列
