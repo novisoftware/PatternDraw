@@ -10,9 +10,9 @@ import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public abstract class AbstractGraphNodeElement extends AbstractElement {
 	/**
@@ -34,7 +34,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 		ArrayList<String> ret = new ArrayList<>();
 
 		for (String s: paramMapInfo.keySet()) {
-			ret.add(String.format("REF: %s %s %s", escape(id), s, paramMapInfo.get(s)));
+			ret.add(String.format("REF: %s %s %s", escape(id), escape(s), escape(paramMapInfo.get(s))));
 		}
 		return ret;
 	}
@@ -139,7 +139,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 					) {
 				g2.setColor(this.grayColor);
 				g2.fillRect(e.x + 12, e.y, e.w, e.h);
-				BufferedImage image = Common.getImage(IconImage.EDIT, this);
+				BufferedImage image = GuiUtil.getImage(IconImage.EDIT, this);
 				g2.drawImage(image, e.x + 20, e.y + 5, null);
 
 				g2.setColor(Color.BLACK);
@@ -149,7 +149,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 					) {
 				g2.setColor(this.grayColor);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
-				BufferedImage image = Common.getImage(IconImage.DISPLAY, this);
+				BufferedImage image = GuiUtil.getImage(IconImage.DISPLAY, this);
 				g2.drawImage(image, e.x + 40, e.y, null);
 			}
 			else if ( e.getKindId() == KindId.CONSTANT // t.getKindString().equals("定数")
@@ -166,7 +166,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 					) {
 				g2.setColor(this.grayColor);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
-				BufferedImage image = Common.getImage(IconImage.VAR_SET, this);
+				BufferedImage image = GuiUtil.getImage(IconImage.VAR_SET, this);
 				g2.drawImage(image, e.x + 20, e.y, null);
 
 				g2.setColor(Color.BLACK);
@@ -178,7 +178,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 					) {
 				g2.setColor(this.grayColor);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
-				BufferedImage image = Common.getImage(IconImage.VAR_REFER, this);
+				BufferedImage image = GuiUtil.getImage(IconImage.VAR_REFER, this);
 				g2.drawImage(image, e.x + 20, e.y, null);
 
 				g2.setColor(Color.BLACK);

@@ -3,6 +3,8 @@ package com.github.novisoftware.patternDraw.geometricLanguage.token;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
+
 /**
  * トークン列
  *

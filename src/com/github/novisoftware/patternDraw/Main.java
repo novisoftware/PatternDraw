@@ -18,9 +18,9 @@ import com.github.novisoftware.patternDraw.gui.MyJFrame2;
 import com.github.novisoftware.patternDraw.gui.MyJPanel;
 import com.github.novisoftware.patternDraw.gui.MyJPanel2;
 import com.github.novisoftware.patternDraw.gui.SettingWindow;
-import com.github.novisoftware.patternDraw.png.PngUtil;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 import com.github.novisoftware.patternDraw.svg.SvgUtil;
+import com.github.novisoftware.patternDraw.utils.PngUtil;
 
 public class Main {
 	static public int IMAGE_WIDTH = 800;

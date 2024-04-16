@@ -14,7 +14,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.Fu
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.DefType;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class MenuGenerator {
 	private String workDescription;
@@ -72,31 +72,31 @@ public class MenuGenerator {
 				if (line == null) {
 					break;
 				}
-				line = Common.trim(line);
+				line = GuiUtil.trim(line);
 
 				if (line.startsWith("#")) {
 					continue;
 				}
 
 				if (line.startsWith("DESCRIPTION:")) {
-					workDescription = Common.trim(line.substring("DESCRIPTION:".length()));
+					workDescription = GuiUtil.trim(line.substring("DESCRIPTION:".length()));
 				} else if (line.startsWith("KIND:")) {
-					workKindName = Common.trim(line.substring("KIND:".length()));
+					workKindName = GuiUtil.trim(line.substring("KIND:".length()));
 				} else if (line.startsWith("TYPE:")) {
-					workTypeName = Common.trim(line.substring("TYPE:".length()));
+					workTypeName = GuiUtil.trim(line.substring("TYPE:".length()));
 				} else if (line.startsWith("CONTROL_TYPE:")) {
-					workControlTypeName = Common.trim(line.substring("CONTROL_TYPE:".length()));
+					workControlTypeName = GuiUtil.trim(line.substring("CONTROL_TYPE:".length()));
 				} else if (line.startsWith("DISPNAME:")) {
-					workDispName = Common.trim(line.substring("DISPNAME:".length()));
+					workDispName = GuiUtil.trim(line.substring("DISPNAME:".length()));
 				} else if (line.startsWith("WIDTH:")) {
-					workWidth = Integer.parseInt(Common.trim(line.substring("WIDTH:".length())));
+					workWidth = Integer.parseInt(GuiUtil.trim(line.substring("WIDTH:".length())));
 				} else if (line.startsWith("HEIGHT:")) {
-					workHeight = Integer.parseInt(Common.trim(line.substring("HEIGHT:".length())));
+					workHeight = Integer.parseInt(GuiUtil.trim(line.substring("HEIGHT:".length())));
 				} else if (line.startsWith("FUNCTION:")) {
-					workFncName = Common.trim(line.substring("FUNCTION:".length()));
+					workFncName = GuiUtil.trim(line.substring("FUNCTION:".length()));
 					defType = DefType.TYPE_FNCDEF;
 				} else if (line.startsWith("-->RPN")) {
-					workRPN = Common.concatStrings(workList);
+					workRPN = GuiUtil.concatStrings(workList);
 
 					defType = DefType.TYPE_RPNDEF;
 				} else if (line.startsWith("---->DEFINE")) {
@@ -139,9 +139,9 @@ public class MenuGenerator {
 					workHeight = 60;
 					defType = DefType.TYPE_UNDEF;
 				} else {
-					String s = Common.trim(line);
+					String s = GuiUtil.trim(line);
 					if (!s.equals("")) {
-						workList.add(Common.trim(line));
+						workList.add(GuiUtil.trim(line));
 					}
 				}
 			}

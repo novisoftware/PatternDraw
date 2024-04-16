@@ -10,8 +10,8 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
@@ -68,7 +68,7 @@ public class ElementFactory {
 			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
 				Debug.println("match " + ElementFactory.CONST_STR__META_NEW_VARIABLE);
 
-				String newVariableName = Common.generateUniqName(editPanel.networkDataModel.nameOfvaliables, "");
+				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.nameOfvaliables, "");
 				ElementFactory add = nParts.getCopy();
 
 				add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE , newVariableName);

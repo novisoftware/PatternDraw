@@ -18,8 +18,8 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 
 
@@ -164,7 +164,7 @@ public class ContextMenu extends JPopupMenu {
 
 		if (icon == null) {
 			this.addSeparator();
-			menuItem = Common.createMenuItem("開発者用デバッグ情報を表示", editPanel.isVisibleDebugInfo);
+			menuItem = GuiUtil.createMenuItem("開発者用デバッグ情報を表示", editPanel.isVisibleDebugInfo);
 			menuItem.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
 							editPanel.isVisibleDebugInfo = ! editPanel.isVisibleDebugInfo;

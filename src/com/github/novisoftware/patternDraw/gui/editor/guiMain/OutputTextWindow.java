@@ -14,9 +14,9 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class OutputTextWindow extends JFrame {
 	static private OutputTextWindow singleton;
@@ -57,8 +57,8 @@ public class OutputTextWindow extends JFrame {
 
 	    this.setSize(600, 600);
 		this.setVisible(true);
-		this.setTitle(Common.FRAME_TITLE_BASE + " テキストの出力");
+		this.setTitle(GuiUtil.FRAME_TITLE_BASE + " テキストの出力");
 
-		Common.setIconImage(this);
+		GuiUtil.setIconImage(this);
 	}
 }

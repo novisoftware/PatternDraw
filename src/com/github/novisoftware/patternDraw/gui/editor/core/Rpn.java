@@ -18,6 +18,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 
 public class Rpn {
@@ -108,12 +109,7 @@ public class Rpn {
 
 
 	public static ArrayList<String> s2a(String s) {
-		String a1[] = s.split(" +");
-		ArrayList<String> a2 = new ArrayList<String>();
-		for(String s1 : a1) {
-			a2.add(s1);
-		}
-		return a2;
+		return FileReadUtil.tokenize(s);
 	}
 
 
@@ -161,7 +157,6 @@ public class Rpn {
 
 			if (s.equals(":print")) {
 				OutputTextWindow.println(stack.pop().toString());
-//				System.out.println(stack.pop().internal.toString());
 			}
 			else if (s.equals(":input:integer")) {
 				while (true) {
@@ -209,9 +204,6 @@ public class Rpn {
 				else if (ele.getValueType().equals(Value.ValueType.NUMERIC )) {
 					stack.push(new ValueNumeric(stack.pop().toString()));
 				}
-
-				// 旧実装
-				// stack.push(new ValueNumeric(stack.pop().toString()));
 			}
 			else if (s.equals("-")) {
 				Value b = stack.pop();
@@ -234,7 +226,6 @@ public class Rpn {
 
 					stack.push( new ValueNumeric( a_.getInternal().divide(b_.getInternal())));
 				}
-//				stack.push( new Value( stack.pop().getInternal().divide(stack.pop().getInternal())));
 			}
 			else if (s.equals("%")) {
 				Value b = stack.pop();
@@ -256,7 +247,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals("+")) {
 				Value b = stack.pop();
@@ -276,7 +266,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( stack.pop().getInternal().add(stack.pop().getInternal())));
 			}
 			else if (s.equals("*")) {
 				Value b = stack.pop();
@@ -288,8 +277,6 @@ public class Rpn {
 
 					stack.push( new ValueNumeric( a_.getInternal().multiply(b_.getInternal())));
 				}
-
-//				stack.push( new Value( stack.pop().getInternal().multiply(stack.pop().getInternal()) ) );
 			}
 			else if (s.equals(">")) {
 				Value b = stack.pop();
@@ -417,7 +404,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals(":or")) {
 				Value b = stack.pop();
@@ -434,7 +420,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals(":xor")) {
 				Value b = stack.pop();
@@ -451,7 +436,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals(":not")) {
 				Value a = stack.pop();
@@ -465,7 +449,6 @@ public class Rpn {
 					Debug.println("RPN", ":not INVALID");
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals(":nand")) {
 				Value b = stack.pop();
@@ -482,7 +465,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals(":nor")) {
 				Value b = stack.pop();
@@ -499,7 +481,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.equals(":xnor")) {
 				Value b = stack.pop();
@@ -516,7 +497,6 @@ public class Rpn {
 					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
 					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
 				}
-//				stack.push( new Value( new BigDecimal( stack.pop().getInternal().toBigInteger().mod(stack.pop().getInternal().toBigInteger()))));
 			}
 			else if (s.startsWith("'")) {
 				stringStack.push( RpnUtil.getRepresent(s.substring(1)) );

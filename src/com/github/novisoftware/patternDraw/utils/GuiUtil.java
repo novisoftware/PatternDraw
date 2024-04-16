@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.util;
+package com.github.novisoftware.patternDraw.utils;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -20,7 +20,7 @@ import javax.swing.JMenuItem;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
-public class Common {
+public class GuiUtil {
 	public static final String FRAME_TITLE_BASE = "pattern drawing: ";
 
 	public static final String RESOURCE_FRAME_ICON = "/iconimage/icon2.png";
@@ -34,7 +34,7 @@ public class Common {
 		// （Macでは表示されない）
 		try {
 			frame.setIconImage(ImageIO.read(frame.getClass().getResource(
-					Common.RESOURCE_FRAME_ICON)));
+					GuiUtil.RESOURCE_FRAME_ICON)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -96,7 +96,7 @@ public class Common {
 	}
 
 	public static ImageIcon IconMark(boolean marked) {
-		return marked ? Common.iconChecked : Common.iconUnchecked;
+		return marked ? GuiUtil.iconChecked : GuiUtil.iconUnchecked;
 	}
 
 	/**

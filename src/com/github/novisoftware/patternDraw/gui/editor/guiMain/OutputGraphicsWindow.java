@@ -20,8 +20,8 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.gui.MyJPanel;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class OutputGraphicsWindow extends JFrame {
 	static public int IMAGE_WIDTH = 800;
@@ -101,7 +101,7 @@ public class OutputGraphicsWindow extends JFrame {
 		panel = new MyJPanel(renderer, buffer);
 		this.getContentPane().add(panel, BorderLayout.CENTER);
 
-		Common.setIconImage(this);
+		GuiUtil.setIconImage(this);
 		this.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
 		this.setTitle("PatternDraw (Graphics Preview)");
 		this.setVisible(true);

@@ -15,6 +15,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.Fu
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 
 public class FncGraphNodeElement extends AbstractGraphNodeElement {
@@ -48,7 +49,7 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 	public FncGraphNodeElement(EditDiagramPanel EditPanel, String s) throws LangSpecException {
 		super(EditPanel);
 
-		String a[] =s.split(" ");
+		String a[] = FileReadUtil.tokenizeToArray(s);
 		this.x = Integer.parseInt(a[1], 10);
 		this.y = Integer.parseInt(a[2], 10);
 		this.w = Integer.parseInt(a[3], 10);

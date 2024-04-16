@@ -25,6 +25,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
@@ -37,7 +38,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 /**
@@ -143,7 +143,7 @@ public class InputOtherTypeWindow extends JFrame {
 	JLabel messageDisp;
 
 	public InputOtherTypeWindow(final AbstractElement element, final EditDiagramPanel editPanel) {
-		Common.setIconImage(this);
+		GuiUtil.setIconImage(this);
 		this.targetElement = element;
 		this.setTitle(element.getKindString() + " を編集");
 

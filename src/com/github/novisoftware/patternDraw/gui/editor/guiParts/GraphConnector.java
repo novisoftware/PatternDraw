@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 
 
@@ -28,7 +28,7 @@ public class GraphConnector implements IconGuiInterface {
 	static final int RENDER_HEIGHT= 10;
 	static final int RENDER_WIDTH= 10;
 
-	static private Common.StringWidthUtil strUtil = new Common.StringWidthUtil();
+	static private GuiUtil.StringWidthUtil strUtil = new GuiUtil.StringWidthUtil();
 
 	public AbstractGraphNodeElement getNode() {
 		return this.node;

@@ -31,11 +31,11 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 /**
  *
@@ -58,9 +58,9 @@ public class InputConstantWindow extends JFrame2 {
 				e.printStackTrace();
 			}
 		}
-		Common.setIconImage(this);
+		GuiUtil.setIconImage(this);
 		String message = element.getKindString() + " を設定します。";
-		this.setTitle(Common.FRAME_TITLE_BASE + message);
+		this.setTitle(GuiUtil.FRAME_TITLE_BASE + message);
 		this.setSize(500, 250);
 
 		// ターゲットにする要素の設定

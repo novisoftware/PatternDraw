@@ -8,6 +8,7 @@ import java.util.HashMap;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 /**
  * ノードに閉じたミクロなRPN式(逆ポーランド記法の式)で計算をします。
@@ -73,16 +74,19 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 	public RpnGraphNodeElement(EditDiagramPanel EditPanel, String s) {
 		super(EditPanel);
 
-		String a[] =s.split(" ");
+		String a[] = FileReadUtil.tokenizeToArray(s);
 		this.x = Integer.parseInt(a[1], 10);
 		this.y = Integer.parseInt(a[2], 10);
 		this.w = Integer.parseInt(a[3], 10);
 		this.h = Integer.parseInt(a[4], 10);
-		this.id = unescape(a[5]);
-		this.setKindString(unescape(a[6]));
-		String strOutputType = unescape(a[7]);
+		this.id = a[5];
+		this.setKindString(a[6]);
+		String strOutputType = a[7];
 		this.valueType = Value.str2valueType.get(strOutputType);
-		this.setRpnString(unescape(a[8]));
+
+		System.out.println("rpn string = " + a[8]);
+
+		this.setRpnString(a[8]);
 		buildParameterList(this.getRpnString());
 	}
 

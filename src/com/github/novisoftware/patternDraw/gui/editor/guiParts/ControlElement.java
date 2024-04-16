@@ -24,9 +24,9 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
-import com.github.novisoftware.patternDraw.gui.editor.util.Common;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class ControlElement extends AbstractElement {
 	/**
@@ -58,10 +58,10 @@ public class ControlElement extends AbstractElement {
 		this.y = Integer.parseInt(a[2], 10);
 		this.w = Integer.parseInt(a[3], 10);
 		this.h = Integer.parseInt(a[4], 10);
-		this.id = unescape(a[5]);
-		this.setKindString(unescape(a[6]));
-		this.controlType = unescape(a[7]);
-		this.setRpnString(unescape(a[8]));
+		this.id = a[5];
+		this.setKindString(a[6]);
+		this.controlType = a[7];
+		this.setRpnString(a[8]);
 //		buildParameterList(this.getRpnString());
 	}
 
@@ -185,10 +185,10 @@ public class ControlElement extends AbstractElement {
 				g2.drawRect(t.x, t.y, t.w, t.h);
 
 				if (t.controlType.equals("REPEAT")) {
-					BufferedImage image = Common.getImage(IconImage.LOOP, this);
+					BufferedImage image = GuiUtil.getImage(IconImage.LOOP, this);
 					g2.drawImage(image, t.x - 50, t.y, null);
 				} else if (t.controlType.equals("IF")) {
-					BufferedImage image = Common.getImage(IconImage.IF, this);
+					BufferedImage image = GuiUtil.getImage(IconImage.IF, this);
 					g2.drawImage(image, t.x - 50, t.y, null);
 				}
 

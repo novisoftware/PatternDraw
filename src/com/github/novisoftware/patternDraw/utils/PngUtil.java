@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.png;
+package com.github.novisoftware.patternDraw.utils;
 
 import java.awt.Color;
 import java.awt.Graphics2D;

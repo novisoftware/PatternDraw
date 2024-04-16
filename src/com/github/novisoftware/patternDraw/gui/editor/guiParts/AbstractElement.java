@@ -4,11 +4,10 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 public abstract class AbstractElement implements IconGuiInterface {
 	protected final EditDiagramPanel editPanel;
@@ -159,11 +158,11 @@ public abstract class AbstractElement implements IconGuiInterface {
 	}
 
 	public static String escape(String s) {
-		return s.replaceAll(" ", "~");
+		return FileReadUtil.escape(s);
 	}
 
 	public static String unescape(String s) {
-		return s.replaceAll("~", " ");
+		return s;
 	}
 
 	public abstract String str();
