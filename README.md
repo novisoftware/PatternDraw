@@ -29,8 +29,13 @@ InkScapeに読み込んでPDF(Portable Document Format)形式に変換するこ�
 ##
 
 # ライセンス
+## アイコン
+© copyright interactivemania 2010-2011
+Default Icon by interactivemania is licensed under a Creative Commons Attribution-No Derivative Works 3.0.
 
 本ソフトウェアは、defaultIcon( http://www.defaulticon.com/ )によるアイコンを使用しています。
 このアイコン部分のライセンスは Creative Commons Attribution-No Derivative Works 3.0 です。
 
+## アイコン以外
+© copyright NOVISOFTWARE (japan) 2024
 それ以外の部分のライセンスは Apache License 2.0 です。
