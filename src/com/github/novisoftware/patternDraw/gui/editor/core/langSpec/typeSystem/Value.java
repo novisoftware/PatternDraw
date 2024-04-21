@@ -39,10 +39,13 @@ public class Value {
 
 	public static String valueTypeToDescString(ValueType valueType) {
 		if (ValueType.NUMERIC.equals(valueType)) {
-			return "任意精度";
+			return "任意精度実数";
 		}
 		if (ValueType.FLOAT.equals(valueType)) {
-			return "浮動小数点";
+			return "浮動小数点数";
+		}
+		if (ValueType.BOOLEAN.equals(valueType)) {
+			return "真偽値";
 		}
 		if (ValueType.INTEGER.equals(valueType)) {
 			return "整数";

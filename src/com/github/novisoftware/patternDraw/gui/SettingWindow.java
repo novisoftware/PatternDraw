@@ -25,7 +25,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
-import com.github.novisoftware.patternDraw.gui.misc.Preference;
+import com.github.novisoftware.patternDraw.utils.Preference;
 
 public class SettingWindow extends JFrame2 {
 	static class OnFixActionListener implements ActionListener {

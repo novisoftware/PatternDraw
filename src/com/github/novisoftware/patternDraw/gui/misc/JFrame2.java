@@ -10,6 +10,9 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.Preference;
+
 public class JFrame2 extends JFrame {
 	/**
 	 * GUI 部品Look And Feel を設定する
@@ -19,7 +22,7 @@ public class JFrame2 extends JFrame {
 	public static void setLookAndFeel(JFrame frame) {
 		String tryLaf[] = {
 				"com.sun.java.swing.plaf.windows.WindowsLookAndFeel",
-				"com.sun.java.swing.plaf.motif.MotifLookAndFeel"
+				// "com.sun.java.swing.plaf.motif.MotifLookAndFeel"
 		};
 
 		for (String lookAndFeel: tryLaf) {
@@ -31,6 +34,11 @@ public class JFrame2 extends JFrame {
 				// 処理不要
 			}
 		}
+	}
+
+	@Override
+	public void setTitle(String s) {
+		super.setTitle(GuiUtil.FRAME_TITLE_BASE + s);
 	}
 
 	protected JFrame2() {
@@ -61,5 +69,20 @@ public class JFrame2 extends JFrame {
 		// hr.setPreferredSize(new Dimension(WINDOW_WIDTH * 2, width));
 		hr.setPreferredSize(new Dimension((int)2000, width));
 		c.add(hr);
+	}
+
+	protected Box horizontalRule(int width) {
+		Box hr = Box.createHorizontalBox();
+		// hr.setPreferredSize(new Dimension(WINDOW_WIDTH * 2, width));
+		hr.setPreferredSize(new Dimension((int)2000, width));
+		return hr;
+	}
+
+
+	protected Box spacer(int width) {
+		Box hr = Box.createHorizontalBox();
+		// hr.setPreferredSize(new Dimension(WINDOW_WIDTH * 2, width));
+		hr.setPreferredSize(new Dimension((int)width, 1));
+		return hr;
 	}
 }

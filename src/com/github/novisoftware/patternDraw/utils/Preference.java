@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.misc;
+package com.github.novisoftware.patternDraw.utils;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -32,10 +32,17 @@ public class Preference {
 
 	public static String OK_BUTTON_STRING = "これに決める";
 	public static String CANCEL_BUTTON_STRING = "やめる";
+	public static String DELETE_BUTTON_STRING = "削除する";
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
 	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
 	public static Font CANCEL_BUTTON_FONT = initLabelFont(CANCEL_BUTTON_FONT_SIZE);
 	public static Font CONSOLE_FONT = initLabelFont(COSOLE_FONT_SIZE);
+
+	public static String ADD_BUTTON_STRING = "追加する";
+	private static int ADD_BUTTON_FONT_SIZE = 20;
+	public static Font ADD_BUTTON_FONT = initLabelFont(ADD_BUTTON_FONT_SIZE);
+
+
 
 	/**
 	 * GUIの文字表示に使用するフォントを探す処理。

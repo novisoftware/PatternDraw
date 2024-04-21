@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
@@ -33,14 +34,27 @@ public class NetworkDataModel {
 	 */
 	public String title = "";
 
+	/**
+	 * 保存先のファイル名
+	 */
 	private String filename;
+	/**
+	 * エレメントのリスト
+	 */
 	private ArrayList<AbstractElement> elements = new ArrayList<AbstractElement>();
+	/**
+	 * 編集用パネル(JPanel)
+	 */
 	protected EditDiagramPanel editPanel;
+	/**
+	 * パラメーターの一覧
+	 */
+	public final ArrayList<ParameterDefineToEdit> params;
 
 	/**
 	 *  変数名の一覧(設定された変数のみを対象にする)
 	 */
-	public ArrayList<String> nameOfvaliables;
+	public ArrayList<String> variableNameList;
 
 
 	/**
@@ -53,7 +67,7 @@ public class NetworkDataModel {
 	 */
 	ArrayList<AbstractElement> rootElement;
 
-	// elementに表示用の「単連結グループID」をつける
+	// elementに表示用の「単連結グループID」(連番)をつける
 	public HashMap<Integer,ArrayList<AbstractGraphNodeElement>> graphGroup;
 	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_head;
 	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_all;
@@ -65,6 +79,7 @@ public class NetworkDataModel {
 	public NetworkDataModel(EditDiagramPanel editPanel, String filename) {
 		this.editPanel = editPanel;
 		this.filename = filename;
+		this.params = new ArrayList<ParameterDefineToEdit>();
 	}
 
 	/**
@@ -156,7 +171,7 @@ public class NetworkDataModel {
 		positionSortedElements.addAll(elements);
 
 		// 変数名の一覧(設定された変数のみを対象にする)
-		nameOfvaliables = new ArrayList<>();
+		variableNameList = new ArrayList<>();
 
 		// 変数名の一覧を作成する
 		for (AbstractElement elementIcon : positionSortedElements) {
@@ -164,14 +179,14 @@ public class NetworkDataModel {
 				if (((RpnGraphNodeElement)elementIcon).getKindId().equals(KindId.VARIABLE_SET)) {
 				// if (((RpnGraphNodeElement)elementIcon).getKindString().equals("変数を設定")) {
 					String rep = ((RpnGraphNodeElement)elementIcon).getRepresentExpression();
-					if (! nameOfvaliables.contains(rep)) {
-						nameOfvaliables.add(rep);
+					if (! variableNameList.contains(rep)) {
+						variableNameList.add(rep);
 					}
 				}
 			}
 		}
 
-		for (String varName: nameOfvaliables) {
+		for (String varName: variableNameList) {
 			Debug.println("Evaluate", "var name: " + varName);
 		}
 
@@ -747,8 +762,13 @@ public class NetworkDataModel {
 				if( line==null ) {
 					break;
 				}
+				if (line.length() == 0 || line.startsWith("#")) {
+					continue;
+				}
 				if (line.startsWith("TITLE:")) {
 					this.title = line.substring("TITLE:".length());
+				} else if (line.startsWith("PARAMETER:")) {
+					this.params.add(ParameterDefineToEdit.getParameterDefineToEdit(line));
 				} else if (line.startsWith("RPN_ELEMENT:")) {
 					this.getElements().add(new RpnGraphNodeElement(this.editPanel, line));
 				} else if (line.startsWith("FNC_ELEMENT:")) {
@@ -820,6 +840,11 @@ public class NetworkDataModel {
 			writer = new BufferedWriter(new FileWriter( new File(filename) ));
 			writer.write("");
 			writer.write("TITLE:" + this.title + "\n");
+			writer.write("\n");
+			for (ParameterDefineToEdit p : params) {
+				writer.write( p.str() + '\n' );
+			}
+			writer.write("\n");
 			for (AbstractElement n : getElements()) {
 				writer.write( n.str() + '\n' );
 			}

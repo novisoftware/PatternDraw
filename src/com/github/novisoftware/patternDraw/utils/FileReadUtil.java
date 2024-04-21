@@ -61,7 +61,6 @@ public class FileReadUtil {
 		ArrayList<String> ret = new ArrayList<String>();
 		int n = src.length();
 		StringBuffer sb = new StringBuffer();
-		int raw_length = 0;
 		boolean isQuoted = false;
 		for (int i = 0; i < n; i++) {
 			char c = src.charAt(i);
@@ -71,43 +70,34 @@ public class FileReadUtil {
 					if (sb.length() > 0) {
 						ret.add(sb.toString());
 						sb = new StringBuffer();
-						raw_length = 0;
 					}
 				} else if (c == '"') {
 					isQuoted = true;
-					if (raw_length > 0) {
-						sb.append('"');
-					}
-					raw_length ++;
-					/*
-					if (sb.length() > 0) {
-						sb.append('"');
-					}
-					*/
 				} else {
 					sb.append(c);
-					raw_length ++;
 				}
 			} else {
 				if (c == '"') {
-					isQuoted = false;
+					if (i < n - 1 && src.charAt(i+1) == '"') {
+						// 入力文字列中に "" が出てきた場合は出力文字列に " を追加する。
+						sb.append(c);
+						i += 1;
+					}
+					else {
+						ret.add(sb.toString());
+						sb = new StringBuffer();
+						isQuoted = false;
+					}
 				} else {
 					sb.append(c);
 				}
-				raw_length ++;
 			}
 		}
 
+		// lineの文字列末尾に入っている値
+		// (クォートされていない場合)
 		if (sb.length() > 0) {
 			ret.add(sb.toString());
-			/*
-			String s = sb.toString();
-			if (s.startsWith("\"") && s.endsWith("\"")) {
-				ret.add(s.substring(1, s.length() - 1));
-			} else {
-				ret.add(sb.toString());
-			}
-			*/
 		}
 
 		return ret;
@@ -137,11 +127,31 @@ public class FileReadUtil {
 	 * @return エスケープした文字列
 	 */
 	public static String escape(String s) {
-		if (s.indexOf('"') != -1 || s.indexOf(' ') != -1) {
+		if (s == null || s.equals("")) {
+			return "\"\"";
+		} else if (s.indexOf('"') != -1 || s.indexOf(' ') != -1) {
 			return '"' + s.replaceAll("\"", "\"\"") + '"';
 		} else {
 			return s;
 		}
+	}
+
+	public static String escape(Boolean b) {
+		if (b != null) {
+			return b ? "true" : "false";
+		}
+		return "null";
+	}
+
+	public static Boolean booleanValue(String str) {
+		String s = str.toLowerCase();
+		if (s.equals("true")) {
+			return true;
+		}
+		else if (s.equals("false")) {
+			return false;
+		}
+		return null;
 	}
 
 	/**

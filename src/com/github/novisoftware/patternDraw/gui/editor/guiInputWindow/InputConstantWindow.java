@@ -34,12 +34,12 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeEleme
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
-import com.github.novisoftware.patternDraw.gui.misc.Preference;
+import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.Preference;
 
 /**
- *
- * 定数値の編集を行う
+ * ダイヤグラム中の定数値の編集を行う
  *
  */
 public class InputConstantWindow extends JFrame2 {
@@ -58,9 +58,8 @@ public class InputConstantWindow extends JFrame2 {
 				e.printStackTrace();
 			}
 		}
-		GuiUtil.setIconImage(this);
 		String message = element.getKindString() + " を設定します。";
-		this.setTitle(GuiUtil.FRAME_TITLE_BASE + message);
+		this.setTitle(message);
 		this.setSize(500, 250);
 
 		// ターゲットにする要素の設定
@@ -145,7 +144,7 @@ public class InputConstantWindow extends JFrame2 {
 					} else if (element.getKindId() == KindId.VARIABLE_SET) {
 						Debug.println("2   element.getKindId() = " + element.getKindId());
 						value = value.replaceAll("'", "");
-						inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.nameOfvaliables);
+						inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.variableNameList);
 					}
 					messageDisp.setText(inputChecker.message);
 
@@ -215,7 +214,10 @@ public class InputConstantWindow extends JFrame2 {
 			this.updateMessage();
 		}
 
-		public ValueInputPanel(InputConstantWindow frame, int param_index, String comment, String ini,
+		public ValueInputPanel(InputConstantWindow frame,
+				int param_index,
+				String comment,
+				String ini,
 				AbstractInputChecker checker) {
 			Debug.println("Comment: " + comment);
 			Debug.println("Ini: --" + ini + "--");
@@ -223,10 +225,13 @@ public class InputConstantWindow extends JFrame2 {
 			this.frame = frame;
 			this.checker = checker;
 
+			this.textField = new JTextField2("" + ini);
+			/*
 			this.textField = new JTextField("" + ini);
 			// TODO テキストフィールドのサイズ指定が、あまりうまく行っていない。
 			this.textField.setPreferredSize(new Dimension(200,20));
 			this.textField.setFont(Preference.CONSOLE_FONT);
+			*/
 			this.setLayout(new GridLayout(1, 2));
 			this.add(new JLabel2(comment));
 			this.add(this.textField);

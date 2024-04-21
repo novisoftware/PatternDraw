@@ -56,7 +56,7 @@ public class ElementFactory {
 			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
 				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
 
-				for (String varName : editPanel.networkDataModel.nameOfvaliables) {
+				for (String varName : editPanel.networkDataModel.variableNameList) {
 					ElementFactory add = nParts.getCopy();
 
 					add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE, varName);
@@ -68,7 +68,7 @@ public class ElementFactory {
 			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
 				Debug.println("match " + ElementFactory.CONST_STR__META_NEW_VARIABLE);
 
-				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.nameOfvaliables, "");
+				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.variableNameList, "");
 				ElementFactory add = nParts.getCopy();
 
 				add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE , newVariableName);

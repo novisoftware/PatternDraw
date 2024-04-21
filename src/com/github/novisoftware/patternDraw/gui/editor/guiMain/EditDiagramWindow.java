@@ -28,17 +28,18 @@ import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 
-public class EditDiagramWindow extends JFrame {
+public class EditDiagramWindow extends JFrame2 {
 	EditDiagramPanel editPanel;
 
 	public EditDiagramWindow(String filename) {
-		GuiUtil.setIconImage(this);
+		super();
 
 		this.setSize(1500, 700);
 		this.editPanel = new EditDiagramPanel(filename);
-		this.setTitle(GuiUtil.FRAME_TITLE_BASE + " 編集画面: " + this.editPanel.networkDataModel.title);
+		this.setTitle("ダイヤグラムを編集: " + this.editPanel.networkDataModel.title);
 		this.editPanel.setPreferredSize(new Dimension(1500,2000));
 		this.editPanel.setSize(1500,2000);
 		JScrollPane sp = new JScrollPane(this.editPanel);

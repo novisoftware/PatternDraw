@@ -6,6 +6,8 @@ import java.awt.RenderingHints;
 
 import javax.swing.JLabel;
 
+import com.github.novisoftware.patternDraw.utils.Preference;
+
 /**
  * JLabelの見た目を変更したもの。
  */

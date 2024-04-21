@@ -24,8 +24,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.novisoftware.patternDraw.gui.misc.Preference;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.Preference;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
@@ -39,13 +39,14 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeEleme
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 
 /**
  *
  * RPN式の編集を行う
  *
  */
-public class InputOtherTypeWindow extends JFrame {
+public class InputOtherTypeWindow extends JFrame2 {
 	/**
 	 * 呼び出し元画面
 	 */
@@ -143,7 +144,6 @@ public class InputOtherTypeWindow extends JFrame {
 	JLabel messageDisp;
 
 	public InputOtherTypeWindow(final AbstractElement element, final EditDiagramPanel editPanel) {
-		GuiUtil.setIconImage(this);
 		this.targetElement = element;
 		this.setTitle(element.getKindString() + " を編集");
 
@@ -247,7 +247,7 @@ public class InputOtherTypeWindow extends JFrame {
 						} else if (element.getKindId() == KindId.VARIABLE_SET) {
 							Debug.println("2   element.getKindId() = " + element.getKindId());
 							value = value.replaceAll("'", "");
-							inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.nameOfvaliables);
+							inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.variableNameList);
 						}
 						messageDisp.setText(inputChecker.message);
 
@@ -305,7 +305,7 @@ public class InputOtherTypeWindow extends JFrame {
 						// {
 
 						ValueSelectPanel p = new ValueSelectPanel(this, comment, value,
-								editPanel.networkDataModel.nameOfvaliables);
+								editPanel.networkDataModel.variableNameList);
 
 						// (this, index, comment, value, inputChecker);
 

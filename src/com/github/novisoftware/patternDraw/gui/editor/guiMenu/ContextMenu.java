@@ -4,14 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParameterDefinitionListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
@@ -144,6 +147,33 @@ public class ContextMenu extends JPopupMenu {
 		}
 		*/
 
+		if (icon == null) {
+			this.addSeparator();
+			menuItem = new JMenuItem("パラメーターを定義");
+			menuItem.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							if (editPanel.paramDefEditWindow != null) {
+								editPanel.paramDefEditWindow.setVisible(true);
+							}
+
+							ArrayList<ParameterDefineToEdit> params =
+									editPanel.networkDataModel.params;
+
+							Runnable callback = new Runnable() {
+								@Override
+								public void run() {
+									editPanel.paramDefEditWindow = null;
+								}
+							};
+
+							EditParameterDefinitionListWindow frame =
+									new EditParameterDefinitionListWindow(params, callback);
+							frame.setVisible(true);
+							frame.setLocation(900, 40);
+						}
+					});
+			this.add( menuItem );
+		}
 		if (icon == null) {
 			this.addSeparator();
 			menuItem = new JMenuItem("評価(うごかす)");

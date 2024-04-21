@@ -23,6 +23,11 @@ public class EditDiagramPanel extends JPanel {
 
 	public NetworkDataModel networkDataModel;
 
+	/**
+	 * サブウィンドウ(パラメーター定義の編集画面)
+	 */
+	public EditParameterDefinitionListWindow paramDefEditWindow = null;
+
 	Font font1 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 	Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 

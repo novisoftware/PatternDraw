@@ -18,7 +18,6 @@ import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.misc.Preference;
 
 public class GuiUtil {
 	public static final String FRAME_TITLE_BASE = "pattern drawing: ";
@@ -29,6 +28,7 @@ public class GuiUtil {
 	public static final ImageIcon iconChecked = createCheckedMark(true);
 	public static final ImageIcon iconUnchecked = createCheckedMark(false);
 
+	/*
 	public static void setIconImage(JFrame frame) {
 		// Windows向けにウィンドウタイトルバーのアイコンイメージを設定する。
 		// （Macでは表示されない）
@@ -39,6 +39,7 @@ public class GuiUtil {
 			e.printStackTrace();
 		}
 	}
+	*/
 
 	static private HashMap<String, BufferedImage> cache = new HashMap<>();
 
