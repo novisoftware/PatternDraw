@@ -110,6 +110,8 @@ public class Util {
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				caller.params.remove(tf.param);
+
 				// 変更を元に戻す
 				caller.removeParamDefFromPane(tf.param);
 				caller.repaintHard();

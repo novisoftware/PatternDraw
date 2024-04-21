@@ -9,7 +9,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,7 +34,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 	/**
 	 * パラメーター一覧
 	 */
-	final ArrayList<ParameterDefineToEdit> params;
+	public final ArrayList<ParameterDefineToEdit> params;
 	/**
 	 * パラメーター名の一覧(設定された変数のみを対象にする)
 	 */
@@ -65,6 +64,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		super();
 
 		this.params = params;
+		System.out.println("params (obj) = " + params);
 		variableNameList = new ArrayList<String>();
 		this.setTitle("パラメーターの一覧");
 		this.setSize(800, 800);
@@ -91,18 +91,6 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		// パラメーターに対応する JLabel 等をpaneに直接貼り付けている。
 		// これを削除する際に使用する。
 		this.componentOnPane = new HashMap<ParameterDefineToEdit, ArrayList<JComponent>>();
-
-		// ためし。
-		/*
-		ParameterDefineToEdit p1 = new ParameterDefineToEdit("para1", "変数名1", "0", ValueType.INTEGER, false, "", false,
-				"", "");
-
-		ParameterDefineToEdit p2 = new ParameterDefineToEdit("para2", "変数名1", "2000", ValueType.INTEGER, false, "",
-				false, "", "");
-		params.add(p1);
-		params.add(p2);
-		*/
-
 		for (ParameterDefineToEdit p : params) {
 			addParamDefToPane(p);
 		}
@@ -149,8 +137,10 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ParameterDefineToEdit parameter = new ParameterDefineToEdit("newValue", "説明文", "0", ValueType.INTEGER,
+				ParameterDefineToEdit parameter = new ParameterDefineToEdit("", "", "0", ValueType.INTEGER,
 						false, "", false, "", "");
+				params.add(parameter);
+
 				thisFrame.jp.remove(addButton);
 				thisFrame.addParamDefToPane(parameter);
 				thisFrame.jp.add(addButton);
