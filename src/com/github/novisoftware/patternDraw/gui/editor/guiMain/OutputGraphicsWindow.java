@@ -103,7 +103,7 @@ public class OutputGraphicsWindow extends JFrame2 {
 		this.getContentPane().add(panel, BorderLayout.CENTER);
 
 		this.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
-		this.setTitle("PatternDraw (Graphics Preview)");
+		this.setTitle("グラフィックスの出力");
 		this.setVisible(true);
 	}
 }

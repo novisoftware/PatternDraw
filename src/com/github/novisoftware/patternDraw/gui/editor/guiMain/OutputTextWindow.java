@@ -58,6 +58,6 @@ public class OutputTextWindow extends JFrame2 {
 
 	    this.setSize(600, 600);
 		this.setVisible(true);
-		this.setTitle(GuiUtil.FRAME_TITLE_BASE + " テキストの出力");
+		this.setTitle(" テキストの出力");
 	}
 }

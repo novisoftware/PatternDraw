@@ -2,10 +2,9 @@ package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
 
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -19,27 +18,22 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
-import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.BooleanChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParameterDefinitionListWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.gui.misc.JCheckBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 /**
@@ -51,9 +45,15 @@ public class InputParamDefWindow extends JFrame2 {
 	final ParameterDefineToEdit param;
 	final ParameterDefineToEdit backupParam;
 	// final Parameter param;
-	JLabel messageDisp;
 	private final JButton buttonOk;
-	final ArrayList<String> variableNameList;
+	final HashSet<String> variableNameSet;
+
+	// チェック結果
+	final JLabel messageDisp;
+	final JLabel messageDisp_varName;
+	final JLabel messageDisp_sliderMin;
+	final JLabel messageDisp_sliderMax;
+
 	/**
 	 * 選択可能な型の種類
 	 */
@@ -72,16 +72,36 @@ public class InputParamDefWindow extends JFrame2 {
 	final ValueInputPanel field_sliderMin;
 	final ValueInputPanel field_sliderMax;
 
+	final HashSet<ValueInputPanel> ngInputPanels;
+
 	public InputParamDefWindow(// final RpnGraphNodeElement element,
 			final EditParameterDefinitionListWindow parent, final ParameterDefineToEdit param,
-			final ArrayList<String> variableNameList) {
+			final HashSet<String> variableNameSet) {
 		this.setTitle("パラメーターを設定します。");
-		this.setSize(600, 600);
+		this.setSize(600, 800);
 
 		// 変数名一覧の設定
-		this.variableNameList = variableNameList;
+		this.variableNameSet = variableNameSet;
 		this.param = param;
 		this.backupParam = param.clone();
+
+
+		// 入力項目でNGになっているものがあるかどうかで、 OK ボタンを制御する
+		this.ngInputPanels = new HashSet<ValueInputPanel>();
+
+
+		// 変数名のチェック結果
+		this.messageDisp_varName = new JLabel2(" ");
+
+		// デフォルト値のチェック結果
+		this.messageDisp = new JLabel2(" ");
+
+		//
+		field_defalutValue = new ValueInputPanel(this, new Let() {
+			public void let(String s) {
+				param.defaultValue = s;
+			}
+		}, "デフォルト値", param.defaultValue, new IntegerChecker(), messageDisp);
 
 		////////////////////////////////////////////////////////////////////
 		// レイアウト
@@ -96,20 +116,17 @@ public class InputParamDefWindow extends JFrame2 {
 		// 不可視の水平線を作成する (レイアウトの調整)
 		addHorizontalRule__test(pane, 5);
 
-		// 値チェック
-		messageDisp = new JLabel2(" ");
-		pane.add(messageDisp);
-
-		// 不可視の水平線を作成する (レイアウトの調整)
-		addHorizontalRule__test(pane, 5);
-
 		/////////////////////////
 		// 変数名
+
+		// 変数名のチェック結果
+		pane.add(this.messageDisp_varName);
+
 		field_name = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.name = s;
 			}
-		}, "変数名:", param.name, new NonCheckChecker());
+		}, "変数名:", param.name, new VariableNameChecker(this.variableNameSet), this.messageDisp_varName);
 		pane.add(field_name);
 
 		pane.add(horizontalRule(5));
@@ -120,7 +137,7 @@ public class InputParamDefWindow extends JFrame2 {
 			public void let(String s) {
 				param.description = s;
 			}
-		}, "説明:", param.description, new NonCheckChecker());
+		}, "説明:", param.description, new NonCheckChecker(), null);
 		pane.add(field_name);
 
 		pane.add(field_desc);
@@ -134,24 +151,25 @@ public class InputParamDefWindow extends JFrame2 {
 		// 型を切り替えるためのラジオボタン
 		// TODO: 値チェックの更新
 		// TODO: 押したときの値の保存
-		putTypeSelectionParts(pane, this.enableValueTypeList, param.valueType);
+		putTypeSelectionParts(pane, this.enableValueTypeList, param.valueType, field_defalutValue);
 
 		// 不可視の水平線を作成する (レイアウトの調整)
 		addHorizontalRule__test(pane, 5);
 
 		/////////////////////////
 		// デフォルト値
-		field_defalutValue = new ValueInputPanel(this, new Let() {
-			public void let(String s) {
-				param.defaultValue = s;
-			}
-		}, "デフォルト値", param.defaultValue, new IntegerChecker());
+
+		// デフォルト値のチェック結果
+		pane.add(messageDisp);
+		// 不可視の水平線を作成する (レイアウトの調整)
+		addHorizontalRule__test(pane, 1);
+
 		pane.add(field_defalutValue);
 		pane.add(horizontalRule(5));
 
 		/////////////////////////
 		// 列挙値
-		check_enumEnable = new JCheckBox();
+		check_enumEnable = new JCheckBox2();
 		pane.add(check_enumEnable);
 		JLabel2 label_enumEnable = new JLabel2("ラジオボタンによる設定を有効にする");
 		pane.add(label_enumEnable);
@@ -162,14 +180,14 @@ public class InputParamDefWindow extends JFrame2 {
 			public void let(String s) {
 				param.enumValueList = s;
 			}
-		}, "列挙値:", param.enumValueList, new NonCheckChecker());
+		}, "列挙値:", param.enumValueList, new NonCheckChecker(), null);
 		pane.add(field_enumValue);
 
 		pane.add(horizontalRule(5));
 
 		///////////////////
 		// スライダー
-		check_sliderEnable = new JCheckBox();
+		check_sliderEnable = new JCheckBox2();
 		pane.add(check_sliderEnable);
 		JLabel2 label_sliderEnable = new JLabel2("スライダーによる設定を有効にする");
 		pane.add(label_sliderEnable);
@@ -178,27 +196,36 @@ public class InputParamDefWindow extends JFrame2 {
 
 		///////////////////
 		// スライダー最小値
-		JLabel2 label_minValue = new JLabel2("最小値:");
+		// デフォルト値のチェック結果
+		this.messageDisp_sliderMin = new JLabel2(" ");
+		pane.add(messageDisp_sliderMin);
+		pane.add(horizontalRule(1));
+
+		JLabel2 label_minValue = new JLabel2("最小値(左端の値):");
 		pane.add(label_minValue);
 
 		field_sliderMin = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.sliderMin = s;
 			}
-		}, "", param.sliderMin, new FloatChecker());
+		}, "", param.sliderMin, new FloatChecker(), this.messageDisp_sliderMin);
 		pane.add(this.field_sliderMin);
 		pane.add(horizontalRule(1));
 
 		///////////////////
 		// スライダー最大値
-		JLabel2 label_maxValue = new JLabel2("最大値:");
+		this.messageDisp_sliderMax = new JLabel2(" ");
+		pane.add(messageDisp_sliderMax);
+		pane.add(horizontalRule(1));
+
+		JLabel2 label_maxValue = new JLabel2("最大値(右端の値):");
 		pane.add(label_maxValue);
 
 		field_sliderMax = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.sliderMax = s;
 			}
-		}, "", param.sliderMax, new FloatChecker());
+		}, "", param.sliderMax, new FloatChecker(), this.messageDisp_sliderMax);
 		pane.add(this.field_sliderMax);
 		pane.add(horizontalRule(5));
 
@@ -220,7 +247,8 @@ public class InputParamDefWindow extends JFrame2 {
 	}
 
 
-	static void putTypeSelectionParts(Container pane, ValueType[] valueTypeList, ValueType initialValueType) {
+	static void putTypeSelectionParts(Container pane, ValueType[] valueTypeList, ValueType initialValueType,
+			final ValueInputPanel inputPanel) {
 
 		String[] valueParamList = new String[valueTypeList.length];
 		for (int i = 0; i < valueTypeList.length; i++) {
@@ -243,6 +271,34 @@ public class InputParamDefWindow extends JFrame2 {
 			}
 			group.add(radioButton);
 			pane.add(radioButton);
+
+			// ラジオボタンの入れ替えでチェック処理の変更
+			final ValueType valueType = valueTypeList[i];
+			radioButton.addChangeListener(new ChangeListener() {
+				public void stateChanged(ChangeEvent e) {
+					if (radioButton.isSelected()) {
+						if (ValueType.INTEGER.equals(valueType)) {
+							inputPanel.setInputChecker(new IntegerChecker());
+						} else if (ValueType.FLOAT.equals(valueType)) {
+							inputPanel.setInputChecker(new FloatChecker());
+						} else if (ValueType.NUMERIC.equals(valueType)) {
+							inputPanel.setInputChecker(new NumericChecker());
+						} else if (ValueType.BOOLEAN.equals(valueType)) {
+							inputPanel.setInputChecker(new BooleanChecker());
+						} else if (ValueType.STRING.equals(valueType)) {
+							inputPanel.setInputChecker(new NonCheckChecker());
+						} else {
+							try {
+								throw new Exception("Check");
+							} catch (Exception e1) {
+								System.err.println("値の異常のため点検必要");
+								e1.printStackTrace();
+							}
+						}
+						inputPanel.updateMessage();
+					}
+				}
+			});
 		}
 
 	}
@@ -254,6 +310,7 @@ public class InputParamDefWindow extends JFrame2 {
 	static class ValueInputPanel extends JPanel {
 		final InputParamDefWindow frame;
 		final JTextField textField;
+		final JLabel messageDisp;
 		AbstractInputChecker checker;
 
 		/**
@@ -265,12 +322,14 @@ public class InputParamDefWindow extends JFrame2 {
 		 * @param checker
 		 */
 		public ValueInputPanel(InputParamDefWindow frame, Let let, String comment, String ini,
-				AbstractInputChecker checker) {
+				AbstractInputChecker checker,
+				final JLabel messageDisp) {
 			Debug.println("Comment: " + comment);
 			Debug.println("Ini: --" + ini + "--");
 
 			this.frame = frame;
 			this.checker = checker;
+			this.messageDisp = messageDisp;
 
 			this.textField = new JTextField2("" + ini);
 			// TODO テキストフィールドのサイズ指定が、あまりうまく行っていない。
@@ -279,7 +338,9 @@ public class InputParamDefWindow extends JFrame2 {
 			this.setLayout(new GridLayout(1, 2));
 			this.add(new JLabel2(comment));
 			this.add(this.textField);
-			this.frame.messageDisp.setText(checker.message);
+			if (this.messageDisp != null) {
+				this.messageDisp.setText(checker.message);
+			}
 			this.setBackground(Preference.BG_COLOR);
 
 			// リスナーを設定
@@ -312,19 +373,31 @@ public class InputParamDefWindow extends JFrame2 {
 		}
 
 		void updateMessage() {
+			if (messageDisp == null) {
+				return;
+			}
+
 			final Color COLOR_ERROR = Color.RED;
 			final Color COLOR_NORMAL = Color.BLACK;
 
 			String text = textField.getText();
 			checker.check(text);
-			if (checker.isOk()) {
+			if (checker.isOk() || ! textField.isEnabled()) {
+				if (frame.ngInputPanels.contains(this)) {
+					frame.ngInputPanels.remove(this);
+				}
+				this.messageDisp.setForeground(COLOR_NORMAL);
+				this.messageDisp.setText(checker.message);
+			} else {
+				frame.ngInputPanels.add(this);
+				this.messageDisp.setForeground(COLOR_ERROR);
+				this.messageDisp.setText(checker.message);
+			}
+
+			if (frame.ngInputPanels.isEmpty()) {
 				frame.buttonOk.setEnabled(true);
-				frame.messageDisp.setForeground(COLOR_NORMAL);
-				frame.messageDisp.setText(checker.message);
 			} else {
 				frame.buttonOk.setEnabled(false);
-				frame.messageDisp.setForeground(COLOR_ERROR);
-				frame.messageDisp.setText(checker.message);
 			}
 		}
 
@@ -332,6 +405,5 @@ public class InputParamDefWindow extends JFrame2 {
 			this.checker = checker;
 			this.updateMessage();
 		}
-
 	}
 }

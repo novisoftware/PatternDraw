@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -38,7 +39,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 	/**
 	 * パラメーター名の一覧(設定された変数のみを対象にする)
 	 */
-	final public ArrayList<String> variableNameList;
+	// final public ArrayList<String> variableNameList;
 
 	/**
 	 * パラメーター一覧の定義ウィンドウに貼り付けてある、 パラメーターに対応するコンポーネントのリスト。
@@ -65,7 +66,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 
 		this.params = params;
 		System.out.println("params (obj) = " + params);
-		variableNameList = new ArrayList<String>();
+		// variableNameList = new ArrayList<String>();
 		this.setTitle("パラメーターの一覧");
 		this.setSize(800, 800);
 
@@ -116,8 +117,15 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 	}
 
 	private void createInputWindow(ParameterDefineToEdit para) {
+		HashSet<String> variableNameSet = new HashSet<String>();
+		for (ParameterDefineToEdit p : params) {
+			if (p != para) {
+				variableNameSet.add(p.name);
+			}
+		}
+
     	if (inputParamDefWindow == null) {
-			inputParamDefWindow = new InputParamDefWindow(this, para, variableNameList);
+			inputParamDefWindow = new InputParamDefWindow(this, para, variableNameSet);
     	}
 		inputParamDefWindow.setVisible(true);
 		addButton.setEnabled(false);
