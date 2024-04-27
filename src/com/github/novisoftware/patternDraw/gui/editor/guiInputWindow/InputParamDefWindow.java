@@ -1,14 +1,17 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -33,6 +36,7 @@ import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JCheckBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
+import com.github.novisoftware.patternDraw.gui.misc.JLabel3_messageDisp;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
@@ -91,10 +95,10 @@ public class InputParamDefWindow extends JFrame2 {
 
 
 		// 変数名のチェック結果
-		this.messageDisp_varName = new JLabel2(" ");
+		this.messageDisp_varName = new JLabel3_messageDisp(" ");
 
 		// デフォルト値のチェック結果
-		this.messageDisp = new JLabel2(" ");
+		this.messageDisp = new JLabel3_messageDisp(" ");
 
 		//
 		field_defalutValue = new ValueInputPanel(this, new Let() {
@@ -102,6 +106,11 @@ public class InputParamDefWindow extends JFrame2 {
 				param.defaultValue = s;
 			}
 		}, "デフォルト値", param.defaultValue, new IntegerChecker(), messageDisp);
+
+		final ArrayList<JComponent> enumBuilderPartsSet = new ArrayList<JComponent>();
+		final ArrayList<JComponent> sliderBuilderPartsSet = new ArrayList<JComponent>();
+
+
 
 		////////////////////////////////////////////////////////////////////
 		// レイアウト
@@ -148,10 +157,25 @@ public class InputParamDefWindow extends JFrame2 {
 		pane.add(new JLabel2("型:"));
 		pane.add(horizontalRule(1));
 
+
 		// 型を切り替えるためのラジオボタン
 		// TODO: 値チェックの更新
 		// TODO: 押したときの値の保存
-		putTypeSelectionParts(pane, this.enableValueTypeList, param.valueType, field_defalutValue);
+		ValueTypeSetter initialSetter =
+			putTypeSelectionParts(pane,
+				this.enableValueTypeList,
+				param.valueType,
+				new ValueTypeSetter() {
+					@Override
+					public void set(ValueType newValueType) {
+						param.valueType = newValueType;
+					}
+				},
+				field_defalutValue,
+				enumBuilderPartsSet,
+				sliderBuilderPartsSet
+				);
+
 
 		// 不可視の水平線を作成する (レイアウトの調整)
 		addHorizontalRule__test(pane, 5);
@@ -170,67 +194,74 @@ public class InputParamDefWindow extends JFrame2 {
 		/////////////////////////
 		// 列挙値
 		check_enumEnable = new JCheckBox2();
-		pane.add(check_enumEnable);
+		enumBuilderPartsSet.add(check_enumEnable);
 		JLabel2 label_enumEnable = new JLabel2("ラジオボタンによる設定を有効にする");
-		pane.add(label_enumEnable);
+		enumBuilderPartsSet.add(label_enumEnable);
 
-		pane.add(horizontalRule(1));
+		enumBuilderPartsSet.add(horizontalRule(1));
 
 		field_enumValue = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.enumValueList = s;
 			}
 		}, "列挙値:", param.enumValueList, new NonCheckChecker(), null);
-		pane.add(field_enumValue);
+		enumBuilderPartsSet.add(field_enumValue);
 
+		for (JComponent c : enumBuilderPartsSet) {
+			pane.add(c);
+		}
 		pane.add(horizontalRule(5));
 
 		///////////////////
 		// スライダー
 		check_sliderEnable = new JCheckBox2();
-		pane.add(check_sliderEnable);
+		sliderBuilderPartsSet.add(check_sliderEnable);
 		JLabel2 label_sliderEnable = new JLabel2("スライダーによる設定を有効にする");
-		pane.add(label_sliderEnable);
+		sliderBuilderPartsSet.add(label_sliderEnable);
 
-		pane.add(horizontalRule(1));
+		sliderBuilderPartsSet.add(horizontalRule(1));
 
 		///////////////////
 		// スライダー最小値
 		// デフォルト値のチェック結果
-		this.messageDisp_sliderMin = new JLabel2(" ");
-		pane.add(messageDisp_sliderMin);
-		pane.add(horizontalRule(1));
+		this.messageDisp_sliderMin = new JLabel3_messageDisp(" ");
+		sliderBuilderPartsSet.add(messageDisp_sliderMin);
+		sliderBuilderPartsSet.add(horizontalRule(1));
 
 		JLabel2 label_minValue = new JLabel2("最小値(左端の値):");
-		pane.add(label_minValue);
+		sliderBuilderPartsSet.add(label_minValue);
 
 		field_sliderMin = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.sliderMin = s;
 			}
 		}, "", param.sliderMin, new FloatChecker(), this.messageDisp_sliderMin);
-		pane.add(this.field_sliderMin);
-		pane.add(horizontalRule(1));
+		sliderBuilderPartsSet.add(this.field_sliderMin);
+		sliderBuilderPartsSet.add(horizontalRule(1));
 
 		///////////////////
 		// スライダー最大値
-		this.messageDisp_sliderMax = new JLabel2(" ");
-		pane.add(messageDisp_sliderMax);
-		pane.add(horizontalRule(1));
+		this.messageDisp_sliderMax = new JLabel3_messageDisp(" ");
+		sliderBuilderPartsSet.add(messageDisp_sliderMax);
+		sliderBuilderPartsSet.add(horizontalRule(1));
 
 		JLabel2 label_maxValue = new JLabel2("最大値(右端の値):");
-		pane.add(label_maxValue);
+		sliderBuilderPartsSet.add(label_maxValue);
 
 		field_sliderMax = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.sliderMax = s;
 			}
 		}, "", param.sliderMax, new FloatChecker(), this.messageDisp_sliderMax);
-		pane.add(this.field_sliderMax);
-		pane.add(horizontalRule(5));
+		sliderBuilderPartsSet.add(this.field_sliderMax);
+		sliderBuilderPartsSet.add(horizontalRule(5));
+
+		for (JComponent c : sliderBuilderPartsSet) {
+			pane.add(c);
+		}
 
 		///////////////////
-		// 更新ボタン
+		// OKボタン
 		this.buttonOk = Util.generateSubmitButton2(parent, this);
 		pane.add(this.buttonOk);
 		///////////////////
@@ -240,20 +271,47 @@ public class InputParamDefWindow extends JFrame2 {
 		// アイテムを削除
 		pane.add(spacer(10));
 		pane.add(Util.generateDeleteButton2(parent, this));
+
+
+		initialSetter.set(param.valueType);
 	}
 
 	void revert() {
 		param.updateTo(backupParam);
 	}
 
+	static interface ValueTypeSetter {
+		void set(ValueType newValueType);
+	}
 
-	static void putTypeSelectionParts(Container pane, ValueType[] valueTypeList, ValueType initialValueType,
-			final ValueInputPanel inputPanel) {
+
+
+	/**
+	 * 型の選択を変更したときの動作
+	 * （ラジオボタン配置）
+	 *
+	 * @param pane 配置先のJFrame等
+	 * @param valueTypeList 選択可能な一覧
+	 * @param initialValueType 初期値
+	 * @param inputPanel
+	 * @param sliderBuilderPartsSet
+	 * @param enumBuilderPartsSet
+	 */
+	static ValueTypeSetter putTypeSelectionParts(Container pane,
+			ValueType[] valueTypeList,
+			ValueType initialValueType,
+			ValueTypeSetter setter,
+			final ValueInputPanel inputPanel,
+			final ArrayList<JComponent> enumBuilderPartsSet,
+			final ArrayList<JComponent> sliderBuilderPartsSet) {
 
 		String[] valueParamList = new String[valueTypeList.length];
 		for (int i = 0; i < valueTypeList.length; i++) {
 			valueParamList[i] = Value.valueTypeToDescString(valueTypeList[i]);
 		}
+
+		final ValueType[] valueTypeContainer = new ValueType[1];
+		valueTypeContainer[0] = null;
 		JRadioButton valueTypeChangeRadioButtons[] = null;
 		ButtonGroup group = new ButtonGroup();
 		valueTypeChangeRadioButtons = new JRadioButton[valueParamList.length];
@@ -277,31 +335,126 @@ public class InputParamDefWindow extends JFrame2 {
 			radioButton.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {
 					if (radioButton.isSelected()) {
-						if (ValueType.INTEGER.equals(valueType)) {
-							inputPanel.setInputChecker(new IntegerChecker());
-						} else if (ValueType.FLOAT.equals(valueType)) {
-							inputPanel.setInputChecker(new FloatChecker());
-						} else if (ValueType.NUMERIC.equals(valueType)) {
-							inputPanel.setInputChecker(new NumericChecker());
-						} else if (ValueType.BOOLEAN.equals(valueType)) {
-							inputPanel.setInputChecker(new BooleanChecker());
-						} else if (ValueType.STRING.equals(valueType)) {
-							inputPanel.setInputChecker(new NonCheckChecker());
-						} else {
-							try {
-								throw new Exception("Check");
-							} catch (Exception e1) {
-								System.err.println("値の異常のため点検必要");
-								e1.printStackTrace();
-							}
-						}
-						inputPanel.updateMessage();
+						ValueType valueType_prev = valueTypeContainer[0];
+						valueTypeContainer[0] = onRadioSelected(
+											valueType_prev,
+											valueType,
+											setter,
+											inputPanel,
+											enumBuilderPartsSet,
+											sliderBuilderPartsSet,
+											false);
 					}
 				}
 			});
+
 		}
 
+		// 注：
+		// このタイミングで onRadioSelected を呼んでも
+		// enumBuilderPartsSet   sliderBuilderPartsSetは nullであり、
+		// 効果がないので、
+		// 初回実行用のValueTypeSetterを作成して、呼び出し元から渡す。
+		return new ValueTypeSetter() {
+			@Override
+			public void set(ValueType newValueType) {
+				valueTypeContainer[0] = onRadioSelected(
+						null,
+						newValueType,
+						setter,
+						inputPanel,
+						enumBuilderPartsSet,
+						sliderBuilderPartsSet,
+						false);
+			}
+		};
 	}
+
+	/**
+	 * ラジオボタン変更時、または、初期化のときの設定処理
+	 *
+	 * @param valueType_prev 初期化のときは敢えてnullを渡す。
+	 * @param valueType
+	 * @param setter
+	 * @param inputPanel
+	 * @param enumBuilderPartsSet
+	 * @param sliderBuilderPartsSet
+	 * @param isInit
+	 * @return
+	 */
+	static public ValueType onRadioSelected(
+			ValueType valueType_prev,
+			ValueType valueType,
+			ValueTypeSetter setter,
+			final ValueInputPanel inputPanel,
+			final ArrayList<JComponent> enumBuilderPartsSet,
+			final ArrayList<JComponent> sliderBuilderPartsSet,
+			boolean isInit
+			) {
+		if (valueType == null) {
+			return null;
+		}
+		if (valueType.equals(valueType_prev)) {
+			return valueType;
+		}
+
+		setter.set(valueType);
+		if (ValueType.INTEGER.equals(valueType)) {
+			inputPanel.setInputChecker(new IntegerChecker());
+		} else if (ValueType.FLOAT.equals(valueType)) {
+			inputPanel.setInputChecker(new FloatChecker());
+		} else if (ValueType.NUMERIC.equals(valueType)) {
+			inputPanel.setInputChecker(new NumericChecker());
+		} else if (ValueType.BOOLEAN.equals(valueType)) {
+			inputPanel.setInputChecker(new BooleanChecker());
+		} else if (ValueType.STRING.equals(valueType)) {
+			inputPanel.setInputChecker(new NonCheckChecker());
+		} else {
+			try {
+				throw new Exception("Check");
+			} catch (Exception e1) {
+				System.err.println("値の異常のため点検必要");
+				e1.printStackTrace();
+			}
+		}
+		inputPanel.updateMessage();
+
+		if (enumBuilderPartsSet != null) {
+			// 注: 今後、対応する型の種類を増やすかもしれないけれど、現時点では以下の2分別。
+			if (ValueType.INTEGER.equals(valueType)) {
+				setEnablePartsList(true, enumBuilderPartsSet);
+			} else {
+				setEnablePartsList(false, enumBuilderPartsSet);
+			}
+		}
+
+		if (sliderBuilderPartsSet != null) {
+			// 注: 今後、対応する型の種類を増やすかもしれないけれど、現時点では以下の2分別。
+			if (ValueType.FLOAT.equals(valueType)) {
+				setEnablePartsList(true, sliderBuilderPartsSet);
+			} else {
+				setEnablePartsList(false, sliderBuilderPartsSet);
+			}
+		}
+
+		return valueType;
+	}
+
+
+	static void setEnablePartsList(boolean enabled, ArrayList<JComponent> partsList) {
+		for (JComponent c : partsList) {
+			if (c instanceof JLabel) {
+				c.setForeground(enabled ? Color.BLACK : Color.GRAY);
+			} else if (c instanceof JCheckBox) {
+				c.setEnabled(enabled);
+			} else if (c instanceof JTextField) {
+				c.setEnabled(enabled);
+			} else if (c instanceof ValueInputPanel) {
+				((ValueInputPanel)c).setEnabled(enabled);
+			}
+		}
+	}
+
 
 	static interface Let {
 		public void let(String s);
@@ -309,6 +462,7 @@ public class InputParamDefWindow extends JFrame2 {
 
 	static class ValueInputPanel extends JPanel {
 		final InputParamDefWindow frame;
+		final JLabel description;
 		final JTextField textField;
 		final JLabel messageDisp;
 		AbstractInputChecker checker;
@@ -321,10 +475,10 @@ public class InputParamDefWindow extends JFrame2 {
 		 * @param ini
 		 * @param checker
 		 */
-		public ValueInputPanel(InputParamDefWindow frame, Let let, String comment, String ini,
+		public ValueInputPanel(InputParamDefWindow frame, Let let, String description, String ini,
 				AbstractInputChecker checker,
 				final JLabel messageDisp) {
-			Debug.println("Comment: " + comment);
+			Debug.println("Comment: " + description);
 			Debug.println("Ini: --" + ini + "--");
 
 			this.frame = frame;
@@ -336,7 +490,8 @@ public class InputParamDefWindow extends JFrame2 {
 			// this.textField.setPreferredSize(new Dimension(200,20));
 			// this.textField.setFont(Preference.CONSOLE_FONT);
 			this.setLayout(new GridLayout(1, 2));
-			this.add(new JLabel2(comment));
+			this.description = new JLabel2(description);
+			this.add(this.description);
 			this.add(this.textField);
 			if (this.messageDisp != null) {
 				this.messageDisp.setText(checker.message);
@@ -377,8 +532,9 @@ public class InputParamDefWindow extends JFrame2 {
 				return;
 			}
 
-			final Color COLOR_ERROR = Color.RED;
-			final Color COLOR_NORMAL = Color.BLACK;
+			// TODO: preferenceに。
+			final Color COLOR_ERROR = Preference.MESSAGE_ERROR_COLOR;
+			final Color COLOR_NORMAL = Preference.TEXT_COLOR;
 
 			String text = textField.getText();
 			checker.check(text);
@@ -404,6 +560,16 @@ public class InputParamDefWindow extends JFrame2 {
 		public void setInputChecker(AbstractInputChecker checker) {
 			this.checker = checker;
 			this.updateMessage();
+		}
+
+		/*
+		final JTextField textField;
+		final JLabel messageDisp;
+		*/
+
+		public void setEnabled(boolean enabled) {
+			textField.setEnabled(enabled);
+			description.setEnabled(enabled);
 		}
 	}
 }

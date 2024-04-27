@@ -15,9 +15,14 @@ public class Preference {
 	 * GUIの文字表示で使いたいフォントのリスト。
 	 * 見つかったものがあればそれを使用する。
 	 */
-	static String[] preferenceFontName = {
+	static String[] preferenceFontName_label = {
 			"UD デジタル 教科書体 N-B",
 			"メイリオ",
+			"游ゴシック"
+	};
+
+	static String[] preferenceFontName_message = {
+			"UD デジタル 教科書体 N-R",
 			"游ゴシック"
 	};
 
@@ -26,6 +31,7 @@ public class Preference {
 	 * GUIの文字表示に使用するフォント
 	 */
 	private static int LABEL_FONT_SIZE = 18;
+	private static int MESSAGE_DISP_FONT_SIZE = 14;
 	private static int OK_BUTTON_FONT_SIZE = 24;
 	private static int CANCEL_BUTTON_FONT_SIZE = 20;
 	private static int COSOLE_FONT_SIZE = 16;
@@ -33,7 +39,10 @@ public class Preference {
 	public static String OK_BUTTON_STRING = "これに決める";
 	public static String CANCEL_BUTTON_STRING = "やめる";
 	public static String DELETE_BUTTON_STRING = "削除する";
+
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
+	// 入力項目のバリデーションへのメッセージ用
+	public static Font MESSAGE_DISP_FONT = initLabelFont(preferenceFontName_message, MESSAGE_DISP_FONT_SIZE);
 	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
 	public static Font CANCEL_BUTTON_FONT = initLabelFont(CANCEL_BUTTON_FONT_SIZE);
 	public static Font CONSOLE_FONT = initLabelFont(COSOLE_FONT_SIZE);
@@ -49,7 +58,7 @@ public class Preference {
 	 *
 	 * @return GUI表示に使用するフォント
 	 */
-	private static Font initLabelFont(int size) {
+	private static Font initLabelFont(String[] preferenceFontName, int size) {
 		// 使用可能なフォント一覧
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		HashSet<String> avalrableFonts = new HashSet<String>();
@@ -68,6 +77,12 @@ public class Preference {
 		return new Font(Font.SANS_SERIF, Font.BOLD, size);
 	}
 
+	private static Font initLabelFont(int size) {
+		return initLabelFont(preferenceFontName_label, size);
+	}
+
+
+
 	/**
 	 * GUIの背景色
 	 */
@@ -77,6 +92,10 @@ public class Preference {
 	 */
 	public static Color TEXT_COLOR = new Color(20,20,20);
 
+	/**
+	 *
+	 */
+	public static Color MESSAGE_ERROR_COLOR = new Color(0xF0, 0x20, 0x20);
 
 	// 以降は図形描画のパラメーター
 	/**
