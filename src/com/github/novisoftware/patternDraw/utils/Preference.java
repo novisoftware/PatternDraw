@@ -18,14 +18,30 @@ public class Preference {
 	static String[] preferenceFontName_label = {
 			"UD デジタル 教科書体 N-B",
 			"メイリオ",
-			"游ゴシック"
+			"游ゴシック",
+			"Takako",
+			"Noto Sans CJK JP",
+			"Takako"
 	};
 
 	static String[] preferenceFontName_message = {
+			"BIZ UDPゴシック",
 			"UD デジタル 教科書体 N-R",
-			"游ゴシック"
+			"游ゴシック",
+			"Noto Sans CJK JP",
+			"Takako"
 	};
 
+
+	static String[] preferenceFontName_input = {
+		//	"Comic Shanns Regular",
+		//	"Comic Sans MS",
+		//	"UD デジタル 教科書体 N-R",
+			"BIZ UDPゴシック",
+			"游ゴシック",
+			"Noto Sans CJK JP",
+			"Takako"
+	};
 
 	/**
 	 * GUIの文字表示に使用するフォント
@@ -40,9 +56,14 @@ public class Preference {
 	public static String CANCEL_BUTTON_STRING = "やめる";
 	public static String DELETE_BUTTON_STRING = "削除する";
 
+	// JLabel用のフォント
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
+
+	// JTextField用のフォント
+	public static Font INPUT_FONT = initLabelFont(preferenceFontName_input, Font.BOLD, COSOLE_FONT_SIZE);
+
 	// 入力項目のバリデーションへのメッセージ用
-	public static Font MESSAGE_DISP_FONT = initLabelFont(preferenceFontName_message, MESSAGE_DISP_FONT_SIZE);
+	public static Font MESSAGE_DISP_FONT = initLabelFont(preferenceFontName_message,  Font.PLAIN, MESSAGE_DISP_FONT_SIZE);
 	public static Font OK_BUTTON_FONT = initLabelFont(OK_BUTTON_FONT_SIZE);
 	public static Font CANCEL_BUTTON_FONT = initLabelFont(CANCEL_BUTTON_FONT_SIZE);
 	public static Font CONSOLE_FONT = initLabelFont(COSOLE_FONT_SIZE);
@@ -58,7 +79,7 @@ public class Preference {
 	 *
 	 * @return GUI表示に使用するフォント
 	 */
-	private static Font initLabelFont(String[] preferenceFontName, int size) {
+	private static Font initLabelFont(String[] preferenceFontName, int style,int size) {
 		// 使用可能なフォント一覧
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		HashSet<String> avalrableFonts = new HashSet<String>();
@@ -71,14 +92,14 @@ public class Preference {
 
 		for (String fontName : preferenceFontName) {
 			if (avalrableFonts.contains(fontName)) {
-				return new Font(fontName,  Font.BOLD, size);
+				return new Font(fontName,  style, size);
 			}
 		}
-		return new Font(Font.SANS_SERIF, Font.BOLD, size);
+		return new Font(Font.SANS_SERIF, style, size);
 	}
 
 	private static Font initLabelFont(int size) {
-		return initLabelFont(preferenceFontName_label, size);
+		return initLabelFont(preferenceFontName_label, Font.BOLD, size);
 	}
 
 
@@ -93,7 +114,7 @@ public class Preference {
 	public static Color TEXT_COLOR = new Color(20,20,20);
 
 	/**
-	 *
+	 * 妥当性エラーを表現するメッセージ色
 	 */
 	public static Color MESSAGE_ERROR_COLOR = new Color(0xF0, 0x20, 0x20);
 

@@ -11,7 +11,7 @@ public class JTextField2 extends JTextField {
 		super(s);
 
 		this.setPreferredSize(new Dimension(200,20));
-		this.setFont(Preference.CONSOLE_FONT);
+		this.setFont(Preference.INPUT_FONT);
 	}
 
 }

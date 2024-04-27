@@ -20,6 +20,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 
@@ -56,7 +57,14 @@ public class ElementFactory {
 			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
 				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
 
-				for (String varName : editPanel.networkDataModel.variableNameList) {
+				ArrayList<String> variableNames = new ArrayList<String>();
+				variableNames.addAll(editPanel.networkDataModel.variableNameList);
+
+				for (ParameterDefineToEdit param : editPanel.networkDataModel.params) {
+					variableNames.add(param.name);
+				}
+
+				for (String varName : variableNames) {
 					ElementFactory add = nParts.getCopy();
 
 					add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE, varName);
