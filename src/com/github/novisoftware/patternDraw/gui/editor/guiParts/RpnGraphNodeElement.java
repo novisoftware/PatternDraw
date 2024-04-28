@@ -63,6 +63,9 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 		this.valueType = valueType;
 	}
 
+	boolean isVarRef = false;
+	String VarName = null;
+
 	/**
 	 * 要素が値を持つ場合の、値の型。
 	 */

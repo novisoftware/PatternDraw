@@ -8,7 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueFloat;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
@@ -59,6 +62,56 @@ public class Rpn {
 		this.displayString = RpnUtil.getRepresent(value);
 		this.comment = RpnUtil.getComment(value);
 	}
+
+
+
+	public ValueType getValueType(HashMap<String, Value> variables, ArrayList<ParameterDefineToEdit> params) {
+		Stack<String> stack = new Stack<>();
+		Stack<String> stringStack = new Stack<>();
+
+		String varName = null;
+		String opStr = null;
+
+		for(String op : this.array) {
+			if (op.startsWith("'")) {
+				stack.push( op.substring(1));
+			}
+			else if (op.equals(":set-variable")) {
+				opStr = op;
+				varName = stack.pop();
+
+				return ValueType.NONE;
+			}
+			else if (op.equals(":recall-variable")) {
+				opStr = op;
+				varName = stack.pop();
+				break;
+			}
+			else if (op.equals(":as-numeric")) {
+				return ValueType.NONE;
+			}
+			else {
+				stack.push(op.replaceAll(";.*", ""));
+			}
+		}
+
+		if (varName == null) {
+			return ValueType.NONE;
+		}
+
+		Value var = variables.get(varName);
+		if (var != null) {
+			return var.valueType;
+		}
+		for (ParameterDefineToEdit p : params) {
+			if (p.name.equals(varName)) {
+				return p.valueType;
+			}
+		}
+
+		return ValueType.NONE;
+	}
+
 
 
 	/**

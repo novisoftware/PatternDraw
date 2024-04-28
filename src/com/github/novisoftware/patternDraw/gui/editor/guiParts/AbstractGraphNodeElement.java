@@ -8,7 +8,9 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
@@ -103,7 +105,19 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			for (GraphConnector connector : this.connectors) {
 				AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
 				if (src != null) {
-					if (Value.isAcceptable(src.getValueType(), connector.valueType) ) {
+					ValueType valueType = src.getValueType();
+					// RPNノードで、変数の値の場合は、変数・パラメタ定義から ValueType を取得する
+					// 取得できたら上書きする
+					if (src instanceof RpnGraphNodeElement) {
+						RpnGraphNodeElement r = (RpnGraphNodeElement)src;
+						ArrayList<ParameterDefineToEdit> params = this.editPanel.networkDataModel.params;
+						ValueType work = r.getRpn().getValueType(variables, params);
+						if (! work.equals(ValueType.NONE)) {
+							valueType = work;
+						}
+					}
+
+					if (Value.isAcceptable(valueType, connector.valueType) ) {
 						g2.setColor(Color.GRAY);
 					}
 					else {
