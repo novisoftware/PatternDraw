@@ -5,7 +5,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
-public class ParameterDefineToEdit {
+public class ParameterDefine {
 	/**
 	 * 変数名
 	 */
@@ -27,7 +27,7 @@ public class ParameterDefineToEdit {
 	/**
 	 * 列挙入力を有効にする場合の選択値
 	 */
-	boolean enableEnum;
+	public boolean enableEnum;
 
 	/**
 	 * 列挙入力を有効にする場合の選択値
@@ -37,7 +37,7 @@ public class ParameterDefineToEdit {
 	/**
 	 * スライダーを有効にする
 	 */
-	boolean enableSlider;
+	public boolean enableSlider;
 
 	/**
 	 * スライダー最小値
@@ -61,7 +61,7 @@ public class ParameterDefineToEdit {
 	 * @param sliderMin スライダー最小値
 	 * @param sliderMax スライダー最大値
 	 */
-	public ParameterDefineToEdit(
+	public ParameterDefine(
 			/**
 			 * 変数名
 			 */
@@ -128,7 +128,7 @@ public class ParameterDefineToEdit {
 				FileReadUtil.escape(sliderMax));
 	}
 
-	public static ParameterDefineToEdit getParameterDefineToEdit(String s) {
+	public static ParameterDefine getParameterDefineToEdit(String s) {
 		String a[] = FileReadUtil.tokenizeToArray(s);
 		System.out.println("parameters (line) = " + s);
 		System.out.println("parameters.len = " + a.length);
@@ -147,7 +147,7 @@ public class ParameterDefineToEdit {
 		String sliderMin = a[8];
 		String sliderMax = a[9];
 
-		return new ParameterDefineToEdit(
+		return new ParameterDefine(
 				name,
 				description,
 				defaultValue,
@@ -159,8 +159,8 @@ public class ParameterDefineToEdit {
 				sliderMax);
 	}
 
-	public ParameterDefineToEdit clone() {
-		return new ParameterDefineToEdit(
+	public ParameterDefine clone() {
+		return new ParameterDefine(
 				name,
 				description,
 				defaultValue,
@@ -172,7 +172,7 @@ public class ParameterDefineToEdit {
 				sliderMax);
 	}
 
-	public void updateTo(ParameterDefineToEdit o) {
+	public void updateTo(ParameterDefine o) {
 		this.name=o.name;
 		this.description=o.description;
 		this.defaultValue=o.defaultValue;

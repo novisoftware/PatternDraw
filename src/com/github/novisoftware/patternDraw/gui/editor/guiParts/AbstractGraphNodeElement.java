@@ -8,7 +8,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
@@ -18,8 +19,8 @@ import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public abstract class AbstractGraphNodeElement extends AbstractElement {
 	/**
-	 * グループの先頭の場合 グループID(整数)。
-	 * グループの先頭でない場合はNULL。
+	 * 単連結グループの先頭の場合 グループID(整数)。
+	 * 単連結グループの先頭でない場合はNULL。
 	 */
 	public Integer groupHead = null;
 
@@ -41,17 +42,8 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 		return ret;
 	}
 
-	static HashMap<String, Value> variables = new  HashMap<String, Value>();
-	static void resetVariables() {
-		variables = new  HashMap<String, Value>();
-	}
-	public static void debugVariables() {
-		for (String s : variables.keySet()) {
-			Debug.println("variables", s + " -> " + variables.get(s) );
-		}
-	}
-
-	// 外部パラメタパラメタ関連
+	// 外部パラメタ関連
+	// (コネクタと他の箱を結ぶ線で表現される)
 	public HashMap<String,String> paramMapInfo;
 	public HashMap<String,AbstractGraphNodeElement> paramMapObj;
 
@@ -110,8 +102,8 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 					// 取得できたら上書きする
 					if (src instanceof RpnGraphNodeElement) {
 						RpnGraphNodeElement r = (RpnGraphNodeElement)src;
-						ArrayList<ParameterDefineToEdit> params = this.editPanel.networkDataModel.params;
-						ValueType work = r.getRpn().getValueType(variables, params);
+						ArrayList<ParameterDefine> params = this.editPanel.networkDataModel.paramDefList;
+						ValueType work = r.getRpn().getValueType(this.editPanel.networkDataModel.variables, params);
 						if (! work.equals(ValueType.NONE)) {
 							valueType = work;
 						}

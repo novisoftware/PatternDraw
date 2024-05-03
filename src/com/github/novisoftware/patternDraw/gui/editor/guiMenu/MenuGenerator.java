@@ -13,7 +13,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.Func
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.DefType;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.PartsType;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class MenuGenerator {
@@ -26,10 +26,10 @@ public class MenuGenerator {
 	private String workRPN;
 	private int workWidth;
 	private int workHeight;
-	private DefType defType;
+	private PartsType defType;
 	private ArrayList<String> workList;
 
-	void resetWorkValues() {
+	private void resetWorkValues() {
 		workDescription = null;
 		workKindName = null;
 		workTypeName = null;
@@ -39,7 +39,7 @@ public class MenuGenerator {
 		workRPN = null;
 		workWidth = 120;
 		workHeight = 60;
-		defType = DefType.TYPE_UNDEF;
+		defType = PartsType.TYPE_UNDEF;
 		workList = new ArrayList<>();
 	}
 
@@ -94,14 +94,14 @@ public class MenuGenerator {
 					workHeight = Integer.parseInt(GuiUtil.trim(line.substring("HEIGHT:".length())));
 				} else if (line.startsWith("FUNCTION:")) {
 					workFncName = GuiUtil.trim(line.substring("FUNCTION:".length()));
-					defType = DefType.TYPE_FNCDEF;
+					defType = PartsType.TYPE_FNCDEF;
 				} else if (line.startsWith("-->RPN")) {
 					workRPN = GuiUtil.concatStrings(workList);
 
-					defType = DefType.TYPE_RPNDEF;
+					defType = PartsType.TYPE_RPNDEF;
 				} else if (line.startsWith("---->DEFINE")) {
-					if (defType.equals(DefType.TYPE_RPNDEF)) {
-						ElementFactory parts = new ElementFactory(editPanel, DefType.TYPE_RPNDEF);
+					if (defType.equals(PartsType.TYPE_RPNDEF)) {
+						ElementFactory parts = new ElementFactory(editPanel, PartsType.TYPE_RPNDEF);
 						parts.dispName = workDispName;
 						parts.description = workDescription;
 						parts.kindName = workKindName;
@@ -116,10 +116,10 @@ public class MenuGenerator {
 
 						list.add(parts);
 						resetWorkValues();
-					} else if (defType.equals(DefType.TYPE_FNCDEF)) {
+					} else if (defType.equals(PartsType.TYPE_FNCDEF)) {
 						FunctionDefInterface tmpFunc = FunctionUtil.getFunctionDef(workFncName);
 
-						ElementFactory parts = new ElementFactory(editPanel, DefType.TYPE_FNCDEF);
+						ElementFactory parts = new ElementFactory(editPanel, PartsType.TYPE_FNCDEF);
 						parts.dispName = workDispName != null ? workDispName : tmpFunc.getName();
 						parts.description = workDescription != null ? workDescription : tmpFunc.getDescription();
 						parts.valueType = tmpFunc.getReturnType();
@@ -137,7 +137,7 @@ public class MenuGenerator {
 					}
 					workWidth = 120;
 					workHeight = 60;
-					defType = DefType.TYPE_UNDEF;
+					defType = PartsType.TYPE_UNDEF;
 				} else {
 					String s = GuiUtil.trim(line);
 					if (!s.equals("")) {

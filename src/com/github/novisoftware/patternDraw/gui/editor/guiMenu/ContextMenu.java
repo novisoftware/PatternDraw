@@ -10,10 +10,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParameterDefinitionListWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
@@ -156,7 +158,7 @@ public class ContextMenu extends JPopupMenu {
 					System.out.println("パラメーター編集画面のオブジェクトを作成");
 
 
-					ArrayList<ParameterDefineToEdit> params = editPanel.networkDataModel.params;
+					ArrayList<ParameterDefine> params = editPanel.networkDataModel.paramDefList;
 
 					Runnable callback = new Runnable() {
 						@Override
@@ -166,13 +168,44 @@ public class ContextMenu extends JPopupMenu {
 						}
 					};
 
-					EditParameterDefinitionListWindow frame = new EditParameterDefinitionListWindow(params, callback);
+					EditParamDefListWindow frame = new EditParamDefListWindow(params, callback);
 					editPanel.paramDefEditWindow = frame;
 					frame.setVisible(true);
 					frame.setLocation(900, 40);
 					// frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 					frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+				}
+			});
+			this.add(menuItem);
+		}
+		if (icon == null) {
+			this.addSeparator();
+			menuItem = new JMenuItem("パラメーターへの値設定画面");
+			menuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					// tonePanel.tonePaletDataModel.save();
+
+					Debug.println("START");
+					EditParamWindow w =
+					new EditParamWindow(
+							editPanel.networkDataModel.paramDefList);
+
+					// パラメーター値が設定されたときのコールバック
+					Runnable callback = new Runnable() {
+						@Override
+						public void run() {
+							editPanel.networkDataModel.resetVariables(w.getVariables());
+							editPanel.networkDataModel.evaluate();
+							editPanel.networkDataModel.runProgram();
+						}
+					};
+					w.setCallback(callback);
+
+					w.setVisible(true);
+					Debug.println("END");
+
+					editPanel.repaint();
 				}
 			});
 			this.add(menuItem);

@@ -7,6 +7,12 @@ import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 
+/**
+ * これは後で削除する。
+ *
+ * @author user
+ *
+ */
 public class ObjectHolder implements Cloneable {
 	private final TypeDesc typeDesc;
 	private final Double as_double;

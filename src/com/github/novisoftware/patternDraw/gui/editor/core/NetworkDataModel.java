@@ -14,7 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
@@ -29,6 +29,24 @@ import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllB
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 
 public class NetworkDataModel {
+	/**
+	 * 変数
+	 * [TO/DO → DONE] static宣言でないほうが良い
+	 */
+	final public HashMap<String, Value> variables;
+
+	public void debugVariables() {
+		for (String s : variables.keySet()) {
+			Debug.println("variables", s + " -> " + variables.get(s) );
+		}
+	}
+
+	public void resetVariables(HashMap<String, Value> initVariables) {
+		this.variables.clear();
+		this.variables.putAll(initVariables);
+	}
+
+
 	/**
 	 * ウィンドウタイトルの文字列の一部分として使用する。
 	 */
@@ -46,24 +64,32 @@ public class NetworkDataModel {
 	 * 編集用パネル(JPanel)
 	 */
 	protected EditDiagramPanel editPanel;
+
 	/**
-	 * パラメーターの一覧
+	 * パラメーター定義のリスト。
 	 */
-	public final ArrayList<ParameterDefineToEdit> params;
+	public final ArrayList<ParameterDefine> paramDefList;
+
+	/**
+	 * パラメーター定義のリスト。
+	 */
+	/*
+	public final HashMap<String, Value> paramVariables;
+	*/
 
 	/**
 	 *  変数名の一覧(設定された変数のみを対象にする)
 	 */
 	public ArrayList<String> variableNameList;
 
-
 	/**
 	 *  実行順情報: 制御用エレメントの配下のエレメント
 	 */
 	public HashMap<ControlElement, ArrayList<AbstractElement>> control_contains;
-	//
+
 	/**
 	 * 実行順情報: ルート要素。 GUI上では「地べたに置かれた要素」が該当する。
+	 * (コントロールの中に入っていないもの)
 	 */
 	ArrayList<AbstractElement> rootElement;
 
@@ -72,6 +98,7 @@ public class NetworkDataModel {
 	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_head;
 	public HashMap<ControlElement, ArrayList<AbstractElement>> controlled_all;
 
+
 	public ArrayList<AbstractElement> getElements() {
 		return elements;
 	}
@@ -79,7 +106,9 @@ public class NetworkDataModel {
 	public NetworkDataModel(EditDiagramPanel editPanel, String filename) {
 		this.editPanel = editPanel;
 		this.filename = filename;
-		this.params = new ArrayList<ParameterDefineToEdit>();
+		this.paramDefList = new ArrayList<ParameterDefine>();
+		// this.paramVariables = new HashMap<String, Value>();
+		this.variables = new HashMap<String, Value>();
 	}
 
 	/**
@@ -768,7 +797,7 @@ public class NetworkDataModel {
 				if (line.startsWith("TITLE:")) {
 					this.title = line.substring("TITLE:".length());
 				} else if (line.startsWith("PARAMETER:")) {
-					this.params.add(ParameterDefineToEdit.getParameterDefineToEdit(line));
+					this.paramDefList.add(ParameterDefine.getParameterDefineToEdit(line));
 				} else if (line.startsWith("RPN_ELEMENT:")) {
 					this.getElements().add(new RpnGraphNodeElement(this.editPanel, line));
 				} else if (line.startsWith("FNC_ELEMENT:")) {
@@ -841,7 +870,7 @@ public class NetworkDataModel {
 			writer.write("");
 			writer.write("TITLE:" + this.title + "\n");
 			writer.write("\n");
-			for (ParameterDefineToEdit p : params) {
+			for (ParameterDefine p : paramDefList) {
 				writer.write( p.str() + '\n' );
 			}
 			writer.write("\n");

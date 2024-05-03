@@ -20,14 +20,14 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 
 public class ElementFactory {
 	final protected EditDiagramPanel editPanel;
 
-	public ElementFactory(EditDiagramPanel editPanel, DefType defType) {
+	public ElementFactory(EditDiagramPanel editPanel, PartsType defType) {
 		this.editPanel = editPanel;
 		this.defType = defType;
 	}
@@ -60,7 +60,7 @@ public class ElementFactory {
 				ArrayList<String> variableNames = new ArrayList<String>();
 				variableNames.addAll(editPanel.networkDataModel.variableNameList);
 
-				for (ParameterDefineToEdit param : editPanel.networkDataModel.params) {
+				for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
 					variableNames.add(param.name);
 				}
 
@@ -114,7 +114,10 @@ public class ElementFactory {
 	public ValueType valueType;
 
 
-	public static enum DefType {
+	/**
+	 * RPNかFNCかを区別する。
+	 */
+	public static enum PartsType {
 		TYPE_UNDEF,
 		TYPE_RPNDEF,
 		TYPE_FNCDEF,
@@ -123,7 +126,7 @@ public class ElementFactory {
 	/**
 	 * RPN または FNC
 	 */
-	final public DefType defType;
+	final public PartsType defType;
 
 	/**
 	 * 式
@@ -153,7 +156,7 @@ public class ElementFactory {
 	public void createNewElement(EditDiagramPanel editPanel, int x, int y) {
 		ArrayList<AbstractElement> eleList = editPanel.networkDataModel.getElements();
 
-		if (this.defType.equals(DefType.TYPE_RPNDEF)) {
+		if (this.defType.equals(PartsType.TYPE_RPNDEF)) {
 			if (this.kindName.equals("制御")) {
 				if (this.controlType.equals("IF")) {
 					ControlElement controlBlock = new ControlElement(this.editPanel);

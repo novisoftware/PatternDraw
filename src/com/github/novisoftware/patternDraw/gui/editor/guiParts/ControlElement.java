@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
+import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
@@ -78,7 +79,7 @@ public class ControlElement extends AbstractElement {
 	private Rpn rpn;
 
 	public void setRpnString (String rpnString) {
-		this.rpn = new Rpn(rpnString);
+		this.rpn = new Rpn(rpnString, this.editPanel.networkDataModel);
 	}
 
 	public Rpn getRpn() {
@@ -113,7 +114,7 @@ public class ControlElement extends AbstractElement {
 			}
 			else if (r.startsWith("<")) {
 				r.replaceAll("[<>]", "");
-				Value v = RpnGraphNodeElement.variables.get(r);
+				Value v = this.editPanel.networkDataModel.variables.get(r);
 				stack.push(v);
 			}
 			else {

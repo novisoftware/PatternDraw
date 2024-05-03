@@ -21,7 +21,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
@@ -31,7 +31,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Int
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParameterDefinitionListWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JCheckBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
@@ -45,9 +45,9 @@ import com.github.novisoftware.patternDraw.utils.Preference;
  * パラメーター定義の編集を行う
  *
  */
-public class InputParamDefWindow extends JFrame2 {
-	final ParameterDefineToEdit param;
-	final ParameterDefineToEdit backupParam;
+public class EditParamDefWindow extends JFrame2 {
+	final ParameterDefine param;
+	final ParameterDefine backupParam;
 	// final Parameter param;
 	private final JButton buttonOk;
 	final HashSet<String> variableNameSet;
@@ -78,8 +78,8 @@ public class InputParamDefWindow extends JFrame2 {
 
 	final HashSet<ValueInputPanel> ngInputPanels;
 
-	public InputParamDefWindow(// final RpnGraphNodeElement element,
-			final EditParameterDefinitionListWindow parent, final ParameterDefineToEdit param,
+	public EditParamDefWindow(// final RpnGraphNodeElement element,
+			final EditParamDefListWindow parent, final ParameterDefine param,
 			final HashSet<String> variableNameSet) {
 		this.setTitle("パラメーターを設定します。");
 		this.setSize(600, 800);
@@ -194,6 +194,13 @@ public class InputParamDefWindow extends JFrame2 {
 		/////////////////////////
 		// 列挙値
 		check_enumEnable = new JCheckBox2();
+		check_enumEnable.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				param.enableEnum = check_sliderEnable.isSelected();
+			}
+		});
+
 		enumBuilderPartsSet.add(check_enumEnable);
 		JLabel2 label_enumEnable = new JLabel2("ラジオボタンによる設定を有効にする");
 		enumBuilderPartsSet.add(label_enumEnable);
@@ -215,6 +222,13 @@ public class InputParamDefWindow extends JFrame2 {
 		///////////////////
 		// スライダー
 		check_sliderEnable = new JCheckBox2();
+		check_sliderEnable.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				param.enableSlider = check_sliderEnable.isSelected();
+			}
+		});
+
 		sliderBuilderPartsSet.add(check_sliderEnable);
 		JLabel2 label_sliderEnable = new JLabel2("スライダーによる設定を有効にする");
 		sliderBuilderPartsSet.add(label_sliderEnable);
@@ -461,7 +475,7 @@ public class InputParamDefWindow extends JFrame2 {
 	}
 
 	static class ValueInputPanel extends JPanel {
-		final InputParamDefWindow frame;
+		final EditParamDefWindow frame;
 		final JLabel description;
 		final JTextField textField;
 		final JLabel messageDisp;
@@ -475,7 +489,7 @@ public class InputParamDefWindow extends JFrame2 {
 		 * @param ini
 		 * @param checker
 		 */
-		public ValueInputPanel(InputParamDefWindow frame, Let let, String description, String ini,
+		public ValueInputPanel(EditParamDefWindow frame, Let let, String description, String ini,
 				AbstractInputChecker checker,
 				final JLabel messageDisp) {
 			Debug.println("Comment: " + description);
@@ -509,19 +523,19 @@ public class InputParamDefWindow extends JFrame2 {
 
 				@Override
 				public void insertUpdate(DocumentEvent e) {
-					// 別関数に移譲
+					// update()に移譲
 					update();
 				}
 
 				@Override
 				public void removeUpdate(DocumentEvent e) {
-					// 別関数に移譲
+					// update()に移譲
 					update();
 				}
 
 				@Override
 				public void changedUpdate(DocumentEvent e) {
-					// 別関数に移譲
+					// update()に移譲
 					update();
 				}
 			});

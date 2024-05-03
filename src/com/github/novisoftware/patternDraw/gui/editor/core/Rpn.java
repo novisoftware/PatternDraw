@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
@@ -29,10 +29,12 @@ public class Rpn {
 	private ArrayList<String> array;
 	private String displayString;
 	private String comment;
+	private final NetworkDataModel networkDataModel;
 
-	public Rpn(String formula) {
+	public Rpn(String formula, NetworkDataModel networkDataModel) {
 		this.formula = formula;
 		this.array = RpnUtil.s2a(formula);
+		this.networkDataModel = networkDataModel;
 		this.makeDisplayString();
 	}
 
@@ -65,7 +67,7 @@ public class Rpn {
 
 
 
-	public ValueType getValueType(HashMap<String, Value> variables, ArrayList<ParameterDefineToEdit> params) {
+	public ValueType getValueType(HashMap<String, Value> variables, ArrayList<ParameterDefine> params) {
 		Stack<String> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
@@ -103,7 +105,7 @@ public class Rpn {
 		if (var != null) {
 			return var.valueType;
 		}
-		for (ParameterDefineToEdit p : params) {
+		for (ParameterDefine p : params) {
 			if (p.name.equals(varName)) {
 				return p.valueType;
 			}
@@ -238,14 +240,14 @@ public class Rpn {
 				variables.put(name,v);
 				stack.push(v);
 
-				RpnGraphNodeElement.debugVariables();
+				this.networkDataModel.debugVariables();
 			}
 			else if (s.equals(":recall-variable")) {
 				String name = stringStack.pop();
-				Value v =variables.get(name);
+				Value v = variables.get(name);
 				stack.push(v);
 
-				RpnGraphNodeElement.debugVariables();
+				this.networkDataModel.debugVariables();
 			}
 			else if (s.equals(":as-numeric")) {
 				if (ele.getValueType().equals(Value.ValueType.INTEGER)) {

@@ -18,10 +18,10 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefineToEdit;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputParamDefWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.EditParamDefWindow;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.utils.Preference;
@@ -29,13 +29,13 @@ import com.github.novisoftware.patternDraw.utils.Preference;
 /**
  * パラメーター一覧の定義ウィンドウ。
  */
-public class EditParameterDefinitionListWindow extends JFrame2 {
+public class EditParamDefListWindow extends JFrame2 {
 	final JPanel jp;
 
 	/**
 	 * パラメーター一覧
 	 */
-	public final ArrayList<ParameterDefineToEdit> params;
+	public final ArrayList<ParameterDefine> params;
 	/**
 	 * パラメーター名の一覧(設定された変数のみを対象にする)
 	 */
@@ -47,20 +47,20 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 	 * <li>パラメーターの情報を表示するコンポーネントは、JPanel等でまとめずに個別に直接 pane に貼り付けている。
 	 * </ul>
 	 */
-	HashMap<ParameterDefineToEdit, ArrayList<JComponent>> componentOnPane;
+	HashMap<ParameterDefine, ArrayList<JComponent>> componentOnPane;
 
 	/**
 	 * 子ウィンドウ(個別パラメーターの設定画面)
 	 */
-	private InputParamDefWindow inputParamDefWindow = null;
+	private EditParamDefWindow inputParamDefWindow = null;
 
 	/**
 	 * 追加ボタン
 	 */
 	final JButton addButton;
 
-	public EditParameterDefinitionListWindow(
-			final ArrayList<ParameterDefineToEdit> params,
+	public EditParamDefListWindow(
+			final ArrayList<ParameterDefine> params,
 			Runnable closeCallback) {
 		super();
 
@@ -91,8 +91,8 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		// コンテナ管理用
 		// パラメーターに対応する JLabel 等をpaneに直接貼り付けている。
 		// これを削除する際に使用する。
-		this.componentOnPane = new HashMap<ParameterDefineToEdit, ArrayList<JComponent>>();
-		for (ParameterDefineToEdit p : params) {
+		this.componentOnPane = new HashMap<ParameterDefine, ArrayList<JComponent>>();
+		for (ParameterDefine p : params) {
 			addParamDefToPane(p);
 		}
 
@@ -116,16 +116,16 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		addButton.setEnabled(true);
 	}
 
-	private void createInputWindow(ParameterDefineToEdit para) {
+	private void createInputWindow(ParameterDefine para) {
 		HashSet<String> variableNameSet = new HashSet<String>();
-		for (ParameterDefineToEdit p : params) {
+		for (ParameterDefine p : params) {
 			if (p != para) {
 				variableNameSet.add(p.name);
 			}
 		}
 
     	if (inputParamDefWindow == null) {
-			inputParamDefWindow = new InputParamDefWindow(this, para, variableNameSet);
+			inputParamDefWindow = new EditParamDefWindow(this, para, variableNameSet);
     	}
 		inputParamDefWindow.setVisible(true);
 		addButton.setEnabled(false);
@@ -138,14 +138,14 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 	 * @param pane
 	 */
 	JButton generateAddButton() {
-		final EditParameterDefinitionListWindow thisFrame = this;
+		final EditParamDefListWindow thisFrame = this;
 
 		JButton buttonCancel = new JButton(Preference.ADD_BUTTON_STRING);
 		buttonCancel.setFont(Preference.ADD_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ParameterDefineToEdit parameter = new ParameterDefineToEdit("", "", "0", ValueType.INTEGER,
+				ParameterDefine parameter = new ParameterDefine("", "", "0", ValueType.INTEGER,
 						false, "", false, "", "");
 				params.add(parameter);
 
@@ -177,7 +177,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 
 	}
 
-	void addParamDefToPane(final ParameterDefineToEdit para) {
+	void addParamDefToPane(final ParameterDefine para) {
 		ArrayList<JComponent> pList = new ArrayList<JComponent>();
 		this.componentOnPane.put(para, pList);
 
@@ -202,7 +202,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		this.updateParamDef(para);
 
 		// 押したときの動作を設定
-		final EditParameterDefinitionListWindow thisFrame = this;
+		final EditParamDefListWindow thisFrame = this;
 		MouseAdapter mlis = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -217,7 +217,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 
 	}
 
-	public void updateParamDef(ParameterDefineToEdit para) {
+	public void updateParamDef(ParameterDefine para) {
 		ArrayList<JComponent> pList = this.componentOnPane.get(para);
 		((JLabel2) (pList.get(0))).setText(para.name);
 		((JLabel2) (pList.get(1))).setText(para.defaultValue);
@@ -225,7 +225,7 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 		((JLabel2) (pList.get(3))).setText(para.description);
 	}
 
-	public void removeParamDefFromPane(ParameterDefineToEdit para) {
+	public void removeParamDefFromPane(ParameterDefine para) {
 		ArrayList<JComponent> pList = this.componentOnPane.get(para);
 		this.componentOnPane.remove(para);
 		Container pane = this.jp;
@@ -235,10 +235,10 @@ public class EditParameterDefinitionListWindow extends JFrame2 {
 	}
 
 	static public void main(String args[]) {
-		ArrayList<ParameterDefineToEdit> params = new ArrayList<ParameterDefineToEdit>();
+		ArrayList<ParameterDefine> params = new ArrayList<ParameterDefine>();
 
 		// このmainは、このウィンドウだけを立ち上げて動作確認するためのもの。
-		EditParameterDefinitionListWindow frame = new EditParameterDefinitionListWindow(params, null);
+		EditParamDefListWindow frame = new EditParamDefListWindow(params, null);
 		frame.setVisible(true);
 		frame.setLocation(900, 40);
 		return;

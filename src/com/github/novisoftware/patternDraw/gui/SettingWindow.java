@@ -27,6 +27,15 @@ import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
+
+/**
+ * 逆ポーランド記法の言語でやる場合のパラメーター設定ウィンドウ
+ *
+ *
+ * @author user
+ *
+ */
+
 public class SettingWindow extends JFrame2 {
 	static class OnFixActionListener implements ActionListener {
 		SettingWindow settingWindow;

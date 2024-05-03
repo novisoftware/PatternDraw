@@ -7,7 +7,7 @@ import javax.swing.JButton;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParameterDefinitionListWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
@@ -60,7 +60,7 @@ public class Util {
 	/**
 	 * パラメーター設定ウィンドウのOKボタンを作る
 	 */
-	static JButton generateSubmitButton2(final EditParameterDefinitionListWindow caller, final InputParamDefWindow tf) {
+	static JButton generateSubmitButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
 		JButton buttonOk = new JButton(Preference.OK_BUTTON_STRING);
 		buttonOk.setFont(Preference.OK_BUTTON_FONT);
 		buttonOk.addActionListener(new ActionListener() {
@@ -82,7 +82,7 @@ public class Util {
 	/**
 	 * パラメーター設定ウィンドウのCancelボタンを作る
 	 */
-	static JButton generateCancelButton2(final EditParameterDefinitionListWindow caller, final InputParamDefWindow tf) {
+	static JButton generateCancelButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
 		JButton buttonCancel = new JButton(Preference.CANCEL_BUTTON_STRING);
 		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
@@ -104,7 +104,7 @@ public class Util {
 	 * パラメーター設定ウィンドウのDeleteボタンを作る
 	 * (パラメーターを削除する)
 	 */
-	static JButton generateDeleteButton2(final EditParameterDefinitionListWindow caller, final InputParamDefWindow tf) {
+	static JButton generateDeleteButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
 		JButton buttonCancel = new JButton(Preference.DELETE_BUTTON_STRING);
 		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
