@@ -98,8 +98,17 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 		ArrayList<String> a = Rpn.s2a(s0);
 		connectors = new ArrayList<>();
 
-		int index = 0;
+		ArrayList<String> workParameters = new ArrayList<String>();
 		for (String s : a) {
+			String paraName = Rpn.getParamName(s);
+			if (paraName != null) {
+				workParameters.add(s);
+			}
+		}
+
+		int index = 0;
+		int n = workParameters.size();
+		for (String s : workParameters) {
 			String paraName = Rpn.getParamName(s);
 			if (paraName != null) {
 				String paraType = Rpn.getParamType(s);
@@ -108,7 +117,7 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 					valueType = Value.str2valueType.get(paraType);
 				}
 
-				connectors.add(new GraphConnector(this, paraName, valueType, "", index));
+				connectors.add(new ConnectTerminal(this, paraName, valueType, "", index, n));
 				index ++;
 			}
 		}

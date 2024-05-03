@@ -25,20 +25,6 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 	final String functionName;
 	final FunctionDefInterface function;
 
-	public String str() {
-		System.out.println("this.valueType: " + this.getValueType());
-
-		return String.format(
-				"FNC_ELEMENT: %d %d %d %d %s %s %s",
-				x,
-				y,
-				w,
-				h,
-				escape(id),
-				escape(getKindString()),
-				escape(functionName));
-	}
-
 	public FncGraphNodeElement(EditDiagramPanel EditPanel, String functionName, FunctionDefInterface f) {
 		super(EditPanel);
 		this.functionName = functionName;
@@ -61,6 +47,20 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		buildParameterList(this.function);
 	}
 
+	public String str() {
+		System.out.println("this.valueType: " + this.getValueType());
+
+		return String.format(
+				"FNC_ELEMENT: %d %d %d %d %s %s %s",
+				x,
+				y,
+				w,
+				h,
+				escape(id),
+				escape(getKindString()),
+				escape(functionName));
+	}
+
 	public void buildParameterList(FunctionDefInterface f) {
 		connectors = new ArrayList<>();
 
@@ -69,7 +69,8 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		String[] connValueDescs = f.getParameterDescs();
 
 		for (int i = 0; i < connNames.length; i++) {
-			connectors.add(new GraphConnector(this, connNames[i], connValueTypes[i], connValueDescs[i], i));
+			connectors.add(new ConnectTerminal(this, connNames[i], connValueTypes[i], connValueDescs[i], i,
+					connNames.length));
 		}
 
 		this.paramMapInfo = new HashMap<String,String>();

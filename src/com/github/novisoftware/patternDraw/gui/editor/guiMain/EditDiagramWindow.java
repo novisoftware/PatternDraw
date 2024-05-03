@@ -26,7 +26,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
@@ -209,8 +209,8 @@ public class EditDiagramWindow extends JFrame2 {
 				}
 			}
 
-			if (t__ != null && t__ instanceof GraphConnector) {
-				GraphConnector hd = (GraphConnector)t__;
+			if (t__ != null && t__ instanceof ConnectTerminal) {
+				ConnectTerminal hd = (ConnectTerminal)t__;
 
 				handled = hd;
 				old_x = e.getX();
@@ -273,8 +273,8 @@ public class EditDiagramWindow extends JFrame2 {
 			else if (handled instanceof AbstractGraphNodeElement && editPanel__.workLineFrom != null) {
 				AbstractGraphNodeElement from = (AbstractGraphNodeElement)handled;
 				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
-				if (t != null && t != from && t instanceof GraphConnector) {
-					GraphConnector conn = (GraphConnector)t;
+				if (t != null && t != from && t instanceof ConnectTerminal) {
+					ConnectTerminal conn = (ConnectTerminal)t;
 					if (conn.getNode() != from) {
 						AbstractGraphNodeElement to = conn.getNode();
 
@@ -288,8 +288,8 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 
 			// fromが端子、toがElementの場合
-			else if (handled instanceof GraphConnector && editPanel__.workLineFrom != null) {
-				GraphConnector conn = (GraphConnector)handled;
+			else if (handled instanceof ConnectTerminal && editPanel__.workLineFrom != null) {
+				ConnectTerminal conn = (ConnectTerminal)handled;
 				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
 				if (t != null && t != conn && t != conn.getNode() && t instanceof AbstractGraphNodeElement) {
 					// fromがオブジェクト、toが端子の場合

@@ -163,4 +163,33 @@ public class Preference {
 			}
 		}
 	}
+
+
+
+	public final static  Color ICON_BORDER_COLOR = new Color( 0.3f, 0.3f, 0.3f );
+
+	public final static  Color color = new Color( 1f, 0.8f, 0.8f );
+
+	/**
+	 * 端子の塗りつぶし色
+	 */
+	public final static Color CONNECTOR_FILL_COLOR = new Color( 0.5f, 0.5f, 0.5f );
+
+	/**
+	 * バックグラウンドの色
+	 */
+	public final static Color ICON_BACKGROUND_COLOR = new Color( 0.9f, 0.9f, 0.9f );
+
+	public final static Font GROUP_ID_FONT = new Font("Meiryo UI", Font.BOLD, 40);
+
+	public final static Font CONNECTOR_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
+
+	/**
+	 * アイコンの箱の中の文字
+	 */
+	public final static Font ICON_BOX_FONT = new Font("Meiryo UI", Font.BOLD, 13);
+
+	public final static BasicStroke STROKE_PLAIN = new BasicStroke(1);
+
+	public final static BasicStroke STROKE_BOLD = new BasicStroke(2);
 }

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.Preference;
 
 
 
@@ -17,18 +18,32 @@ import com.github.novisoftware.patternDraw.utils.GuiUtil;
  * @author user
  *
  */
-public class GraphConnector implements IconGuiInterface {
-	private String paraName;
-	private String paraDescription;
-	public Value.ValueType valueType;
-	private AbstractGraphNodeElement node;
-	private int index;
-
+public class ConnectTerminal implements IconGuiInterface {
 	static final int Y_INTERVAL = 24;
 	static final int RENDER_HEIGHT= 10;
 	static final int RENDER_WIDTH= 10;
 
 	static private GuiUtil.StringWidthUtil strUtil = new GuiUtil.StringWidthUtil();
+
+	private String paraName;
+	private String paraDescription;
+	public Value.ValueType valueType;
+	private AbstractGraphNodeElement node;
+	private int index;
+	private int nIndex;
+
+	public ConnectTerminal(AbstractGraphNodeElement abstractGraphNodeElement,
+			String paraName,
+			ValueType valueType,
+			String paraDescription,
+			int index, int indexNum) {
+		this.node = abstractGraphNodeElement;
+		this.valueType = valueType;
+		this.paraName = paraName;
+		this.paraDescription = paraDescription;
+		this.index = index;
+		this.nIndex = indexNum;
+	}
 
 	public AbstractGraphNodeElement getNode() {
 		return this.node;
@@ -49,6 +64,11 @@ public class GraphConnector implements IconGuiInterface {
 	}
 
 
+	public int getTopY() {
+		return node.y + (node.h - Y_INTERVAL * nIndex) / 2 + index * Y_INTERVAL +
+				/* 注: Y_INTERVAL / 5 は、微調整で追加 */ + Y_INTERVAL / 5;
+	}
+
 	/**
 	 * 中心のY座標を取得します。
 	 *
@@ -56,7 +76,7 @@ public class GraphConnector implements IconGuiInterface {
 	 */
 	@Override
 	public int getCenterY() {
-		return node.y + index*Y_INTERVAL + RENDER_HEIGHT / 2;
+		return this.getTopY() + RENDER_HEIGHT / 2;
 	}
 
 	public boolean isTouched(int x, int y) {
@@ -70,24 +90,20 @@ public class GraphConnector implements IconGuiInterface {
 
 	public void paint(Graphics2D g2, int phase) {
 		if (phase == 1) {
+			g2.setFont(Preference.CONNECTOR_TEXT_FONT);
+			g2.setColor(Preference.CONNECTOR_FILL_COLOR);
+			g2.fillOval(node.x, this.getTopY(), RENDER_WIDTH, RENDER_HEIGHT);
+			g2.setColor(Color.BLACK);
+			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
+					this.getTopY() - 2);
+			/*
 			g2.setFont(node.font1);
-			g2.setColor(node.color2);
+			g2.setColor(node.CONNECTOR_FILL_COLOR);
 			g2.fillRect(node.x, node.y + index * Y_INTERVAL, RENDER_WIDTH, RENDER_HEIGHT);
 			g2.setColor(Color.BLACK);
 			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2), node.y + index * Y_INTERVAL - 2);
 			g2.drawRect(node.x, node.y +index * Y_INTERVAL, RENDER_WIDTH, RENDER_HEIGHT);
+			*/
 		}
-	}
-
-	public GraphConnector(AbstractGraphNodeElement abstractGraphNodeElement,
-			String paraName,
-			ValueType valueType,
-			String paraDescription,
-			int index) {
-		this.node = abstractGraphNodeElement;
-		this.valueType = valueType;
-		this.paraName = paraName;
-		this.paraDescription = paraDescription;
-		this.index = index;
 	}
 }

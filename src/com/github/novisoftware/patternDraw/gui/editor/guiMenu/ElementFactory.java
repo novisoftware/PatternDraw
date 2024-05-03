@@ -6,7 +6,7 @@ import java.util.HashSet;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.FncGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;

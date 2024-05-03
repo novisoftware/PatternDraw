@@ -1,8 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,6 +14,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.Preference;
 
 public abstract class AbstractGraphNodeElement extends AbstractElement {
 	/**
@@ -24,14 +23,34 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 	 */
 	public Integer groupHead = null;
 
-	public AbstractGraphNodeElement(EditDiagramPanel editPanel) {
-		super(editPanel);
-	}
-
 	/**
 	 * 計算結果
 	 */
 	public Value workValue;
+
+	/**
+	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
+	 */
+	public HashMap<String, String> paramMapInfo;
+
+	/**
+	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
+	 */
+	public HashMap<String, AbstractGraphNodeElement> paramMapObj;
+
+	/**
+	 * コネクタ(端子)のオブジェクト
+	 */
+	public ArrayList<ConnectTerminal> connectors;
+
+	/**
+	 * コンストラクタ
+	 *
+	 * @param editPanel
+	 */
+	public AbstractGraphNodeElement(EditDiagramPanel editPanel) {
+		super(editPanel);
+	}
 
 	public ArrayList<String> optStr() {
 		ArrayList<String> ret = new ArrayList<>();
@@ -42,13 +61,6 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 		return ret;
 	}
 
-	// 外部パラメタ関連
-	// (コネクタと他の箱を結ぶ線で表現される)
-	public HashMap<String,String> paramMapInfo;
-	public HashMap<String,AbstractGraphNodeElement> paramMapObj;
-
-	public ArrayList<GraphConnector> connectors;
-
 	/**
 	 * 構造化されているか（外部パラメタを持つか）。
 	 *
@@ -58,28 +70,10 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 		return connectors.size() != 0;
 	}
 
-
-//	final Color colorBorder = new Color( 0.5f, 0.5f, 0.5f );
-	final Color colorBorder = new Color( 0.3f, 0.3f, 0.3f );
-
-	final Color color = new Color( 1f, 0.8f, 0.8f );
-	final Color color2 = new Color( 1f, 0.9f, 0.9f );
-	final Color grayColor = new Color( 0.9f, 0.9f, 0.9f );
-
-
-	Font groupIdFont = new Font("Meiryo UI", Font.BOLD, 40);
-
-	Font font1 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
-	// Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
-	Font font = new Font("Meiryo UI", Font.BOLD, 13);
-
-	BasicStroke strokePlain = new BasicStroke(1);
-	BasicStroke strokeBold = new BasicStroke(2);
-
 	abstract String getRepresentExpression();
 
 	/**
-	 *
+	 * 計算する(workValueに計算結果が格納された状態にする)。
 	 */
 	public abstract void evaluate();
 
@@ -93,8 +87,8 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 		// 結線
 		if (phase == 0) {
 			// 「端子」と結線されるよう表現する
-			g2.setStroke(strokeBold);
-			for (GraphConnector connector : this.connectors) {
+			g2.setStroke(Preference.STROKE_BOLD);
+			for (ConnectTerminal connector : this.connectors) {
 				AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
 				if (src != null) {
 					ValueType valueType = src.getValueType();
@@ -122,7 +116,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			}
 
 			if (this.groupHead != null) {
-				g2.setFont(this.groupIdFont);
+				g2.setFont(Preference.GROUP_ID_FONT);
 				g2.setColor(Color.GRAY);
 				g2.drawString("" + this.groupHead, e.x - 30, e.y + 40);
 			}
@@ -130,7 +124,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 		// 箱
 		if (phase == 1) {
-			g2.setFont(font);
+			g2.setFont(Preference.ICON_BOX_FONT);
 			g2.setColor(Color.GRAY);
 			String boxTitle = e.getKindString();
 			if (e.getKindId() == KindId.CONSTANT) {
@@ -139,11 +133,11 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			}
 			g2.drawString(boxTitle, e.x + 30, e.y - 9);
 
-			g2.setColor(color);
+			g2.setColor(Preference.color);
 			if ( // t.getKindString().equals("入力")
 				 e.getKindId() == KindId.INPUT
 					) {
-				g2.setColor(this.grayColor);
+				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillRect(e.x + 12, e.y, e.w, e.h);
 				BufferedImage image = GuiUtil.getImage(IconImage.EDIT, this);
 				g2.drawImage(image, e.x + 20, e.y + 5, null);
@@ -153,14 +147,14 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			}
 			else if ( e.getKindId() == KindId.DISPLAY // t.getKindString().equals("表示")
 					) {
-				g2.setColor(this.grayColor);
+				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
 				BufferedImage image = GuiUtil.getImage(IconImage.DISPLAY, this);
 				g2.drawImage(image, e.x + 40, e.y, null);
 			}
 			else if ( e.getKindId() == KindId.CONSTANT // t.getKindString().equals("定数")
 					) {
-				g2.setColor(this.grayColor);
+				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
 
 				g2.setColor(Color.BLACK);
@@ -170,7 +164,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			else if ( e.getKindId() == KindId.VARIABLE_SET
 					// t.getKindString().equals("変数を設定")
 					) {
-				g2.setColor(this.grayColor);
+				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
 				BufferedImage image = GuiUtil.getImage(IconImage.VAR_SET, this);
 				g2.drawImage(image, e.x + 20, e.y, null);
@@ -182,7 +176,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			else if ( e.getKindId() == KindId.VARIABLE_REFER
 					// t.getKindString().equals("変数を参照")
 					) {
-				g2.setColor(this.grayColor);
+				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillRect(e.x + 16, e.y, e.w, e.h);
 				BufferedImage image = GuiUtil.getImage(IconImage.VAR_REFER, this);
 				g2.drawImage(image, e.x + 20, e.y, null);
@@ -194,7 +188,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			else if ( e.getKindId() == KindId.OPERATOR
 					// t.getKindString().equals("演算子")
 					) {
-				g2.setColor(this.grayColor);
+				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillOval(e.x + 16, e.y, e.w, e.h);
 
 				String printMark = e.getRepresentExpression();
@@ -206,9 +200,9 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 				int r = e.h * 2 / 3;
 
-				g2.setStroke(strokeBold);
+				g2.setStroke(Preference.STROKE_BOLD);
 				g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, r, r);
-				g2.setColor(colorBorder);
+				g2.setColor(Preference.ICON_BORDER_COLOR);
 //				g2.drawOval(t.x, t.y, t.w, t.h);
 				g2.drawRoundRect(e.x + 12, e.y, e.w, e.h, r, r);
 
@@ -223,13 +217,13 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 			}
 
 			// 端子
-			g2.setStroke(strokePlain);
-			for (GraphConnector connector : connectors) {
+			g2.setStroke(Preference.STROKE_PLAIN);
+			for (ConnectTerminal connector : connectors) {
 				connector.paint(g2, phase);
 			}
 
 			if (this.editPanel.isVisibleDebugInfo) {
-				g2.setFont(font);
+				g2.setFont(Preference.ICON_BOX_FONT);
 				g2.setColor(Color.RED);
 				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
 			}
@@ -237,10 +231,9 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 	}
 
-
 	@Override
 	public IconGuiInterface getTouchedObject(int x, int y) {
-		for (GraphConnector connector : connectors) {
+		for (ConnectTerminal connector : connectors) {
 			if (connector.isTouched(x, y)) {
 				return connector;
 			}

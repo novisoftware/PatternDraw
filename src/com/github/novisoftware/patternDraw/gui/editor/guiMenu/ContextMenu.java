@@ -19,7 +19,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -66,8 +66,8 @@ public class ContextMenu extends JPopupMenu {
 				}
 			}
 
-			if (icon instanceof GraphConnector) {
-				final GraphConnector connect = (GraphConnector) icon;
+			if (icon instanceof ConnectTerminal) {
+				final ConnectTerminal connect = (ConnectTerminal) icon;
 				menuItem = new JMenuItem("参照を削除");
 				menuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -111,7 +111,7 @@ public class ContextMenu extends JPopupMenu {
 							if (ei instanceof RpnGraphNodeElement) {
 								RpnGraphNodeElement ele = (RpnGraphNodeElement) ei;
 
-								for (GraphConnector connector : ele.connectors) {
+								for (ConnectTerminal connector : ele.connectors) {
 									AbstractGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
 									if (src == icon) {
 										ele.paramMapInfo.remove(connector.getParaName());
