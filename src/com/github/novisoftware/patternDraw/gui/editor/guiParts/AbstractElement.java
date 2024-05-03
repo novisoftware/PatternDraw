@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 public abstract class AbstractElement implements IconGuiInterface {

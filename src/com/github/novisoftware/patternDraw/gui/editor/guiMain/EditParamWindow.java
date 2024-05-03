@@ -26,9 +26,9 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 

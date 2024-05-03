@@ -20,7 +20,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 

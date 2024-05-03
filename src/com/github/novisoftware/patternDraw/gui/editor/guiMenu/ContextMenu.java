@@ -22,7 +22,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class ContextMenu extends JPopupMenu {

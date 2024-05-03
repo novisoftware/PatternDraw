@@ -25,8 +25,8 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
-import com.github.novisoftware.patternDraw.gui.editor.util.IconImage;
+import com.github.novisoftware.patternDraw.gui.misc.IconImage;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class ControlElement extends AbstractElement {

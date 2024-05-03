@@ -26,28 +26,18 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.K
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.OtherUtil;
 
 public class NetworkDataModel {
 	/**
 	 * 変数
-	 * [TO/DO → DONE] static宣言でないほうが良い
 	 */
 	final public HashMap<String, Value> variables;
 
-	public void debugVariables() {
-		for (String s : variables.keySet()) {
-			Debug.println("variables", s + " -> " + variables.get(s) );
-		}
-	}
-
-	public void resetVariables(HashMap<String, Value> initVariables) {
-		this.variables.clear();
-		this.variables.putAll(initVariables);
-	}
-
-
 	/**
+	 * ダイアログによるスクリプトのタイトル。
+	 * 設定ファイルに入っている。
 	 * ウィンドウタイトルの文字列の一部分として使用する。
 	 */
 	public String title = "";
@@ -56,10 +46,12 @@ public class NetworkDataModel {
 	 * 保存先のファイル名
 	 */
 	private String filename;
+
 	/**
 	 * エレメントのリスト
 	 */
 	private ArrayList<AbstractElement> elements = new ArrayList<AbstractElement>();
+
 	/**
 	 * 編集用パネル(JPanel)
 	 */
@@ -69,13 +61,6 @@ public class NetworkDataModel {
 	 * パラメーター定義のリスト。
 	 */
 	public final ArrayList<ParameterDefine> paramDefList;
-
-	/**
-	 * パラメーター定義のリスト。
-	 */
-	/*
-	public final HashMap<String, Value> paramVariables;
-	*/
 
 	/**
 	 *  変数名の一覧(設定された変数のみを対象にする)
@@ -111,43 +96,30 @@ public class NetworkDataModel {
 		this.variables = new HashMap<String, Value>();
 	}
 
+	public void debugVariables() {
+		for (String s : variables.keySet()) {
+			Debug.println("variables", s + " -> " + variables.get(s) );
+		}
+	}
+
+	public void resetVariables(HashMap<String, Value> initVariables) {
+		this.variables.clear();
+		this.variables.putAll(initVariables);
+	}
+
 	/**
 	 * abc1, abc2, abc3 ... のような連番で、ユニークな名前を生成します。
 	 *
-	 * @param inputName
-	 * @return
+	 * @param inputName 連番元(例: abc3)
+	 * @return 生成した連番(例: abc4)
 	 */
 	public String generateUniqueName(String inputName) {
-		// 衝突しない名前を設定する
-		// （末尾の数字を１加算する）
-		final String REG = "(.*)([0-9]+)";
-
-		String baseName = inputName.replaceAll(REG, "$1");
-		String number = inputName.replaceAll(REG, "$2");
-		int d = 0;
-		try {
-			d = Integer.parseInt(number);
-		} catch(Exception ex) {
-		}
-
 		HashSet<String> nameSet = new HashSet<>();
-		for (AbstractElement to :  this.getElements()) {
+		for (AbstractElement to :  elements) {
 			nameSet.add(to.id);
 		}
-
-		// 名前が衝突しなくなるまでインクリメントする
-		String name = "";
-		while (true) {
-			d++;
-			name = baseName + d;
-			if (! nameSet.contains(name)) {
-				break;
-			}
-		}
-
-		return name;
+		return OtherUtil.generateUniqueName(inputName, nameSet);
 	}
-
 
 	/**
 	 * 位置関係の比較
@@ -173,8 +145,9 @@ public class NetworkDataModel {
 			}
 
 			/*
-			// ★ TODO
 			// 0 を返してはいけない。オブジェクトが同一視される
+			// ★ TODO
+			// 以下でいいのかどうか。 return 0 にする場面が必要かどうか検討。
 			return 0;
 			*/
 

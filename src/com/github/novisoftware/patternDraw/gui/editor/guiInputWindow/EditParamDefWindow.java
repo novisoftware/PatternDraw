@@ -32,12 +32,12 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Non
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JCheckBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel3_messageDisp;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 /**

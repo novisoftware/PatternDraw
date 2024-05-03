@@ -31,10 +31,10 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 

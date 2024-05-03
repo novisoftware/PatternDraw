@@ -24,6 +24,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
@@ -38,7 +39,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.GraphConnector;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 
 /**

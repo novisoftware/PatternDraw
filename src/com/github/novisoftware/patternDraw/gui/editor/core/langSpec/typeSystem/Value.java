@@ -2,7 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.gui.editor.util.Debug;
+import com.github.novisoftware.patternDraw.utils.Debug;
 
 
 public class Value {
