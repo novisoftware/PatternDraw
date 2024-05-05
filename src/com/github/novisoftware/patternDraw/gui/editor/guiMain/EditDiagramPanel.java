@@ -73,7 +73,8 @@ public class EditDiagramPanel extends JPanel {
 		}
 
 		/**
-		 * 配置されている部品を描画します。 関係線一式を先に描画し、その後、アイコン形状を描画します。
+		 * 配置されている部品を描画します。
+		 * 関係線一式を先に描画し( phase == 0 )、その後、アイコン形状を描画します( phase == 2 )。
 		 */
 		g2.setColor(Color.GRAY);
 		for (int phase = 0; phase < 2; phase++) {

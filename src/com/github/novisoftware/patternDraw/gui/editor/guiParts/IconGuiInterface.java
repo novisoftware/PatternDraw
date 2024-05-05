@@ -15,4 +15,11 @@ public interface IconGuiInterface {
 	 * @return 中心のY座標
 	 */
 	public int getCenterY();
+
+	/**
+	 * mouse hover の場合に true を設定します
+	 *
+	 * @param b
+	 */
+	public void setOnMouse(boolean b);
 }

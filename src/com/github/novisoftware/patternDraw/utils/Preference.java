@@ -114,6 +114,11 @@ public class Preference {
 	public static Color TEXT_COLOR = new Color(20,20,20);
 
 	/**
+	 * ダイヤグラムエディタでの文字の色
+	 */
+	public static Color TIPS_TEXT_COLOR = new Color(0.5f, 0.5f, 0.5f);
+
+	/**
 	 * 妥当性エラーを表現するメッセージ色
 	 */
 	public static Color MESSAGE_ERROR_COLOR = new Color(0xF0, 0x20, 0x20);

@@ -81,7 +81,7 @@ public class ConnectTerminal implements IconGuiInterface {
 
 	public boolean isTouched(int x, int y) {
 		if ( node.x < x && x < node.x + RENDER_WIDTH
-			&& node.y + index * Y_INTERVAL  < y && y < node.y + index * Y_INTERVAL + RENDER_HEIGHT) {
+			&& this.getTopY() < y && y < this.getTopY() + RENDER_HEIGHT) {
 			return true;
 		}
 
@@ -96,14 +96,31 @@ public class ConnectTerminal implements IconGuiInterface {
 			g2.setColor(Color.BLACK);
 			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
 					this.getTopY() - 2);
-			/*
-			g2.setFont(node.font1);
-			g2.setColor(node.CONNECTOR_FILL_COLOR);
-			g2.fillRect(node.x, node.y + index * Y_INTERVAL, RENDER_WIDTH, RENDER_HEIGHT);
-			g2.setColor(Color.BLACK);
-			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2), node.y + index * Y_INTERVAL - 2);
-			g2.drawRect(node.x, node.y +index * Y_INTERVAL, RENDER_WIDTH, RENDER_HEIGHT);
-			*/
 		}
+		if (phase == 1) {
+			if (this.isOnMouse) {
+				g2.setFont(Preference.LABEL_FONT);
+				g2.setColor(Preference.TIPS_TEXT_COLOR);
+
+				g2.drawString(
+						"" + paraName,
+						node.x,
+						this.node.y + this.node.h + 10 + 30
+						);
+				g2.drawString(
+						"" + this.paraDescription + " (" + this.valueType + ")",
+						node.x,
+						this.node.y + this.node.h + 10 + 55
+						);
+			}
+		}
+
+	}
+
+	boolean isOnMouse = false;
+
+	@Override
+	public void setOnMouse(boolean b) {
+		this.isOnMouse = b;
 	}
 }

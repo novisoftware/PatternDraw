@@ -350,8 +350,27 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 		}
 
+		IconGuiInterface lastTouched = null;
+
 		@Override
 		public void mouseMoved(MouseEvent e) {
+			IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
+
+			boolean isChanged = false;
+			if (obj != lastTouched) {
+				if (lastTouched != null) {
+					lastTouched.setOnMouse(false);
+				}
+				if (obj != null) {
+					obj.setOnMouse(true);
+				}
+				isChanged = true;
+				lastTouched = obj;
+			}
+
+			if (isChanged) {
+				editPanel__.repaint();
+			}
 		}
 	}
 

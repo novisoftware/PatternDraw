@@ -126,6 +126,15 @@ public abstract class AbstractElement implements IconGuiInterface {
 	}
 
 	/**
+	 * 出力のX座標を取得します。
+	 *
+	 * @return 出力のX座標
+	 */
+	public int getConnectOutputX() {
+		return x + w;
+	}
+
+	/**
 	 * 中心のY座標を取得します。
 	 *
 	 * @return 中心のY座標
@@ -143,6 +152,12 @@ public abstract class AbstractElement implements IconGuiInterface {
 	public void dragged(int moveX, int moveY) {
 		x += moveX;
 		y += moveY;
+	}
+
+	@Override
+	public void setOnMouse(boolean b) {
+		// TODO 自動生成されたメソッド・スタブ
+
 	}
 
 	public IconGuiInterface getTouchedObject(int x, int y) {

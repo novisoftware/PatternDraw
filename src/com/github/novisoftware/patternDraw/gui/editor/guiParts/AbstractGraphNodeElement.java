@@ -2,6 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.geom.CubicCurve2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,7 +112,26 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 						Debug.println("PAINT", "invalid type src:" + src.getValueType()  + " receive:" + connector.valueType);
 					}
-					g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
+					// 線分描画
+					// 直線
+					// g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
+
+					// double x0 = src.getCenterX() ;
+					double x0 = src.getConnectOutputX();
+					double y0 = src.getCenterY();
+					double x2 = connector.getCenterX();
+					double y2 = connector.getCenterY();
+
+					double X_RATIO = 55;
+					double Y_RATIO = 95;
+					double x1a = (x0 * X_RATIO + x2 * (100-X_RATIO)) / 100.0;
+					double y1a = (y0 * Y_RATIO + y2 * (100-Y_RATIO)) / 100.0;
+					double x1b = (x0 * (100-X_RATIO) + x2 * X_RATIO) / 100.0;
+					double y1b = (y0 * (100-Y_RATIO) + y2 * Y_RATIO) / 100.0;
+
+					CubicCurve2D.Double curve1 = new CubicCurve2D.Double(
+							x0,y0,x1a,y1a,x1b,y1b,x2,y2);
+					g2.draw(curve1);
 				}
 			}
 
