@@ -10,8 +10,8 @@ import java.util.TreeSet;
 
 import javax.swing.JPanel;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 
@@ -32,11 +32,11 @@ public class EditDiagramPanel extends JPanel {
 	Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
 	// マウスドラッグ中に、関係線を変更する場合、表示する
-	IconGuiInterface workLineFrom = null;
+	P001_IconGuiInterface workLineFrom = null;
 	int workLineX, workLineY;
 
-	public AbstractElement getElementIcon(String name) {
-		for (AbstractElement t : networkDataModel.getElements()) {
+	public P020___AbstractElement getElementIcon(String name) {
+		for (P020___AbstractElement t : networkDataModel.getElements()) {
 			if (t.id.equals(name)) {
 				return t;
 			}
@@ -47,7 +47,7 @@ public class EditDiagramPanel extends JPanel {
 	public Set<String> getToneNames() {
 		TreeSet<String> s = new TreeSet<>();
 
-		for (AbstractElement t : networkDataModel.getElements()) {
+		for (P020___AbstractElement t : networkDataModel.getElements()) {
 			s.add(t.id);
 		}
 
@@ -78,16 +78,16 @@ public class EditDiagramPanel extends JPanel {
 		 */
 		g2.setColor(Color.GRAY);
 		for (int phase = 0; phase < 2; phase++) {
-			for (AbstractElement t : networkDataModel.getElements()) {
+			for (P020___AbstractElement t : networkDataModel.getElements()) {
 				t.paintWithPhase(g2, phase);
 			}
 		}
 	}
 
-	IconGuiInterface checkXY(int x, int y) {
-		IconGuiInterface hit = null;
-		for (AbstractElement t : networkDataModel.getElements()) {
-			IconGuiInterface check = t.getTouchedObject(x, y);
+	P001_IconGuiInterface checkXY(int x, int y) {
+		P001_IconGuiInterface hit = null;
+		for (P020___AbstractElement t : networkDataModel.getElements()) {
+			P001_IconGuiInterface check = t.getTouchedObject(x, y);
 			if (check != null) {
 				// System.out.println("h mouse(" + x + "," + y +") obj(" + t.x +
 				// "," + t.y +")" );

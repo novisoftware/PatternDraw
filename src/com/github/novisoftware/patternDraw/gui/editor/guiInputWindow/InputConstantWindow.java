@@ -28,9 +28,9 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Non
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
@@ -44,11 +44,11 @@ import com.github.novisoftware.patternDraw.utils.Preference;
  */
 public class InputConstantWindow extends JFrame2 {
 	ArrayList<String> rpnArray;
-	final AbstractElement targetElement;
+	final P020___AbstractElement targetElement;
 	JLabel messageDisp;
 	private final JButton buttonOk;
 
-	public InputConstantWindow(final RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
+	public InputConstantWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
 		if (element.getKindId() != KindId.CONSTANT) {
 			System.err.println("呼び出し条件がおかしいので要確認。");
 			try {
@@ -161,7 +161,7 @@ public class InputConstantWindow extends JFrame2 {
 							radioButton.addChangeListener(new ChangeListener() {
 								public void stateChanged(ChangeEvent e) {
 									if (radioButton.isSelected()) {
-										((RpnGraphNodeElement) element).setValueType(valueTypes[idx]);
+										((P022_____RpnGraphNodeElement) element).setValueType(valueTypes[idx]);
 										if (ValueType.INTEGER.equals(valueTypes[idx])) {
 											p.setInputChecker(new IntegerChecker());
 										} else {

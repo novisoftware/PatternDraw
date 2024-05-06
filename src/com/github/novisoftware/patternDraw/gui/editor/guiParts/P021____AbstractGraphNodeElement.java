@@ -15,9 +15,10 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.GuiUtil.StringWidthUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
-public abstract class AbstractGraphNodeElement extends AbstractElement {
+public abstract class P021____AbstractGraphNodeElement extends P020___AbstractElement {
 	/**
 	 * 単連結グループの先頭の場合 グループID(整数)。
 	 * 単連結グループの先頭でない場合はNULL。
@@ -37,19 +38,19 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 	/**
 	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
 	 */
-	public HashMap<String, AbstractGraphNodeElement> paramMapObj;
+	public HashMap<String, P021____AbstractGraphNodeElement> paramMapObj;
 
 	/**
 	 * コネクタ(端子)のオブジェクト
 	 */
-	public ArrayList<ConnectTerminal> connectors;
+	public ArrayList<P010___ConnectTerminal> connectors;
 
 	/**
 	 * コンストラクタ
 	 *
 	 * @param editPanel
 	 */
-	public AbstractGraphNodeElement(EditDiagramPanel editPanel) {
+	public P021____AbstractGraphNodeElement(EditDiagramPanel editPanel) {
 		super(editPanel);
 	}
 
@@ -78,25 +79,28 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 	 */
 	public abstract void evaluate();
 
+
+	static StringWidthUtil stringWidthUtil = new StringWidthUtil();
+
 	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
 	 */
 	@Override
 	public void paintWithPhase(Graphics2D g2, int phase) {
-		AbstractGraphNodeElement e = this;
+		P021____AbstractGraphNodeElement e = this;
 
 		// 結線
 		if (phase == 0) {
 			// 「端子」と結線されるよう表現する
 			g2.setStroke(Preference.STROKE_BOLD);
-			for (ConnectTerminal connector : this.connectors) {
-				AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
+			for (P010___ConnectTerminal connector : this.connectors) {
+				P021____AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
 				if (src != null) {
 					ValueType valueType = src.getValueType();
 					// RPNノードで、変数の値の場合は、変数・パラメタ定義から ValueType を取得する
 					// 取得できたら上書きする
-					if (src instanceof RpnGraphNodeElement) {
-						RpnGraphNodeElement r = (RpnGraphNodeElement)src;
+					if (src instanceof P022_____RpnGraphNodeElement) {
+						P022_____RpnGraphNodeElement r = (P022_____RpnGraphNodeElement)src;
 						ArrayList<ParameterDefine> params = this.editPanel.networkDataModel.paramDefList;
 						ValueType work = r.getRpn().getValueType(this.editPanel.networkDataModel.variables, params);
 						if (! work.equals(ValueType.NONE)) {
@@ -213,7 +217,14 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 				String printMark = e.getRepresentExpression();
 				g2.setColor(Color.BLACK);
-				g2.drawString(printMark, e.x + 30, e.y + e.h / 2 + 10);
+
+				// g2.fillRect(e.x, e.y + e.h / 2 + 10, e.w, 1);
+
+				int strWidth = stringWidthUtil.strWidth(printMark, g2);
+
+				g2.drawString(printMark, e.x  + 16 + (e.w - strWidth)/2, e.y + e.h / 2 + 10);
+
+
 			}
 			else {
 				// なにか追加した場合の暫定動作用
@@ -238,7 +249,7 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 
 			// 端子
 			g2.setStroke(Preference.STROKE_PLAIN);
-			for (ConnectTerminal connector : connectors) {
+			for (P010___ConnectTerminal connector : connectors) {
 				connector.paint(g2, phase);
 			}
 
@@ -248,12 +259,11 @@ public abstract class AbstractGraphNodeElement extends AbstractElement {
 				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
 			}
 		}
-
 	}
 
 	@Override
-	public IconGuiInterface getTouchedObject(int x, int y) {
-		for (ConnectTerminal connector : connectors) {
+	public P001_IconGuiInterface getTouchedObject(int x, int y) {
+		for (P010___ConnectTerminal connector : connectors) {
 			if (connector.isTouched(x, y)) {
 				return connector;
 			}

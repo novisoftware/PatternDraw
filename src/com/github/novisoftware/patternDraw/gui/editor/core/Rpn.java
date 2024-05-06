@@ -10,6 +10,9 @@ import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.IsScalar;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
@@ -18,8 +21,8 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
@@ -187,11 +190,12 @@ public class Rpn {
 		return null;
 	}
 
+
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
 
-	public Value doCaliculate(RpnGraphNodeElement ele, HashMap<String, Value> variables) {
+	public Value doCaliculate(P022_____RpnGraphNodeElement ele, HashMap<String, Value> variables) {
 		Stack<Value> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
@@ -205,7 +209,7 @@ public class Rpn {
 			 */
 			String paraName = getParamName(s);
 			if (paraName != null) {
-				AbstractGraphNodeElement src = ele.paramMapObj.get(paraName);
+				P021____AbstractGraphNodeElement src = ele.paramMapObj.get(paraName);
 				stack.push(src.workValue);
 				continue;
 			}
@@ -261,76 +265,68 @@ public class Rpn {
 				}
 			}
 			else if (s.equals("-")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					stack.push( new ValueNumeric( a_.getInternal().subtract(b_.getInternal())));
+				Value b0 = stack.pop();
+				Value a0 = stack.pop();
+				// TODO:
+				// キャストエラーの処理が必要。
+				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+					TwoValues work = TypeUtil.upCast(a0, b0);
+					IsScalar a = (IsScalar)work.a;
+					IsScalar b = (IsScalar)work.b;
+					IsScalar result = a.sub(b);
+					stack.push( (Value)result );
 				}
 			}
 			else if (s.equals("/")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					stack.push( new ValueNumeric( a_.getInternal().divide(b_.getInternal())));
+				Value b0 = stack.pop();
+				Value a0 = stack.pop();
+				// TODO:
+				// キャストエラーの処理が必要。
+				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+					TwoValues work = TypeUtil.upCast(a0, b0);
+					IsScalar a = (IsScalar)work.a;
+					IsScalar b = (IsScalar)work.b;
+					IsScalar result = a.div(b);
+					stack.push( (Value)result );
 				}
 			}
 			else if (s.equals("%")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					stack.push(new ValueNumeric(new BigDecimal( a_.getInternal().toBigInteger().mod(b_.getInternal().toBigInteger()))));
-
-					Debug.println("RPN", "mod(VALID)");
-					Debug.println("RPN", "a: " + a_.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b_.toDebugString() + "  " + b);
-					Debug.println("RPN:", "result: " + stack.peek().toDebugString());
-				}
-				else {
-					Debug.println("RPN", "mod(INVALID)");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
+				Value b0 = stack.pop();
+				Value a0 = stack.pop();
+				// TODO:
+				// キャストエラーの処理が必要。
+				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+					TwoValues work = TypeUtil.upCast(a0, b0);
+					IsScalar a = (IsScalar)work.a;
+					IsScalar b = (IsScalar)work.b;
+					IsScalar result = a.mod(b);
+					stack.push( (Value)result );
 				}
 			}
 			else if (s.equals("+")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					stack.push( new ValueNumeric( a_.getInternal().add(b_.getInternal())));
-
-
-					Debug.println("RPN", "plus");
-				}
-				else {
-					Debug.println("RPN", "plus(INVALID)");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
+				Value b0 = stack.pop();
+				Value a0 = stack.pop();
+				// TODO:
+				// キャストエラーの処理が必要。
+				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+					TwoValues work = TypeUtil.upCast(a0, b0);
+					IsScalar a = (IsScalar)work.a;
+					IsScalar b = (IsScalar)work.b;
+					IsScalar result = a.add(b);
+					stack.push( (Value)result );
 				}
 			}
 			else if (s.equals("*")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					stack.push( new ValueNumeric( a_.getInternal().multiply(b_.getInternal())));
+				Value b0 = stack.pop();
+				Value a0 = stack.pop();
+				// TODO:
+				// キャストエラーの処理が必要。
+				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+					TwoValues work = TypeUtil.upCast(a0, b0);
+					IsScalar a = (IsScalar)work.a;
+					IsScalar b = (IsScalar)work.b;
+					IsScalar result = a.mul(b);
+					stack.push( (Value)result );
 				}
 			}
 			else if (s.equals(">")) {

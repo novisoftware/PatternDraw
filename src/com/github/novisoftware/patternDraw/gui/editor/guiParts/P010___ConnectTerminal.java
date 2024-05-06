@@ -18,7 +18,7 @@ import com.github.novisoftware.patternDraw.utils.Preference;
  * @author user
  *
  */
-public class ConnectTerminal implements IconGuiInterface {
+public class P010___ConnectTerminal extends P002__AbstractIcon {
 	static final int Y_INTERVAL = 24;
 	static final int RENDER_HEIGHT= 10;
 	static final int RENDER_WIDTH= 10;
@@ -28,11 +28,11 @@ public class ConnectTerminal implements IconGuiInterface {
 	private String paraName;
 	private String paraDescription;
 	public Value.ValueType valueType;
-	private AbstractGraphNodeElement node;
+	private P021____AbstractGraphNodeElement node;
 	private int index;
 	private int nIndex;
 
-	public ConnectTerminal(AbstractGraphNodeElement abstractGraphNodeElement,
+	public P010___ConnectTerminal(P021____AbstractGraphNodeElement abstractGraphNodeElement,
 			String paraName,
 			ValueType valueType,
 			String paraDescription,
@@ -45,7 +45,7 @@ public class ConnectTerminal implements IconGuiInterface {
 		this.nIndex = indexNum;
 	}
 
-	public AbstractGraphNodeElement getNode() {
+	public P021____AbstractGraphNodeElement getNode() {
 		return this.node;
 	}
 
@@ -98,7 +98,7 @@ public class ConnectTerminal implements IconGuiInterface {
 					this.getTopY() - 2);
 		}
 		if (phase == 1) {
-			if (this.isOnMouse) {
+			if (this.isOnMouse()) {
 				g2.setFont(Preference.LABEL_FONT);
 				g2.setColor(Preference.TIPS_TEXT_COLOR);
 
@@ -115,12 +115,5 @@ public class ConnectTerminal implements IconGuiInterface {
 			}
 		}
 
-	}
-
-	boolean isOnMouse = false;
-
-	@Override
-	public void setOnMouse(boolean b) {
-		this.isOnMouse = b;
 	}
 }

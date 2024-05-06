@@ -16,12 +16,12 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
@@ -31,14 +31,14 @@ public class ContextMenu extends JPopupMenu {
 	int x;
 	int y;
 
-	public ContextMenu(final EditDiagramPanel editPanel, final IconGuiInterface icon, int x, int y) {
+	public ContextMenu(final EditDiagramPanel editPanel, final P001_IconGuiInterface icon, int x, int y) {
 		this.x = x;
 		this.y = y;
 
 		JMenuItem menuItem;
 
 		if (icon != null) {
-			if (icon instanceof RpnGraphNodeElement) {
+			if (icon instanceof P022_____RpnGraphNodeElement) {
 				menuItem = new JMenuItem("テスト");
 				menuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -49,8 +49,8 @@ public class ContextMenu extends JPopupMenu {
 		}
 
 		if (icon != null) {
-			if (icon instanceof RpnGraphNodeElement) {
-				final RpnGraphNodeElement tone = (RpnGraphNodeElement) icon;
+			if (icon instanceof P022_____RpnGraphNodeElement) {
+				final P022_____RpnGraphNodeElement tone = (P022_____RpnGraphNodeElement) icon;
 				if (tone.hasParameter()) {
 					menuItem = new JMenuItem("参照を全て削除");
 					menuItem.addActionListener(new ActionListener() {
@@ -66,8 +66,8 @@ public class ContextMenu extends JPopupMenu {
 				}
 			}
 
-			if (icon instanceof ConnectTerminal) {
-				final ConnectTerminal connect = (ConnectTerminal) icon;
+			if (icon instanceof P010___ConnectTerminal) {
+				final P010___ConnectTerminal connect = (P010___ConnectTerminal) icon;
 				menuItem = new JMenuItem("参照を削除");
 				menuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
@@ -82,14 +82,14 @@ public class ContextMenu extends JPopupMenu {
 		}
 
 		if (icon != null) {
-			if (icon instanceof AbstractElement) {
-				AbstractElement ti = (AbstractElement) icon;
+			if (icon instanceof P020___AbstractElement) {
+				P020___AbstractElement ti = (P020___AbstractElement) icon;
 
 				// 複製
 				menuItem = new JMenuItem("複製");
 				menuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ev) {
-						AbstractElement c = ti.getCopy();
+						P020___AbstractElement c = ti.getCopy();
 						c.y = ti.y + ti.h + 3;
 						c.id = editPanel.networkDataModel.generateUniqueName(c.id);
 
@@ -103,16 +103,16 @@ public class ContextMenu extends JPopupMenu {
 				// 削除
 				menuItem = new JMenuItem("削除");
 				menuItem.addActionListener(new ActionListener() {
-					void removeIcon(AbstractElement icon) {
+					void removeIcon(P020___AbstractElement icon) {
 						// オブジェクト一覧から削除
 						editPanel.networkDataModel.getElements().remove(icon);
 						// 参照を削除
-						for (AbstractElement ei : editPanel.networkDataModel.getElements()) {
-							if (ei instanceof RpnGraphNodeElement) {
-								RpnGraphNodeElement ele = (RpnGraphNodeElement) ei;
+						for (P020___AbstractElement ei : editPanel.networkDataModel.getElements()) {
+							if (ei instanceof P022_____RpnGraphNodeElement) {
+								P022_____RpnGraphNodeElement ele = (P022_____RpnGraphNodeElement) ei;
 
-								for (ConnectTerminal connector : ele.connectors) {
-									AbstractGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
+								for (P010___ConnectTerminal connector : ele.connectors) {
+									P021____AbstractGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
 									if (src == icon) {
 										ele.paramMapInfo.remove(connector.getParaName());
 										ele.paramMapObj.remove(connector.getParaName());
@@ -124,8 +124,8 @@ public class ContextMenu extends JPopupMenu {
 					}
 
 					public void actionPerformed(ActionEvent event) {
-						if (ti instanceof ControlElement && ((ControlElement) ti).controllerGroup != null) {
-							for (ControlElement c : ((ControlElement) ti).controllerGroup) {
+						if (ti instanceof P010___ControlElement && ((P010___ControlElement) ti).controllerGroup != null) {
+							for (P010___ControlElement c : ((P010___ControlElement) ti).controllerGroup) {
 								this.removeIcon(c);
 							}
 						} else {

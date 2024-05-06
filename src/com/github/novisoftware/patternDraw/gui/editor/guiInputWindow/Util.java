@@ -8,9 +8,9 @@ import javax.swing.JButton;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 public class Util {
@@ -24,12 +24,12 @@ public class Util {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("Set RPN:" + RpnUtil.a2s(tf.rpnArray));
-				AbstractElement te = tf.targetElement;
-				if (te instanceof ControlElement) {
-					ControlElement e = (ControlElement) te;
+				P020___AbstractElement te = tf.targetElement;
+				if (te instanceof P010___ControlElement) {
+					P010___ControlElement e = (P010___ControlElement) te;
 					e.setRpnString(RpnUtil.a2s(tf.rpnArray));
-				} else if (te instanceof RpnGraphNodeElement) {
-					RpnGraphNodeElement e = (RpnGraphNodeElement) te;
+				} else if (te instanceof P022_____RpnGraphNodeElement) {
+					P022_____RpnGraphNodeElement e = (P022_____RpnGraphNodeElement) te;
 					e.setRpnString(RpnUtil.a2s(tf.rpnArray));
 				}
 				tf.dispose();

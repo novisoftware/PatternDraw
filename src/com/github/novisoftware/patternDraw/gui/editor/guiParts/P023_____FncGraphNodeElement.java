@@ -18,21 +18,21 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 
-public class FncGraphNodeElement extends AbstractGraphNodeElement {
+public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeElement {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
 	final String functionName;
 	final FunctionDefInterface function;
 
-	public FncGraphNodeElement(EditDiagramPanel EditPanel, String functionName, FunctionDefInterface f) {
+	public P023_____FncGraphNodeElement(EditDiagramPanel EditPanel, String functionName, FunctionDefInterface f) {
 		super(EditPanel);
 		this.functionName = functionName;
 		this.function = f;
 		buildParameterList(this.function);
 	}
 
-	public FncGraphNodeElement(EditDiagramPanel EditPanel, String s) throws LangSpecException {
+	public P023_____FncGraphNodeElement(EditDiagramPanel EditPanel, String s) throws LangSpecException {
 		super(EditPanel);
 
 		String a[] = FileReadUtil.tokenizeToArray(s);
@@ -69,12 +69,12 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		String[] connValueDescs = f.getParameterDescs();
 
 		for (int i = 0; i < connNames.length; i++) {
-			connectors.add(new ConnectTerminal(this, connNames[i], connValueTypes[i], connValueDescs[i], i,
+			connectors.add(new P010___ConnectTerminal(this, connNames[i], connValueTypes[i], connValueDescs[i], i,
 					connNames.length));
 		}
 
 		this.paramMapInfo = new HashMap<String,String>();
-		this.paramMapObj = new HashMap<String,AbstractGraphNodeElement>();
+		this.paramMapObj = new HashMap<String,P021____AbstractGraphNodeElement>();
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 		ArrayList<Value> args = new ArrayList<Value>();
 
 		for (String paraName : this.function.getParameterNames()) {
-			AbstractGraphNodeElement pObj = this.paramMapObj.get(paraName);
+			P021____AbstractGraphNodeElement pObj = this.paramMapObj.get(paraName);
 			if (pObj == null) {
 				System.out.println("param not satisfied.");
 				return;
@@ -110,10 +110,10 @@ public class FncGraphNodeElement extends AbstractGraphNodeElement {
 	}
 
 	@Override
-	public FncGraphNodeElement getCopy() {
-		FncGraphNodeElement ret;
+	public P023_____FncGraphNodeElement getCopy() {
+		P023_____FncGraphNodeElement ret;
 		try {
-			ret = new FncGraphNodeElement(this.editPanel, this.str());
+			ret = new P023_____FncGraphNodeElement(this.editPanel, this.str());
 			return ret;
 		} catch (LangSpecException e) {
 			// コピー元がコンストラクタでのエラーチェックを通過しているため、発生しない。

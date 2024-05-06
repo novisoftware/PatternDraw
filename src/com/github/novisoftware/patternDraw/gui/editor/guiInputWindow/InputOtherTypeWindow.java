@@ -27,18 +27,18 @@ import javax.swing.event.DocumentListener;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 
 /**
@@ -53,7 +53,7 @@ public class InputOtherTypeWindow extends JFrame2 {
 	final int LINES = 14;
 
 	ArrayList<String> rpnArray;
-	final AbstractElement targetElement;
+	final P020___AbstractElement targetElement;
 
 	abstract class InputChecker {
 		boolean isOk = false;
@@ -143,7 +143,7 @@ public class InputOtherTypeWindow extends JFrame2 {
 
 	JLabel messageDisp;
 
-	public InputOtherTypeWindow(final AbstractElement element, final EditDiagramPanel editPanel) {
+	public InputOtherTypeWindow(final P020___AbstractElement element, final EditDiagramPanel editPanel) {
 		this.targetElement = element;
 		this.setTitle(element.getKindString() + " を編集");
 
@@ -175,12 +175,12 @@ public class InputOtherTypeWindow extends JFrame2 {
 		layout.setConstraints(messageDisp, gbc);
 		this.add(messageDisp);
 
-		if (element instanceof ControlElement) {
-			ControlElement e = (ControlElement) element;
+		if (element instanceof P010___ControlElement) {
+			P010___ControlElement e = (P010___ControlElement) element;
 			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
 			rpnArray = e.getRpn().getArray();
-		} else if (element instanceof RpnGraphNodeElement) {
-			RpnGraphNodeElement e = (RpnGraphNodeElement) element;
+		} else if (element instanceof P022_____RpnGraphNodeElement) {
+			P022_____RpnGraphNodeElement e = (P022_____RpnGraphNodeElement) element;
 			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
 			rpnArray = e.getRpn().getArray();
 		}
@@ -264,7 +264,7 @@ public class InputOtherTypeWindow extends JFrame2 {
 								radioButton.addChangeListener(new ChangeListener() {
 									public void stateChanged(ChangeEvent e) {
 										if (radioButton.isSelected()) {
-											((RpnGraphNodeElement)element).setValueType(valueTypes[idx]);
+											((P022_____RpnGraphNodeElement)element).setValueType(valueTypes[idx]);
 											if (ValueType.INTEGER.equals(valueTypes[idx])) {
 												p.setInputChecker(new IntegerChecker());
 											} else {
@@ -365,12 +365,12 @@ public class InputOtherTypeWindow extends JFrame2 {
 				@Override
 				public void actionPerformed(ActionEvent ev) {
 					System.out.println("Set RPN:" + RpnUtil.a2s(tf.rpnArray));
-					AbstractElement te = tf.targetElement;
-					if (te instanceof ControlElement) {
-						ControlElement e = (ControlElement) te;
+					P020___AbstractElement te = tf.targetElement;
+					if (te instanceof P010___ControlElement) {
+						P010___ControlElement e = (P010___ControlElement) te;
 						e.setRpnString(RpnUtil.a2s(tf.rpnArray));
-					} else if (te instanceof RpnGraphNodeElement) {
-						RpnGraphNodeElement e = (RpnGraphNodeElement) te;
+					} else if (te instanceof P022_____RpnGraphNodeElement) {
+						P022_____RpnGraphNodeElement e = (P022_____RpnGraphNodeElement) te;
 						e.setRpnString(RpnUtil.a2s(tf.rpnArray));
 					}
 					tf.dispose();

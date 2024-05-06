@@ -17,25 +17,25 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
-public class ControlElement extends AbstractElement {
+public class P010___ControlElement extends P020___AbstractElement {
 	/**
 	 * 制御用の箱の集まり・かたまり
 	 */
 	public String controlType;
 
-	public HashSet<ControlElement> controllerGroup;
+	public HashSet<P010___ControlElement> controllerGroup;
 
 	public String str() {
 		return String.format("CONTROL: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(controlType), escape(getRpnString()));
@@ -47,11 +47,11 @@ public class ControlElement extends AbstractElement {
 		return ret;
 	}
 
-	public ControlElement(EditDiagramPanel EditPanel) {
+	public P010___ControlElement(EditDiagramPanel EditPanel) {
 		super(EditPanel);
 	}
 
-	public ControlElement(EditDiagramPanel EditPanel, String s) {
+	public P010___ControlElement(EditDiagramPanel EditPanel, String s) {
 		super(EditPanel);
 
 		String a[] =s.split(" ");
@@ -130,8 +130,8 @@ public class ControlElement extends AbstractElement {
 	}
 
 	@Override
-	public ControlElement getCopy() {
-		ControlElement ret = new ControlElement(this.editPanel, this.str());
+	public P010___ControlElement getCopy() {
+		P010___ControlElement ret = new P010___ControlElement(this.editPanel, this.str());
 
 		return ret;
 	}
@@ -150,7 +150,7 @@ public class ControlElement extends AbstractElement {
 	 */
 	@Override
 	public void paintWithPhase(Graphics2D g2, int phase) {
-		ControlElement t = this;
+		P010___ControlElement t = this;
 
 		// 結線
 		if (phase == 0) {
@@ -221,7 +221,7 @@ public class ControlElement extends AbstractElement {
 	 * ドラッグ開始時
 	 */
 	@Override
-	public IconGuiInterface getTouchedObject(int x, int y) {
+	public P001_IconGuiInterface getTouchedObject(int x, int y) {
 		/*
 		for (GraphConnector connector : connectors) {
 			if (connector.isTouched(x, y)) {
@@ -255,7 +255,7 @@ public class ControlElement extends AbstractElement {
 	 *
 	 * 含まれるかは、見た目で囲まれるかを判定する
 	 */
-	public boolean includes(AbstractElement e) {
+	public boolean includes(P020___AbstractElement e) {
 		return (this.x < e.x
 				&& e.x+e.w < this.x + this.w
 				&& this.y < e.y
@@ -275,14 +275,14 @@ public class ControlElement extends AbstractElement {
 			this.x += x;
 			this.y += y;
 
-			HashMap<ControlElement, ArrayList<AbstractElement>> map = this.editPanel.networkDataModel.controlled_head;
+			HashMap<P010___ControlElement, ArrayList<P020___AbstractElement>> map = this.editPanel.networkDataModel.controlled_head;
 
 			if (map.containsKey(this)) {
-				for (AbstractElement ei : map.get(this)) {
-					if (ei instanceof RpnGraphNodeElement) {
-						Integer groupId = ((RpnGraphNodeElement)ei).groupHead;
+				for (P020___AbstractElement ei : map.get(this)) {
+					if (ei instanceof P022_____RpnGraphNodeElement) {
+						Integer groupId = ((P022_____RpnGraphNodeElement)ei).groupHead;
 						if (groupId != null) {
-							for (AbstractElement ei2 : this.editPanel.networkDataModel.graphGroup.get(groupId)) {
+							for (P020___AbstractElement ei2 : this.editPanel.networkDataModel.graphGroup.get(groupId)) {
 								ei2.dragged(x, y);
 							}
 						}
@@ -315,11 +315,11 @@ public class ControlElement extends AbstractElement {
 			*/
 
 			// 暫定。
-			ArrayList<AbstractElement> cList = this.editPanel.networkDataModel.control_contains.get(this);
+			ArrayList<P020___AbstractElement> cList = this.editPanel.networkDataModel.control_contains.get(this);
 			if (cList != null) {
-				for (AbstractElement ei : cList) {
-					if (ei instanceof ControlElement) {
-						ControlElement other = (ControlElement)ei;
+				for (P020___AbstractElement ei : cList) {
+					if (ei instanceof P010___ControlElement) {
+						P010___ControlElement other = (P010___ControlElement)ei;
 
 						// if (this.x < other.x && this.y < other.y && other.x + other.w < this.x + this.w && other.y + other.h < this.y + this.h) {
 							// other.dragged(x, y);
@@ -332,7 +332,7 @@ public class ControlElement extends AbstractElement {
 
 			if (requetOrigin) {
 				if (controllerGroup != null) {
-					for (ControlElement c : controllerGroup) {
+					for (P010___ControlElement c : controllerGroup) {
 						if (c != this) {
 //							Debug.println("controller", "recursive drag.");
 							c.dragMode = this.dragMode;
@@ -375,7 +375,7 @@ public class ControlElement extends AbstractElement {
 			}
 
 			if (controllerGroup != null) {
-				for (ControlElement c : controllerGroup) {
+				for (P010___ControlElement c : controllerGroup) {
 					if (c != this) {
 						if (c.y == this.y && c.x > this.x) {
 							c.x += this.w - w_old;
@@ -397,7 +397,7 @@ public class ControlElement extends AbstractElement {
 			StringBuilder sb = new StringBuilder();
 			sb.append("CONTROL_GROUP:");
 
-			for (ControlElement c : controllerGroup) {
+			for (P010___ControlElement c : controllerGroup) {
 				sb.append(' ');
 				sb.append(c.id);
 			}

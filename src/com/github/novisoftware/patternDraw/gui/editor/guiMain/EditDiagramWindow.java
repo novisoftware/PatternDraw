@@ -18,18 +18,18 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputOtherTypeWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 
 public class EditDiagramWindow extends JFrame2 {
 	EditDiagramPanel editPanel;
@@ -122,10 +122,10 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
+				P001_IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
 				if (obj != null) {
-					if (obj instanceof RpnGraphNodeElement) {
-						RpnGraphNodeElement element = (RpnGraphNodeElement)obj;
+					if (obj instanceof P022_____RpnGraphNodeElement) {
+						P022_____RpnGraphNodeElement element = (P022_____RpnGraphNodeElement)obj;
 						if (element.getKindId() == KindId.CONSTANT) {
 							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 							Point p = pointerInfo.getLocation();
@@ -171,7 +171,7 @@ public class EditDiagramWindow extends JFrame2 {
 					isPopupExists = false;
 				} else {
 					isPopupExists = true;
-					IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
+					P001_IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
 					// nullでも、nullでなくても
 					ContextMenu popup = new ContextMenu(editPanel__, t, e.getX(), e.getY());
 					popup.show( editPanel__, e.getX(), e.getY() );
@@ -180,7 +180,7 @@ public class EditDiagramWindow extends JFrame2 {
 
 		}
 
-		IconGuiInterface handled = null;
+		P001_IconGuiInterface handled = null;
 		int old_x, old_y;
 
 		@Override
@@ -189,9 +189,9 @@ public class EditDiagramWindow extends JFrame2 {
 				return;
 			}
 
-			IconGuiInterface t__ = editPanel__.checkXY(e.getX(), e.getY());
-			if (t__ instanceof AbstractElement) {
-				AbstractElement t = (AbstractElement)t__;
+			P001_IconGuiInterface t__ = editPanel__.checkXY(e.getX(), e.getY());
+			if (t__ instanceof P020___AbstractElement) {
+				P020___AbstractElement t = (P020___AbstractElement)t__;
 
 				if (t != null) {
 					handled = t;
@@ -199,7 +199,7 @@ public class EditDiagramWindow extends JFrame2 {
 					old_y = e.getY();
 					// System.out.println("h " + t.id);
 
-					AbstractElement hd = t;
+					P020___AbstractElement hd = t;
 
 					if (e.getButton() == MouseEvent.BUTTON3) {
 						editPanel__.workLineFrom = hd;
@@ -209,8 +209,8 @@ public class EditDiagramWindow extends JFrame2 {
 				}
 			}
 
-			if (t__ != null && t__ instanceof ConnectTerminal) {
-				ConnectTerminal hd = (ConnectTerminal)t__;
+			if (t__ != null && t__ instanceof P010___ConnectTerminal) {
+				P010___ConnectTerminal hd = (P010___ConnectTerminal)t__;
 
 				handled = hd;
 				old_x = e.getX();
@@ -237,7 +237,7 @@ public class EditDiagramWindow extends JFrame2 {
 				return;
 			}
 
-			if (handled instanceof ControlElement && editPanel__.workLineFrom != null) {
+			if (handled instanceof P010___ControlElement && editPanel__.workLineFrom != null) {
 				/*
 				Controller from = (Controller)handled;
 				// 仮実装
@@ -270,13 +270,13 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 
 			// fromがElement、toが端子の場合
-			else if (handled instanceof AbstractGraphNodeElement && editPanel__.workLineFrom != null) {
-				AbstractGraphNodeElement from = (AbstractGraphNodeElement)handled;
-				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
-				if (t != null && t != from && t instanceof ConnectTerminal) {
-					ConnectTerminal conn = (ConnectTerminal)t;
+			else if (handled instanceof P021____AbstractGraphNodeElement && editPanel__.workLineFrom != null) {
+				P021____AbstractGraphNodeElement from = (P021____AbstractGraphNodeElement)handled;
+				P001_IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
+				if (t != null && t != from && t instanceof P010___ConnectTerminal) {
+					P010___ConnectTerminal conn = (P010___ConnectTerminal)t;
 					if (conn.getNode() != from) {
-						AbstractGraphNodeElement to = conn.getNode();
+						P021____AbstractGraphNodeElement to = conn.getNode();
 
 						to.paramMapInfo.put(conn.getParaName(), from.id);
 						to.paramMapObj.put(conn.getParaName(), from);
@@ -288,12 +288,12 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 
 			// fromが端子、toがElementの場合
-			else if (handled instanceof ConnectTerminal && editPanel__.workLineFrom != null) {
-				ConnectTerminal conn = (ConnectTerminal)handled;
-				IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
-				if (t != null && t != conn && t != conn.getNode() && t instanceof AbstractGraphNodeElement) {
+			else if (handled instanceof P010___ConnectTerminal && editPanel__.workLineFrom != null) {
+				P010___ConnectTerminal conn = (P010___ConnectTerminal)handled;
+				P001_IconGuiInterface t = editPanel__.checkXY(e.getX(), e.getY());
+				if (t != null && t != conn && t != conn.getNode() && t instanceof P021____AbstractGraphNodeElement) {
 					// fromがオブジェクト、toが端子の場合
-					AbstractGraphNodeElement element = (AbstractGraphNodeElement)t;
+					P021____AbstractGraphNodeElement element = (P021____AbstractGraphNodeElement)t;
 
 					conn.getNode().paramMapInfo.put(conn.getParaName(), element.id);
 					conn.getNode().paramMapObj.put(conn.getParaName(), element);
@@ -304,8 +304,8 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 
 			// fromがElement、toが端子の場合
-			else if (handled instanceof RpnGraphNodeElement && editPanel__.workLineFrom == null) {
-				RpnGraphNodeElement from = (RpnGraphNodeElement)handled;
+			else if (handled instanceof P022_____RpnGraphNodeElement && editPanel__.workLineFrom == null) {
+				P022_____RpnGraphNodeElement from = (P022_____RpnGraphNodeElement)handled;
 				// if (from.groupHead != null) {
 					editPanel__.networkDataModel.evaluate();
 					editPanel__.repaint();
@@ -336,8 +336,8 @@ public class EditDiagramWindow extends JFrame2 {
 					editPanel__.workLineY = e.getY();
 				}
 				else {
-					if (handled instanceof AbstractElement) {
-						AbstractElement h = (AbstractElement)handled;
+					if (handled instanceof P020___AbstractElement) {
+						P020___AbstractElement h = (P020___AbstractElement)handled;
 
 						// 差分をアイコンオブジェクトに通知する
 						h.dragged(e.getX() - old_x, e.getY() - old_y);
@@ -350,11 +350,11 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 		}
 
-		IconGuiInterface lastTouched = null;
+		P001_IconGuiInterface lastTouched = null;
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
+			P001_IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
 
 			boolean isChanged = false;
 			if (obj != lastTouched) {

@@ -17,7 +17,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 
 public class GuiUtil {
 	public static final String FRAME_TITLE_BASE = "pattern drawing: ";
@@ -59,7 +59,7 @@ public class GuiUtil {
 		return r;
 	}
 
-	public static BufferedImage getImage(String s, IconGuiInterface frame) {
+	public static BufferedImage getImage(String s, P001_IconGuiInterface frame) {
 		BufferedImage r = cache.get(s);
 		if (r != null) {
 			return r;
@@ -150,6 +150,7 @@ public class GuiUtil {
 
 		/**
 		 * 文字の横幅(ドット数)を求め、キャッシュします。
+		 * 基準にするフォントは引数 g2 に設定してある必要があります。
 		 *
 		 * @param s
 		 * @param g2

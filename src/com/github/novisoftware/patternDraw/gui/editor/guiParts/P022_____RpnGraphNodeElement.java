@@ -15,11 +15,11 @@ import com.github.novisoftware.patternDraw.utils.FileReadUtil;
  * ノードに閉じたミクロなRPN式(逆ポーランド記法の式)で計算をします。
  *
  */
-public class RpnGraphNodeElement extends AbstractGraphNodeElement {
+public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeElement {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
-	public RpnGraphNodeElement(EditDiagramPanel editPanel) {
+	public P022_____RpnGraphNodeElement(EditDiagramPanel editPanel) {
 		super(editPanel);
 	}
 
@@ -75,7 +75,7 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 		return this.valueType;
 	}
 
-	public RpnGraphNodeElement(EditDiagramPanel EditPanel, String s) {
+	public P022_____RpnGraphNodeElement(EditDiagramPanel EditPanel, String s) {
 		super(EditPanel);
 
 		String a[] = FileReadUtil.tokenizeToArray(s);
@@ -117,13 +117,13 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 					valueType = Value.str2valueType.get(paraType);
 				}
 
-				connectors.add(new ConnectTerminal(this, paraName, valueType, "", index, n));
+				connectors.add(new P010___ConnectTerminal(this, paraName, valueType, "", index, n));
 				index ++;
 			}
 		}
 
 		this.paramMapInfo = new HashMap<String,String>();
-		this.paramMapObj = new HashMap<String,AbstractGraphNodeElement>();
+		this.paramMapObj = new HashMap<String,P021____AbstractGraphNodeElement>();
 	}
 
 	@Override
@@ -132,8 +132,8 @@ public class RpnGraphNodeElement extends AbstractGraphNodeElement {
 	}
 
 	@Override
-	public RpnGraphNodeElement getCopy() {
-		RpnGraphNodeElement ret = new RpnGraphNodeElement(this.editPanel, this.str());
+	public P022_____RpnGraphNodeElement getCopy() {
+		P022_____RpnGraphNodeElement ret = new P022_____RpnGraphNodeElement(this.editPanel, this.str());
 
 		return ret;
 	}

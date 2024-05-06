@@ -1,6 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
-public interface IconGuiInterface {
+public interface P001_IconGuiInterface {
 	/**
 	 * 中心のX座標を取得します。
 	 *

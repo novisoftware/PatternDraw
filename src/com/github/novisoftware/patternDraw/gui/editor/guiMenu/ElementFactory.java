@@ -3,13 +3,13 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.FncGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P023_____FncGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
@@ -154,12 +154,12 @@ public class ElementFactory {
 	 * @param y
 	 */
 	public void createNewElement(EditDiagramPanel editPanel, int x, int y) {
-		ArrayList<AbstractElement> eleList = editPanel.networkDataModel.getElements();
+		ArrayList<P020___AbstractElement> eleList = editPanel.networkDataModel.getElements();
 
 		if (this.defType.equals(PartsType.TYPE_RPNDEF)) {
 			if (this.kindName.equals("制御")) {
 				if (this.controlType.equals("IF")) {
-					ControlElement controlBlock = new ControlElement(this.editPanel);
+					P010___ControlElement controlBlock = new P010___ControlElement(this.editPanel);
 					String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
 
 					controlBlock.id = name;
@@ -169,13 +169,13 @@ public class ElementFactory {
 					controlBlock.h = this.height;
 					controlBlock.setKindString(this.kindName);
 					controlBlock.controlType = this.controlType;
-					controlBlock.setRpnString(AbstractElement.unescape(this.rpn));
+					controlBlock.setRpnString(P020___AbstractElement.unescape(this.rpn));
 					// element.buildParameterList(element.getRpnString());
 
 					eleList.add(controlBlock);
 
 
-					ControlElement controlBlock2 = new ControlElement(this.editPanel);
+					P010___ControlElement controlBlock2 = new P010___ControlElement(this.editPanel);
 					String name2 = editPanel.networkDataModel.generateUniqueName("THEN" + "0");
 
 					controlBlock2.id = name2;
@@ -185,12 +185,12 @@ public class ElementFactory {
 					controlBlock2.h = this.height;
 					controlBlock2.setKindString(this.kindName);
 					controlBlock2.controlType = "THEN";
-					controlBlock2.setRpnString(AbstractElement.unescape(this.rpn));
+					controlBlock2.setRpnString(P020___AbstractElement.unescape(this.rpn));
 					// element2.buildParameterList(element.getRpnString());
 
 					eleList.add(controlBlock2);
 
-					HashSet<ControlElement> controllerGroup = new HashSet<ControlElement>();
+					HashSet<P010___ControlElement> controllerGroup = new HashSet<P010___ControlElement>();
 					controllerGroup.add(controlBlock);
 					controllerGroup.add(controlBlock2);
 
@@ -199,7 +199,7 @@ public class ElementFactory {
 				}
 				else {
 					String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
-					ControlElement controlBlock = new ControlElement(this.editPanel);
+					P010___ControlElement controlBlock = new P010___ControlElement(this.editPanel);
 
 					controlBlock.id = name;
 					controlBlock.x = x;
@@ -208,7 +208,7 @@ public class ElementFactory {
 					controlBlock.h = this.height;
 					controlBlock.setKindString(this.kindName);
 					controlBlock.controlType = this.controlType;
-					controlBlock.setRpnString(AbstractElement.unescape(this.rpn));
+					controlBlock.setRpnString(P020___AbstractElement.unescape(this.rpn));
 					// element.buildParameterList(element.getRpnString());
 
 					eleList.add(controlBlock);
@@ -216,7 +216,7 @@ public class ElementFactory {
 			}
 			else {
 				String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
-				RpnGraphNodeElement element = new RpnGraphNodeElement(this.editPanel);
+				P022_____RpnGraphNodeElement element = new P022_____RpnGraphNodeElement(this.editPanel);
 
 				element.id = name;
 				element.x = x;
@@ -226,7 +226,7 @@ public class ElementFactory {
 				element.setKindString(this.kindName);
 				element.setValueType(this.valueType);
 				// 演算式
-				element.setRpnString(AbstractElement.unescape(this.rpn));
+				element.setRpnString(P020___AbstractElement.unescape(this.rpn));
 				element.buildParameterList(element.getRpnString());
 
 				eleList.add(element);
@@ -237,7 +237,7 @@ public class ElementFactory {
 			FunctionDefInterface f;
 			try {
 				f = FunctionUtil.getFunctionDef(this.fncName);
-				FncGraphNodeElement element = new FncGraphNodeElement(this.editPanel, this.fncName, f);
+				P023_____FncGraphNodeElement element = new P023_____FncGraphNodeElement(this.editPanel, this.fncName, f);
 
 				element.id = name;
 				element.x = x;

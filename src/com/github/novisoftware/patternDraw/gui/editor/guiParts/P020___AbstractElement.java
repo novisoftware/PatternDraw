@@ -9,10 +9,15 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
-public abstract class AbstractElement implements IconGuiInterface {
+public abstract class P020___AbstractElement extends P002__AbstractIcon {
+	public abstract String str();
+	public abstract ArrayList<String> optStr();
+	public abstract P020___AbstractElement getCopy();
+	public abstract void paintWithPhase(Graphics2D g, int phase);
+
 	protected final EditDiagramPanel editPanel;
 
-	AbstractElement(EditDiagramPanel editPanel) {
+	P020___AbstractElement(EditDiagramPanel editPanel) {
 		this.editPanel = editPanel;
 
 		if (string2kind == null) {
@@ -31,7 +36,7 @@ public abstract class AbstractElement implements IconGuiInterface {
 			}
 		}
 
-		this.debugId = AbstractElement.getDebugId();
+		this.debugId = P020___AbstractElement.getDebugId();
 	}
 
 	static HashMap<String, KindId> string2kind;
@@ -103,13 +108,13 @@ public abstract class AbstractElement implements IconGuiInterface {
 	 * @param kindString セットするkindString
 	 */
 	public void setKindString(String kindString) {
-		if (! AbstractElement.string2kind.containsKey(kindString)) {
+		if (! P020___AbstractElement.string2kind.containsKey(kindString)) {
 			System.err.println("未定義の種別が指定: " + kindString);
 			System.exit(1);
 		}
 		Debug.println("setKindString", kindString);
 		this.kindString = kindString;
-		this.kindId = AbstractElement.string2kind.get(kindString);
+		this.kindId = P020___AbstractElement.string2kind.get(kindString);
 	}
 
 	public KindId getKindId() {
@@ -154,13 +159,7 @@ public abstract class AbstractElement implements IconGuiInterface {
 		y += moveY;
 	}
 
-	@Override
-	public void setOnMouse(boolean b) {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
-
-	public IconGuiInterface getTouchedObject(int x, int y) {
+	public P001_IconGuiInterface getTouchedObject(int x, int y) {
 		if (
 				1.0f * (this.x + this.w/2 - x)*(this.x + this.w/2 - x) * this.h*this.h
 				+ 1.0f * (this.y + this.h/2  -y)*(this.y + this.h/2 - y) * this.w*this.w
@@ -179,9 +178,4 @@ public abstract class AbstractElement implements IconGuiInterface {
 	public static String unescape(String s) {
 		return s;
 	}
-
-	public abstract String str();
-	public abstract ArrayList<String> optStr();
-	public abstract AbstractElement getCopy();
-	public abstract void paintWithPhase(Graphics2D g, int phase);
 }
