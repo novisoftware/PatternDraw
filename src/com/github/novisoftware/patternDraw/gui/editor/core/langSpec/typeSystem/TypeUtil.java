@@ -20,7 +20,7 @@ public class TypeUtil {
 	 * @return
 	 */
 	static public TwoValues upCast(Value a, Value b) {
-		if (a instanceof IsScalar && b instanceof IsScalar) {
+		if (a instanceof InterfaceScalar && b instanceof InterfaceScalar) {
 			if (a.valueType.equals(b.valueType)) {
 				return new TwoValues(a, b);
 			}

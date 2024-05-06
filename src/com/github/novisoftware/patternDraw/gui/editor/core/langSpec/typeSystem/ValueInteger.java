@@ -7,7 +7,7 @@ import java.math.BigInteger;
  * 整数。多倍長整数( java.math.BigInteger )を内部で使用しています。
  *
  */
-public class ValueInteger extends Value implements IsScalar {
+public class ValueInteger extends Value implements InterfaceScalar {
 	public ValueInteger(String s) {
 		super(ValueType.INTEGER);
 		internal = new BigInteger(s);
@@ -47,31 +47,31 @@ public class ValueInteger extends Value implements IsScalar {
 	}
 
 	@Override
-	public IsScalar add(IsScalar a) {
+	public InterfaceScalar add(InterfaceScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.add(a2));
 	}
 
 	@Override
-	public IsScalar sub(IsScalar a) {
+	public InterfaceScalar sub(InterfaceScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.subtract(a2));
 	}
 
 	@Override
-	public IsScalar mul(IsScalar a) {
+	public InterfaceScalar mul(InterfaceScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.multiply(a2));
 	}
 
 	@Override
-	public IsScalar div(IsScalar a) {
+	public InterfaceScalar div(InterfaceScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.divide(a2));
 	}
 
 	@Override
-	public IsScalar mod(IsScalar a) {
+	public InterfaceScalar mod(InterfaceScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.mod(a2));
 	}

@@ -2,7 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 
 import java.math.BigInteger;
 
-public class ValueFloat extends Value implements IsScalar {
+public class ValueFloat extends Value implements InterfaceScalar {
 	public ValueFloat(String s) {
 		super(ValueType.FLOAT);
 		internal = Double.parseDouble(s);
@@ -29,27 +29,27 @@ public class ValueFloat extends Value implements IsScalar {
 	}
 
 	@Override
-	public IsScalar add(IsScalar a) {
+	public InterfaceScalar add(InterfaceScalar a) {
 		return new ValueFloat(this.internal + ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public IsScalar sub(IsScalar a) {
+	public InterfaceScalar sub(InterfaceScalar a) {
 		return new ValueFloat(this.internal - ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public IsScalar mul(IsScalar a) {
+	public InterfaceScalar mul(InterfaceScalar a) {
 		return new ValueFloat(this.internal * ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public IsScalar div(IsScalar a) {
+	public InterfaceScalar div(InterfaceScalar a) {
 		return new ValueFloat(this.internal / ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public IsScalar mod(IsScalar a) {
+	public InterfaceScalar mod(InterfaceScalar a) {
 		return new ValueFloat(this.internal % ((ValueFloat)a).internal);
 	}
 }

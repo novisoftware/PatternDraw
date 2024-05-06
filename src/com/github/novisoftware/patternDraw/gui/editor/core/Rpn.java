@@ -10,7 +10,7 @@ import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.IsScalar;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.InterfaceScalar;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
@@ -269,11 +269,11 @@ public class Rpn {
 				Value a0 = stack.pop();
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					IsScalar a = (IsScalar)work.a;
-					IsScalar b = (IsScalar)work.b;
-					IsScalar result = a.sub(b);
+					InterfaceScalar a = (InterfaceScalar)work.a;
+					InterfaceScalar b = (InterfaceScalar)work.b;
+					InterfaceScalar result = a.sub(b);
 					stack.push( (Value)result );
 				}
 			}
@@ -282,11 +282,11 @@ public class Rpn {
 				Value a0 = stack.pop();
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					IsScalar a = (IsScalar)work.a;
-					IsScalar b = (IsScalar)work.b;
-					IsScalar result = a.div(b);
+					InterfaceScalar a = (InterfaceScalar)work.a;
+					InterfaceScalar b = (InterfaceScalar)work.b;
+					InterfaceScalar result = a.div(b);
 					stack.push( (Value)result );
 				}
 			}
@@ -295,11 +295,11 @@ public class Rpn {
 				Value a0 = stack.pop();
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					IsScalar a = (IsScalar)work.a;
-					IsScalar b = (IsScalar)work.b;
-					IsScalar result = a.mod(b);
+					InterfaceScalar a = (InterfaceScalar)work.a;
+					InterfaceScalar b = (InterfaceScalar)work.b;
+					InterfaceScalar result = a.mod(b);
 					stack.push( (Value)result );
 				}
 			}
@@ -308,11 +308,11 @@ public class Rpn {
 				Value a0 = stack.pop();
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					IsScalar a = (IsScalar)work.a;
-					IsScalar b = (IsScalar)work.b;
-					IsScalar result = a.add(b);
+					InterfaceScalar a = (InterfaceScalar)work.a;
+					InterfaceScalar b = (InterfaceScalar)work.b;
+					InterfaceScalar result = a.add(b);
 					stack.push( (Value)result );
 				}
 			}
@@ -321,11 +321,11 @@ public class Rpn {
 				Value a0 = stack.pop();
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof IsScalar && b0 instanceof IsScalar) {
+				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					IsScalar a = (IsScalar)work.a;
-					IsScalar b = (IsScalar)work.b;
-					IsScalar result = a.mul(b);
+					InterfaceScalar a = (InterfaceScalar)work.a;
+					InterfaceScalar b = (InterfaceScalar)work.b;
+					InterfaceScalar result = a.mul(b);
 					stack.push( (Value)result );
 				}
 			}

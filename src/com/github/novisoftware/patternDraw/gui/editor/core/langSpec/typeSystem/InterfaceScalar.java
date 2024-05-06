@@ -3,7 +3,7 @@ package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 /**
  * マーカーとして使用。
  */
-public interface IsScalar {
+public interface InterfaceScalar {
 	/**
 	 * 加算。
 	 *
@@ -11,29 +11,29 @@ public interface IsScalar {
 	 * @param a
 	 * @return
 	 */
-	public IsScalar add(IsScalar a);
+	public InterfaceScalar add(InterfaceScalar a);
 	/**
 	 * 減算
 	 * @param a
 	 * @return
 	 */
-	public IsScalar sub(IsScalar a);
+	public InterfaceScalar sub(InterfaceScalar a);
 	/**
 	 * 乗算
 	 * @param a
 	 * @return
 	 */
-	public IsScalar mul(IsScalar a);
+	public InterfaceScalar mul(InterfaceScalar a);
 	/**
 	 * 除算
 	 * @param a
 	 * @return
 	 */
-	public IsScalar div(IsScalar a);
+	public InterfaceScalar div(InterfaceScalar a);
 	/**
 	 * 剰余
 	 * @param a
 	 * @return
 	 */
-	public IsScalar mod(IsScalar a);
+	public InterfaceScalar mod(InterfaceScalar a);
 }
