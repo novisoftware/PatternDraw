@@ -6,7 +6,6 @@ import com.github.novisoftware.patternDraw.utils.Debug;
 
 
 public class Value {
-
 	/**
 	 * 値の型。
 	 * 単精度浮動小数点や、精度に限定のある整数型は使用しない。
@@ -35,6 +34,12 @@ public class Value {
 		LINE_LIST,
 		ANY,
 		NONE
+	}
+
+	public ValueType valueType;
+
+	protected Value(ValueType valueKind) {
+		this.valueType = valueKind;
 	}
 
 	public static String valueTypeToDescString(ValueType valueType) {
@@ -69,7 +74,6 @@ public class Value {
 		// こない
 		return "";
 	}
-
 
 	public static HashMap<String, ValueType> str2valueType;
 
@@ -120,8 +124,6 @@ public class Value {
 
 	}
 
-	public ValueType valueType;
-
 	public String toDebugString() {
 		return this.valueType + "--" + this.toString();
 	}
@@ -153,10 +155,6 @@ public class Value {
 		// 注:
 		// 上記以外は本メソッドでは作成をサポートしない
 		return null;
-	}
-
-	protected Value(ValueType valueKind) {
-		this.valueType = valueKind;
 	}
 
 	public boolean sameTo(Object o) {

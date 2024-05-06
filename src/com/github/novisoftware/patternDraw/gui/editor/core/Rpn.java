@@ -15,6 +15,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.T
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueAbstractScalar;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueFloat;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
@@ -264,180 +265,64 @@ public class Rpn {
 					stack.push(new ValueNumeric(stack.pop().toString()));
 				}
 			}
-			else if (s.equals("-")) {
+			else if (s.equals("-") || s.equals("/") || s.equals("%") || s.equals("+") || s.equals("*")) {
 				Value b0 = stack.pop();
 				Value a0 = stack.pop();
+
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
+
+				if (a0 instanceof ValueAbstractScalar && b0 instanceof ValueAbstractScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					InterfaceScalar a = (InterfaceScalar)work.a;
-					InterfaceScalar b = (InterfaceScalar)work.b;
-					InterfaceScalar result = a.sub(b);
-					stack.push( (Value)result );
+					ValueAbstractScalar a = (ValueAbstractScalar)work.a;
+					ValueAbstractScalar b = (ValueAbstractScalar)work.b;
+					if (s.equals("-")) {
+						stack.push(a.sub(b));
+					}
+					else if (s.equals("/")) {
+						stack.push(a.div(b));
+					}
+					else if (s.equals("%")) {
+						stack.push(a.mod(b));
+					}
+					else if (s.equals("+")) {
+						stack.push(a.add(b));
+					}
+					else if (s.equals("*")) {
+						stack.push(a.mul(b));
+					}
 				}
+
 			}
-			else if (s.equals("/")) {
+			else if (s.equals(">") || s.equals(">=") || s.equals("<") || s.equals("<=") || s.equals("==") || s.equals("!=")) {
 				Value b0 = stack.pop();
 				Value a0 = stack.pop();
+
 				// TODO:
 				// キャストエラーの処理が必要。
-				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
+
+				if (a0 instanceof ValueAbstractScalar && b0 instanceof ValueAbstractScalar) {
 					TwoValues work = TypeUtil.upCast(a0, b0);
-					InterfaceScalar a = (InterfaceScalar)work.a;
-					InterfaceScalar b = (InterfaceScalar)work.b;
-					InterfaceScalar result = a.div(b);
-					stack.push( (Value)result );
-				}
-			}
-			else if (s.equals("%")) {
-				Value b0 = stack.pop();
-				Value a0 = stack.pop();
-				// TODO:
-				// キャストエラーの処理が必要。
-				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
-					TwoValues work = TypeUtil.upCast(a0, b0);
-					InterfaceScalar a = (InterfaceScalar)work.a;
-					InterfaceScalar b = (InterfaceScalar)work.b;
-					InterfaceScalar result = a.mod(b);
-					stack.push( (Value)result );
-				}
-			}
-			else if (s.equals("+")) {
-				Value b0 = stack.pop();
-				Value a0 = stack.pop();
-				// TODO:
-				// キャストエラーの処理が必要。
-				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
-					TwoValues work = TypeUtil.upCast(a0, b0);
-					InterfaceScalar a = (InterfaceScalar)work.a;
-					InterfaceScalar b = (InterfaceScalar)work.b;
-					InterfaceScalar result = a.add(b);
-					stack.push( (Value)result );
-				}
-			}
-			else if (s.equals("*")) {
-				Value b0 = stack.pop();
-				Value a0 = stack.pop();
-				// TODO:
-				// キャストエラーの処理が必要。
-				if (a0 instanceof InterfaceScalar && b0 instanceof InterfaceScalar) {
-					TwoValues work = TypeUtil.upCast(a0, b0);
-					InterfaceScalar a = (InterfaceScalar)work.a;
-					InterfaceScalar b = (InterfaceScalar)work.b;
-					InterfaceScalar result = a.mul(b);
-					stack.push( (Value)result );
-				}
-			}
-			else if (s.equals(">")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					if (a_.getInternal().compareTo(b_.getInternal()) > 0) {
-						stack.push( new ValueBoolean(true));
+					ValueAbstractScalar a = (ValueAbstractScalar)work.a;
+					ValueAbstractScalar b = (ValueAbstractScalar)work.b;
+					if (s.equals(">")) {
+						stack.push( new ValueBoolean(a.compareInternal(b) > 0 ));
 					}
-					else {
-						stack.push( new ValueBoolean(false));
+					else if (s.equals(">=")) {
+						stack.push( new ValueBoolean(a.compareInternal(b) >= 0 ));
 					}
-				}
-			}
-			else if (s.equals(">=")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					if (a_.getInternal().compareTo(b_.getInternal()) >= 0) {
-						stack.push( new ValueBoolean(true));
+					else if (s.equals("<")) {
+						stack.push( new ValueBoolean(a.compareInternal(b) < 0 ));
 					}
-					else {
-						stack.push( new ValueBoolean(false));
+					else if (s.equals("<=")) {
+						stack.push( new ValueBoolean(a.compareInternal(b) <= 0 ));
 					}
-				}
-			}
-			else if (s.equals("<")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					if (a_.getInternal().compareTo(b_.getInternal()) < 0) {
-						stack.push( new ValueBoolean(true));
+					else if (s.equals("==")) {
+						stack.push( new ValueBoolean(a.compareInternal(b) == 0 ));
 					}
-					else {
-						stack.push( new ValueBoolean(false));
+					else if (s.equals("!=")) {
+						stack.push( new ValueBoolean(a.compareInternal(b) != 0 ));
 					}
-				}
-			}
-			else if (s.equals("<=")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					if (a_.getInternal().compareTo(b_.getInternal()) <= 0) {
-						stack.push( new ValueBoolean(true));
-					}
-					else {
-						stack.push( new ValueBoolean(false));
-					}
-				}
-			}
-			else if (s.equals("==")) {
-				Value b = stack.pop();
-				Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
-				Value a = stack.pop();
-				Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					if (a_.getInternal().compareTo(b_.getInternal()) == 0) {
-						stack.push(new ValueBoolean(true));
-					}
-					else {
-						stack.push(new ValueBoolean(false));
-					}
-
-					Debug.println("RPN", "eq");
-				}
-				else {
-					Debug.println("RPN", "eq<INVALID>");
-				}
-			}
-			else if (s.equals("!=")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-				Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
-
-				if (a instanceof ValueNumeric && b instanceof ValueNumeric) {
-					ValueNumeric a_ = (ValueNumeric)a;
-					ValueNumeric b_ = (ValueNumeric)b;
-
-					if (a_.getInternal().compareTo(b_.getInternal()) != 0) {
-						stack.push( new ValueBoolean(true));
-					}
-					else {
-						stack.push( new ValueBoolean(false));
-					}
-
-					Debug.println("RPN", "neq");
-				}
-				else {
-					Debug.println("RPN", "neq<INVALID>");
 				}
 			}
 			else if (s.equals(":and")) {

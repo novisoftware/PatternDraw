@@ -7,7 +7,7 @@ import java.math.BigInteger;
  * 整数。多倍長整数( java.math.BigInteger )を内部で使用しています。
  *
  */
-public class ValueInteger extends Value implements InterfaceScalar {
+public class ValueInteger extends ValueAbstractScalar {
 	public ValueInteger(String s) {
 		super(ValueType.INTEGER);
 		internal = new BigInteger(s);
@@ -47,32 +47,37 @@ public class ValueInteger extends Value implements InterfaceScalar {
 	}
 
 	@Override
-	public InterfaceScalar add(InterfaceScalar a) {
+	public ValueAbstractScalar add(ValueAbstractScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.add(a2));
 	}
 
 	@Override
-	public InterfaceScalar sub(InterfaceScalar a) {
+	public ValueAbstractScalar sub(ValueAbstractScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.subtract(a2));
 	}
 
 	@Override
-	public InterfaceScalar mul(InterfaceScalar a) {
+	public ValueAbstractScalar mul(ValueAbstractScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.multiply(a2));
 	}
 
 	@Override
-	public InterfaceScalar div(InterfaceScalar a) {
+	public ValueAbstractScalar div(ValueAbstractScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.divide(a2));
 	}
 
 	@Override
-	public InterfaceScalar mod(InterfaceScalar a) {
+	public ValueAbstractScalar mod(ValueAbstractScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
 		return new ValueInteger(this.internal.mod(a2));
+	}
+
+	@Override
+	public int compareInternal(ValueAbstractScalar a) {
+		return this.internal.compareTo(((ValueInteger)a).internal);
 	}
 }

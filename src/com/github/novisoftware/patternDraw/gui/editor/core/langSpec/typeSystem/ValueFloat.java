@@ -2,7 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 
 import java.math.BigInteger;
 
-public class ValueFloat extends Value implements InterfaceScalar {
+public class ValueFloat extends ValueAbstractScalar {
 	public ValueFloat(String s) {
 		super(ValueType.FLOAT);
 		internal = Double.parseDouble(s);
@@ -29,27 +29,32 @@ public class ValueFloat extends Value implements InterfaceScalar {
 	}
 
 	@Override
-	public InterfaceScalar add(InterfaceScalar a) {
+	public ValueAbstractScalar add(ValueAbstractScalar a) {
 		return new ValueFloat(this.internal + ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public InterfaceScalar sub(InterfaceScalar a) {
+	public ValueAbstractScalar sub(ValueAbstractScalar a) {
 		return new ValueFloat(this.internal - ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public InterfaceScalar mul(InterfaceScalar a) {
+	public ValueAbstractScalar mul(ValueAbstractScalar a) {
 		return new ValueFloat(this.internal * ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public InterfaceScalar div(InterfaceScalar a) {
+	public ValueAbstractScalar div(ValueAbstractScalar a) {
 		return new ValueFloat(this.internal / ((ValueFloat)a).internal);
 	}
 
 	@Override
-	public InterfaceScalar mod(InterfaceScalar a) {
+	public ValueAbstractScalar mod(ValueAbstractScalar a) {
 		return new ValueFloat(this.internal % ((ValueFloat)a).internal);
+	}
+
+	@Override
+	public int compareInternal(ValueAbstractScalar a) {
+		return this.internal.compareTo(((ValueFloat)a).internal);
 	}
 }

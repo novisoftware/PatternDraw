@@ -52,6 +52,7 @@ FUNCTION: line_to_draw
 
 KIND: 定数
 TYPE: INTEGER
+HEIGHT: 35
 DISPNAME: 定数/整数 0
 DESCRIPTION: 定数値です。
 0;定数 :as-numeric
@@ -60,6 +61,7 @@ DESCRIPTION: 定数値です。
 
 KIND: 定数
 TYPE: INTEGER
+HEIGHT: 35
 DISPNAME: 定数/整数 1
 DESCRIPTION: 定数値です。
 1;定数 :as-numeric
@@ -68,6 +70,7 @@ DESCRIPTION: 定数値です。
 
 KIND: 定数
 TYPE: INTEGER
+HEIGHT: 35
 DISPNAME: 定数/整数 2
 DESCRIPTION: 定数値です。
 2;定数 :as-numeric
@@ -76,6 +79,7 @@ DESCRIPTION: 定数値です。
 
 KIND: 定数
 TYPE: FLOAT
+HEIGHT: 35
 DISPNAME: 定数/浮動小数点 1
 DESCRIPTION: 定数値です。
 1;定数 :as-numeric
@@ -84,6 +88,7 @@ DESCRIPTION: 定数値です。
 
 KIND: 定数
 TYPE: STRING
+HEIGHT: 35
 DISPNAME: 定数/文字列
 DESCRIPTION: 文字列の定数値です。
 文字列の定数;定数
@@ -92,6 +97,7 @@ DESCRIPTION: 文字列の定数値です。
 
 KIND: 変数を設定
 TYPE: NONE
+HEIGHT: 35
 DISPNAME: 変数/新しい変数に設定 {new-variable}
 DESCRIPTION: 新しい変数
 <value:ANY> '{new-variable};変数名 :set-variable
@@ -100,6 +106,7 @@ DESCRIPTION: 新しい変数
 
 KIND: 変数を設定
 TYPE: NONE
+HEIGHT: 35
 DISPNAME: 変数/既存の変数を書き換え/{exist-variable}
 DESCRIPTION: 変数を設定します。
 <value:ANY> '{exist-variable} :set-variable
@@ -108,6 +115,7 @@ DESCRIPTION: 変数を設定します。
 
 KIND: 変数を参照
 TYPE: NONE
+HEIGHT: 35
 DISPNAME: 変数/既存の変数を参照/{exist-variable}
 DESCRIPTION: 変数を参照します。
 '{exist-variable} :recall-variable

@@ -23,6 +23,25 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		super(editPanel);
 	}
 
+	public P022_____RpnGraphNodeElement(EditDiagramPanel editPanel, String s) {
+		super(editPanel);
+
+		String a[] = FileReadUtil.tokenizeToArray(s);
+		this.x = Integer.parseInt(a[1], 10);
+		this.y = Integer.parseInt(a[2], 10);
+		this.w = Integer.parseInt(a[3], 10);
+		this.h = Integer.parseInt(a[4], 10);
+		this.id = a[5];
+		this.setKindString(a[6]);
+		String strOutputType = a[7];
+		this.valueType = Value.str2valueType.get(strOutputType);
+
+		System.out.println("rpn string = " + a[8]);
+
+		this.setRpnString(a[8]);
+		buildParameterList(this.getRpnString());
+	}
+
 	public String str() {
 		return String.format("RPN_ELEMENT: %d %d %d %d %s %s %s %s",
 								x, y, w, h, escape(id),
@@ -73,25 +92,6 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	@Override
 	public Value.ValueType getValueType() {
 		return this.valueType;
-	}
-
-	public P022_____RpnGraphNodeElement(EditDiagramPanel EditPanel, String s) {
-		super(EditPanel);
-
-		String a[] = FileReadUtil.tokenizeToArray(s);
-		this.x = Integer.parseInt(a[1], 10);
-		this.y = Integer.parseInt(a[2], 10);
-		this.w = Integer.parseInt(a[3], 10);
-		this.h = Integer.parseInt(a[4], 10);
-		this.id = a[5];
-		this.setKindString(a[6]);
-		String strOutputType = a[7];
-		this.valueType = Value.str2valueType.get(strOutputType);
-
-		System.out.println("rpn string = " + a[8]);
-
-		this.setRpnString(a[8]);
-		buildParameterList(this.getRpnString());
 	}
 
 	public void buildParameterList(String s0) {

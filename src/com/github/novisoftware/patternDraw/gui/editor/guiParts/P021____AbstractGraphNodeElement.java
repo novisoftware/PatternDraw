@@ -2,6 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.geom.CubicCurve2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
+import com.github.novisoftware.patternDraw.utils.GuiUtil.StringRectUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringWidthUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
@@ -80,7 +82,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	public abstract void evaluate();
 
 
-	static StringWidthUtil stringWidthUtil = new StringWidthUtil();
+	static StringRectUtil str2rect = new StringRectUtil();
 
 	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
@@ -126,6 +128,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 					double x2 = connector.getCenterX();
 					double y2 = connector.getCenterY();
 
+					// X_RATIO, Y_RATIO は3次元ベジエ曲線のパラメーター作成用のパラメーター。
 					double X_RATIO = 55;
 					double Y_RATIO = 95;
 					double x1a = (x0 * X_RATIO + x2 * (100-X_RATIO)) / 100.0;
@@ -146,6 +149,9 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 		}
 
+		int arcWidth = 10;
+		int arcHeight = 10;
+
 		// 箱
 		if (phase == 1) {
 			g2.setFont(Preference.ICON_BOX_FONT);
@@ -158,71 +164,66 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			g2.drawString(boxTitle, e.x + 30, e.y - 9);
 
 			g2.setColor(Preference.color);
-			if ( // t.getKindString().equals("入力")
-				 e.getKindId() == KindId.INPUT
-					) {
+			if (e.getKindId() == KindId.INPUT) {
+				// インタラクティブな入力
 				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
-				g2.fillRect(e.x + 12, e.y, e.w, e.h);
+				g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, arcWidth, arcHeight);
+
 				BufferedImage image = GuiUtil.getImage(IconImage.EDIT, this);
 				g2.drawImage(image, e.x + 20, e.y + 5, null);
 
 				g2.setColor(Color.BLACK);
 				g2.drawString(e.getOutputType(), e.x + 50, e.y + e.h * 2 / 3 + 5 );
 			}
-			else if ( e.getKindId() == KindId.DISPLAY // t.getKindString().equals("表示")
-					) {
+			else if (e.getKindId() == KindId.DISPLAY) {
+				// 表示
 				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
-				g2.fillRect(e.x + 16, e.y, e.w, e.h);
+				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
+
 				BufferedImage image = GuiUtil.getImage(IconImage.DISPLAY, this);
 				g2.drawImage(image, e.x + 40, e.y, null);
 			}
-			else if ( e.getKindId() == KindId.CONSTANT // t.getKindString().equals("定数")
-					) {
+			else if (e.getKindId() == KindId.CONSTANT ) {
+				// 定数
 				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
-				g2.fillRect(e.x + 16, e.y, e.w, e.h);
+				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 
 				g2.setColor(Color.BLACK);
 				g2.drawString(e.getRepresentExpression()  //  t.getRpnString().replaceAll(";.*", "")
 								, e.x + 30, e.y + e.h / 2 + 10);
 			}
-			else if ( e.getKindId() == KindId.VARIABLE_SET
-					// t.getKindString().equals("変数を設定")
-					) {
+			else if ( e.getKindId() == KindId.VARIABLE_SET ) {
+				// 変数を設定
 				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
-				g2.fillRect(e.x + 16, e.y, e.w, e.h);
+				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 				BufferedImage image = GuiUtil.getImage(IconImage.VAR_SET, this);
-				g2.drawImage(image, e.x + 20, e.y, null);
+				g2.drawImage(image, e.x + 26, e.y, null);
 
 				g2.setColor(Color.BLACK);
 //				g2.drawString(t.getRpnString().replaceAll("^.*'", "").replaceAll(" .*", ""), t.x + 50, t.y + t.h / 2 + 10);
-				g2.drawString(e.getRepresentExpression(), e.x + 50, e.y + e.h / 2 + 10);
+				g2.drawString(e.getRepresentExpression(), e.x + 60, e.y + e.h / 2 + 10);
 			}
-			else if ( e.getKindId() == KindId.VARIABLE_REFER
-					// t.getKindString().equals("変数を参照")
-					) {
+			else if ( e.getKindId() == KindId.VARIABLE_REFER ) {
+				// 変数を参照
 				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
-				g2.fillRect(e.x + 16, e.y, e.w, e.h);
+				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 				BufferedImage image = GuiUtil.getImage(IconImage.VAR_REFER, this);
-				g2.drawImage(image, e.x + 20, e.y, null);
+				g2.drawImage(image, e.x + 26, e.y, null);
 
 				g2.setColor(Color.BLACK);
 //				g2.drawString(t.getRpnString().replaceAll("^.*'", "").replaceAll(" .*", ""), t.x + 50, t.y + t.h / 2 + 10);
-				g2.drawString(e.getRepresentExpression(), e.x + 50, e.y + e.h / 2 + 10);
+				g2.drawString(e.getRepresentExpression(), e.x + 60, e.y + e.h / 2 + 10);
 			}
-			else if ( e.getKindId() == KindId.OPERATOR
-					// t.getKindString().equals("演算子")
-					) {
+			else if ( e.getKindId() == KindId.OPERATOR) {
+				// 演算子
 				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
 				g2.fillOval(e.x + 16, e.y, e.w, e.h);
 
 				String printMark = e.getRepresentExpression();
 				g2.setColor(Color.BLACK);
+				Rectangle rect = str2rect.str2rect(printMark, g2);
 
-				// g2.fillRect(e.x, e.y + e.h / 2 + 10, e.w, 1);
-
-				int strWidth = stringWidthUtil.strWidth(printMark, g2);
-
-				g2.drawString(printMark, e.x  + 16 + (e.w - strWidth)/2, e.y + e.h / 2 + 10);
+				g2.drawString(printMark, e.x  + 16 + (e.w - rect.width)/2, e.y + (e.h + rect.height)/ 2 - 4);
 
 
 			}

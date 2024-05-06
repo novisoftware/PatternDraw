@@ -3,7 +3,7 @@ package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class ValueNumeric extends Value implements InterfaceScalar {
+public class ValueNumeric extends ValueAbstractScalar {
 	public ValueNumeric(String s) {
 		super(ValueType.NUMERIC);
 		internal = new BigDecimal(s);
@@ -34,32 +34,37 @@ public class ValueNumeric extends Value implements InterfaceScalar {
 	}
 
 	@Override
-	public InterfaceScalar add(InterfaceScalar a) {
+	public ValueAbstractScalar add(ValueAbstractScalar a) {
 		BigDecimal a2 = ((ValueNumeric)a).internal;
 		return new ValueNumeric(this.internal.add(a2));
 	}
 
 	@Override
-	public InterfaceScalar sub(InterfaceScalar a) {
+	public ValueAbstractScalar sub(ValueAbstractScalar a) {
 		BigDecimal a2 = ((ValueNumeric)a).internal;
 		return new ValueNumeric(this.internal.subtract(a2));
 	}
 
 	@Override
-	public InterfaceScalar mul(InterfaceScalar a) {
+	public ValueAbstractScalar mul(ValueAbstractScalar a) {
 		BigDecimal a2 = ((ValueNumeric)a).internal;
 		return new ValueNumeric(this.internal.multiply(a2));
 	}
 
 	@Override
-	public InterfaceScalar div(InterfaceScalar a) {
+	public ValueAbstractScalar div(ValueAbstractScalar a) {
 		BigDecimal a2 = ((ValueNumeric)a).internal;
 		return new ValueNumeric(this.internal.divide(a2));
 	}
 
 	@Override
-	public InterfaceScalar mod(InterfaceScalar a) {
+	public ValueAbstractScalar mod(ValueAbstractScalar a) {
 		BigDecimal a2 = ((ValueNumeric)a).internal;
 		return new ValueNumeric(this.internal.remainder(a2));
+	}
+
+	@Override
+	public int compareInternal(ValueAbstractScalar a) {
+		return this.internal.compareTo(((ValueNumeric)a).internal);
 	}
 }
