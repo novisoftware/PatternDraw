@@ -32,12 +32,16 @@ import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 
 public class EditDiagramWindow extends JFrame2 {
+	EditDiagramMenuBar editMenuBar;
 	EditDiagramPanel editPanel;
 
 	public EditDiagramWindow(String filename) {
 		super();
 
 		this.setSize(1500, 700);
+		this.editMenuBar = new EditDiagramMenuBar();
+		this.setJMenuBar(this.editMenuBar);
+
 		this.editPanel = new EditDiagramPanel(filename);
 		this.setTitle("ダイヤグラムを編集: " + this.editPanel.networkDataModel.title);
 		this.editPanel.setPreferredSize(new Dimension(1500,2000));
