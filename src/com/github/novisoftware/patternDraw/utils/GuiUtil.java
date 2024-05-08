@@ -77,6 +77,43 @@ public class GuiUtil {
 		return r;
 	}
 
+	static void filter1(BufferedImage in) {
+		int w = in.getWidth();
+		int h = in.getHeight();
+		for (int y = 0 ; y < h; y ++) {
+			for (int x = 0 ; x < w; x ++) {
+				int argb = in.getRGB(x, y);
+				// 赤くする。透明度は触らない。
+				argb |= 0xFF0000;
+				// 透明度を設定する。
+				int a = (argb >> 24) & 0xFF;
+				a = (int)Math.round(a * 0.3);
+				argb = (argb & 0x00FFFFFF) + (a << 24);
+				in.setRGB(x, y, argb);
+			}
+		}
+	}
+
+	public static BufferedImage getImage2(String s, P001_IconGuiInterface frame) {
+		BufferedImage r = cache.get(s);
+		if (r != null) {
+			return r;
+		}
+
+		System.err.println("icon resource = " + s);
+
+		try {
+			r = ImageIO.read(frame.getClass().getResource(s));
+			filter1(r);
+
+			cache.put(s, r);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return r;
+	}
+
 	/**
 	 * JMenuItemコンストラクタのラッパー。 marked の真偽により丸印 ● の有無を描画し分ける。
 	 *

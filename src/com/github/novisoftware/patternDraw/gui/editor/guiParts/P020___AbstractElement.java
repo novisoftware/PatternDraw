@@ -11,8 +11,11 @@ import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	public abstract String str();
+
 	public abstract ArrayList<String> optStr();
+
 	public abstract P020___AbstractElement getCopy();
+
 	public abstract void paintWithPhase(Graphics2D g, int phase);
 
 	protected final EditDiagramPanel editPanel;
@@ -31,7 +34,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 			string2kind.put("制御", KindId.CONTROL);
 
 			kind2string = new HashMap<>();
-			for (String s: string2kind.keySet()) {
+			for (String s : string2kind.keySet()) {
 				kind2string.put(string2kind.get(s), s);
 			}
 		}
@@ -43,13 +46,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	static HashMap<KindId, String> kind2string;
 
 	public static enum KindId {
-		INPUT,
-		DISPLAY,
-		CONSTANT,
-		VARIABLE_SET,
-		VARIABLE_REFER,
-		OPERATOR,
-		CONTROL
+		INPUT, DISPLAY, CONSTANT, VARIABLE_SET, VARIABLE_REFER, OPERATOR, CONTROL
 	}
 
 	/**
@@ -57,6 +54,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	 */
 	public final int debugId;
 	static int debugIdSequence = 1;
+
 	static int getDebugId() {
 		return debugIdSequence++;
 	}
@@ -105,10 +103,11 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	}
 
 	/**
-	 * @param kindString セットするkindString
+	 * @param kindString
+	 *            セットするkindString
 	 */
 	public void setKindString(String kindString) {
-		if (! P020___AbstractElement.string2kind.containsKey(kindString)) {
+		if (!P020___AbstractElement.string2kind.containsKey(kindString)) {
 			System.err.println("未定義の種別が指定: " + kindString);
 			System.exit(1);
 		}
@@ -127,7 +126,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	 * @return 中心のX座標
 	 */
 	public int getCenterX() {
-		return x + w/2;
+		return x + w / 2;
 	}
 
 	/**
@@ -145,7 +144,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	 * @return 中心のY座標
 	 */
 	public int getCenterY() {
-		return y + h/2;
+		return y + h / 2;
 	}
 
 	/**
@@ -160,12 +159,9 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	}
 
 	public P001_IconGuiInterface getTouchedObject(int x, int y) {
-		if (
-				1.0f * (this.x + this.w/2 - x)*(this.x + this.w/2 - x) * this.h*this.h
-				+ 1.0f * (this.y + this.h/2  -y)*(this.y + this.h/2 - y) * this.w*this.w
-				<
-				1.0f * this.h*this.h*this.w*this.w/4
-				) {
+		if (1.0f * (this.x + this.w / 2 - x) * (this.x + this.w / 2 - x) * this.h * this.h
+				+ 1.0f * (this.y + this.h / 2 - y) * (this.y + this.h / 2 - y) * this.w * this.w < 1.0f * this.h
+						* this.h * this.w * this.w / 4) {
 			return this;
 		}
 		return null;

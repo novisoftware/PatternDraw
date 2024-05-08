@@ -10,7 +10,6 @@ import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.InterfaceScalar;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
@@ -195,8 +194,8 @@ public class Rpn {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
-
-	public Value doCaliculate(P022_____RpnGraphNodeElement ele, HashMap<String, Value> variables) {
+	public Value doCaliculate(P022_____RpnGraphNodeElement ele, HashMap<String, Value> variables)
+		throws CaliculateException {
 		Stack<Value> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
@@ -204,13 +203,18 @@ public class Rpn {
 		for (String s : array) {
 			Debug.println("RPN DETAIL", "op is ***" + s + "***");
 
-
 			/**
 			 * 端子についているパラメーターを取得
 			 */
 			String paraName = getParamName(s);
 			if (paraName != null) {
 				P021____AbstractGraphNodeElement src = ele.paramMapObj.get(paraName);
+				if (src == null) {
+					// 端子にパラメーターが設定されていない。
+					// 該当ノードを計算エラーにして、計算を打ち切らせたいので
+					// CaliculateExceptionをthrowする
+					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
+				}
 				stack.push(src.workValue);
 				continue;
 			}
@@ -219,6 +223,10 @@ public class Rpn {
 				OutputTextWindow.println(stack.pop().toString());
 			}
 			else if (s.equals(":input:integer")) {
+				// インタラクティブな入力（試作レベル）
+				// TODO:
+				// 消すか、書き直すかを検討する。
+				// (これは要らないような気もする)
 				while (true) {
 					System.out.print("整数を入力してください: ");
 					String inputString = null;
@@ -266,172 +274,133 @@ public class Rpn {
 				}
 			}
 			else if (s.equals("-") || s.equals("/") || s.equals("%") || s.equals("+") || s.equals("*")) {
-				Value b0 = stack.pop();
-				Value a0 = stack.pop();
+				try {
+					Value b0 = stack.pop();
+					Value a0 = stack.pop();
 
-				// TODO:
-				// キャストエラーの処理が必要。
+					try {
+						if (!(a0 instanceof ValueAbstractScalar && b0 instanceof ValueAbstractScalar)) {
+							// キャストできない型。
+							throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+						}
+						TwoValues work = TypeUtil.upCast(a0, b0);
+						ValueAbstractScalar a = (ValueAbstractScalar)work.a;
+						ValueAbstractScalar b = (ValueAbstractScalar)work.b;
 
-				if (a0 instanceof ValueAbstractScalar && b0 instanceof ValueAbstractScalar) {
-					TwoValues work = TypeUtil.upCast(a0, b0);
-					ValueAbstractScalar a = (ValueAbstractScalar)work.a;
-					ValueAbstractScalar b = (ValueAbstractScalar)work.b;
-					if (s.equals("-")) {
-						stack.push(a.sub(b));
+						if (s.equals("/") || s.equals("%")) {
+							throw new CaliculateException(CaliculateException.MESSAGE_ZERO_DIV);
+						}
+
+						if (s.equals("-")) {
+							stack.push(a.sub(b));
+						}
+						else if (s.equals("/")) {
+							stack.push(a.div(b));
+						}
+						else if (s.equals("%")) {
+							stack.push(a.mod(b));
+						}
+						else if (s.equals("+")) {
+							stack.push(a.add(b));
+						}
+						else if (s.equals("*")) {
+							stack.push(a.mul(b));
+						}
+					} catch(Exception ee) {
+						throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
 					}
-					else if (s.equals("/")) {
-						stack.push(a.div(b));
-					}
-					else if (s.equals("%")) {
-						stack.push(a.mod(b));
-					}
-					else if (s.equals("+")) {
-						stack.push(a.add(b));
-					}
-					else if (s.equals("*")) {
-						stack.push(a.mul(b));
-					}
+				} catch(Exception e) {
+					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}
-
 			}
 			else if (s.equals(">") || s.equals(">=") || s.equals("<") || s.equals("<=") || s.equals("==") || s.equals("!=")) {
-				Value b0 = stack.pop();
-				Value a0 = stack.pop();
 
-				// TODO:
-				// キャストエラーの処理が必要。
+				try {
+					Value b0 = stack.pop();
+					Value a0 = stack.pop();
 
-				if (a0 instanceof ValueAbstractScalar && b0 instanceof ValueAbstractScalar) {
-					TwoValues work = TypeUtil.upCast(a0, b0);
-					ValueAbstractScalar a = (ValueAbstractScalar)work.a;
-					ValueAbstractScalar b = (ValueAbstractScalar)work.b;
-					if (s.equals(">")) {
-						stack.push( new ValueBoolean(a.compareInternal(b) > 0 ));
+					try {
+						if (!(a0 instanceof ValueAbstractScalar && b0 instanceof ValueAbstractScalar)) {
+							// キャストできない型。
+							throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+						}
+						TwoValues work = TypeUtil.upCast(a0, b0);
+						ValueAbstractScalar a = (ValueAbstractScalar)work.a;
+						ValueAbstractScalar b = (ValueAbstractScalar)work.b;
+
+						if (s.equals(">")) {
+							stack.push( new ValueBoolean(a.compareInternal(b) > 0 ));
+						}
+						else if (s.equals(">=")) {
+							stack.push( new ValueBoolean(a.compareInternal(b) >= 0 ));
+						}
+						else if (s.equals("<")) {
+							stack.push( new ValueBoolean(a.compareInternal(b) < 0 ));
+						}
+						else if (s.equals("<=")) {
+							stack.push( new ValueBoolean(a.compareInternal(b) <= 0 ));
+						}
+						else if (s.equals("==")) {
+							stack.push( new ValueBoolean(a.compareInternal(b) == 0 ));
+						}
+						else if (s.equals("!=")) {
+							stack.push( new ValueBoolean(a.compareInternal(b) != 0 ));
+						}
+					} catch(Exception ee) {
+						throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
 					}
-					else if (s.equals(">=")) {
-						stack.push( new ValueBoolean(a.compareInternal(b) >= 0 ));
-					}
-					else if (s.equals("<")) {
-						stack.push( new ValueBoolean(a.compareInternal(b) < 0 ));
-					}
-					else if (s.equals("<=")) {
-						stack.push( new ValueBoolean(a.compareInternal(b) <= 0 ));
-					}
-					else if (s.equals("==")) {
-						stack.push( new ValueBoolean(a.compareInternal(b) == 0 ));
-					}
-					else if (s.equals("!=")) {
-						stack.push( new ValueBoolean(a.compareInternal(b) != 0 ));
-					}
+				} catch(Exception e) {
+					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}
 			}
-			else if (s.equals(":and")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
+			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor") || s.equals(":not")
+					|| s.equals(":nand") || s.equals(":nor") || s.equals(":xnor")) {
+				try {
+					Value b = stack.pop();
+					Value a = stack.pop();
+					try {
+						if (!(a instanceof ValueBoolean && b instanceof ValueBoolean)) {
+							// 型の誤り。
+							throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+						}
+						ValueBoolean a_ = (ValueBoolean)a;
+						ValueBoolean b_ = (ValueBoolean)b;
 
-				if (a instanceof ValueBoolean && b instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-					ValueBoolean b_ = (ValueBoolean)b;
-
-					stack.push(new ValueBoolean(a_.getInternal() && b_.getInternal()));
-				}
-				else {
-					Debug.println("RPN", ":and INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
-				}
-			}
-			else if (s.equals(":or")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueBoolean && b instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-					ValueBoolean b_ = (ValueBoolean)b;
-
-					stack.push(new ValueBoolean(a_.getInternal() || b_.getInternal()));
-				}
-				else {
-					Debug.println("RPN", ":or INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
-				}
-			}
-			else if (s.equals(":xor")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueBoolean && b instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-					ValueBoolean b_ = (ValueBoolean)b;
-
-					stack.push(new ValueBoolean(a_.getInternal() ^ b_.getInternal()));
-				}
-				else {
-					Debug.println("RPN", ":xor INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
+						if (s.equals(":and")) {
+							stack.push(new ValueBoolean(a_.getInternal() && b_.getInternal()));
+						} else if (s.equals(":nand")) {
+							stack.push(new ValueBoolean(!(a_.getInternal() && b_.getInternal())));
+						} else if (s.equals(":or")) {
+							stack.push(new ValueBoolean(a_.getInternal() || b_.getInternal()));
+						} else if (s.equals(":xor")) {
+							stack.push(new ValueBoolean(a_.getInternal() ^ b_.getInternal()));
+						} else if (s.equals(":nor")) {
+							stack.push(new ValueBoolean(!(a_.getInternal() || b_.getInternal())));
+						} else if (s.equals(":xnor")) {
+							stack.push(new ValueBoolean(!(a_.getInternal() ^ b_.getInternal())));
+						}
+					} catch (Exception ee) {
+						throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
+					}
+				} catch (Exception e) {
+					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}
 			}
 			else if (s.equals(":not")) {
-				Value a = stack.pop();
-
-				if (a instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-
-					stack.push(new ValueBoolean(!a_.getInternal()));
-				}
-				else {
-					Debug.println("RPN", ":not INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-				}
-			}
-			else if (s.equals(":nand")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueBoolean && b instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-					ValueBoolean b_ = (ValueBoolean)b;
-
-					stack.push(new ValueBoolean(!(a_.getInternal() && b_.getInternal())));
-				}
-				else {
-					Debug.println("RPN", ":and INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
-				}
-			}
-			else if (s.equals(":nor")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueBoolean && b instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-					ValueBoolean b_ = (ValueBoolean)b;
-
-					stack.push(new ValueBoolean(!(a_.getInternal() || b_.getInternal())));
-				}
-				else {
-					Debug.println("RPN", ":or INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
-				}
-			}
-			else if (s.equals(":xnor")) {
-				Value b = stack.pop();
-				Value a = stack.pop();
-
-				if (a instanceof ValueBoolean && b instanceof ValueBoolean) {
-					ValueBoolean a_ = (ValueBoolean)a;
-					ValueBoolean b_ = (ValueBoolean)b;
-
-					stack.push(new ValueBoolean(!(a_.getInternal() ^ b_.getInternal())));
-				}
-				else {
-					Debug.println("RPN", ":xor INVALID");
-					Debug.println("RPN", "a: " + a.toDebugString() + "  " + a);
-					Debug.println("RPN", "b: " + b.toDebugString() + "  " + b);
+				try {
+					Value a = stack.pop();
+					try {
+						if (!(a instanceof ValueBoolean)) {
+							// 型の誤り。
+							throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+						}
+						ValueBoolean a_ = (ValueBoolean)a;
+						stack.push(new ValueBoolean(!a_.getInternal()));
+					} catch (Exception ee) {
+						throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
+					}
+				} catch (Exception e) {
+					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}
 			}
 			else if (s.startsWith("'")) {

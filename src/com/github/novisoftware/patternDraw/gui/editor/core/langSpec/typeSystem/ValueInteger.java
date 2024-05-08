@@ -80,4 +80,9 @@ public class ValueInteger extends ValueAbstractScalar {
 	public int compareInternal(ValueAbstractScalar a) {
 		return this.internal.compareTo(((ValueInteger)a).internal);
 	}
+
+	@Override
+	public boolean isZero() {
+		return this.internal.equals(BigInteger.ZERO);
+	}
 }

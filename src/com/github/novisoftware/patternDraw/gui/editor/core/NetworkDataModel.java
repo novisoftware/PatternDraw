@@ -614,7 +614,7 @@ public class NetworkDataModel {
 		}
 	}
 
-	Value evaluateOneGraph(P021____AbstractGraphNodeElement headElement) {
+	Value evaluateOneGraph(P021____AbstractGraphNodeElement headElement) throws CaliculateException {
 		ArrayList<P021____AbstractGraphNodeElement> eList = graphGroup.get(headElement.groupHead);
 		Debug.println("evaluate", "GRPAH GROUP ---  " + headElement.groupHead + "   items: " + eList.size());
 		for(P021____AbstractGraphNodeElement element : eList) {
@@ -637,7 +637,7 @@ public class NetworkDataModel {
 		return e.workValue;
 	}
 
-	void evaluateControl(P010___ControlElement control) {
+	void evaluateControl(P010___ControlElement control) throws CaliculateException {
 		Debug.println("evaluate", "------------------------ CONTROL"  + "  " + control.id);
 		if (control.getControlType().equals("REPEAT")) {
 			ControllBase c = control.init();
@@ -731,21 +731,25 @@ public class NetworkDataModel {
 		Debug.println("evaluate", "--------------------------------------------- 「実行」★");
 
 
-		for (P020___AbstractElement elementIcon : this.rootElement) {
-			if (elementIcon instanceof P021____AbstractGraphNodeElement) {
-				evaluateOneGraph((P021____AbstractGraphNodeElement)elementIcon);
-				/*
-				ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
-				for(GraphNodeElement element : eList) {
-					element.evaluate();
+		try {
+			for (P020___AbstractElement elementIcon : this.rootElement) {
+				if (elementIcon instanceof P021____AbstractGraphNodeElement) {
+					evaluateOneGraph((P021____AbstractGraphNodeElement)elementIcon);
+					/*
+					ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
+					for(GraphNodeElement element : eList) {
+						element.evaluate();
 
-					Debug.println("evaluate", "done: " + element.id);
+						Debug.println("evaluate", "done: " + element.id);
+					}
+					*/
 				}
-				*/
+				else if(elementIcon instanceof P010___ControlElement) {
+					evaluateControl((P010___ControlElement)elementIcon);
+				}
 			}
-			else if(elementIcon instanceof P010___ControlElement) {
-				evaluateControl((P010___ControlElement)elementIcon);
-			}
+		} catch (CaliculateException e) {
+			// 特に処理不要
 		}
 
 		OutputGraphicsWindow.refresh();

@@ -133,61 +133,61 @@ DESCRIPTION: 整数値を入力します。
 
 
 KIND: 演算子
-TYPE: NUMERIC
+TYPE: SCALAR
 DISPNAME: 演算子(計算する)/加算(足す)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 2つの入力を加算します。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 +
 -->RPN
 ---->DEFINE
 
 KIND: 演算子
-TYPE: NUMERIC
+TYPE: SCALAR
 DISPNAME: 演算子(計算する)/減算(引く)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 入力1から入力2を減算します。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 -
 -->RPN
 ---->DEFINE
 
 KIND: 演算子
-TYPE: NUMERIC
+TYPE: SCALAR
 DISPNAME: 演算子(計算する)/乗算(かける)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 2つの入力を乗算します。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 *
 -->RPN
 ---->DEFINE
 
 KIND: 演算子
-TYPE: NUMERIC
+TYPE: SCALAR
 DISPNAME: 演算子(計算する)/除算(割る)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 2つの入力を乗算します。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 /
 -->RPN
 ---->DEFINE
 
 KIND: 演算子
-TYPE: NUMERIC
+TYPE: SCALAR
 DISPNAME: 演算子(計算する)/剰余(あまり)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 2つの入力の剰余を求めます。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 %
 -->RPN
 ---->DEFINE
@@ -198,8 +198,8 @@ DISPNAME: 比較/＞
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがbより大きい場合、真になります。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 >
 -->RPN
 ---->DEFINE
@@ -210,8 +210,8 @@ DISPNAME: 比較/≧
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがb以上の場合、真になります。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 >=
 -->RPN
 ---->DEFINE
@@ -222,8 +222,8 @@ DISPNAME: 比較/＝
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbが等しい場合、真になります。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 ==
 -->RPN
 ---->DEFINE
@@ -234,8 +234,8 @@ DISPNAME: 比較/≠
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbが異なる場合、真になります。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 !=
 -->RPN
 ---->DEFINE
@@ -246,8 +246,8 @@ DISPNAME: 比較/≦
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがb以下の場合、真になります。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 <=
 -->RPN
 ---->DEFINE
@@ -258,8 +258,8 @@ DISPNAME: 比較/＜
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがbより小さい場合、真になります。
-<input1:NUMERIC>
-<input2:NUMERIC>
+<input1:SCALAR>
+<input2:SCALAR>
 <
 -->RPN
 ---->DEFINE
@@ -270,8 +270,8 @@ DISPNAME: 論理演算/AND
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbの両方が真の場合、真になります。
-<input1:BOOLEAN>
-<input2:BOOLEAN>
+<input1:SCALAR>
+<input2:SCALAR>
 :and
 -->RPN
 ---->DEFINE
@@ -282,8 +282,8 @@ DISPNAME: 論理演算/OR
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbのどちらかが真の場合、真になります。
-<input1:BOOLEAN>
-<input2:BOOLEAN>
+<input1:SCALAR>
+<input2:SCALAR>
 :or
 -->RPN
 ---->DEFINE
@@ -294,8 +294,8 @@ DISPNAME: 論理演算/XOR
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbのどちらか片方だけが真の場合、真になります。
-<input1:BOOLEAN>
-<input2:BOOLEAN>
+<input1:SCALAR>
+<input2:SCALAR>
 :xor
 -->RPN
 ---->DEFINE

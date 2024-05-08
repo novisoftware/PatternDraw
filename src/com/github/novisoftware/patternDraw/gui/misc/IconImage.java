@@ -6,6 +6,8 @@ package com.github.novisoftware.patternDraw.gui.misc;
  *
  */
 public class IconImage {
+	public static final String ALERT = "/iconimage/defaultIcon/png/64x64/alert.png";
+	public static final String MESSAGE = "/iconimage/defaultIcon/png/64x64/chat-alt-1.png";
 	public static final String DISPLAY = "/iconimage/defaultIcon/png/64x64/display.png";
 	public static final String EDIT = "/iconimage/defaultIcon/png/48x48/edit.png";
 

@@ -67,4 +67,9 @@ public class ValueNumeric extends ValueAbstractScalar {
 	public int compareInternal(ValueAbstractScalar a) {
 		return this.internal.compareTo(((ValueNumeric)a).internal);
 	}
+
+	@Override
+	public boolean isZero() {
+		return this.internal.equals(BigDecimal.ZERO);
+	}
 }

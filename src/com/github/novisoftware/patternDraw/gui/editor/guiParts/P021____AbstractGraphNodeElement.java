@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
@@ -31,6 +32,16 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 * 計算結果
 	 */
 	public Value workValue;
+
+	/**
+	 * 計算にエラーがあったか
+	 */
+	public boolean isError;
+
+	/**
+	 * 計算のエラー内容
+	 */
+	public String errorMessage;
 
 	/**
 	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
@@ -78,8 +89,9 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 
 	/**
 	 * 計算する(workValueに計算結果が格納された状態にする)。
+	 * @throws CaliculateException
 	 */
-	public abstract void evaluate();
+	public abstract void evaluate() throws CaliculateException;
 
 
 	static StringRectUtil str2rect = new StringRectUtil();
@@ -145,7 +157,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			if (this.groupHead != null) {
 				g2.setFont(Preference.GROUP_ID_FONT);
 				g2.setColor(Color.GRAY);
-				g2.drawString("" + this.groupHead, e.x - 30, e.y + 40);
+				g2.drawString("" + this.groupHead, e.x - 30, e.y + 30);
 			}
 		}
 
@@ -258,6 +270,15 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				g2.setFont(Preference.ICON_BOX_FONT);
 				g2.setColor(Color.RED);
 				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
+			}
+
+			if (this.isError) {
+				g2.setFont(Preference.ICON_BOX_FONT);
+				BufferedImage image = GuiUtil.getImage2(IconImage.MESSAGE, this);
+				g2.drawImage(image, e.x + 40, e.y - 60, null);
+				g2.setColor(Color.BLACK);
+				g2.drawString("計算エラー", e.x + 50, e.y - 35);
+				g2.drawString(this.errorMessage, e.x + 50, e.y - 18);
 			}
 		}
 	}

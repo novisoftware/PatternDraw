@@ -13,6 +13,7 @@ public class Value {
 	 *
 	 * <ul>
 	 * <li> ANY	       何でもよい
+	 * <li> SCALAR     FLOAT, NUMERIC, INTEGER のいずれかを受け入れる
 	 * <li> FLOAT      倍精度浮動小数点(注: 単精度をサポートしない)
 	 * <li> NUMERIC    多倍長小数
 	 * <li> INTEGER    多倍長整数
@@ -25,6 +26,7 @@ public class Value {
 	 *
 	 */
 	public enum ValueType {
+		SCALAR,
 		NUMERIC,
 		FLOAT,
 		INTEGER,
@@ -43,6 +45,9 @@ public class Value {
 	}
 
 	public static String valueTypeToDescString(ValueType valueType) {
+		if (ValueType.SCALAR.equals(valueType)) {
+			return "数値";
+		}
 		if (ValueType.NUMERIC.equals(valueType)) {
 			return "任意精度実数";
 		}
@@ -81,6 +86,7 @@ public class Value {
 
 	static {
 		str2valueType = new HashMap<String, ValueType>();
+		str2valueType.put("SCALAR", ValueType.SCALAR);
 		str2valueType.put("INTEGER", ValueType.INTEGER);
 		str2valueType.put("FLOAT", ValueType.FLOAT);
 		str2valueType.put("NUMERIC", ValueType.NUMERIC);
@@ -92,6 +98,7 @@ public class Value {
 		str2valueType.put("NONE", ValueType.NONE);
 
 		valueType2str = new HashMap<ValueType, String>();
+		valueType2str.put(ValueType.SCALAR  , "SCALAR");
 		valueType2str.put(ValueType.INTEGER  , "INTEGER");
 		valueType2str.put(ValueType.NUMERIC  , "NUMERIC");
 		valueType2str.put(ValueType.FLOAT    , "FLOAT");
@@ -104,19 +111,30 @@ public class Value {
 	}
 
 
-	public static boolean isAcceptable(ValueType send, ValueType accept) {
-		Debug.println("VALUE", "SEND " + send + "  acccept " + accept);
+	public static boolean isAcceptable(ValueType send, ValueType receive) {
+		Debug.println("VALUE", "SEND " + send + "  acccept " + receive);
+
+		if (receive.equals(ValueType.SCALAR)) {
+			if (send.equals(ValueType.FLOAT)
+					|| send.equals(ValueType.INTEGER)
+					|| send.equals(ValueType.NUMERIC)
+					|| send.equals(ValueType.SCALAR)) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 
 		if (send.equals(ValueType.NONE)) {
 			return false;
 		}
-		if (accept.equals(ValueType.ANY)) {
+		if (receive.equals(ValueType.ANY)) {
 			return true;
 		}
-		if (send.equals(accept)) {
+		if (send.equals(receive)) {
 			return true;
 		}
-		if (send.equals(ValueType.INTEGER) && accept.equals(ValueType.NUMERIC)) {
+		if (send.equals(ValueType.INTEGER) && receive.equals(ValueType.NUMERIC)) {
 			return true;
 		}
 
