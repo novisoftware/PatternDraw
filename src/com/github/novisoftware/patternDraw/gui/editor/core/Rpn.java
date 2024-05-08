@@ -288,7 +288,9 @@ public class Rpn {
 						ValueAbstractScalar b = (ValueAbstractScalar)work.b;
 
 						if (s.equals("/") || s.equals("%")) {
-							throw new CaliculateException(CaliculateException.MESSAGE_ZERO_DIV);
+							if (b.isZero()) {
+								throw new CaliculateException(CaliculateException.MESSAGE_ZERO_DIV);
+							}
 						}
 
 						if (s.equals("-")) {
@@ -306,9 +308,14 @@ public class Rpn {
 						else if (s.equals("*")) {
 							stack.push(a.mul(b));
 						}
+					} catch(CaliculateException e) {
+						throw e;
 					} catch(Exception ee) {
+						ee.printStackTrace();
 						throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
 					}
+				} catch(CaliculateException e) {
+					throw e;
 				} catch(Exception e) {
 					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}

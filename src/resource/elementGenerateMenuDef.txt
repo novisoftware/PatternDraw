@@ -270,8 +270,8 @@ DISPNAME: 論理演算/AND
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbの両方が真の場合、真になります。
-<input1:SCALAR>
-<input2:SCALAR>
+<input1:BOOLEAN>
+<input2:BOOLEAN>
 :and
 -->RPN
 ---->DEFINE
@@ -282,8 +282,8 @@ DISPNAME: 論理演算/OR
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbのどちらかが真の場合、真になります。
-<input1:SCALAR>
-<input2:SCALAR>
+<input1:BOOLEAN>
+<input2:BOOLEAN>
 :or
 -->RPN
 ---->DEFINE
@@ -294,8 +294,8 @@ DISPNAME: 論理演算/XOR
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbのどちらか片方だけが真の場合、真になります。
-<input1:SCALAR>
-<input2:SCALAR>
+<input1:BOOLEAN>
+<input2:BOOLEAN>
 :xor
 -->RPN
 ---->DEFINE
@@ -318,6 +318,7 @@ WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 論理演算子NANDです。
 <input1:BOOLEAN>
+<input2:BOOLEAN>
 :nand
 -->RPN
 ---->DEFINE
@@ -329,6 +330,7 @@ WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 論理演算子NORです。
 <input1:BOOLEAN>
+<input2:BOOLEAN>
 :nor
 -->RPN
 ---->DEFINE
@@ -340,6 +342,7 @@ WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 論理演算子XNORです。
 <input1:BOOLEAN>
+<input2:BOOLEAN>
 :xnor
 -->RPN
 ---->DEFINE
