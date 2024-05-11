@@ -193,18 +193,16 @@ public class EditParamDefWindow extends JFrame2 {
 
 		/////////////////////////
 		// 列挙値
-		check_enumEnable = new JCheckBox2();
+		check_enumEnable = new JCheckBox2("ラジオボタンによる設定を有効にする");
+		check_enumEnable.setSelected(param.enableEnum);
 		check_enumEnable.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
-				param.enableEnum = check_sliderEnable.isSelected();
+				param.enableEnum = check_enumEnable.isSelected();
 			}
 		});
 
 		enumBuilderPartsSet.add(check_enumEnable);
-		JLabel2 label_enumEnable = new JLabel2("ラジオボタンによる設定を有効にする");
-		enumBuilderPartsSet.add(label_enumEnable);
-
 		enumBuilderPartsSet.add(horizontalRule(1));
 
 		field_enumValue = new ValueInputPanel(this, new Let() {
@@ -221,7 +219,8 @@ public class EditParamDefWindow extends JFrame2 {
 
 		///////////////////
 		// スライダー
-		check_sliderEnable = new JCheckBox2();
+		check_sliderEnable = new JCheckBox2("スライダーによる設定を有効にする");
+		check_sliderEnable.setSelected(param.enableSlider);
 		check_sliderEnable.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -230,9 +229,6 @@ public class EditParamDefWindow extends JFrame2 {
 		});
 
 		sliderBuilderPartsSet.add(check_sliderEnable);
-		JLabel2 label_sliderEnable = new JLabel2("スライダーによる設定を有効にする");
-		sliderBuilderPartsSet.add(label_sliderEnable);
-
 		sliderBuilderPartsSet.add(horizontalRule(1));
 
 		///////////////////
