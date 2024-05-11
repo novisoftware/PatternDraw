@@ -1,5 +1,7 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker;
 
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
+
 public class BooleanChecker extends AbstractInputChecker {
 	public BooleanChecker() {
 		this.message = "ブール値(true または false)を入力してください";
@@ -9,7 +11,7 @@ public class BooleanChecker extends AbstractInputChecker {
 	public
 	void check(String s) {
 		String s2 = s.toLowerCase();
-		if (s2.equals("true") || s2.equals("false")) {
+		if (s2.equals(ValueBoolean.LABEL_TRUE) || s2.equals(ValueBoolean.LABEL_FALSE)) {
 			isValid = true;
 			message = " ";
 		} else {
