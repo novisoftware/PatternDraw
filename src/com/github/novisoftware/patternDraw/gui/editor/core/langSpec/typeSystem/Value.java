@@ -55,7 +55,7 @@ public class Value {
 			return "浮動小数点数";
 		}
 		if (ValueType.BOOLEAN.equals(valueType)) {
-			return "真偽値";
+			return "ブール値";
 		}
 		if (ValueType.INTEGER.equals(valueType)) {
 			return "整数";

@@ -109,6 +109,9 @@ public class Rpn {
 			else if (op.equals(":as-numeric")) {
 				return ValueType.NONE;
 			}
+			else if (op.equals(":as-boolean")) {
+				return ValueType.BOOLEAN;
+			}
 			else {
 				stack.push(op.replaceAll(";.*", ""));
 			}
@@ -288,6 +291,9 @@ public class Rpn {
 				else if (ele.getValueType().equals(Value.ValueType.NUMERIC )) {
 					stack.push(new ValueNumeric(stack.pop().toString()));
 				}
+			}
+			else if (s.equals(":as-boolean")) {
+				stack.push(new ValueBoolean(stack.pop().toString()));
 			}
 			else if (s.equals(":if")) {
 				Value b0 = stack.pop();

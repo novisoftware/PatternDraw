@@ -104,6 +104,25 @@ DESCRIPTION: 文字列の定数値です。
 -->RPN
 ---->DEFINE
 
+KIND: 定数
+TYPE: BOOLEAN
+HEIGHT: 35
+DISPNAME: 定数/ブール値 true
+DESCRIPTION: ブール値の定数値です。
+ture;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+
+KIND: 定数
+TYPE: BOOLEAN
+HEIGHT: 35
+DISPNAME: 定数/ブール値 false
+DESCRIPTION: ブール値の定数値です。
+false;定数 :as-numeric
+-->RPN
+---->DEFINE
+
 KIND: 変数を設定
 TYPE: NONE
 HEIGHT: 35

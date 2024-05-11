@@ -24,6 +24,8 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Flo
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.AbstractInputConstantWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantBooleanWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantBooleanWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantScalarWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantStringWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
@@ -144,6 +146,9 @@ public class EditDiagramWindow extends JFrame2 {
 									|| Value.ValueType.FLOAT.equals(element.getValueType())
 									|| Value.ValueType.NUMERIC.equals(element.getValueType())) {
 								f = new InputConstantScalarWindow(element, editPanel__);
+							}
+							else if (Value.ValueType.BOOLEAN.equals(element.getValueType())) {
+								f = new InputConstantBooleanWindow(element, editPanel__);
 							}
 							else {
 								f = new InputConstantStringWindow(element, editPanel__);
