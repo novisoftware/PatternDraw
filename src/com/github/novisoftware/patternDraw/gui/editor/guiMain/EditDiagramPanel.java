@@ -19,7 +19,7 @@ public class EditDiagramPanel extends JPanel {
 	/**
 	 * JPanel上にデバッグ情報を表示する
 	 */
-	public boolean isVisibleDebugInfo = true;
+	public boolean isVisibleDebugInfo = false;
 
 	public NetworkDataModel networkDataModel;
 

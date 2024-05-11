@@ -85,6 +85,10 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		return connectors.size() != 0;
 	}
 
+	/**
+	 * アイコン等での表示用の文字列を取得する。
+	 * @return アイコン等での表示用の文字列(ユーザーに見せるための文字列)
+	 */
 	abstract String getRepresentExpression();
 
 	/**
@@ -154,6 +158,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				}
 			}
 
+			// 実行順を表示する数字
 			if (this.groupHead != null) {
 				g2.setFont(Preference.GROUP_ID_FONT);
 				g2.setColor(Color.GRAY);
@@ -167,13 +172,15 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		// 箱
 		if (phase == 1) {
 			g2.setFont(Preference.ICON_BOX_FONT);
-			g2.setColor(Color.GRAY);
-			String boxTitle = e.getKindString();
-			if (e.getKindId() == KindId.CONSTANT) {
-				// 整数とか浮動小数点とかの区別を表示する
-				boxTitle += " - " + Value.valueTypeToDescString(this.getValueType());
+			if (! (e.getKindId() == KindId.COMMENT)) {
+				g2.setColor(Color.GRAY);
+				String boxTitle = e.getKindString();
+				if (e.getKindId() == KindId.CONSTANT) {
+					// 整数とか浮動小数点とかの区別を表示する
+					boxTitle += " - " + Value.valueTypeToDescString(this.getValueType());
+				}
+				g2.drawString(boxTitle, e.x + 30, e.y - 9);
 			}
-			g2.drawString(boxTitle, e.x + 30, e.y - 9);
 
 			g2.setColor(Preference.color);
 			if (e.getKindId() == KindId.INPUT) {
@@ -201,6 +208,21 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 
 				g2.setColor(Color.BLACK);
+				g2.drawString(e.getRepresentExpression()  //  t.getRpnString().replaceAll(";.*", "")
+								, e.x + 30, e.y + e.h / 2 + 10);
+			}
+			else if (e.getKindId() == KindId.COMMENT) {
+				// コメント
+				if (this.isOnMouse()) {
+					g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+					g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, arcWidth, arcHeight);
+				}
+
+				g2.setColor(Preference.COMMENT_BACKGROUND_COLOR);
+				g2.fillRect(e.x + 16, e.y + e.h -3, e.w, 3);
+
+				g2.setColor(Color.BLACK);
+				g2.setFont(Preference.COMMENT_FONT);
 				g2.drawString(e.getRepresentExpression()  //  t.getRpnString().replaceAll(";.*", "")
 								, e.x + 30, e.y + e.h / 2 + 10);
 			}
@@ -260,7 +282,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				}
 			}
 
-			// 端子
+			// コネクタ用の端子
 			g2.setStroke(Preference.STROKE_PLAIN);
 			for (P010___ConnectTerminal connector : connectors) {
 				connector.paint(g2, phase);

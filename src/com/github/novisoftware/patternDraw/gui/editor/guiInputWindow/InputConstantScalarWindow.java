@@ -1,22 +1,16 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
 
-import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
@@ -33,7 +27,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractEl
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
-import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
@@ -42,13 +35,9 @@ import com.github.novisoftware.patternDraw.utils.Preference;
  * ダイヤグラム中の定数値の編集を行う
  *
  */
-public class InputConstantWindow extends JFrame2 {
-	ArrayList<String> rpnArray;
-	final P020___AbstractElement targetElement;
-	JLabel messageDisp;
-	private final JButton buttonOk;
-
-	public InputConstantWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
+public class InputConstantScalarWindow extends AbstractInputConstantWindow {
+	public InputConstantScalarWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
+		super(element, editPanel);
 		if (element.getKindId() != KindId.CONSTANT) {
 			System.err.println("呼び出し条件がおかしいので要確認。");
 			try {
@@ -58,12 +47,6 @@ public class InputConstantWindow extends JFrame2 {
 				e.printStackTrace();
 			}
 		}
-		String message = element.getKindString() + " を設定します。";
-		this.setTitle(message);
-		this.setSize(500, 250);
-
-		// ターゲットにする要素の設定
-		this.targetElement = element;
 
 		////////////////////////////////////////////////////////////////////
 		// レイアウト
@@ -178,93 +161,11 @@ public class InputConstantWindow extends JFrame2 {
 			}
 		}
 
-
 		// 不可視の水平線を作成する (レイアウトの調整)
 		addHorizontalRule__test(pane, 5);
 
 		this.buttonOk = Util.generateSubmitButton(editPanel, this);
 		pane.add(this.buttonOk);
 		pane.add(Util.generateCancelButton(editPanel, this));
-	}
-
-	static class ValueInputPanel extends JPanel {
-		final InputConstantWindow frame;
-		final JTextField textField;
-		AbstractInputChecker checker;
-
-		void updateMessage() {
-			final Color COLOR_ERROR = Color.RED;
-			final Color COLOR_NORMAL = Color.BLACK;
-
-			String text = textField.getText();
-			checker.check(text);
-			if (checker.isOk()) {
-				frame.buttonOk.setEnabled(true);
-				frame.messageDisp.setForeground(COLOR_NORMAL);
-				frame.messageDisp.setText(checker.message);
-			} else {
-				frame.buttonOk.setEnabled(false);
-				frame.messageDisp.setForeground(COLOR_ERROR);
-				frame.messageDisp.setText(checker.message);
-			}
-		}
-
-		public void setInputChecker(AbstractInputChecker checker) {
-			this.checker = checker;
-			this.updateMessage();
-		}
-
-		public ValueInputPanel(InputConstantWindow frame,
-				int param_index,
-				String comment,
-				String ini,
-				AbstractInputChecker checker) {
-			Debug.println("Comment: " + comment);
-			Debug.println("Ini: --" + ini + "--");
-
-			this.frame = frame;
-			this.checker = checker;
-
-			this.textField = new JTextField2("" + ini);
-			/*
-			this.textField = new JTextField("" + ini);
-			// TODO テキストフィールドのサイズ指定が、あまりうまく行っていない。
-			this.textField.setPreferredSize(new Dimension(200,20));
-			this.textField.setFont(Preference.CONSOLE_FONT);
-			*/
-			this.setLayout(new GridLayout(1, 2));
-			this.add(new JLabel2(comment));
-			this.add(this.textField);
-			this.frame.messageDisp.setText(checker.message);
-			this.setBackground(Preference.BG_COLOR);
-
-			// リスナーを設定
-			final ValueInputPanel thisObj = this;
-			this.textField.getDocument().addDocumentListener(new DocumentListener() {
-				void update() {
-					// 再度 RPN オブジェクトを作成する
-					String text = textField.getText();
-					frame.rpnArray.set(param_index, text + (comment.length() > 0 ? ";" + comment : ""));
-					System.out.println("Set element from textField:" + text);
-
-					thisObj.updateMessage();
-				}
-
-				@Override
-				public void insertUpdate(DocumentEvent e) {
-					update();
-				}
-
-				@Override
-				public void removeUpdate(DocumentEvent e) {
-					update();
-				}
-
-				@Override
-				public void changedUpdate(DocumentEvent e) {
-					update();
-				}
-			});
-		}
 	}
 }

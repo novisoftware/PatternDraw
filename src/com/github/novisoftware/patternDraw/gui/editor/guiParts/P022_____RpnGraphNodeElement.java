@@ -147,4 +147,9 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 
 		return ret;
 	}
+
+	@Override
+	public boolean isComment() {
+		return this.rpn.isComment();
+	}
 }

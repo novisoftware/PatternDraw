@@ -108,7 +108,9 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 						this.node.y + this.node.h + 10 + 30
 						);
 				g2.drawString(
-						"" + this.paraDescription + " (" + this.valueType + ")",
+						"" + this.paraDescription + " ("
+				+ Value.valueTypeToDescString(this.valueType)
+				+ ")",
 						node.x,
 						this.node.y + this.node.h + 10 + 55
 						);

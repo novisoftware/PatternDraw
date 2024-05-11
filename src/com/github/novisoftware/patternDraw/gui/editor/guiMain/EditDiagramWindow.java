@@ -20,7 +20,12 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputOtherTypeWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.AbstractInputConstantWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantScalarWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.InputConstantStringWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
@@ -53,8 +58,6 @@ public class EditDiagramWindow extends JFrame2 {
 		sp.setPreferredSize(this.editPanel.getPreferredSize());
 		this.add(sp);
 	}
-
-
 
 	public static class MListener implements MouseListener, MouseMotionListener {
 		JFrame inputWindow = null;
@@ -135,14 +138,35 @@ public class EditDiagramWindow extends JFrame2 {
 							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 							Point p = pointerInfo.getLocation();
 
-							InputConstantWindow f = new InputConstantWindow(element, editPanel__);
+							AbstractInputConstantWindow f = null;
+
+							if (Value.ValueType.INTEGER.equals(element.getValueType())
+									|| Value.ValueType.FLOAT.equals(element.getValueType())
+									|| Value.ValueType.NUMERIC.equals(element.getValueType())) {
+								f = new InputConstantScalarWindow(element, editPanel__);
+							}
+							else {
+								f = new InputConstantStringWindow(element, editPanel__);
+							}
 							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 							f.addWindowListener(inputWindowCloseListener);
 							f.setLocation(p);
 							f.setVisible(true);
 							this.inputWindow = f;
+						}
+						else if (element.getKindId() == KindId.COMMENT) {
+							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+							Point p = pointerInfo.getLocation();
 
-						}else {
+							AbstractInputConstantWindow f = null;
+
+							f = new InputConstantStringWindow(element, editPanel__);
+							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+							f.addWindowListener(inputWindowCloseListener);
+							f.setLocation(p);
+							f.setVisible(true);
+							this.inputWindow = f;
+						} else {
 							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 							Point p = pointerInfo.getLocation();
 

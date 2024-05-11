@@ -1,6 +1,15 @@
 
 # パーツ定義です。
 
+KIND: コメント
+TYPE: NONE
+HEIGHT: 35
+DISPNAME: コメント/コメント
+DESCRIPTION: コメントです。
+コメント;コメント :comment
+-->RPN
+---->DEFINE
+
 
 KIND: 演算子
 TYPE: POS_LIST
@@ -344,6 +353,45 @@ DESCRIPTION: 論理演算子XNORです。
 <input1:BOOLEAN>
 <input2:BOOLEAN>
 :xnor
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: SCALAR
+DISPNAME: 条件演算子/数値のIF式
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: IF式です。
+<cond:BOOLEAN>
+<if-true:SCALAR>
+<if-false:SCALAR>
+:if
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: STRING
+DISPNAME: 条件演算子/文字列のIF式
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: IF式です。
+<cond:BOOLEAN>
+<if-true:STRING>
+<if-false:STRING>
+:if
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 条件演算子/ブール値のIF式
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: IF式です。
+<cond:BOOLEAN>
+<if-true:BOOLEAN>
+<if-false:BOOLEAN>
+:if
 -->RPN
 ---->DEFINE
 

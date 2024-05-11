@@ -127,4 +127,10 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 	String getRepresentExpression() {
 		return this.function.getDescription();
 	}
+
+	@Override
+	public boolean isComment() {
+		return false;
+	}
+
 }

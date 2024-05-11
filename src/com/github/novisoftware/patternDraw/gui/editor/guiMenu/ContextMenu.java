@@ -179,66 +179,6 @@ public class ContextMenu extends JPopupMenu {
 			});
 			this.add(menuItem);
 		}
-		if (icon == null) {
-			this.addSeparator();
-			menuItem = new JMenuItem("パラメーターへの値設定画面（うごかす・新）");
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// tonePanel.tonePaletDataModel.save();
-
-					if (editPanel.networkDataModel.paramDefList.size() > 0) {
-						Debug.println("START");
-						EditParamWindow w =
-						new EditParamWindow(
-								editPanel.networkDataModel.paramDefList);
-
-
-						// パラメーター値が設定されたときのコールバック
-						Runnable callback = new Runnable() {
-							@Override
-							public void run() {
-								editPanel.networkDataModel.resetVariables(w.getVariables());
-								editPanel.networkDataModel.evaluate();
-								editPanel.networkDataModel.runProgram();
-							}
-						};
-						w.setCallback(callback);
-
-						w.setVisible(true);
-						Debug.println("END");
-					}
-					else {
-						Debug.println("START");
-						editPanel.networkDataModel.evaluate();
-						editPanel.networkDataModel.runProgram();
-						Debug.println("END");
-
-						editPanel.repaint();
-					}
-					editPanel.repaint();
-				}
-			});
-			this.add(menuItem);
-		}
-		/*
-		if (icon == null) {
-			this.addSeparator();
-			menuItem = new JMenuItem("評価(うごかす)");
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					// tonePanel.tonePaletDataModel.save();
-
-					Debug.println("START");
-					editPanel.networkDataModel.evaluate();
-					editPanel.networkDataModel.runProgram();
-					Debug.println("END");
-
-					editPanel.repaint();
-				}
-			});
-			this.add(menuItem);
-		}
-		*/
 
 		if (icon == null) {
 			this.addSeparator();

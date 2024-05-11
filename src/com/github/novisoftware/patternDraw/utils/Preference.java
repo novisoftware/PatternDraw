@@ -187,6 +187,11 @@ public class Preference {
 
 	public final static Font GROUP_ID_FONT = new Font("Meiryo UI", Font.BOLD, 40);
 
+	public final static Color COMMENT_BACKGROUND_COLOR = new Color( 0.5f, 0.5f, 0.5f );
+
+	public final static Font COMMENT_FONT = new Font("Meiryo UI", Font.BOLD, 16);
+
+
 	public final static Font CONNECTOR_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 
 	/**

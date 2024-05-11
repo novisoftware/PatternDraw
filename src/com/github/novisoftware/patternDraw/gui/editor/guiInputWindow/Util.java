@@ -17,7 +17,7 @@ public class Util {
 	/**
 	 * 入力ウィンドウのOKボタンを作る
 	 */
-	static JButton generateSubmitButton(final EditDiagramPanel editPanel, final InputConstantWindow tf) {
+	static JButton generateSubmitButton(final EditDiagramPanel editPanel, final AbstractInputConstantWindow tf) {
 		JButton buttonOk = new JButton(Preference.OK_BUTTON_STRING);
 		buttonOk.setFont(Preference.OK_BUTTON_FONT);
 		buttonOk.addActionListener(new ActionListener() {
@@ -43,7 +43,7 @@ public class Util {
 	/**
 	 * 入力ウィンドウのCancelボタンを作る
 	 */
-	static JButton generateCancelButton(final EditDiagramPanel editPanel, final InputConstantWindow tf) {
+	static JButton generateCancelButton(final EditDiagramPanel editPanel, final AbstractInputConstantWindow tf) {
 		JButton buttonCancel = new JButton(Preference.CANCEL_BUTTON_STRING);
 		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {

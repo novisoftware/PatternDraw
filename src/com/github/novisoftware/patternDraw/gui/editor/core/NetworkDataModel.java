@@ -170,7 +170,12 @@ public class NetworkDataModel {
 			) {
 		// 上から下の順にソートした Element
 		TreeSet<P020___AbstractElement> positionSortedElements = new TreeSet<>(new posComparator());
-		positionSortedElements.addAll(elements);
+		for (P020___AbstractElement e : elements) {
+			if (! e.isComment()) {
+				positionSortedElements.add(e);
+			}
+		}
+
 
 		// 変数名の一覧(設定された変数のみを対象にする)
 		variableNameList = new ArrayList<>();

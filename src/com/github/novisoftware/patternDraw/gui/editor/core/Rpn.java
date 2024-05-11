@@ -31,7 +31,15 @@ public class Rpn {
 	private String formula;
 	private ArrayList<String> array;
 	private String displayString;
+	/**
+	 * このRPNのコメント。
+	 */
 	private String comment;
+	/**
+	 * このRPNが、ダイアグラム上でのコメントの役割をするか。
+	 * comment と isComment は全然別物なので注意。
+	 */
+	private boolean isComment;
 	private final NetworkDataModel networkDataModel;
 
 	public Rpn(String formula, NetworkDataModel networkDataModel) {
@@ -45,7 +53,7 @@ public class Rpn {
 	 * 表示等に使用する文字列を生成します。
 	 *
 	 */
-	public void makeDisplayString() {
+	private void makeDisplayString() {
 		Stack<String> stack = new Stack<>();
 
 		for(String op : this.array) {
@@ -58,17 +66,23 @@ public class Rpn {
 			}
 			else if (op.equals(":as-numeric")) {
 			}
+			else if (op.equals(":comment")) {
+				this.isComment = true;
+			}
 			else {
 				stack.push(op.replaceAll(";.*", ""));
 			}
 		}
 
 		String value = stack.pop();
-		this.displayString = RpnUtil.getRepresent(value);
+		String display = value.replaceAll("^:", "");
+		this.displayString = RpnUtil.getRepresent(display);
 		this.comment = RpnUtil.getComment(value);
 	}
 
-
+	public boolean isComment() {
+		return isComment;
+	}
 
 	public ValueType getValueType(HashMap<String, Value> variables, ArrayList<ParameterDefine> params) {
 		Stack<String> stack = new Stack<>();
@@ -152,7 +166,9 @@ public class Rpn {
 	}
 
 	/**
-	 * @return represent
+	 * 作成してある表示用文字列を返却する
+	 *
+	 * @return 表示用文字列
 	 */
 	public String getDisplayString() {
 		return displayString;
@@ -271,6 +287,21 @@ public class Rpn {
 				}
 				else if (ele.getValueType().equals(Value.ValueType.NUMERIC )) {
 					stack.push(new ValueNumeric(stack.pop().toString()));
+				}
+			}
+			else if (s.equals(":if")) {
+				Value b0 = stack.pop();
+				Value a0 = stack.pop();
+				Value cond = stack.pop();
+
+				if (!(cond instanceof ValueBoolean)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				if (((ValueBoolean)cond).getInternal()) {
+					stack.push(a0);
+				} else {
+					stack.push(b0);
 				}
 			}
 			else if (s.equals("-") || s.equals("/") || s.equals("%") || s.equals("+") || s.equals("*")) {

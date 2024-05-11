@@ -16,6 +16,8 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 
 	public abstract P020___AbstractElement getCopy();
 
+	public abstract boolean isComment();
+
 	public abstract void paintWithPhase(Graphics2D g, int phase);
 
 	protected final EditDiagramPanel editPanel;
@@ -32,6 +34,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 			string2kind.put("変数を参照", KindId.VARIABLE_REFER);
 			string2kind.put("演算子", KindId.OPERATOR);
 			string2kind.put("制御", KindId.CONTROL);
+			string2kind.put("コメント", KindId.COMMENT);
 
 			kind2string = new HashMap<>();
 			for (String s : string2kind.keySet()) {
@@ -46,7 +49,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	static HashMap<KindId, String> kind2string;
 
 	public static enum KindId {
-		INPUT, DISPLAY, CONSTANT, VARIABLE_SET, VARIABLE_REFER, OPERATOR, CONTROL
+		INPUT, DISPLAY, CONSTANT, VARIABLE_SET, VARIABLE_REFER, OPERATOR, CONTROL, COMMENT
 	}
 
 	/**
