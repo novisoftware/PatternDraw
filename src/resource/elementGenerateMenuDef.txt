@@ -416,8 +416,8 @@ DESCRIPTION: IF式です。
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 副作用/表示
-DESCRIPTION: コンソールに表示します
+DISPNAME: 出力/表示
+DESCRIPTION: コンソールウィンドウに表示します
 <input:ANY>
 :print
 -->RPN
