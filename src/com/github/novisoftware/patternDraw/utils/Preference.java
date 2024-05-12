@@ -52,6 +52,7 @@ public class Preference {
 	private static int CANCEL_BUTTON_FONT_SIZE = 20;
 	private static int COSOLE_FONT_SIZE = 16;
 
+	public static String RUN_BUTTON_STRING = "実行";
 	public static String OK_BUTTON_STRING = "これに決める";
 	public static String CANCEL_BUTTON_STRING = "やめる";
 	public static String DELETE_BUTTON_STRING = "削除する";

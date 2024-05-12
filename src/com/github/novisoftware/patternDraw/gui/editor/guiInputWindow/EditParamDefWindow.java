@@ -1,7 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -31,6 +30,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Int
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.Util;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.misc.JCheckBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
@@ -46,7 +46,12 @@ import com.github.novisoftware.patternDraw.utils.Preference;
  *
  */
 public class EditParamDefWindow extends JFrame2 {
-	final ParameterDefine param;
+	public static final int WINDOW_POS_X = 200;
+	public static final int WINDOW_POS_Y = 100;
+	public static final int WINDOW_WIDTH = 640;
+	public static final int WINDOW_HEIGHT = 800;
+
+	private final ParameterDefine param;
 	final ParameterDefine backupParam;
 	// final Parameter param;
 	private final JButton buttonOk;
@@ -81,8 +86,10 @@ public class EditParamDefWindow extends JFrame2 {
 	public EditParamDefWindow(// final RpnGraphNodeElement element,
 			final EditParamDefListWindow parent, final ParameterDefine param,
 			final HashSet<String> variableNameSet) {
+		super();
 		this.setTitle("パラメーターを設定します。");
-		this.setSize(600, 800);
+		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 
 		// 変数名一覧の設定
 		this.variableNameSet = variableNameSet;
@@ -286,8 +293,8 @@ public class EditParamDefWindow extends JFrame2 {
 		initialSetter.set(param.valueType);
 	}
 
-	void revert() {
-		param.updateTo(backupParam);
+	public void revert() {
+		getParam().updateTo(backupParam);
 	}
 
 	static interface ValueTypeSetter {
@@ -465,6 +472,13 @@ public class EditParamDefWindow extends JFrame2 {
 		}
 	}
 
+
+	/**
+	 * @return param
+	 */
+	public ParameterDefine getParam() {
+		return param;
+	}
 
 	static interface Let {
 		public void let(String s);

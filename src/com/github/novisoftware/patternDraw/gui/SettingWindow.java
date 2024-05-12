@@ -175,7 +175,7 @@ public class SettingWindow extends JFrame2 {
 			if (param instanceof EnumParameter) {
 				EnumParameter e = (EnumParameter)param;
 				ButtonGroup group = new ButtonGroup();
-				for (String value : e.enums) {
+				for (String value : e.opts) {
 					final JRadioButton radioButton = new JRadioButton(value);
 					group.add(radioButton);
 					pane.add(radioButton);

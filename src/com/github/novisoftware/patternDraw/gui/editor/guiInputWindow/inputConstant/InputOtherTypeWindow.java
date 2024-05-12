@@ -1,7 +1,6 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
+package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
@@ -14,7 +13,6 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -24,22 +22,17 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.utils.Preference;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
+import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.Preference;
 
 /**
  *

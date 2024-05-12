@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
+package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant;
 
 import java.awt.Color;
 import java.awt.GridLayout;

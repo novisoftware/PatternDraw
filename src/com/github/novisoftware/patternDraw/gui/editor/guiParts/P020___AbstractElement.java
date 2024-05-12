@@ -50,7 +50,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	}
 
 	/**
-	 * デバッグを便利なようにするため、表示用のID。
+	 * デバッグ時に使用する「表示用のID」。
 	 */
 	public final int debugId;
 	static int debugIdSequence = 1;

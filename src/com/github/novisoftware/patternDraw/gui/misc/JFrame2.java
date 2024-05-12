@@ -78,11 +78,18 @@ public class JFrame2 extends JFrame {
 		return hr;
 	}
 
-
 	protected Box spacer(int width) {
 		Box hr = Box.createHorizontalBox();
 		// hr.setPreferredSize(new Dimension(WINDOW_WIDTH * 2, width));
 		hr.setPreferredSize(new Dimension((int)width, 1));
 		return hr;
 	}
+
+	protected Box boxSpacer(int width, int height) {
+		Box hr = Box.createHorizontalBox();
+		// hr.setPreferredSize(new Dimension(WINDOW_WIDTH * 2, width));
+		hr.setPreferredSize(new Dimension((int)width, (int)height));
+		return hr;
+	}
+
 }

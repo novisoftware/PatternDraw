@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
+package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.EditParamDefWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
@@ -60,14 +61,14 @@ public class Util {
 	/**
 	 * パラメーター設定ウィンドウのOKボタンを作る
 	 */
-	static JButton generateSubmitButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
+	public static JButton generateSubmitButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
 		JButton buttonOk = new JButton(Preference.OK_BUTTON_STRING);
 		buttonOk.setFont(Preference.OK_BUTTON_FONT);
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
 				// 更新済パラメーターに合わせて、パラメタ一覧ウィンドウを更新する
-				caller.updateParamDef(tf.param);
+				caller.updateParamDef(tf.getParam());
 				caller.repaint();
 				// 呼び出し元の参照を削除
 				caller.subWindowDisposeNotify();
@@ -82,7 +83,7 @@ public class Util {
 	/**
 	 * パラメーター設定ウィンドウのCancelボタンを作る
 	 */
-	static JButton generateCancelButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
+	public static JButton generateCancelButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
 		JButton buttonCancel = new JButton(Preference.CANCEL_BUTTON_STRING);
 		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
@@ -104,16 +105,16 @@ public class Util {
 	 * パラメーター設定ウィンドウのDeleteボタンを作る
 	 * (パラメーターを削除する)
 	 */
-	static JButton generateDeleteButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
+	public static JButton generateDeleteButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
 		JButton buttonCancel = new JButton(Preference.DELETE_BUTTON_STRING);
 		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				caller.params.remove(tf.param);
+				caller.params.remove(tf.getParam());
 
 				// 変更を元に戻す
-				caller.removeParamDefFromPane(tf.param);
+				caller.removeParamDefFromPane(tf.getParam());
 				caller.repaintHard();
 				// 呼び出し元の参照を削除
 				caller.subWindowDisposeNotify();

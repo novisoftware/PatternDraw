@@ -17,11 +17,13 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.
 
 public class EditDiagramPanel extends JPanel {
 	/**
+	 * 計算をするためのデータ構造。
+	 */
+	public NetworkDataModel networkDataModel;
+	/**
 	 * JPanel上にデバッグ情報を表示する
 	 */
 	public boolean isVisibleDebugInfo = false;
-
-	public NetworkDataModel networkDataModel;
 
 	/**
 	 * サブウィンドウ(パラメーター定義の編集画面)
@@ -31,9 +33,19 @@ public class EditDiagramPanel extends JPanel {
 	Font font1 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 	Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
-	// マウスドラッグ中に、関係線を変更する場合、表示する
+	// マウスドラッグ中に関係線を変更する場合、表示する
 	P001_IconGuiInterface workLineFrom = null;
 	int workLineX, workLineY;
+
+	EditDiagramPanel(String filename) {
+		this.networkDataModel = new NetworkDataModel(this, filename);
+		this.networkDataModel.load();
+		this.networkDataModel.evaluate();
+
+		MListener listener = new MListener(this);
+		this.addMouseListener(listener);
+		this.addMouseMotionListener(listener);
+	}
 
 	public P020___AbstractElement getElementIcon(String name) {
 		for (P020___AbstractElement t : networkDataModel.getElements()) {
@@ -100,15 +112,5 @@ public class EditDiagramPanel extends JPanel {
 		}
 
 		return hit;
-	}
-
-	EditDiagramPanel(String filename) {
-		this.networkDataModel = new NetworkDataModel(this, filename);
-		this.networkDataModel.load();
-		this.networkDataModel.evaluate();
-
-		MListener listener = new MListener(this);
-		this.addMouseListener(listener);
-		this.addMouseMotionListener(listener);
 	}
 }

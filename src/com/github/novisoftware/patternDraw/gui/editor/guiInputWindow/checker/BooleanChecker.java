@@ -2,6 +2,10 @@ package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
 
+/**
+ * 文字列で入力されたブール値のバリデーションチェックをする。
+ *
+ */
 public class BooleanChecker extends AbstractInputChecker {
 	public BooleanChecker() {
 		this.message = "ブール値(true または false)を入力してください";

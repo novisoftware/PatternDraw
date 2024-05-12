@@ -1,42 +1,22 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow;
+package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant;
 
-import java.awt.Color;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.util.ArrayList;
 
 import javax.swing.ButtonGroup;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
-import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
+import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 /**
@@ -85,10 +65,7 @@ public class InputConstantBooleanWindow extends AbstractInputConstantWindow {
 					String[] labels = {ValueBoolean.LABEL_TRUE, ValueBoolean.LABEL_FALSE};
 					Boolean[] values = {true, false};
 					for (int i = 0 ; i < labels.length ; i ++) {
-						final JRadioButton radioButton = new JRadioButton(labels[i]);
-						radioButton.setFont(Preference.LABEL_FONT);
-						radioButton.setBackground(Preference.BG_COLOR);
-						radioButton.setForeground(Preference.TEXT_COLOR);
+						final JRadioButton radioButton = new JRadioButton2(labels[i]);
 						final String label = labels[i];
 						final int f_index = index;
 						radioButton.addChangeListener(new ChangeListener() {

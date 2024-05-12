@@ -1,5 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class EditDiagramMenuBar extends JMenuBar {
@@ -48,11 +51,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.runMenu.add(run);
 		run.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// tonePanel.tonePaletDataModel.save();
-
 				if (editPanel.networkDataModel.paramDefList.size() > 0) {
 					Debug.println("START");
-					EditParamWindow w =
+					EditParamWindow editParamWindow =
 					new EditParamWindow(
 							editPanel.networkDataModel.paramDefList);
 
@@ -61,14 +62,27 @@ public class EditDiagramMenuBar extends JMenuBar {
 					Runnable callback = new Runnable() {
 						@Override
 						public void run() {
-							editPanel.networkDataModel.resetVariables(w.getVariables());
+							editPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
 							editPanel.networkDataModel.evaluate();
 							editPanel.networkDataModel.runProgram();
 						}
 					};
-					w.setCallback(callback);
+					editParamWindow.setCallback(callback);
 
-					w.setVisible(true);
+
+					OutputTextWindow outputTextWindow = OutputTextWindow.getInstance();
+					OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+
+					/*
+					editParamWindow.setLocation(new Point(800, 10));
+					outputTextWindow.setLocation(new Point(800, 700));
+					outputGraphicsWindow.setLocation(new Point(10, 10));
+					*/
+
+					editParamWindow.setVisible(true);
+					outputTextWindow.setVisible(true);
+					outputGraphicsWindow.setVisible(true);
+
 					Debug.println("END");
 				}
 				else {
@@ -89,8 +103,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 		dispParaWin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (editPanel.paramDefEditWindow != null) {
-					System.out.println("パラメーター編集画面のオブジェクトがあったので 再表示 するだけ");
-
+					// すでにパラメーター編集画面のオブジェクトがある場合は、再度表示するだけ
 					editPanel.paramDefEditWindow.setVisible(true);
 					return;
 				}
@@ -110,7 +123,6 @@ public class EditDiagramMenuBar extends JMenuBar {
 				EditParamDefListWindow frame = new EditParamDefListWindow(params, callback);
 				editPanel.paramDefEditWindow = frame;
 				frame.setVisible(true);
-				frame.setLocation(900, 40);
 				// frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}

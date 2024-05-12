@@ -20,6 +20,12 @@ import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 public class OutputTextWindow extends JFrame2 {
+	public static final int WINDOW_POS_X = EditParamWindow.WINDOW_POS_X;
+	public static final int WINDOW_POS_Y = 20 + EditParamWindow.WINDOW_POS_Y + EditParamWindow.WINDOW_HEIGHT ;
+	public static final int WINDOW_WIDTH = 640;
+	public static final int WINDOW_HEIGHT = 240;
+
+
 	static private OutputTextWindow singleton;
 
 	static public OutputTextWindow getInstance() {
@@ -53,11 +59,11 @@ public class OutputTextWindow extends JFrame2 {
 		JScrollPane scrollPane = new JScrollPane(textArea);
 //		p.add(a);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-	    this.setSize(600, 600);
-		this.setVisible(true);
+	    this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 		this.setTitle(" テキストの出力");
 	}
 }

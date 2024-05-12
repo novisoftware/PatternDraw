@@ -25,10 +25,25 @@ import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 public class OutputGraphicsWindow extends JFrame2 {
+	public static final int WINDOW_POS_X = 660;
+	public static final int WINDOW_POS_Y = 50;
 	static public int IMAGE_WIDTH = 800;
 	static public int IMAGE_HEIGHT = 800;
 
 	static private OutputGraphicsWindow singleton;
+
+	private OutputGraphicsWindow() {
+		final InstructionRenderer renderer = new InstructionRenderer(new TokenList(new ArrayList<Token>()), new HashMap<String, ObjectHolder>());
+		BufferedImage buffer = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+
+		panel = new MyJPanel(renderer, buffer);
+		this.getContentPane().add(panel, BorderLayout.CENTER);
+
+		this.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
+		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
+		this.setTitle("グラフィックスの出力");
+		this.setVisible(true);
+	}
 
 	static public OutputGraphicsWindow getInstance() {
 		if (singleton == null) {
@@ -95,15 +110,4 @@ public class OutputGraphicsWindow extends JFrame2 {
 	}
 	*/
 
-	private OutputGraphicsWindow() {
-		final InstructionRenderer renderer = new InstructionRenderer(new TokenList(new ArrayList<Token>()), new HashMap<String, ObjectHolder>());
-		BufferedImage buffer = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
-
-		panel = new MyJPanel(renderer, buffer);
-		this.getContentPane().add(panel, BorderLayout.CENTER);
-
-		this.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
-		this.setTitle("グラフィックスの出力");
-		this.setVisible(true);
-	}
 }

@@ -1,22 +1,33 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
@@ -25,31 +36,200 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.BooleanChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
+import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
+import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 
 /**
- * GUI完結のパラメーター設定ウィンドウ
- *
- *
- * @author user
+ * プログラムを開始するときのパラメーター設定ウィンドウ
+ * (ダイアグラムの言語)
  *
  */
-
 public class EditParamWindow extends JFrame2 {
-	public static final int WINDOW_POS_X = 20;
-	public static final int WINDOW_POS_Y = 20;
-	public static final int WINDOW_WIDTH = 600;
-	public static final int WINDOW_HEIGHT = 250;
+	public static final int WINDOW_POS_X = 50;
+	public static final int WINDOW_POS_Y = 50;
+	public static final int WINDOW_WIDTH = 640;
+	public static final int WINDOW_HEIGHT = 600;
 
 	private final ArrayList<ParameterDefine> paramDefList;
 	private final HashMap<String, Value> variables;
 	private Runnable callback;
 	private final HashMap<String,JTextField> textFields;
+
+	private final HashSet<AbstractInputChecker> ngInputs;
+
+	static class CheckMessageLabel extends JLabel2 {
+		/** エラー時の文字色 */
+		private final Color COLOR_ERROR = Preference.MESSAGE_ERROR_COLOR;
+		/** 正常時の文字色 */
+		private final Color COLOR_NORMAL = Preference.TEXT_COLOR;
+		private final Font MESSAGE_DISP_FONT = Preference.MESSAGE_DISP_FONT;
+
+		/**
+		 * チェック処理
+		 */
+		private final AbstractInputChecker checker;
+		/**
+		 * 不正な(invalidな)入力を含む場合に COMMIT ボタンを押させないなどの制御に使う
+		 */
+		private final Set<AbstractInputChecker> ngInputs;
+		private final Let let;
+
+		/**
+		 * パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途
+		 */
+		private final Runnable callback;
+
+		public CheckMessageLabel(
+				AbstractInputChecker checker,
+				Set<AbstractInputChecker> ngInputs,
+				Let let,
+				Runnable callback) {
+			super(checker.message);
+			this.setFont(MESSAGE_DISP_FONT);
+			this.checker = checker;
+			this.ngInputs = ngInputs;
+			this.let = let;
+			this.callback = callback;
+		}
+
+		void updateMessage(String text) {
+			checker.check(text);
+			if (checker.isOk()) {
+				ngInputs.remove(checker);
+				this.setForeground(COLOR_NORMAL);
+				this.setText(checker.message);
+			} else {
+				ngInputs.add(checker);
+				this.setForeground(COLOR_ERROR);
+				this.setText(checker.message);
+			}
+
+			if (checker.isOk()) {
+				let.let(text);
+			}
+
+			if (ngInputs.isEmpty()) {
+				callback.run();
+			}
+		}
+	}
+
+	static interface Let {
+		public void let(String s);
+	}
+
+	/**
+	 *
+	 * @param textField
+	 * @param checker
+	 * @param ngInputs
+	 * @param let チェック処理でOKだった場合(validだった場合)の代入動作
+	 * @param callback (パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途)
+	 * @return
+	 */
+	static CheckMessageLabel setupCheckerToTextField(JTextField textField,
+			AbstractInputChecker checker,
+			Set<AbstractInputChecker> ngInputs,
+			final Let let,
+			Runnable callback
+			) {
+		final CheckMessageLabel check = new CheckMessageLabel(checker, ngInputs, let, callback);
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			void update() {
+				String text = textField.getText();
+				check.updateMessage(text);
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// update()に移譲
+				update();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// update()に移譲
+				update();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// update()に移譲
+				update();
+			}
+		});
+
+		return check;
+	}
+
+	static interface BooleanLet {
+		void let(ValueBoolean b);
+	}
+
+	static void addPaneToBooleanSelector(Container pane,
+			ValueBoolean initValue,
+			BooleanLet let,
+			Runnable callback) {
+		JRadioButton radioButtons[] = new JRadioButton[2];
+		ButtonGroup group = new ButtonGroup();
+		ValueBoolean[] values = {ValueBoolean.TRUE, ValueBoolean.FALSE};
+		for (int i = 0 ; i < values.length ; i ++) {
+			final JRadioButton radioButton = new JRadioButton2(values[i].toString());
+			final ValueBoolean newValue = values[i];
+			radioButton.addChangeListener(new ChangeListener() {
+				Boolean isSelectedOld = null;
+
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					if (radioButton.isSelected()) {
+						let.let(newValue);
+
+						if (isSelectedOld != null && isSelectedOld != radioButton.isSelected()) {
+							callback.run();
+						}
+						isSelectedOld = radioButton.isSelected();
+					}
+				}
+			});
+
+			if (initValue != null && initValue.getInternal() == values[i].getInternal()) {
+				radioButton.setSelected(true);
+			}
+			group.add(radioButton);
+			radioButtons[i] = radioButton;
+			pane.add(radioButton);
+		}
+	}
+
+	static class EditParamPanel extends JPanel {
+		EditParamPanel() {
+		    this.setBackground(Preference.BG_COLOR);
+		    this.setForeground(Preference.TEXT_COLOR);
+	    }
+	}
+
+
+	static class SubPanel extends JPanel {
+		SubPanel() {
+		    this.setBackground(Preference.BG_COLOR);
+		    this.setForeground(Preference.TEXT_COLOR);
+		    this.setLayout(new FlowLayout(FlowLayout.LEADING));
+	    }
+	}
+
 
 	/**
 	 *
@@ -61,64 +241,160 @@ public class EditParamWindow extends JFrame2 {
 			) {
 		super();
 
+		EditParamPanel editParamPanel = new EditParamPanel();
+		// editParamPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		JScrollPane sp = new JScrollPane(editParamPanel);
+
+		/**
+		 * このコンストラクタが呼ばれたときは callback はまだ設定されていないので。
+		 */
+		final EditParamWindow thisWindow = this;
+		Runnable callbackWraped = new Runnable() {
+			@Override
+			public void run() {
+				if (thisWindow.callback != null) {
+					thisWindow.callback.run();
+				}
+			}
+		};
+
 		this.paramDefList = paramDefList;
 		this.variables = new HashMap<String, Value>();
+		this.ngInputs = new HashSet<AbstractInputChecker>();
 
 		// this.display = display;
-		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 
 		this.setTitle("条件を指定します");
 
 		// レイアウト
+		/*
 		Container pane = this.getContentPane();
-		this.setLayout(new FlowLayout(FlowLayout.LEADING));
+		*/
+		JPanel pane = editParamPanel;
+
+		// pane.setLayout(new FlowLayout(FlowLayout.LEADING));
+		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
 		this.textFields = new HashMap<String,JTextField>();
-		pane.add(new JLabel2("条件を指定します。"));
+		SubPanel subPanel0 = new SubPanel();
+		pane.add(subPanel0);
+		subPanel0.add(new JLabel2("実行パラメーターを指定します。"));
 		// for (String varName : items.keySet()) {
-		for (ParameterDefine param : paramDefList) {
+		for (ParameterDefine param__ : paramDefList) {
+			final ParameterDefine param = param__;
 			OnChangeActionListener listner1 = null;
-			listner1 = new OnChangeActionListener(this, param, callback);
+			listner1 = new OnChangeActionListener(this, param, callbackWraped);
 
-			// 不可視の水平線を作成する (レイアウトの調整)
-			addHorizontalRule(pane, 5);
+			SubPanel subPanel1 = new SubPanel();
+			pane.add(subPanel1);
+			subPanel1.add(new JLabel2(param.description));
 
-			pane.add(new JLabel2(param.description));
-			final JTextField field = new JTextField(10);
-			field.setText(param.defaultValue);
-			pane.add(field);
-			textFields.put(param.name, field);
+			if (ValueType.BOOLEAN.equals(param.valueType)) {
+				SubPanel subPanel2 = new SubPanel();
+				pane.add(subPanel2);
 
-			field.addActionListener(listner1);
+				BooleanLet let = new BooleanLet() {
+					@Override
+					public void let(ValueBoolean b) {
+						thisWindow.getVariables().put(param.name, b);
+					}
+				};
 
-
-			if (param.enableSlider) {
-				// TODO:
-				// ここでSliderParameterを作るツギハギ感。
-				// クラス階層 Parameter は本当に必要?
-				SliderParameter p = new SliderParameter(param.name, param.description, param.defaultValue,
-						Double.parseDouble(param.sliderMin), Double.parseDouble(param.sliderMax));
-
-				JSlider slider = new JSlider(0, 500);
-				slider.addChangeListener(new SliederChangeListener(slider,
-						field,
-						p,
-						listner1));
-				pane.add(slider);
+				subPanel2.add(spacer(30));
+				subPanel2.add(new JLabel2(param.name + " ="));
+				addPaneToBooleanSelector(subPanel2, new ValueBoolean(param.defaultValue),
+						let, callbackWraped);
 			}
+			else {
+				final JTextField2 field = new JTextField2(param.defaultValue);
+				textFields.put(param.name, field);
 
-			// 列挙パラメーターは後で
-			if (DUMMY_FALSE) {
+				Let let = new Let() {
+					@Override
+					public void let(String text) {
+						Value value = Value.createValue(param.valueType, text);
+						thisWindow.getVariables().put(param.name, value);
+					}
+				};
+
+				AbstractInputChecker c = null;
+				if (ValueType.INTEGER.equals(param.valueType)) {
+					c = new IntegerChecker();
+				} else if (ValueType.FLOAT.equals(param.valueType)) {
+					c = new FloatChecker();
+				} else if (ValueType.NUMERIC.equals(param.valueType)) {
+					c = new NumericChecker();
+				} else if (ValueType.STRING.equals(param.valueType)) {
+					c = new NonCheckChecker();
+				}
+				if (c != null) {
+					c.check(param.defaultValue);
+					CheckMessageLabel check = null;
+					check = setupCheckerToTextField(field, c,
+							this.ngInputs, let, callbackWraped);
+					subPanel1.add(spacer(20));
+					subPanel1.add(check);
+				}
+				else {
+					field.addActionListener(listner1);
+				}
+
+				SubPanel subPanel2 = new SubPanel();
+				pane.add(subPanel2);
+
+				subPanel2.add(spacer(30));
+				subPanel2.add(new JLabel2(param.name + " ="));
+				subPanel2.add(field);
+
+				// スライダー有効パラメーター
+				if (param.enableSlider) {
+					// TODO:
+					// ここでSliderParameterを作るツギハギ感。
+					// クラス階層 Parameter は本当に必要?
+					SliderParameter p = new SliderParameter(param.name, param.description, param.defaultValue,
+							Double.parseDouble(param.sliderMin), Double.parseDouble(param.sliderMax));
+
+					JSlider slider = new JSlider(0, 500);
+					slider.addChangeListener(new SliederChangeListener(slider,
+							field,
+							p,
+							listner1));
+
+					SubPanel subPanel3 = new SubPanel();
+					pane.add(subPanel3);
+					subPanel3.add(spacer(30 + 20));
+					subPanel3.add(new JLabel2("" + param.sliderMin + " "));
+					subPanel3.add(slider);
+					subPanel3.add(new JLabel2(" " + param.sliderMax));
+				}
+
+				// 列挙パラメーター
 				if (param.enableEnum) {
-					// EnumParameter e = (EnumParameter)param;
-					EnumParameter e = null;//(EnumParameter)param;
+					String[] opts = param.enumValueList.split(",");
+					ArrayList<String> opts_ = new ArrayList<String>();
+					for (String s : opts) {
+						opts_.add(s);
+					}
+
+					EnumParameter e = new EnumParameter(
+							param.name,
+							param.description,
+							param.defaultValue,
+							opts_
+							);
 					ButtonGroup group = new ButtonGroup();
-					for (String value : e.enums) {
-						final JRadioButton radioButton = new JRadioButton(value);
+
+					SubPanel subPanel4 = new SubPanel();
+					pane.add(subPanel4);
+
+					subPanel4.add(spacer(30 + 20));
+					for (String value : e.opts) {
+						final JRadioButton radioButton = new JRadioButton2(value);
 						group.add(radioButton);
-						pane.add(radioButton);
+						subPanel4.add(radioButton);
 
 						radioButton.addChangeListener(new ChangeListener() {
 							public void stateChanged(ChangeEvent e) {
@@ -128,18 +404,36 @@ public class EditParamWindow extends JFrame2 {
 							}
 						});
 					}
-
 				}
 			}
 
 		}
 
+		// 「実行」ボタン
+		// TODO
+		// ・現状、たんにガワだけ。
+		// ・「実行ボタンがある場合」は、ボタンを押してはじめて処理を行う。
+		// ・必要かどうかは場面によりけりだと思う。
+		//   テキストエディタの「インクリメンタル検索」が苦手な人もいるので。
 
-		// 不可視の水平線を作成する (レイアウトの調整)
-		addHorizontalRule(pane, 10);
+		SubPanel subPanel8 = new SubPanel();
+		pane.add(subPanel8);
+		JButton buttonOk = new JButton(Preference.RUN_BUTTON_STRING);
+		buttonOk.setFont(Preference.OK_BUTTON_FONT);
+		subPanel8.add(buttonOk);
+		SubPanel subPanel9 = new SubPanel();
+		pane.add(subPanel9);
+		// subPanel9.add(boxSpacer(5, 100));
+		pane.add(Box.createGlue());
+		pane.add(boxSpacer(5, 100));
 
-		this.setVisible(true);
+		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		sp.setPreferredSize(editParamPanel.getPreferredSize());
+		this.add(sp);
 	}
+
+	public boolean DUMMY_FALSE = true;
 
 	/**
   	 * @param callback パラメーター変更時に呼び出すコールバック
@@ -154,8 +448,6 @@ public class EditParamWindow extends JFrame2 {
 	public HashMap<String, Value> getVariables() {
 		return variables;
 	}
-
-	public boolean DUMMY_FALSE = false;
 
 	static class OnChangeActionListener implements ActionListener {
 		final EditParamWindow settingWindow;
@@ -211,7 +503,7 @@ public class EditParamWindow extends JFrame2 {
 		public void stateChanged(ChangeEvent e) {
 			String text = String.format("%f", cv.int2double(slider.getValue(), slider.getMaximum()));
 			tf.setText(text);
-			onChangeActionListener.changeAction();
+			// onChangeActionListener.changeAction();
 		}
 	}
 }

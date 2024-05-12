@@ -30,6 +30,11 @@ import com.github.novisoftware.patternDraw.utils.Preference;
  * パラメーター一覧の定義ウィンドウ。
  */
 public class EditParamDefListWindow extends JFrame2 {
+	public static final int WINDOW_POS_X = 50;
+	public static final int WINDOW_POS_Y = 50;
+	public static final int WINDOW_WIDTH = 640;
+	public static final int WINDOW_HEIGHT = 600;
+
 	final JPanel jp;
 
 	/**
@@ -63,16 +68,15 @@ public class EditParamDefListWindow extends JFrame2 {
 			final ArrayList<ParameterDefine> params,
 			Runnable closeCallback) {
 		super();
+		this.setTitle("パラメーターの一覧");
+		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 
 		this.params = params;
-		System.out.println("params (obj) = " + params);
-		// variableNameList = new ArrayList<String>();
-		this.setTitle("パラメーターの一覧");
-		this.setSize(800, 800);
 
 		// レイアウト
 		jp = new JPanel();
-		jp.setSize(800, 800);
+		jp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		jp.setBackground(Preference.BG_COLOR);
 		jp.setForeground(Preference.TEXT_COLOR);
 

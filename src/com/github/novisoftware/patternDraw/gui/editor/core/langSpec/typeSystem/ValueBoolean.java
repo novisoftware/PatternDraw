@@ -4,6 +4,9 @@ public class ValueBoolean extends Value {
 	public static final String LABEL_TRUE = "true";
 	public static final String LABEL_FALSE = "false";
 
+	public static final ValueBoolean TRUE = new ValueBoolean(true);
+	public static final ValueBoolean FALSE = new ValueBoolean(false);
+
 	public ValueBoolean(Boolean b) {
 		super(ValueType.BOOLEAN);
 		internal = b;
@@ -21,7 +24,7 @@ public class ValueBoolean extends Value {
 
 	@Override
 	public String toString() {
-		return internal.toString();
+		return internal ? LABEL_TRUE : LABEL_FALSE;
 	}
 
 	private Boolean internal;
