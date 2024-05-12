@@ -160,11 +160,12 @@ public class Value {
 			return new ValueString(s);
 		}
 		if (valueKind == ValueType.BOOLEAN) {
-			if (s.equals("TRUE")) {
-				return new ValueBoolean(true);
+			String s_ = s.toLowerCase();
+			if (s.equals(ValueBoolean.LABEL_TRUE)) {
+				return ValueBoolean.TRUE;
 			}
-			else if(s.equals("FALSE")) {
-				return new ValueBoolean(false);
+			else if(s.equals(ValueBoolean.LABEL_FALSE)) {
+				return ValueBoolean.FALSE;
 			}
 			else {
 				return null;

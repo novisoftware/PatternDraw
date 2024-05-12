@@ -179,38 +179,48 @@ public class EditParamWindow extends JFrame2 {
 		void let(ValueBoolean b);
 	}
 
-	static void addPaneToBooleanSelector(Container pane,
-			ValueBoolean initValue,
-			BooleanLet let,
-			Runnable callback) {
+	static void addPaneToBooleanSelector(
+			final Container pane,
+			final ValueBoolean initValue,
+			final BooleanLet let,
+			final Runnable callback) {
 		JRadioButton radioButtons[] = new JRadioButton[2];
 		ButtonGroup group = new ButtonGroup();
 		ValueBoolean[] values = {ValueBoolean.TRUE, ValueBoolean.FALSE};
 		for (int i = 0 ; i < values.length ; i ++) {
 			final JRadioButton radioButton = new JRadioButton2(values[i].toString());
+			group.add(radioButton);
+			radioButtons[i] = radioButton;
+			pane.add(radioButton);
+		}
+		Debug.println("radioButtons  initValue = " + initValue);
+		Debug.println("radioButtons  initValue.getInternal() = " + initValue.getInternal());
+		for (int i = 0 ; i < values.length ; i ++) {
+			Debug.println("radioButtons  values[i].getInternal() = " + values[i].getInternal());
+			if (initValue != null && initValue.getInternal().equals(values[i].getInternal())) {
+				Debug.println("radioButtons["  + i + "].setSelected(true);");
+				radioButtons[i].setSelected(true);
+			}
+		}
+		for (int i = 0 ; i < values.length ; i ++) {
+			final JRadioButton radioButton = radioButtons[i];
 			final ValueBoolean newValue = values[i];
 			radioButton.addChangeListener(new ChangeListener() {
-				Boolean isSelectedOld = null;
+				Boolean isSelectedOld = initValue == null ? null:
+											(initValue.getInternal() == newValue.getInternal());
 
 				@Override
 				public void stateChanged(ChangeEvent e) {
 					if (radioButton.isSelected()) {
 						let.let(newValue);
 
-						if (isSelectedOld != null && isSelectedOld != radioButton.isSelected()) {
+						if (isSelectedOld != null || isSelectedOld != radioButton.isSelected()) {
 							callback.run();
 						}
 						isSelectedOld = radioButton.isSelected();
 					}
 				}
 			});
-
-			if (initValue != null && initValue.getInternal() == values[i].getInternal()) {
-				radioButton.setSelected(true);
-			}
-			group.add(radioButton);
-			radioButtons[i] = radioButton;
-			pane.add(radioButton);
 		}
 	}
 
@@ -292,6 +302,18 @@ public class EditParamWindow extends JFrame2 {
 			pane.add(subPanel1);
 			subPanel1.add(new JLabel2(param.description));
 
+			boolean isDefaultSetted = false;
+
+			if (param.defaultValue != null && (
+					ValueType.STRING.equals(param.valueType) ||
+					(param.defaultValue).length() > 0 ) ) {
+				isDefaultSetted = true;
+				Value value = Value.createValue(param.valueType, param.defaultValue);
+				this.variables.put(param.name, value);
+
+				Debug.println("initinal set " + param.name + " = (String) " + param.defaultValue);
+			}
+
 			if (ValueType.BOOLEAN.equals(param.valueType)) {
 				SubPanel subPanel2 = new SubPanel();
 				pane.add(subPanel2);
@@ -307,6 +329,7 @@ public class EditParamWindow extends JFrame2 {
 				subPanel2.add(new JLabel2(param.name + " ="));
 				addPaneToBooleanSelector(subPanel2, new ValueBoolean(param.defaultValue),
 						let, callbackWraped);
+				Debug.println("(defaultValue)  " + param.name + " ... " + param.defaultValue);
 			}
 			else {
 				final JTextField2 field = new JTextField2(param.defaultValue);
@@ -331,12 +354,17 @@ public class EditParamWindow extends JFrame2 {
 					c = new NonCheckChecker();
 				}
 				if (c != null) {
+					////////////////
 					c.check(param.defaultValue);
 					CheckMessageLabel check = null;
 					check = setupCheckerToTextField(field, c,
 							this.ngInputs, let, callbackWraped);
 					subPanel1.add(spacer(20));
 					subPanel1.add(check);
+
+					if (! isDefaultSetted) {
+						this.ngInputs.add(c);
+					}
 				}
 				else {
 					field.addActionListener(listner1);
@@ -352,6 +380,7 @@ public class EditParamWindow extends JFrame2 {
 				// スライダー有効パラメーター
 				if (param.enableSlider) {
 					// TODO:
+					// この時点でもともと param は変数として持っているのに。
 					// ここでSliderParameterを作るツギハギ感。
 					// クラス階層 Parameter は本当に必要?
 					SliderParameter p = new SliderParameter(param.name, param.description, param.defaultValue,

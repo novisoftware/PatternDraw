@@ -25,7 +25,7 @@ import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
 public class OutputGraphicsWindow extends JFrame2 {
-	public static final int WINDOW_POS_X = 660;
+	public static final int WINDOW_POS_X = 700;
 	public static final int WINDOW_POS_Y = 50;
 	static public int IMAGE_WIDTH = 800;
 	static public int IMAGE_HEIGHT = 800;
