@@ -51,6 +51,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.runMenu.add(run);
 		run.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				OutputTextWindow outputTextWindow = OutputTextWindow.getInstance();
+				OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+
 				if (editPanel.networkDataModel.paramDefList.size() > 0) {
 					Debug.println("START");
 					EditParamWindow editParamWindow =
@@ -68,20 +71,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 						}
 					};
 					editParamWindow.setCallback(callback);
-
-
-					OutputTextWindow outputTextWindow = OutputTextWindow.getInstance();
-					OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
-
-					/*
-					editParamWindow.setLocation(new Point(800, 10));
-					outputTextWindow.setLocation(new Point(800, 700));
-					outputGraphicsWindow.setLocation(new Point(10, 10));
-					*/
-
 					editParamWindow.setVisible(true);
-					outputTextWindow.setVisible(true);
-					outputGraphicsWindow.setVisible(true);
 
 					Debug.println("END");
 				}
@@ -90,9 +80,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 					editPanel.networkDataModel.evaluate();
 					editPanel.networkDataModel.runProgram();
 					Debug.println("END");
-
-					editPanel.repaint();
 				}
+				outputTextWindow.setVisible(true);
+				outputGraphicsWindow.setVisible(true);
 				editPanel.repaint();
 			}
 		});

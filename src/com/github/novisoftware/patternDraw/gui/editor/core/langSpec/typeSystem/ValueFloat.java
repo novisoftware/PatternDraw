@@ -9,7 +9,7 @@ public class ValueFloat extends ValueAbstractScalar {
 	}
 
 	public ValueFloat(Double d) {
-		super(ValueType.INTEGER);
+		super(ValueType.FLOAT);
 		internal = d;
 	}
 

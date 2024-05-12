@@ -11,5 +11,8 @@ public class CaliculateException extends Exception {
 
 	public CaliculateException(String message) {
 		super(message);
+
+		// デバッグ時
+		this.printStackTrace();
 	}
 }

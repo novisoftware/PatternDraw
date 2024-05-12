@@ -418,11 +418,11 @@ public class EditDiagramWindow extends JFrame2 {
 				| UnsupportedLookAndFeelException e) {
 			// 処理不要
 		}
-		/*
-		OutputTextWindow outputFrame = OutputTextWindow.getInstance();
-		OutputGraphicsWindow outputGraphicsFrame = OutputGraphicsWindow.getInstance();
-		outputGraphicsFrame.setVisible(true);
-		*/
+
+		// setVisibleしないけれど、インスタンス生成は先にしておく
+		OutputTextWindow.getInstance();
+		// setVisibleしないけれど、インスタンス生成は先にしておく
+		OutputGraphicsWindow.getInstance();
 
 		EditDiagramWindow frame = new EditDiagramWindow(args[0]);
 		frame.setSize(1500, 800);

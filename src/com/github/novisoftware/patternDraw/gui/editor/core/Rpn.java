@@ -66,6 +66,10 @@ public class Rpn {
 			}
 			else if (op.equals(":as-numeric")) {
 			}
+			else if (op.equals(":as-display-string")) {
+				// この ":as-display-string" があったら、スタックトップが表示用文字列で確定
+				break;
+			}
 			else if (op.equals(":comment")) {
 				this.isComment = true;
 			}
@@ -221,6 +225,17 @@ public class Rpn {
 		// ArrayList<String> array = Rpn.s2a(this.getRpnString());
 		for (String s : array) {
 			Debug.println("RPN DETAIL", "op is ***" + s + "***");
+			Debug.println("STACK DEBUG 1/2 (Value stack)", "");
+			for (Value x : stack) {
+				Debug.print("  ("  + x.toString()  + " : " + x.valueType + ")");
+			}
+			Debug.println();
+			Debug.println("STACK DEBUG 1/2 (string stack)", "");
+			for (String x : stringStack) {
+				Debug.print("  ("  + x  + ")");
+			}
+			Debug.println();
+
 
 			/**
 			 * 端子についているパラメーターを取得
@@ -281,6 +296,11 @@ public class Rpn {
 
 				this.networkDataModel.debugVariables();
 			}
+			else if (s.equals(":as-display-string")) {
+				// ":as-display-string" は、表示用の文字列を指定する。
+				// 計算の際はオペランドを捨て、使用しない。
+				stack.pop();
+			}
 			else if (s.equals(":as-numeric")) {
 				if (ele.getValueType().equals(Value.ValueType.INTEGER)) {
 					stack.push(new ValueInteger(stack.pop().toString()));
@@ -291,6 +311,12 @@ public class Rpn {
 				else if (ele.getValueType().equals(Value.ValueType.NUMERIC )) {
 					stack.push(new ValueNumeric(stack.pop().toString()));
 				}
+			}
+			else if (s.equals(":pi")) {
+				stack.push(new ValueFloat(Math.PI));
+			}
+			else if (s.equals(":e")) {
+				stack.push(new ValueFloat(Math.E));
 			}
 			else if (s.equals(":as-boolean")) {
 				stack.push(new ValueBoolean(stack.pop().toString()));
