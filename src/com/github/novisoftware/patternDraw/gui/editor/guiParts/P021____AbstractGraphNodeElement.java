@@ -58,6 +58,8 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	public ArrayList<P010___ConnectTerminal> connectors;
 
+	static private GuiUtil.StringWidthUtil strUtil = new GuiUtil.StringWidthUtil();
+
 	/**
 	 * コンストラクタ
 	 *
@@ -158,12 +160,15 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				}
 			}
 
-			// 実行順を表示する数字
+			// 単連結グラフごとに、実行順を数字で表示する
 			if (this.groupHead != null) {
 				g2.setFont(Preference.GROUP_ID_FONT);
 				g2.setColor(Color.GRAY);
-				g2.drawString("" + this.groupHead, e.x - 30, e.y + 30);
+
+				int strWidth = strUtil.strWidth("" + this.groupHead, g2);
+				g2.drawString("" + this.groupHead, e.x - strWidth, e.y + 30);
 			}
+
 		}
 
 		int arcWidth = 10;

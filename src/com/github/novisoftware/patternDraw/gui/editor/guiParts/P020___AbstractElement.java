@@ -8,19 +8,16 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.V
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	public abstract String str();
-
 	public abstract ArrayList<String> optStr();
-
 	public abstract P020___AbstractElement getCopy();
-
 	public abstract boolean isComment();
-
 	public abstract void paintWithPhase(Graphics2D g, int phase);
-
 	protected final EditDiagramPanel editPanel;
+
 
 	P020___AbstractElement(EditDiagramPanel editPanel) {
 		this.editPanel = editPanel;

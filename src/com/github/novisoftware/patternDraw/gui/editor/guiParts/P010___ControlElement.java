@@ -408,7 +408,6 @@ public class P010___ControlElement extends P020___AbstractElement {
 
 	@Override
 	public ValueType getValueType() {
-		// TODO 自動生成されたメソッド・スタブ
 		return ValueType.NONE;
 	}
 
