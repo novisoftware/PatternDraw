@@ -18,7 +18,8 @@ import com.github.novisoftware.patternDraw.utils.Debug;
 public class InputConstantStringWindow extends AbstractInputConstantWindow {
 	public InputConstantStringWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
 		super(element, editPanel);
-		if (element.getKindId() != KindId.CONSTANT) {
+		if (!(element.getKindId() == KindId.CONSTANT
+				|| element.getKindId() == KindId.COMMENT)) {
 			System.err.println("呼び出し条件がおかしいので要確認。");
 			try {
 				throw new Exception("check");
