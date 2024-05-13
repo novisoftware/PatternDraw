@@ -49,6 +49,22 @@ FUNCTION: line_from_1_series
 ---->DEFINE
 
 
+KIND: 演算子
+TYPE: LINE_LIST
+DISPNAME: 線の集まり/点を線で結ぶ(閉じる)
+DESCRIPTION: 点を線で結び、閉じます。
+FUNCTION: line_from_1_series_close
+---->DEFINE
+
+
+KIND: 演算子
+TYPE: LINE_LIST
+DISPNAME: 線の集まり/点を線で結ぶ(オーバーラップして閉じる)
+DESCRIPTION: 点を線で結び、閉じます(オーバーラップします)。
+FUNCTION: line_from_1_series_close_ow
+---->DEFINE
+
+
 KIND: 表示
 TYPE: NONE
 DISPNAME: 線の集まり/描画

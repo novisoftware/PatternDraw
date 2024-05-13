@@ -12,6 +12,12 @@ public class FunctionUtil {
 		if (str.equals(LineFrom1Series.NAME)) {
 			return new LineFrom1Series();
 		}
+		if (str.equals(LineFrom1SeriesClose.NAME)) {
+			return new LineFrom1SeriesClose();
+		}
+		if (str.equals(LineFrom1SeriesCloseOverWrap.NAME)) {
+			return new LineFrom1SeriesCloseOverWrap();
+		}
 		if (str.equals(PosToWalk.NAME)) {
 			return new PosToWalk();
 		}

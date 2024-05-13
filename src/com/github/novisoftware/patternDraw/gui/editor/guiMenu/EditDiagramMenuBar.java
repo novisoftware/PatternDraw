@@ -76,7 +76,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 			}
 		});
 
-		JMenuItem saveAsSVG = new JMenuItem("画像をSVG出力＜注意：まだnop＞");
+		JMenuItem saveAsSVG = new JMenuItem("画像をSVG出力");
 		saveAsSVG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
 				int selected = svgFileChooser.showSaveDialog(editDiagramWindow);

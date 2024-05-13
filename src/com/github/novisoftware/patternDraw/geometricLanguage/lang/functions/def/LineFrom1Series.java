@@ -48,7 +48,7 @@ public class LineFrom1Series implements FunctionDefInterface {
 
 	@Override
 	public ValueType getReturnType() {
-		return ValueType.POS_LIST;
+		return ValueType.LINE_LIST;
 	}
 
 	@Override
