@@ -3,15 +3,19 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
@@ -19,14 +23,19 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class EditDiagramMenuBar extends JMenuBar {
+	// ファイル選択ダイアログ
+	static private JFileChooser filechooser = new JFileChooser(".");
+
 	final EditDiagramPanel editPanel;
+	final EditDiagramWindow editDiagramWindow;
 
 	final JMenu fileMenu;
 	final JMenu runMenu;
 	final JMenu windowMenu;
 	final JMenu helpMenu;
-	public EditDiagramMenuBar(final EditDiagramPanel editPanel) {
-		this.editPanel = editPanel;
+	public EditDiagramMenuBar(final EditDiagramWindow editDiagramWindow, final EditDiagramPanel editDiagramPanel) {
+		this.editDiagramWindow = editDiagramWindow;
+		this.editPanel = editDiagramPanel;
 		this.fileMenu = new JMenu("ファイル");
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
@@ -35,6 +44,38 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.fileMenu.add(overWrite);
 		JMenuItem saveAs = new JMenuItem("名前を付けて保存＜注意：まだnop＞");
 		this.fileMenu.add(saveAs);
+		this.fileMenu.addSeparator();
+		JMenuItem saveAsPNG = new JMenuItem("画像をPNG出力");
+		this.fileMenu.add(saveAsPNG);
+		saveAsPNG.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				int selected = filechooser.showSaveDialog(editDiagramWindow);
+				if (selected == JFileChooser.APPROVE_OPTION) {
+					File file = filechooser.getSelectedFile();
+
+					try {
+						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+						outputGraphicsWindow.outputPNG(file);
+					} catch (Exception ex) {
+						String message = String.format("保存に失敗しました (%s)",
+								ex.getMessage());
+						JOptionPane
+								.showMessageDialog(
+										editDiagramWindow,
+										message,
+										"Error",
+										JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					// この動作は要らない?
+					JOptionPane.showMessageDialog(editDiagramWindow, "保存しました。");
+				}
+			}
+		});
+
+		JMenuItem saveAsSVG = new JMenuItem("画像をSVG出力＜注意：まだnop＞");
+		this.fileMenu.add(saveAsSVG);
 		this.fileMenu.addSeparator();
 		JMenuItem exit = new JMenuItem("終了");
 		this.fileMenu.add(exit);
@@ -54,20 +95,20 @@ public class EditDiagramMenuBar extends JMenuBar {
 				OutputTextWindow outputTextWindow = OutputTextWindow.getInstance();
 				OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
 
-				if (editPanel.networkDataModel.paramDefList.size() > 0) {
+				if (editDiagramPanel.networkDataModel.paramDefList.size() > 0) {
 					Debug.println("START");
 					EditParamWindow editParamWindow =
 					new EditParamWindow(
-							editPanel.networkDataModel.paramDefList);
+							editDiagramPanel.networkDataModel.paramDefList);
 
 
 					// パラメーター値が設定されたときのコールバック
 					Runnable callback = new Runnable() {
 						@Override
 						public void run() {
-							editPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
-							editPanel.networkDataModel.evaluate();
-							editPanel.networkDataModel.runProgram();
+							editDiagramPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
+							editDiagramPanel.networkDataModel.evaluate();
+							editDiagramPanel.networkDataModel.runProgram();
 						}
 					};
 					editParamWindow.setCallback(callback);
@@ -77,13 +118,13 @@ public class EditDiagramMenuBar extends JMenuBar {
 				}
 				else {
 					Debug.println("START");
-					editPanel.networkDataModel.evaluate();
-					editPanel.networkDataModel.runProgram();
+					editDiagramPanel.networkDataModel.evaluate();
+					editDiagramPanel.networkDataModel.runProgram();
 					Debug.println("END");
 				}
 				outputTextWindow.setVisible(true);
 				outputGraphicsWindow.setVisible(true);
-				editPanel.repaint();
+				editDiagramPanel.repaint();
 			}
 		});
 
@@ -92,26 +133,26 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.windowMenu.add(dispParaWin);
 		dispParaWin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (editPanel.paramDefEditWindow != null) {
+				if (editDiagramPanel.paramDefEditWindow != null) {
 					// すでにパラメーター編集画面のオブジェクトがある場合は、再度表示するだけ
-					editPanel.paramDefEditWindow.setVisible(true);
+					editDiagramPanel.paramDefEditWindow.setVisible(true);
 					return;
 				}
 				System.out.println("パラメーター編集画面のオブジェクトを作成");
 
 
-				ArrayList<ParameterDefine> params = editPanel.networkDataModel.paramDefList;
+				ArrayList<ParameterDefine> params = editDiagramPanel.networkDataModel.paramDefList;
 
 				Runnable callback = new Runnable() {
 					@Override
 					public void run() {
 						System.out.println("パラメーター編集画面のオブジェクトを 破棄");
-						editPanel.paramDefEditWindow = null;
+						editDiagramPanel.paramDefEditWindow = null;
 					}
 				};
 
 				EditParamDefListWindow frame = new EditParamDefListWindow(params, callback);
-				editPanel.paramDefEditWindow = frame;
+				editDiagramPanel.paramDefEditWindow = frame;
 				frame.setVisible(true);
 				// frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 				frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

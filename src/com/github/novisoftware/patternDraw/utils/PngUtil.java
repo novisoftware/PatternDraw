@@ -23,7 +23,11 @@ public class PngUtil {
 	static int Y = 5;
 	*/
 
-	public static void outPng(String filename, InstructionRenderer renderer, int width, int height, int xRepeat, int yRepeat) throws IOException, InvaliScriptException {
+	public static void outRepeatedPNG(String filename, InstructionRenderer renderer, int width, int height, int xRepeat, int yRepeat) throws IOException, InvaliScriptException {
+		outRepeatedPNG(new File(filename), renderer, width, height, xRepeat, yRepeat);
+	}
+
+	public static void outRepeatedPNG(File file, InstructionRenderer renderer, int width, int height, int xRepeat, int yRepeat) throws IOException, InvaliScriptException {
 		int repeatedW = width * (xRepeat);
 		int repeatedH = height * (yRepeat);
 
@@ -45,6 +49,6 @@ public class PngUtil {
 		}
 		g.dispose();
 
-		ImageIO.write(buffer, "png", new File(filename));
+		ImageIO.write(buffer, "png", file);
 	}
 }

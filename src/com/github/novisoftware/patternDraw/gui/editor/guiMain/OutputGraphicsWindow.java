@@ -6,9 +6,12 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -53,6 +56,11 @@ public class OutputGraphicsWindow extends JFrame2 {
 		return singleton;
 	}
 
+	public void outputPNG(File file) throws IOException {
+		BufferedImage buffer = panel.createBufferedImage();
+		ImageIO.write(buffer, "png", file);
+	}
+
 	class MyJPanel extends JPanel {
 		private InstructionRenderer renderer;
 		private BufferedImage buffer;
@@ -71,22 +79,36 @@ public class OutputGraphicsWindow extends JFrame2 {
 		public void reset() {
 			Graphics2D g = (Graphics2D)buffer.getGraphics();
 
-			Color fg = new Color(0.7f, 0.7f, 0.7f);
 			// Color bg = new Color(1f, 1f, 1f);
 			Color bg = new Color(0f, 0f, 0f);
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			this.setBackground(bg);
 			g.setColor(bg);
 			g.fillRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+			Color fg = new Color(0.7f, 0.7f, 0.7f);
 			g.setColor(fg);
 			renderer.init(g, null, null);
 		}
-
 
 		public void refresh() {
 			Graphics2D g = (Graphics2D)buffer.getGraphics();
 
 			renderer.render(g, null, null);
+		}
+
+		public BufferedImage createBufferedImage() {
+			BufferedImage buffer = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
+			Graphics2D g = (Graphics2D)buffer.getGraphics();
+			Color bg = new Color(0f, 0f, 0f);
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setColor(bg);
+			g.fillRect(0, 0, IMAGE_WIDTH, IMAGE_HEIGHT);
+
+			Color fg = new Color(1.0f, 1.0f, 1.0f);
+			g.setColor(fg);
+			renderer.render(g, null, null);
+
+			return buffer;
 		}
 	}
 

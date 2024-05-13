@@ -47,7 +47,7 @@ public class EditDiagramWindow extends JFrame2 {
 
 		this.setSize(1500, 700);
 		this.editPanel = new EditDiagramPanel(filename);
-		this.editMenuBar = new EditDiagramMenuBar(this.editPanel);
+		this.editMenuBar = new EditDiagramMenuBar(this, this.editPanel);
 
 		this.setJMenuBar(this.editMenuBar);
 		this.setTitle("ダイヤグラムを編集: " + this.editPanel.networkDataModel.title);
