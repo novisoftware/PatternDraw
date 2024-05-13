@@ -109,7 +109,7 @@ public class Main {
 			final InstructionRenderer pngRenderer = new InstructionRenderer(tokenList, variables);
 			// IMAGE_WIDTH = 400;
 			// IMAGE_HEIGHT = 400;
-			PngUtil.outPng(pngFilename, pngRenderer, IMAGE_WIDTH, IMAGE_HEIGHT, X_REPEAT, Y_REPEAT);
+			PngUtil.outRepeatedPNG(pngFilename, pngRenderer, IMAGE_WIDTH, IMAGE_HEIGHT, X_REPEAT, Y_REPEAT);
 		}
 
 		if (svgFilename != null || pngFilename != null) {

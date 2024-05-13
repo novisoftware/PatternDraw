@@ -24,6 +24,9 @@ import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.gui.MyJPanel;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
+import com.github.novisoftware.patternDraw.renderer.Renderer;
+import com.github.novisoftware.patternDraw.svg.SvgInstruction;
+import com.github.novisoftware.patternDraw.svg.SvgUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.Preference;
 
@@ -45,7 +48,6 @@ public class OutputGraphicsWindow extends JFrame2 {
 		this.setSize(IMAGE_WIDTH, IMAGE_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 		this.setTitle("グラフィックスの出力");
-		this.setVisible(true);
 	}
 
 	static public OutputGraphicsWindow getInstance() {
@@ -61,6 +63,13 @@ public class OutputGraphicsWindow extends JFrame2 {
 		ImageIO.write(buffer, "png", file);
 	}
 
+	public void outputSVG(File file) {
+		String svg_stroke_color = "black";
+		double svg_stroke_width = 0.3;
+		SvgInstruction s = new SvgInstruction(svg_stroke_color, svg_stroke_width);
+		SvgUtil.outSvg(s, file, panel.getRenderer());
+	}
+
 	class MyJPanel extends JPanel {
 		private InstructionRenderer renderer;
 		private BufferedImage buffer;
@@ -69,6 +78,10 @@ public class OutputGraphicsWindow extends JFrame2 {
 			this.renderer = renderer;
 			this.buffer = buffer;
 			this.reset();
+		}
+
+		InstructionRenderer getRenderer() {
+			return renderer;
 		}
 
 		public void paint(Graphics graphics) {

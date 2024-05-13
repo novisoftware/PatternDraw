@@ -20,11 +20,13 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWi
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
+import com.github.novisoftware.patternDraw.svg.SvgUtil;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class EditDiagramMenuBar extends JMenuBar {
 	// ファイル選択ダイアログ
-	static private JFileChooser filechooser = new JFileChooser(".");
+	static private JFileChooser pngFileChooser = new JFileChooser(".");
+	static private JFileChooser svgFileChooser = new JFileChooser(".");
 
 	final EditDiagramPanel editPanel;
 	final EditDiagramWindow editDiagramWindow;
@@ -49,9 +51,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.fileMenu.add(saveAsPNG);
 		saveAsPNG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				int selected = filechooser.showSaveDialog(editDiagramWindow);
+				int selected = pngFileChooser.showSaveDialog(editDiagramWindow);
 				if (selected == JFileChooser.APPROVE_OPTION) {
-					File file = filechooser.getSelectedFile();
+					File file = pngFileChooser.getSelectedFile();
 
 					try {
 						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
@@ -75,6 +77,33 @@ public class EditDiagramMenuBar extends JMenuBar {
 		});
 
 		JMenuItem saveAsSVG = new JMenuItem("画像をSVG出力＜注意：まだnop＞");
+		saveAsSVG.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				int selected = svgFileChooser.showSaveDialog(editDiagramWindow);
+				if (selected == JFileChooser.APPROVE_OPTION) {
+					File file = svgFileChooser.getSelectedFile();
+
+					try {
+						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+						outputGraphicsWindow.outputSVG(file);
+					} catch (Exception ex) {
+						String message = String.format("保存に失敗しました (%s)",
+								ex.getMessage());
+						JOptionPane
+								.showMessageDialog(
+										editDiagramWindow,
+										message,
+										"Error",
+										JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					// この動作は要らない?
+					JOptionPane.showMessageDialog(editDiagramWindow, "保存しました。");
+				}
+			}
+		});
+
 		this.fileMenu.add(saveAsSVG);
 		this.fileMenu.addSeparator();
 		JMenuItem exit = new JMenuItem("終了");
