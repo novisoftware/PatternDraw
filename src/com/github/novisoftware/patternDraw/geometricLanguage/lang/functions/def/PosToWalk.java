@@ -11,6 +11,7 @@ import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.Fu
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValuePosList;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 
 public class PosToWalk implements FunctionDefInterface {
@@ -40,7 +41,7 @@ public class PosToWalk implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"n", "positions1", "positions2"};
+		String[] ret = {"分割数", "系列1", "系列2"};
 		return ret;
 	}
 
@@ -54,6 +55,7 @@ public class PosToWalk implements FunctionDefInterface {
 		// 分割数
 		// TODO 変換に失敗する可能性
 		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
+		Debug.println("n = " + n);
 		ArrayList<Pos> posList1 = ((ValuePosList)(param.get(1))).getInternal();
 		ArrayList<Pos> posList2 = ((ValuePosList)(param.get(2))).getInternal();
 
