@@ -64,17 +64,6 @@ DESCRIPTION: 点を線で結び、閉じます(オーバーラップします)�
 FUNCTION: line_from_1_series_close_ow
 ---->DEFINE
 
-
-KIND: 表示
-TYPE: NONE
-DISPNAME: 線の集まり/描画
-DESCRIPTION: 線分のリストを描画します。
-FUNCTION: line_to_draw
----->DEFINE
-
-
-
-
 KIND: 定数
 TYPE: INTEGER
 HEIGHT: 35
@@ -480,6 +469,15 @@ DESCRIPTION: コンソールウィンドウに表示します
 :print
 -->RPN
 ---->DEFINE
+
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/線の集まりを描画
+DESCRIPTION: 線分のリストを描画します。
+FUNCTION: line_to_draw
+---->DEFINE
+
 
 KIND: 制御
 TYPE: NONE
