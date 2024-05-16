@@ -1,6 +1,7 @@
 package com.github.novisoftware.patternDraw.geometricLanguage.lang;
 
 import java.awt.Color;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
@@ -24,6 +25,7 @@ import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
 import com.github.novisoftware.patternDraw.gui.SettingWindow;
 import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
+import com.github.novisoftware.patternDraw.renderer.Renderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 
 public class InstructionRenderer extends AbstractRenderer {
@@ -36,7 +38,7 @@ public class InstructionRenderer extends AbstractRenderer {
 	ArrayList<Parameter> params;
 	HashMap<String, ObjectHolder> variables;
 	HashMap<String, ObjectHolder> initialVariables;
-	public ArrayList<Path> pathList;
+	public ArrayList<Renderer> primitiveList;
 	public String currentStrokeColor = "black";
 	public String currentStrokeWidth = "1";
 	public double translateX;
@@ -96,7 +98,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				: new HashMap<String, ObjectHolder>();
 		this.params = new ArrayList<Parameter>();
 		this.counter = 0;
-		this.pathList = new ArrayList<Path>();
+		this.primitiveList = new ArrayList<Renderer>();
 		this.evalToken = new Stack<ArrayList<Token>>();
 		this.evalTokenCounter = new Stack<Integer>();
 		this.translateX = 0;
@@ -532,7 +534,7 @@ public class InstructionRenderer extends AbstractRenderer {
 
 				Path path = new Path(line, strokeColor, strokeWidth, isFill, fillColor);
 
-				this.pathList.add(path);
+				this.primitiveList.add(path);
 			}
 		} else if (tokenStr.equals("translate")) {
 			double y = stack.pop().getAs_double();
@@ -659,9 +661,10 @@ public class InstructionRenderer extends AbstractRenderer {
 	}
 
 	public void render(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
-		System.out.println("pathList size is " + pathList.size());
+		Debug.println("renderer", "primitiveList size is " + primitiveList.size());
 
-		for (Path p : pathList) {
+		for (Renderer p : primitiveList) {
+			Debug.println("renderer", p.getClass().toString());
 			p.render(g, svgBuff, s);
 		}
 	}
@@ -778,7 +781,7 @@ public class InstructionRenderer extends AbstractRenderer {
 		Color fg2 = new Color(0.7f, 0.7f, 0.7f);
 		g.setColor(fg2);
 
-		for (Path p : pathList) {
+		for (Renderer p : primitiveList) {
 			p.render(g, null, null);
 		}
 

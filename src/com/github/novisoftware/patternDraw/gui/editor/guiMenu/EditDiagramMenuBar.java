@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -42,8 +43,26 @@ public class EditDiagramMenuBar extends JMenuBar {
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
 		this.fileMenu.add(open);
-		JMenuItem overWrite = new JMenuItem("上書き保存＜注意：まだnop＞");
+		JMenuItem overWrite = new JMenuItem("上書き保存");
 		this.fileMenu.add(overWrite);
+		overWrite.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					editPanel.networkDataModel.save();
+				} catch (IOException ex) {
+					String message = String.format("保存に失敗しました。\n%s",
+							ex.getMessage());
+					JOptionPane
+							.showMessageDialog(
+									editDiagramWindow,
+									message,
+									"Error",
+									JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+			}
+		});
+
 		JMenuItem saveAs = new JMenuItem("名前を付けて保存＜注意：まだnop＞");
 		this.fileMenu.add(saveAs);
 		this.fileMenu.addSeparator();
@@ -59,7 +78,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
 						outputGraphicsWindow.outputPNG(file);
 					} catch (Exception ex) {
-						String message = String.format("保存に失敗しました (%s)",
+						String message = String.format("保存に失敗しました。\n%s",
 								ex.getMessage());
 						JOptionPane
 								.showMessageDialog(
@@ -130,13 +149,12 @@ public class EditDiagramMenuBar extends JMenuBar {
 					new EditParamWindow(
 							editDiagramPanel.networkDataModel.paramDefList);
 
-
 					// パラメーター値が設定されたときのコールバック
 					Runnable callback = new Runnable() {
 						@Override
 						public void run() {
 							editDiagramPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
-							editDiagramPanel.networkDataModel.evaluate();
+							editDiagramPanel.networkDataModel.analyze();
 							editDiagramPanel.networkDataModel.runProgram();
 						}
 					};
@@ -147,7 +165,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 				}
 				else {
 					Debug.println("START");
-					editDiagramPanel.networkDataModel.evaluate();
+					editDiagramPanel.networkDataModel.analyze();
 					editDiagramPanel.networkDataModel.runProgram();
 					Debug.println("END");
 				}

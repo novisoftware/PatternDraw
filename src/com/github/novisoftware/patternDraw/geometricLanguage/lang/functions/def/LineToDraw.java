@@ -30,7 +30,7 @@ public class LineToDraw implements FunctionDefInterface {
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.POS_LIST};
+		ValueType[] ret = {ValueType.LINE_LIST};
 		return ret;
 	}
 
@@ -52,7 +52,7 @@ public class LineToDraw implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) throws InvaliScriptException {
+	public Value exec(List<Value> param, InstructionRenderer t) {
 		ArrayList<Line> a = ((ValueLineList)(param.get(0))).getInternal();
 		for (Line line : a) {
 			// Line line2 = line.translateLine(t.translateX, t.translateY);
@@ -69,7 +69,7 @@ public class LineToDraw implements FunctionDefInterface {
 			Path path = new Path(line, strokeColor, strokeWidth, isFill, fillColor);
 
 			if (t != null) {
-				t.pathList.add(path);
+				t.primitiveList.add(path);
 				System.out.println("pathList added." );
 			}
 		}

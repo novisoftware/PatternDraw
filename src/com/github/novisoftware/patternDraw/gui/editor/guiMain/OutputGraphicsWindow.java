@@ -105,7 +105,7 @@ public class OutputGraphicsWindow extends JFrame2 {
 
 		public void refresh() {
 			Graphics2D g = (Graphics2D)buffer.getGraphics();
-
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			renderer.render(g, null, null);
 		}
 
@@ -133,6 +133,7 @@ public class OutputGraphicsWindow extends JFrame2 {
 
 	static public void refresh() {
 		getInstance().panel.refresh();
+		getInstance().panel.repaint();
 	}
 
 	static public InstructionRenderer getRenderer() {

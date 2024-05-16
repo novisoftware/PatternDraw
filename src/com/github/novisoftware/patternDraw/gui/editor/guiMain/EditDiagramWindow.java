@@ -264,7 +264,7 @@ public class EditDiagramWindow extends JFrame2 {
 			}
 			if (handled == null) {
 				editPanel__.workLineFrom = null;
-				editPanel__.networkDataModel.evaluate();
+				editPanel__.networkDataModel.analyze();
 				editPanel__.repaint();
 
 				return;
@@ -315,7 +315,7 @@ public class EditDiagramWindow extends JFrame2 {
 						to.paramMapObj.put(conn.getParaName(), from);
 					}
 
-					editPanel__.networkDataModel.evaluate();
+					editPanel__.networkDataModel.analyze();
 					editPanel__.repaint();
 				}
 			}
@@ -331,7 +331,7 @@ public class EditDiagramWindow extends JFrame2 {
 					conn.getNode().paramMapInfo.put(conn.getParaName(), element.id);
 					conn.getNode().paramMapObj.put(conn.getParaName(), element);
 
-					editPanel__.networkDataModel.evaluate();
+					editPanel__.networkDataModel.analyze();
 					editPanel__.repaint();
 				}
 			}
@@ -340,7 +340,7 @@ public class EditDiagramWindow extends JFrame2 {
 			else if (handled instanceof P022_____RpnGraphNodeElement && editPanel__.workLineFrom == null) {
 				P022_____RpnGraphNodeElement from = (P022_____RpnGraphNodeElement)handled;
 				// if (from.groupHead != null) {
-					editPanel__.networkDataModel.evaluate();
+					editPanel__.networkDataModel.analyze();
 					editPanel__.repaint();
 				// }
 			}

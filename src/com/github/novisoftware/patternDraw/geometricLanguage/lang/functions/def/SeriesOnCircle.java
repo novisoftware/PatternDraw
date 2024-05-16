@@ -50,7 +50,7 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer _t) throws InvaliScriptException {
+	public Value exec(List<Value> param, InstructionRenderer _t) {
 		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
 		double r = ((ValueFloat)(param.get(1))).getInternal();
 		double theta = ((ValueFloat)(param.get(2))).getInternal();

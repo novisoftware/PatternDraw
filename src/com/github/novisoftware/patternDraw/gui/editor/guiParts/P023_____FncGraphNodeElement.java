@@ -10,11 +10,14 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptEx
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 
@@ -78,16 +81,13 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	@Override
-	public void evaluate() {
-		this.evaluate(null);
-	}
-
-	@Override
 	public Value.ValueType getValueType() {
 		return function.getReturnType();
 	}
 
-	public void evaluate(InstructionRenderer target) {
+	@Override
+	public void evaluateExactly() throws CaliculateException {
+		InstructionRenderer target = OutputGraphicsWindow.getRenderer();
 		ArrayList<Value> args = new ArrayList<Value>();
 
 		for (String paraName : this.function.getParameterNames()) {
@@ -100,13 +100,8 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 			args.add(this.paramMapObj.get(paraName).workValue);
 		}
 		// TODO 副作用先のオブジェクトを持たせる
-		try {
-			System.out.println("呼び出し元");
-			this.workValue = this.function.exec(args, target);
-		} catch (InvaliScriptException e) {
-			// TODO もう少し適切なエラーハンドリング
-			e.printStackTrace();
-		}
+		System.out.println("呼び出し元");
+		this.workValue = this.function.exec(args, target);
 	}
 
 	@Override

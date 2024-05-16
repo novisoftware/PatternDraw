@@ -4,7 +4,7 @@
 KIND: コメント
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: コメント/コメント
+DISPNAME: コメント
 DESCRIPTION: コメントです。
 コメント;コメント :comment
 -->RPN
@@ -31,6 +31,14 @@ TYPE: POS_LIST
 DISPNAME: 点の集まり/点の集まりを辿る
 DESCRIPTION: 複数の座標の系列を辿ります。
 FUNCTION: pos_to_walk
+---->DEFINE
+
+
+KIND: 演算子
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりをNスキップで辿る
+DESCRIPTION: 点の集まりをスキップしながら辿ります。
+FUNCTION: pos_to_pos_skip
 ---->DEFINE
 
 
@@ -470,12 +478,46 @@ DESCRIPTION: コンソールウィンドウに表示します
 -->RPN
 ---->DEFINE
 
-
 KIND: 表示
 TYPE: NONE
 DISPNAME: 出力/線の集まりを描画
 DESCRIPTION: 線分のリストを描画します。
 FUNCTION: line_to_draw
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/点の集まりをつないで描画
+DESCRIPTION: 点の集まりを線でつないで描画します。
+FUNCTION: draw_polyline
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/点の集まりをつないで描画（閉じる）
+DESCRIPTION: 点の集まりを線でつないで描画します。
+FUNCTION: draw_polyline_close
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/点の集まりをつないで描画（閉じてオーバーラップ）
+DESCRIPTION: 点の集まりを線でつないで描画します。
+FUNCTION: draw_polyline_close_ow
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/線の太さを指定(SVG)
+DESCRIPTION: 線分の太さを指定します。
+FUNCTION: set_stroke_width_svg
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/線の太さを指定(PNG)
+DESCRIPTION: 線分の太さを指定します。
+FUNCTION: set_stroke_width_png
 ---->DEFINE
 
 

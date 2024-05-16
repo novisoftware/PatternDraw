@@ -58,7 +58,7 @@ public class ContextMenu extends JPopupMenu {
 							tone.paramMapInfo.clear();
 							tone.paramMapObj.clear();
 
-							editPanel.networkDataModel.evaluate();
+							editPanel.networkDataModel.analyze();
 							editPanel.repaint();
 						}
 					});
@@ -73,7 +73,7 @@ public class ContextMenu extends JPopupMenu {
 					public void actionPerformed(ActionEvent e) {
 						connect.getNode().paramMapInfo.remove(connect.getParaName());
 						connect.getNode().paramMapObj.remove(connect.getParaName());
-						editPanel.networkDataModel.evaluate();
+						editPanel.networkDataModel.analyze();
 						editPanel.repaint();
 					}
 				});
@@ -94,7 +94,7 @@ public class ContextMenu extends JPopupMenu {
 						c.id = editPanel.networkDataModel.generateUniqueName(c.id);
 
 						editPanel.networkDataModel.getElements().add(c);
-						editPanel.networkDataModel.evaluate();
+						editPanel.networkDataModel.analyze();
 						editPanel.repaint();
 					}
 				});
@@ -131,7 +131,7 @@ public class ContextMenu extends JPopupMenu {
 						} else {
 							this.removeIcon(ti);
 						}
-						editPanel.networkDataModel.evaluate();
+						editPanel.networkDataModel.analyze();
 						editPanel.repaint();
 					}
 				});
@@ -191,26 +191,6 @@ public class ContextMenu extends JPopupMenu {
 			});
 			this.add(menuItem);
 		}
-		if (icon == null) {
-			this.addSeparator();
-			menuItem = new JMenuItem("保存");
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					editPanel.networkDataModel.save();
-				}
-			});
-			this.add(menuItem);
-		}
-		if (icon == null) {
-			this.addSeparator();
-			menuItem = new JMenuItem("終了");
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					System.exit(0);
-				}
-			});
-			this.add(menuItem);
-		}
 	}
 
 	static ArrayList<ElementFactory> partsList = null;
@@ -259,7 +239,7 @@ public class ContextMenu extends JPopupMenu {
 			menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ev) {
 					nParts.createNewElement(editPanel, x, y);
-					editPanel.networkDataModel.evaluate();
+					editPanel.networkDataModel.analyze();
 					editPanel.repaint();
 
 					// 閉じるので。

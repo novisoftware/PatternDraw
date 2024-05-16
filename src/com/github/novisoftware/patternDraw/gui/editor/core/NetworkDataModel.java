@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
@@ -165,7 +166,7 @@ public class NetworkDataModel {
 	 *
 	 */
 	public void
-	evaluate(
+	analyze(
 //			ArrayList<Element> returnList, HashMap<Element,HashMap<String,Integer>> name2index
 			) {
 		// 上から下の順にソートした Element
@@ -624,17 +625,7 @@ public class NetworkDataModel {
 		Debug.println("evaluate", "GRPAH GROUP ---  " + headElement.groupHead + "   items: " + eList.size());
 		for(P021____AbstractGraphNodeElement element : eList) {
 			Debug.println("evaluate", "begin: " + element.id);
-			/*
 			element.evaluate();
-			*/
-			if (element instanceof P022_____RpnGraphNodeElement) {
-				((P022_____RpnGraphNodeElement)element).evaluate();
-				Debug.println("rpn evaluate is called");
-			} else if (element instanceof P023_____FncGraphNodeElement) {
-				Debug.println("fnc evaluate is called");
-				((P023_____FncGraphNodeElement)element).evaluate(OutputGraphicsWindow.getRenderer());
-				OutputGraphicsWindow.getInstance().repaint();
-			}
 			Debug.println("evaluate", "end: " + element.id);
 		}
 
@@ -844,38 +835,34 @@ public class NetworkDataModel {
 		}
 	}
 
-	public void save() {
+	public void save() throws IOException {
 		// ファイルに書き込む
 		BufferedWriter writer;
-		try {
-			writer = new BufferedWriter(new FileWriter( new File(filename) ));
-			writer.write("");
-			writer.write("TITLE:" + this.title + "\n");
-			writer.write("\n");
-			for (ParameterDefine p : paramDefList) {
-				writer.write( p.str() + '\n' );
+		writer = new BufferedWriter(new FileWriter( new File(filename) ));
+		writer.write("");
+		writer.write("TITLE:" + this.title + "\n");
+		writer.write("\n");
+		for (ParameterDefine p : paramDefList) {
+			writer.write( p.str() + '\n' );
+		}
+		writer.write("\n");
+		for (P020___AbstractElement n : getElements()) {
+			writer.write( n.str() + '\n' );
+		}
+		for (P020___AbstractElement n : getElements()) {
+			for (String s : n.optStr()) {
+				writer.write( s + '\n' );
 			}
-			writer.write("\n");
-			for (P020___AbstractElement n : getElements()) {
-				writer.write( n.str() + '\n' );
-			}
-			for (P020___AbstractElement n : getElements()) {
-				for (String s : n.optStr()) {
+		}
+		for (P020___AbstractElement n : getElements()) {
+			if (n instanceof P010___ControlElement) {
+				String s = ((P010___ControlElement)n).contollerGroup_str();
+				if (s != null) {
 					writer.write( s + '\n' );
 				}
 			}
-			for (P020___AbstractElement n : getElements()) {
-				if (n instanceof P010___ControlElement) {
-					String s = ((P010___ControlElement)n).contollerGroup_str();
-					if (s != null) {
-						writer.write( s + '\n' );
-					}
-				}
-			}
-
-			writer.close();
-		} catch (IOException e) {
-			System.err.println("途中でエラーが発生しました。" + e.toString());
 		}
+
+		writer.close();
 	}
 }

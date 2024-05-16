@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
@@ -97,8 +98,20 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 * 計算する(workValueに計算結果が格納された状態にする)。
 	 * @throws CaliculateException
 	 */
-	public abstract void evaluate() throws CaliculateException;
+	public void evaluate() throws CaliculateException {
+		try {
+			evaluateExactly();
+			this.isError = false;
+			this.errorMessage = null;
+		} catch (CaliculateException e) {
+			this.workValue = null;
+			this.isError = true;
+			this.errorMessage = e.getMessage();
+			throw e;
+		}
+	}
 
+	public abstract void evaluateExactly() throws CaliculateException;
 
 	static StringRectUtil str2rect = new StringRectUtil();
 

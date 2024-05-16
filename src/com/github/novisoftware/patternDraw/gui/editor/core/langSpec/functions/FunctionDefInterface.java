@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 
@@ -49,7 +51,7 @@ public interface FunctionDefInterface {
 	 * @param param
 	 * @param t 副作用先
 	 * @return
-	 * @throws InvaliScriptException
+	 * @throws CaliculateException
 	 */
-	Value exec(List<Value> param, InstructionRenderer t) throws InvaliScriptException;
+	Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException;
 }

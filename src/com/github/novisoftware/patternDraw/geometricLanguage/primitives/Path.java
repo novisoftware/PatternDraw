@@ -16,8 +16,9 @@ import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 public class Path implements Renderer {
 	ArrayList<Pos> positions;
 	private String strokeColor;
+	private double strokeWidth_PNG;
+	private double strokeWidth_SVG;
 	private String fillColor;
-	private String strokeWidth;
 	boolean isFill;
 
 	public Path(Pos a, Pos b, String strokeColor) {
@@ -30,7 +31,18 @@ public class Path implements Renderer {
 		this.positions.add(new Pos(line.x1, line.y1));
 
 		this.strokeColor = strokeColor;
-		this.strokeWidth = strokeWidth;
+		this.strokeWidth_PNG = Double.parseDouble(strokeWidth);
+		this.strokeWidth_SVG = Double.parseDouble(strokeWidth);
+		this.isFill = isFill;
+		this.fillColor = fillColor;
+	}
+
+	public Path(ArrayList<Pos> positions, String strokeColor, double strokeWidth, boolean isFill, String fillColor) {
+		this.positions = positions;
+
+		this.strokeColor = strokeColor;
+		this.strokeWidth_PNG = strokeWidth;
+		this.strokeWidth_SVG = strokeWidth;
 		this.isFill = isFill;
 		this.fillColor = fillColor;
 	}
@@ -38,6 +50,10 @@ public class Path implements Renderer {
 
 	public void setStrokeColor(String s) {
 		this.strokeColor = s;
+	}
+
+	public void setStrokeWidth_SVG(double width) {
+		this.strokeWidth_SVG = width;
 	}
 
 	private final double ZOOM = 300;
@@ -78,8 +94,6 @@ public class Path implements Renderer {
 		return null;
 	}
 
-
-
 	public void localDrawLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, double dx0, double dy0,
 			double dx1, double dy1) {
 
@@ -89,7 +103,7 @@ public class Path implements Renderer {
 				g.setColor(color);
 			}
 
-			BasicStroke stroke = new BasicStroke((float)(Double.parseDouble(this.strokeWidth)));
+			BasicStroke stroke = new BasicStroke((float)this.strokeWidth_PNG);
 			g.setStroke(stroke);
 
 			int wx1 = x2int(dx0);
@@ -101,6 +115,7 @@ public class Path implements Renderer {
 		}
 
 		if (svgBuff != null) {
+			s.setStrokeWidth(this.strokeWidth_SVG);
 			String svgStr = s.line(dx0, dy0, dx1, dy1);
 			svgBuff.add(svgStr);
 		}
@@ -115,7 +130,6 @@ public class Path implements Renderer {
 				);
 	}
 
-
 	public void localDrawLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, Pos pos1, Pos pos2) {
 		localDrawLine(g, svgBuff, s, pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY());
 	}
@@ -123,12 +137,28 @@ public class Path implements Renderer {
 
 	public void localPolyLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, ArrayList<Pos> posList, boolean isFilled) {
 		if (g != null) {
-			int n = posList.size();
-			for (int i = 0 ; i < n ; i++ ) {
-				localDrawLine(g, null, null, posList.get(i), posList.get((i+1)%n));
+			Color color = this.getColor(this.strokeColor);
+			if (color != null) {
+				g.setColor(color);
 			}
+
+			float w = (float)this.strokeWidth_PNG;
+			BasicStroke stroke = new BasicStroke(w, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER);
+			g.setStroke(stroke);
+
+			int nPoints = posList.size();
+			int[] xPoints = new int[nPoints];
+			int[] yPoints = new int[nPoints];
+			for (int i = 0 ; i < nPoints ; i++ ) {
+				Pos pos = posList.get(i);
+				xPoints[i] = x2int(pos.getX());
+				yPoints[i] = y2int(pos.getY());
+			}
+
+			g.drawPolyline(xPoints, yPoints, nPoints);
 		}
 		if (svgBuff != null) {
+			s.setStrokeWidth(this.strokeWidth_SVG);
 			String svgStr = s.polyLine(posList, false);
 			svgBuff.add(svgStr);
 		}
