@@ -146,7 +146,7 @@ public class Preference {
 	/**
 	 * アイコン
 	 */
-	public static String ICON_IMAGE_PATH = "/com/github/novisoftware/patternDraw/gui/resource/icon2.png";
+	public static String ICON_IMAGE_PATH = "/resource/icon2.png";
 
 	/**
 	 * GUI 部品Look And Feel を設定する
