@@ -10,10 +10,12 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueLineList;
+import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 
 public class RotatePointList  implements FunctionDefInterface {
@@ -54,14 +56,14 @@ public class RotatePointList  implements FunctionDefInterface {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer _t) {
+	public Value exec(List<Value> param, InstructionRenderer _t) throws CaliculateException {
 		/*
 		 * 系列をローテートさせる
 		 */
-		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
-		ArrayList<Line> a = ((ValueLineList)(param.get(1))).getInternal();
-		Collections.rotate((ArrayList<Line>)a.clone(), n);
+		int n = Value.getInteger(param.get(0)).intValue();
+		ArrayList<Pos> a = Value.getPosList(param.get(1));
+		Collections.rotate((ArrayList<Pos>)a.clone(), n);
 
-		return new ValueLineList(a);
+		return new ValuePosList(a);
 	}
 }

@@ -8,6 +8,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
@@ -52,8 +53,8 @@ public class LineFrom1SeriesCloseOverWrap implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) {
-		ArrayList<Pos> posList = ((ValuePosList)(param.get(0))).getInternal();
+	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
+		ArrayList<Pos> posList = Value.getPosList(param.get(0));
 
 		ArrayList<Line> ret = new ArrayList<Line>();
 		int n = posList.size();

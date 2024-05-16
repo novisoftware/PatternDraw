@@ -10,6 +10,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Typ
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueLineList;
@@ -60,8 +61,8 @@ public class PosToDrawPolyLine implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) {
-		ArrayList<Pos> src = ((ValuePosList)(param.get(0))).getInternal();
+	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
+		ArrayList<Pos> src = Value.getPosList(param.get(0));
 		ArrayList<Pos> posList = new ArrayList<Pos>();
 		posList.addAll(src);
 		this.overWrap(posList, src);

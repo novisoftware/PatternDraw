@@ -9,6 +9,8 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.geometry.Line;
+import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueLineList;
@@ -52,9 +54,10 @@ public class LineToDraw implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) {
-		ArrayList<Line> a = ((ValueLineList)(param.get(0))).getInternal();
-		for (Line line : a) {
+	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
+		ArrayList<Line> lineList = Value.getLineList(param.get(0));
+
+		for (Line line : lineList) {
 			// Line line2 = line.translateLine(t.translateX, t.translateY);
 			// t.localDrawLine(t.g, t.svgBuff, t.s, line2);
 
@@ -73,7 +76,7 @@ public class LineToDraw implements FunctionDefInterface {
 				System.out.println("pathList added." );
 			}
 		}
-		System.out.println("pathList added (" + a.size() + ")" );
+		System.out.println("pathList added (" + lineList.size() + ")" );
 
 		return null;
 	}

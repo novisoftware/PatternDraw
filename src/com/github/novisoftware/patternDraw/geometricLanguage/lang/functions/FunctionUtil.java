@@ -2,6 +2,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 
 public class FunctionUtil {

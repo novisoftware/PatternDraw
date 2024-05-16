@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
+import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueFloat;
@@ -50,10 +52,10 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer _t) {
-		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
-		double r = ((ValueFloat)(param.get(1))).getInternal();
-		double theta = ((ValueFloat)(param.get(2))).getInternal();
+	public Value exec(List<Value> param, InstructionRenderer _t) throws CaliculateException {
+		int n = Value.getInteger(param.get(0)).intValue();
+		double r = Value.getDouble(param.get(1));
+		double theta = Value.getDouble(param.get(2));
 
 		ArrayList<Pos> posList = new ArrayList<Pos>();
 		for (int i = 0; i < n; i++) {

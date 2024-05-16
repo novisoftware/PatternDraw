@@ -54,21 +54,9 @@ public class PosToPosSkip implements FunctionDefInterface {
 
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		// 分割数
-		// 変換に失敗する可能性
-		if (! ValueType.INTEGER.equals(param.get(0).valueType)) {
-			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
-		}
-		if (! ValueType.INTEGER.equals(param.get(1).valueType)) {
-			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
-		}
-		if (! ValueType.POS_LIST.equals(param.get(2).valueType)) {
-			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
-		}
-
-		int skip = ((ValueInteger)(param.get(0))).getInternal().intValue();
-		int total = ((ValueInteger)(param.get(1))).getInternal().intValue();
-		ArrayList<Pos> posList = ((ValuePosList)(param.get(2))).getInternal();
+		int skip = Value.getInteger(param.get(0)).intValue();
+		int total = Value.getInteger(param.get(1)).intValue();
+		ArrayList<Pos> posList = Value.getPosList(param.get(2));
 
 		if (skip <= 0) {
 			throw new CaliculateException(

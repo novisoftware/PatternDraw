@@ -7,6 +7,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRen
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueInteger;
@@ -51,13 +52,13 @@ public class PosToWalk implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) {
+	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
 		// 分割数
 		// TODO 変換に失敗する可能性
-		int n = ((ValueInteger)(param.get(0))).getInternal().intValue();
+		int n = Value.getInteger(param.get(0)).intValue();
 		Debug.println("n = " + n);
-		ArrayList<Pos> posList1 = ((ValuePosList)(param.get(1))).getInternal();
-		ArrayList<Pos> posList2 = ((ValuePosList)(param.get(2))).getInternal();
+		ArrayList<Pos> posList1 = Value.getPosList(param.get(1));
+		ArrayList<Pos> posList2 = Value.getPosList(param.get(2));
 
 		int size1 = posList1.size();
 		int size2 = posList2.size();

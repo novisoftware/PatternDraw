@@ -1,7 +1,13 @@
 package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.novisoftware.patternDraw.geometry.Line;
+import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 
@@ -174,6 +180,61 @@ public class Value {
 		// 注:
 		// 上記以外は本メソッドでは作成をサポートしない
 		return null;
+	}
+
+	/**
+	 * @throws CaliculateException
+	 */
+	public static BigInteger getInteger(Value v) throws CaliculateException {
+		try {
+			return ((ValueInteger)v).getInternal();
+		} catch(ClassCastException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+		}
+	}
+
+	/**
+	 * @throws CaliculateException
+	 */
+	public static Double getDouble(Value v) throws CaliculateException {
+		try {
+			return ((ValueFloat)v).getInternal();
+		} catch(ClassCastException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+		}
+	}
+
+	/**
+	 * @throws CaliculateException
+	 */
+	public static BigDecimal getDecimal(Value v) throws CaliculateException {
+		try {
+			return ((ValueNumeric)v).getInternal();
+		} catch(ClassCastException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+		}
+	}
+
+	/**
+	 * @throws CaliculateException
+	 */
+	public static ArrayList<Pos> getPosList(Value v) throws CaliculateException {
+		try {
+			return ((ValuePosList)v).getInternal();
+		} catch(ClassCastException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+		}
+	}
+
+	/**
+	 * @throws CaliculateException
+	 */
+	public static ArrayList<Line> getLineList(Value v) throws CaliculateException {
+		try {
+			return ((ValueLineList)v).getInternal();
+		} catch(ClassCastException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+		}
 	}
 
 	public boolean sameTo(Object o) {

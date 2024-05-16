@@ -5,6 +5,7 @@ import java.util.List;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.LineWidthSetterPNG;
+import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
@@ -49,17 +50,10 @@ public class SetLineWidthPNG implements FunctionDefInterface {
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) {
-		double width = ((ValueFloat)(param.get(0))).getInternal();
+	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
+		double width = Value.getDouble(param.get(0));
 
 		t.currentStrokeWidth = "" + width;
-		/*
-		LineWidthSetterPNG s = new LineWidthSetterPNG(width);
-		t.primitiveList.add(s);
-		*/
-
-		Debug.println("PNG LINE WIDTH SETTED");
-
 		return null;
 	}
 }
