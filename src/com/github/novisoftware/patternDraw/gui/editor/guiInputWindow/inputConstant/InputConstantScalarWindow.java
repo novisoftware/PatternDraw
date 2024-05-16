@@ -124,7 +124,7 @@ public class InputConstantScalarWindow extends AbstractInputConstantWindow {
 					}
 					messageDisp.setText(inputChecker.message);
 
-					ValueInputPanel p = new ValueInputPanel(this, index, comment, value, inputChecker);
+					ValueInputPanel p = new ValueInputPanel(this, index, "", comment, value, inputChecker);
 
 					// チェック処理を切り替える
 					if (valueTypeChangeRadioButtons != null) {

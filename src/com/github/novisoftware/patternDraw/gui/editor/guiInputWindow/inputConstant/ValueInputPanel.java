@@ -18,9 +18,12 @@ class ValueInputPanel extends JPanel {
 	final AbstractInputConstantWindow frame;
 	final JTextField textField;
 	AbstractInputChecker checker;
+	final String  fixedHeader;
 
-	public ValueInputPanel(AbstractInputConstantWindow frame,
+	public ValueInputPanel(
+			AbstractInputConstantWindow frame,
 			int param_index,
+			String fixedHeader,
 			String comment,
 			String ini,
 			AbstractInputChecker checker) {
@@ -29,7 +32,7 @@ class ValueInputPanel extends JPanel {
 
 		this.frame = frame;
 		this.checker = checker;
-
+		this.fixedHeader = fixedHeader;
 		this.textField = new JTextField2("" + ini);
 		/*
 		this.textField = new JTextField("" + ini);
@@ -49,7 +52,7 @@ class ValueInputPanel extends JPanel {
 			void update() {
 				// 再度 RPN オブジェクトを作成する
 				String text = textField.getText();
-				frame.rpnArray.set(param_index, text + (comment.length() > 0 ? ";" + comment : ""));
+				frame.rpnArray.set(param_index, fixedHeader + text + (comment.length() > 0 ? ";" + comment : ""));
 				System.out.println("Set element from textField:" + text);
 
 				thisObj.updateMessage();

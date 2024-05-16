@@ -85,7 +85,7 @@ public class InputConstantBooleanWindow extends AbstractInputConstantWindow {
 						pane.add(radioButton);
 					}
 
-					ValueInputPanel p = new ValueInputPanel(this, index, comment, value, new NonCheckChecker());
+					ValueInputPanel p = new ValueInputPanel(this, index, "", comment, value, new NonCheckChecker());
 
 					pane.add(p);
 				}

@@ -26,6 +26,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConsta
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantScalarWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantStringWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputOtherTypeWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputVariableSetWindow;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar;
@@ -170,6 +171,18 @@ public class EditDiagramWindow extends JFrame2 {
 							f.setLocation(p);
 							f.setVisible(true);
 							this.inputWindow = f;
+						} else if (element.getKindId() == KindId.VARIABLE_SET) {
+								PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+								Point p = pointerInfo.getLocation();
+
+								AbstractInputConstantWindow f = null;
+
+								f = new InputVariableSetWindow(element, editPanel__);
+								f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+								f.addWindowListener(inputWindowCloseListener);
+								f.setLocation(p);
+								f.setVisible(true);
+								this.inputWindow = f;
 						} else {
 							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 							Point p = pointerInfo.getLocation();

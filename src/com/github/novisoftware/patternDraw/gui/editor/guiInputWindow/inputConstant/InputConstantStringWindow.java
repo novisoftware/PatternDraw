@@ -53,7 +53,7 @@ public class InputConstantStringWindow extends AbstractInputConstantWindow {
 				String value = RpnUtil.getRepresent(s0);
 
 				if (comment.length() > 0) {
-					ValueInputPanel p = new ValueInputPanel(this, index, comment, value, new NonCheckChecker());
+					ValueInputPanel p = new ValueInputPanel(this, index, "", comment, value, new NonCheckChecker());
 
 					pane.add(p);
 				}
