@@ -94,6 +94,7 @@ public class ContextMenu extends JPopupMenu {
 						c.id = editPanel.networkDataModel.generateUniqueName(c.id);
 
 						editPanel.networkDataModel.getElements().add(c);
+						// 注: 複製では単連結グラフが増えるため必要。
 						editPanel.networkDataModel.analyze();
 						editPanel.repaint();
 					}

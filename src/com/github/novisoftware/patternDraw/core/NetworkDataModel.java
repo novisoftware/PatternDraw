@@ -14,6 +14,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
@@ -35,6 +36,11 @@ public class NetworkDataModel {
 	 * 変数
 	 */
 	final public HashMap<String, Value> variables;
+
+	/**
+	 * 型の妥当性検査のための変数型を記録するハッシュ表
+	 */
+	final public HashMap<String, ValueType> workCheckTypeVariables;
 
 	/**
 	 * ダイアログによるスクリプトのタイトル。
@@ -95,6 +101,7 @@ public class NetworkDataModel {
 		this.paramDefList = new ArrayList<ParameterDefine>();
 		// this.paramVariables = new HashMap<String, Value>();
 		this.variables = new HashMap<String, Value>();
+		this.workCheckTypeVariables = new HashMap<String, ValueType>();
 	}
 
 	public void debugVariables() {
@@ -498,39 +505,41 @@ public class NetworkDataModel {
 			}
 		}
 
-		// elementがどのcontrolにぶら下がるかを調べる:
-		// デバッグ用情報のみ事前出力 0
-		for (P020___AbstractElement ei1 : positionSortedElements) {
-//			ControlBlock c1 = (ControlBlock)ei1;
+		if (Debug.enable) {
+			// elementがどのcontrolにぶら下がるかを調べる:
+			// デバッグ用情報のみ事前出力 0
+			for (P020___AbstractElement ei1 : positionSortedElements) {
+	//			ControlBlock c1 = (ControlBlock)ei1;
 
-			if (ei1 != null) {
-				Debug.println("evaluete", "pre0: " + ei1.id);
-				Debug.println("evaluete", "pre0: " + ei1.str());
+				if (ei1 != null) {
+					Debug.println("evaluete", "pre0: " + ei1.id);
+					Debug.println("evaluete", "pre0: " + ei1.str());
+				}
 			}
-		}
 
 
 
-		// elementがどのcontrolにぶら下がるかを調べる:
-		// デバッグ用情報のみ事前出力 0
-		for (P020___AbstractElement ei1 : this.getElements()) {
-//			ControlBlock c1 = (ControlBlock)ei1;
+			// elementがどのcontrolにぶら下がるかを調べる:
+			// デバッグ用情報のみ事前出力 0
+			for (P020___AbstractElement ei1 : this.getElements()) {
+	//			ControlBlock c1 = (ControlBlock)ei1;
 
-			if (ei1 != null) {
-				Debug.println("evaluete", "pre1: " + ei1.id);
-				Debug.println("evaluete", "pre1: " + ei1.str());
+				if (ei1 != null) {
+					Debug.println("evaluete", "pre1: " + ei1.id);
+					Debug.println("evaluete", "pre1: " + ei1.str());
+				}
 			}
-		}
 
 
-		// デバッグ用情報のみ事前出力 1
-		for (P020___AbstractElement ei1 : positionSortedElements) {
-			if (!(ei1 instanceof P010___ControlElement)) {
-				continue;
+			// デバッグ用情報のみ事前出力 1
+			for (P020___AbstractElement ei1 : positionSortedElements) {
+				if (!(ei1 instanceof P010___ControlElement)) {
+					continue;
+				}
+				P010___ControlElement c1 = (P010___ControlElement)ei1;
+
+				Debug.println("evaluete", "pre: contol block --- " + c1.id);
 			}
-			P010___ControlElement c1 = (P010___ControlElement)ei1;
-
-			Debug.println("evaluete", "pre: contol block --- " + c1.id);
 		}
 
 		// elementがどのcontrolにぶら下がるかを調べる
@@ -618,6 +627,9 @@ public class NetworkDataModel {
 				}
 			}
 		}
+
+		// 延長でconnector の型チェックを呼び出す。
+		this.typeCheck();
 	}
 
 	Value evaluateOneGraph(P021____AbstractGraphNodeElement headElement) throws CaliculateException {
@@ -749,6 +761,41 @@ public class NetworkDataModel {
 		}
 
 		OutputGraphicsWindow.refresh();
+	}
+
+
+	void typeCheckForOneGraph(P021____AbstractGraphNodeElement headElement) {
+		Debug.println("typeCheckForOneGraph called");
+
+		ArrayList<P021____AbstractGraphNodeElement> eList = graphGroup.get(headElement.groupHead);
+		for(P021____AbstractGraphNodeElement element : eList) {
+			element.typeCheck();
+		}
+	}
+
+	/**
+	 * 各ノードへの入力の妥当性を検査する。
+	 * (各ノードの入力型がおかしいかどうかを見ておきたい)
+	 *
+	 * おかしかったかどうか。
+	 * 型は何になるか。
+	 * を見る。
+	 *
+	 * 実際に計算しても良いが、
+	 * 実際の計算だとゼロ除算等の実行時のエラーが発生しうるので、型の検査のみする。
+	 *
+	 */
+	public void typeCheck() {
+		Debug.println("静的な型チェック");
+
+		for (P020___AbstractElement elementIcon : this.rootElement) {
+			if (elementIcon instanceof P021____AbstractGraphNodeElement) {
+				typeCheckForOneGraph((P021____AbstractGraphNodeElement)elementIcon);
+			}
+			else if(elementIcon instanceof P010___ControlElement) {
+				// evaluateControl((P010___ControlElement)elementIcon);
+			}
+		}
 	}
 
 	public void load() {

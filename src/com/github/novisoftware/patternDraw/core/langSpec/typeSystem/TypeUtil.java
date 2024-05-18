@@ -1,5 +1,6 @@
 package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 
 public class TypeUtil {
 	public static class TwoValues {
@@ -58,5 +59,40 @@ public class TypeUtil {
 		}
 
 		return null;
+	}
+
+	static public ValueType upCastValueType(ValueType a, ValueType b) {
+		if (a.equals(b)) {
+			return a;
+		}
+
+		if (ValueType.INTEGER.equals(a)) {
+			if (ValueType.FLOAT.equals(b)) {
+				return ValueType.FLOAT;
+			}
+			if (ValueType.NUMERIC.equals(b)) {
+				return ValueType.NUMERIC;
+			}
+		}
+
+		if (ValueType.NUMERIC.equals(a)) {
+			if (ValueType.INTEGER.equals(b)) {
+				return ValueType.NUMERIC;
+			}
+			if (ValueType.FLOAT.equals(b)) {
+				return ValueType.FLOAT;
+			}
+		}
+
+		if (ValueType.FLOAT.equals(a)) {
+			if (ValueType.INTEGER.equals(b)) {
+				return ValueType.FLOAT;
+			}
+			if (ValueType.NUMERIC.equals(b)) {
+				return ValueType.FLOAT;
+			}
+		}
+
+		return ValueType.NONE;
 	}
 }

@@ -164,7 +164,7 @@ TYPE: BOOLEAN
 HEIGHT: 35
 DISPNAME: 定数/ブール値 true
 DESCRIPTION: ブール値の定数値です。
-true;定数 :as-numeric
+true;定数 :as-boolean
 -->RPN
 ---->DEFINE
 
@@ -174,7 +174,7 @@ TYPE: BOOLEAN
 HEIGHT: 35
 DISPNAME: 定数/ブール値 false
 DESCRIPTION: ブール値の定数値です。
-false;定数 :as-numeric
+true;定数 :as-boolean
 -->RPN
 ---->DEFINE
 

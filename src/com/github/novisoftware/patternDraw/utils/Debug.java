@@ -5,6 +5,8 @@ package com.github.novisoftware.patternDraw.utils;
  *
  */
 public class Debug {
+	public static boolean enable = true;
+
 	static boolean kindFilter( String s ) {
 		// if( s.indexOf( "sorter" )  != -1 ) return false;
 		// if( s.indexOf( "grep" )  != -1 ) return false;

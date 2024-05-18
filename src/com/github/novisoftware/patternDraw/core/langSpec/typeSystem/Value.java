@@ -41,7 +41,8 @@ public class Value {
 		POS_LIST,
 		LINE_LIST,
 		ANY,
-		NONE
+		NONE,
+		UNDEF
 	}
 
 	public ValueType valueType;
@@ -79,6 +80,12 @@ public class Value {
 			return "任意";
 		}
 		if (ValueType.NONE.equals(valueType)) {
+			return "値なし";
+		}
+		if (ValueType.UNDEF.equals(valueType)) {
+			// TODO
+			// UNDEFは、入力が無くて決まらない等で使用する。
+			// 表示までされることがあるかどうか。
 			return "値なし";
 		}
 

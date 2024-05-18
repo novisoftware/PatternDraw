@@ -10,6 +10,7 @@ import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
@@ -111,6 +112,55 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 	}
 
+	/**
+	 * 入力によって結果が変わる場合がある。
+	 * この変数は入力に応じた型を記録する。
+	 *
+	 */
+	public ValueType actualValueTypeResult;
+
+	public void typeCheck() {
+		P021____AbstractGraphNodeElement e = this;
+
+		/*
+		 * この演算子への入力の妥当性の検査
+		 */
+		for (P010___ConnectTerminal connector : this.connectors) {
+			P021____AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
+			if (src == null || ValueType.UNDEF.equals(src.actualValueTypeResult)) {
+				// 入力がない場合や、入力もとで既にエラーになっている場合は、
+				// エラー表示しても仕方がないので(自明のため)、エラー検出扱いしない。
+				// （端子に対するエラーとはしない）
+				connector.isTypeChekResultValid = true;
+				connector.typeChekErrorMessage = null;
+			}
+			else if (Value.isAcceptable(src.actualValueTypeResult, connector.valueType) ) {
+				// 入力が妥当だと判定した場合
+				connector.isTypeChekResultValid = true;
+				connector.typeChekErrorMessage = null;
+			}
+			else {
+				// 入力が妥当でないと判定した場合
+				connector.isTypeChekResultValid = false;
+				connector.typeChekErrorMessage = "入力: " +  Value.valueTypeToDescString(src.actualValueTypeResult) +
+						"(受付可能: " + Value.valueTypeToDescString(connector.valueType) + ")";
+				Debug.println("INVALID INPUT TYPE: " +  connector.typeChekErrorMessage);
+			}
+		}
+
+		/*
+		 * この演算子の型
+		 */
+		if (this instanceof P022_____RpnGraphNodeElement) {
+			actualValueTypeResult = ((P022_____RpnGraphNodeElement)this).evaluateValueType();
+		} else if (this instanceof P023_____FncGraphNodeElement) {
+			// TODO
+			// 現時点では FNC node element には、入力に応じて返り値が変化する機能なし
+			actualValueTypeResult = this.getValueType();
+		}
+	}
+
+
 	public abstract void evaluateExactly() throws CaliculateException;
 
 	static StringRectUtil str2rect = new StringRectUtil();
@@ -129,26 +179,14 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			for (P010___ConnectTerminal connector : this.connectors) {
 				P021____AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
 				if (src != null) {
-					ValueType valueType = src.getValueType();
-					// RPNノードで、変数の値の場合は、変数・パラメタ定義から ValueType を取得する
-					// 取得できたら上書きする
-					if (src instanceof P022_____RpnGraphNodeElement) {
-						P022_____RpnGraphNodeElement r = (P022_____RpnGraphNodeElement)src;
-						ArrayList<ParameterDefine> params = this.editPanel.networkDataModel.paramDefList;
-						ValueType work = r.getRpn().getValueType(this.editPanel.networkDataModel.variables, params);
-						if (! work.equals(ValueType.NONE)) {
-							valueType = work;
-						}
-					}
-
-					if (Value.isAcceptable(valueType, connector.valueType) ) {
+					if (connector.isTypeChekResultValid) {
 						g2.setColor(Color.GRAY);
 					}
 					else {
+						// エラー時
 						g2.setColor(Color.RED);
-
-						Debug.println("PAINT", "invalid type src:" + src.getValueType()  + " receive:" + connector.valueType);
 					}
+
 					// 線分描画
 					// 直線
 					// g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
@@ -170,6 +208,15 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 					CubicCurve2D.Double curve1 = new CubicCurve2D.Double(
 							x0,y0,x1a,y1a,x1b,y1b,x2,y2);
 					g2.draw(curve1);
+
+
+					if (! connector.isTypeChekResultValid) {
+						double x1 = (x0 + x2) / 2;
+						double y1 = (y0 + y2) / 2;
+						g2.setFont(GuiPreference.ICON_BOX_FONT);
+						g2.drawString(connector.typeChekErrorMessage, (int)x1, (int)y1);
+					}
+
 				}
 			}
 

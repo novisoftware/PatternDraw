@@ -32,6 +32,15 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	private int index;
 	private int nIndex;
 
+	/**
+	 * 入力された型が妥当な場合 true
+	 * 入力された型が妥当でない場合 false
+	 * を設定する。
+	 * 初期値はtrue。エラーメッセージの代入と同時にfalseにする。
+	 */
+	public boolean isTypeChekResultValid = true;
+	public String typeChekErrorMessage = null;
+
 	public P010___ConnectTerminal(P021____AbstractGraphNodeElement abstractGraphNodeElement,
 			String paraName,
 			ValueType valueType,

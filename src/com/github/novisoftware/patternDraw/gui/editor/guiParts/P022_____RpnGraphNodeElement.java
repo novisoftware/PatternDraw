@@ -9,6 +9,7 @@ import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
@@ -130,6 +131,19 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	@Override
 	public void evaluateExactly() throws CaliculateException {
 		this.workValue = this.getRpn().doCaliculate(this, this.editPanel.networkDataModel.variables);
+	}
+
+	/**
+	 * どのような型になるのかを判定する
+	 *
+	 * @return
+	 */
+	public ValueType evaluateValueType() {
+		return this.getRpn().evaluateValueType(this,
+				this.editPanel.networkDataModel.variables,
+				this.editPanel.networkDataModel.paramDefList,
+				this.editPanel.networkDataModel.workCheckTypeVariables
+				);
 	}
 
 	@Override

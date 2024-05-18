@@ -66,6 +66,8 @@ public class Rpn {
 			}
 			else if (op.equals(":as-numeric")) {
 			}
+			else if (op.equals(":as-boolean")) {
+			}
 			else if (op.equals(":as-display-string")) {
 				// この ":as-display-string" があったら、スタックトップが表示用文字列で確定
 				break;
@@ -87,58 +89,6 @@ public class Rpn {
 	public boolean isComment() {
 		return isComment;
 	}
-
-	public ValueType getValueType(HashMap<String, Value> variables, ArrayList<ParameterDefine> params) {
-		Stack<String> stack = new Stack<>();
-		Stack<String> stringStack = new Stack<>();
-
-		String varName = null;
-		String opStr = null;
-
-		for(String op : this.array) {
-			if (op.startsWith("'")) {
-				stack.push( op.substring(1));
-			}
-			else if (op.equals(":set-variable")) {
-				opStr = op;
-				varName = stack.pop();
-
-				return ValueType.NONE;
-			}
-			else if (op.equals(":recall-variable")) {
-				opStr = op;
-				varName = stack.pop();
-				break;
-			}
-			else if (op.equals(":as-numeric")) {
-				return ValueType.NONE;
-			}
-			else if (op.equals(":as-boolean")) {
-				return ValueType.BOOLEAN;
-			}
-			else {
-				stack.push(op.replaceAll(";.*", ""));
-			}
-		}
-
-		if (varName == null) {
-			return ValueType.NONE;
-		}
-
-		Value var = variables.get(varName);
-		if (var != null) {
-			return var.valueType;
-		}
-		for (ParameterDefine p : params) {
-			if (p.name.equals(varName)) {
-				return p.valueType;
-			}
-		}
-
-		return ValueType.NONE;
-	}
-
-
 
 	/**
 	 * @param formula セットする formula
@@ -216,6 +166,166 @@ public class Rpn {
 
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
+
+
+	public ValueType evaluateValueType(P022_____RpnGraphNodeElement ele,
+			HashMap<String, Value> variables,
+			ArrayList<ParameterDefine> paramDefList,
+			HashMap<String, ValueType> workCheckTypeVariables) {
+		Stack<ValueType> stack = new Stack<>();
+		Stack<String> stringStack = new Stack<>();
+
+		Debug.println("");
+		Debug.println("::CHECK RPN::   " + this.formula);
+
+		// ArrayList<String> array = Rpn.s2a(this.getRpnString());
+		for (String s : array) {
+
+			/**
+			 * 端子についているパラメーターを取得
+			 */
+			String paraName = getParamName(s);
+			if (paraName != null) {
+				// ワードにパラメーター名がある。
+				// 端子を作ったりするときに使う。
+				Debug.println("IN LOOP paraName = " + paraName);
+
+				P021____AbstractGraphNodeElement src = ele.paramMapObj.get(paraName);
+				if (src == null) {
+					// 端子にパラメーターが設定されていない。
+					// (該当ノードを計算エラーにして、計算を打ち切らせるような場合)
+
+					// TODO: 端子がないとしても、ある程度は限定できるはずなので、それを考慮する。
+					// BOOL → SCALAR は、全然ダメとか。
+					return ValueType.UNDEF;
+				}
+				// if (src instanceof P022_____RpnGraphNodeElement) {
+				//	stack.push(((P022_____RpnGraphNodeElement)src));
+				// }
+
+				Debug.println("para valueType = " + src.actualValueTypeResult );
+
+				stack.push(src.actualValueTypeResult);
+				continue;
+			}
+
+			if (s.equals(":print")) {
+				return ValueType.NONE;
+			}
+			else if (s.equals(":input:integer")) {
+				return ValueType.INTEGER;
+			}
+			else if (s.equals(":set-variable")) {
+				String name = stringStack.pop();
+				ValueType valueType = stack.pop();
+				Debug.println(":set-variable " + name + "  valueType = " + valueType);
+
+				workCheckTypeVariables.put(name, valueType);
+				return ValueType.NONE;
+			}
+			else if (s.equals(":recall-variable")) {
+				String name = stringStack.pop();
+				Debug.println(":recall-variable " + name + "");
+
+				ValueType valueType = workCheckTypeVariables.get(name);
+				if (valueType != null) {
+					Debug.println("    変数名 - ValueType のハッシュ表の中に存在: " + valueType);
+					stack.push(valueType);
+				}
+				else {
+					// 初期パラメーターを参照する場合
+					boolean isDone = false;
+					for (ParameterDefine def : paramDefList) {
+						if (def.name.equals(name)) {
+							isDone = true;
+							stack.push(def.valueType);
+
+							Debug.println("変数 " + name + " を参照(型は " + def.valueType + ")");
+						}
+					}
+
+					if (! isDone) {
+						Debug.println("    ハッシュ表の中にも、初期パラメーターの中にもない");
+						// TODO 見つからないのは、この演算子のエラー。
+						// エラーを記録するコードを入れる。
+
+						stack.push(ValueType.UNDEF);
+					}
+				}
+			}
+			else if (s.equals(":as-display-string")) {
+				// ":as-display-string" は、表示用の文字列を指定する。
+				// 計算の際はオペランドを捨て、使用しない。
+				stack.pop();
+			}
+			else if (s.equals(":as-numeric")) {
+				if (ele.getValueType().equals(Value.ValueType.INTEGER)) {
+					stack.push(ValueType.INTEGER);
+				}
+				else if (ele.getValueType().equals(Value.ValueType.FLOAT)) {
+					stack.push(ValueType.FLOAT);
+				}
+				else if (ele.getValueType().equals(Value.ValueType.NUMERIC )) {
+					stack.push(ValueType.NUMERIC);
+				}
+			}
+			else if (s.equals(":pi")) {
+				stack.push(ValueType.FLOAT);
+			}
+			else if (s.equals(":e")) {
+				stack.push(ValueType.FLOAT);
+			}
+			else if (s.equals(":as-boolean")) {
+				stack.push(ValueType.BOOLEAN);
+			}
+			else if (s.equals(":if")) {
+				ValueType b0 = stack.pop();
+				ValueType a0 = stack.pop();
+				stack.pop();
+
+				stack.push(TypeUtil.upCastValueType(a0, b0));
+			}
+			else if (s.equals("-") || s.equals("/") || s.equals("%") || s.equals("+") || s.equals("*")) {
+				ValueType b0 = stack.pop();
+				ValueType a0 = stack.pop();
+				stack.push(TypeUtil.upCastValueType(a0, b0));
+			}
+			else if (s.equals(">") || s.equals(">=") || s.equals("<") || s.equals("<=") || s.equals("==") || s.equals("!=")) {
+				stack.pop();
+				stack.pop();
+				stack.push(ValueType.BOOLEAN);
+			}
+			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor") || s.equals(":not")
+					|| s.equals(":nand") || s.equals(":nor") || s.equals(":xnor")) {
+				stack.pop();
+				stack.pop();
+				stack.push(ValueType.BOOLEAN);
+			}
+			else if (s.equals(":not")) {
+				stack.pop();
+				stack.push(ValueType.BOOLEAN);
+			}
+			else if (s.startsWith("'")) {
+				stringStack.push( RpnUtil.getRepresent(s.substring(1)) );
+			}
+			else {
+				stack.push(ValueType.STRING);
+			}
+		}
+
+		if (stack.size() > 0) {
+			Debug.println("RPN DETAIL", "result " + stack.peek());
+		}
+		else {
+			Debug.println("RPN DETAIL", "result stack empty.");
+		}
+
+		if (stack.size() > 0) {
+			return stack.pop();
+		}
+
+		return null;
+	}
 
 	public Value doCaliculate(P022_____RpnGraphNodeElement ele, HashMap<String, Value> variables)
 		throws CaliculateException {

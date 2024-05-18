@@ -96,6 +96,13 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	abstract public Value.ValueType getValueType();
 
 	/**
+	 * @return 値の型の UI 用文字列
+	 */
+	public String getValueTypeDescString() {
+		return Value.valueTypeToDescString(this.getValueType());
+	}
+
+	/**
 	 * @return kindString
 	 */
 	public String getKindString() {
