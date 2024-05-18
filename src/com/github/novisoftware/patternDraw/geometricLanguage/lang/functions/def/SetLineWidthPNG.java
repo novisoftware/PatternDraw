@@ -3,14 +3,14 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
+import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueFloat;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.LineWidthSetterPNG;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueFloat;
 
 // set_stroke_width_png
 public class SetLineWidthPNG implements FunctionDefInterface {

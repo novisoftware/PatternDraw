@@ -1,8 +1,8 @@
-package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
 import java.util.ArrayList;
 
-import com.github.novisoftware.patternDraw.geometry.Line;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 
 public class ValueLineList extends Value {
 	public ValueLineList(ArrayList<Line> lineList) {

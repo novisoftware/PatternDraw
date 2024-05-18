@@ -3,10 +3,10 @@ package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 
 
@@ -90,8 +90,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 
 	public void paint(Graphics2D g2, int phase) {
 		if (phase == 1) {
-			g2.setFont(Preference.CONNECTOR_TEXT_FONT);
-			g2.setColor(Preference.CONNECTOR_FILL_COLOR);
+			g2.setFont(GuiPreference.CONNECTOR_TEXT_FONT);
+			g2.setColor(GuiPreference.CONNECTOR_FILL_COLOR);
 			g2.fillOval(node.x, this.getTopY(), RENDER_WIDTH, RENDER_HEIGHT);
 			g2.setColor(Color.BLACK);
 			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
@@ -99,8 +99,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 		}
 		if (phase == 1) {
 			if (this.isOnMouse()) {
-				g2.setFont(Preference.LABEL_FONT);
-				g2.setColor(Preference.TIPS_TEXT_COLOR);
+				g2.setFont(GuiPreference.LABEL_FONT);
+				g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
 
 				g2.drawString(
 						"" + paraName,

@@ -13,6 +13,8 @@ import java.util.Stack;
 
 import javax.swing.JFrame;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.TypeDesc;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
@@ -21,8 +23,6 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderPar
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
-import com.github.novisoftware.patternDraw.geometry.Line;
-import com.github.novisoftware.patternDraw.geometry.Pos;
 import com.github.novisoftware.patternDraw.gui.SettingWindow;
 import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 import com.github.novisoftware.patternDraw.renderer.Renderer;

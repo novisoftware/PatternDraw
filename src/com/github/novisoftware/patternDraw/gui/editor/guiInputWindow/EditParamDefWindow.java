@@ -20,9 +20,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.BooleanChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
@@ -38,7 +38,7 @@ import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel3_messageDisp;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  *
@@ -336,9 +336,9 @@ public class EditParamDefWindow extends JFrame2 {
 			String value = valueParamList[i];
 
 			final JRadioButton radioButton = new JRadioButton(value);
-			radioButton.setFont(Preference.LABEL_FONT);
-			radioButton.setBackground(Preference.BG_COLOR);
-			radioButton.setForeground(Preference.TEXT_COLOR);
+			radioButton.setFont(GuiPreference.LABEL_FONT);
+			radioButton.setBackground(GuiPreference.BG_COLOR);
+			radioButton.setForeground(GuiPreference.TEXT_COLOR);
 
 			valueTypeChangeRadioButtons[i] = radioButton;
 			if (valueTypeList[i].equals(initialValueType)) {
@@ -520,7 +520,7 @@ public class EditParamDefWindow extends JFrame2 {
 			if (this.messageDisp != null) {
 				this.messageDisp.setText(checker.message);
 			}
-			this.setBackground(Preference.BG_COLOR);
+			this.setBackground(GuiPreference.BG_COLOR);
 
 			// リスナーを設定
 			final ValueInputPanel valueInputPanel = this;
@@ -557,8 +557,8 @@ public class EditParamDefWindow extends JFrame2 {
 			}
 
 			// TODO: preferenceに。
-			final Color COLOR_ERROR = Preference.MESSAGE_ERROR_COLOR;
-			final Color COLOR_NORMAL = Preference.TEXT_COLOR;
+			final Color COLOR_ERROR = GuiPreference.MESSAGE_ERROR_COLOR;
+			final Color COLOR_NORMAL = GuiPreference.TEXT_COLOR;
 
 			String text = textField.getText();
 			checker.check(text);

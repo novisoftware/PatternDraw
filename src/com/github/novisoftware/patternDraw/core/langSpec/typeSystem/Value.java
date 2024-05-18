@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
-import com.github.novisoftware.patternDraw.geometry.Line;
-import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 

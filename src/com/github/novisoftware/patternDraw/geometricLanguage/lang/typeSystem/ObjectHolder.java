@@ -2,10 +2,10 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem;
 
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
-import com.github.novisoftware.patternDraw.geometry.Line;
-import com.github.novisoftware.patternDraw.geometry.Pos;
 
 /**
  * これは後で削除する。

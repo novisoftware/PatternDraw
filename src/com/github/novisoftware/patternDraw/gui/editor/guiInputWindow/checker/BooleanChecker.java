@@ -1,6 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker;
 
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
 
 /**
  * 文字列で入力されたブール値のバリデーションチェックをする。

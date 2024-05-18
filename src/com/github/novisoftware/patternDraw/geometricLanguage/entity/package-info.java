@@ -5,4 +5,4 @@
  * @author s.a.d.
  *
  */
-package com.github.novisoftware.patternDraw.geometry;
+package com.github.novisoftware.patternDraw.geometricLanguage.entity;

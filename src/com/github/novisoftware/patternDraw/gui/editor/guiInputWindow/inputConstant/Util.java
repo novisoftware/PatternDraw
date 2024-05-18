@@ -12,15 +12,15 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWi
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class Util {
 	/**
 	 * 入力ウィンドウのOKボタンを作る
 	 */
 	static JButton generateSubmitButton(final EditDiagramPanel editPanel, final AbstractInputConstantWindow tf) {
-		JButton buttonOk = new JButton(Preference.OK_BUTTON_STRING);
-		buttonOk.setFont(Preference.OK_BUTTON_FONT);
+		JButton buttonOk = new JButton(GuiPreference.OK_BUTTON_STRING);
+		buttonOk.setFont(GuiPreference.OK_BUTTON_FONT);
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
@@ -45,8 +45,8 @@ public class Util {
 	 * 入力ウィンドウのCancelボタンを作る
 	 */
 	static JButton generateCancelButton(final EditDiagramPanel editPanel, final AbstractInputConstantWindow tf) {
-		JButton buttonCancel = new JButton(Preference.CANCEL_BUTTON_STRING);
-		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
+		JButton buttonCancel = new JButton(GuiPreference.CANCEL_BUTTON_STRING);
+		buttonCancel.setFont(GuiPreference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -62,8 +62,8 @@ public class Util {
 	 * パラメーター設定ウィンドウのOKボタンを作る
 	 */
 	public static JButton generateSubmitButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
-		JButton buttonOk = new JButton(Preference.OK_BUTTON_STRING);
-		buttonOk.setFont(Preference.OK_BUTTON_FONT);
+		JButton buttonOk = new JButton(GuiPreference.OK_BUTTON_STRING);
+		buttonOk.setFont(GuiPreference.OK_BUTTON_FONT);
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
@@ -84,8 +84,8 @@ public class Util {
 	 * パラメーター設定ウィンドウのCancelボタンを作る
 	 */
 	public static JButton generateCancelButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
-		JButton buttonCancel = new JButton(Preference.CANCEL_BUTTON_STRING);
-		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
+		JButton buttonCancel = new JButton(GuiPreference.CANCEL_BUTTON_STRING);
+		buttonCancel.setFont(GuiPreference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -106,8 +106,8 @@ public class Util {
 	 * (パラメーターを削除する)
 	 */
 	public static JButton generateDeleteButton2(final EditParamDefListWindow caller, final EditParamDefWindow tf) {
-		JButton buttonCancel = new JButton(Preference.DELETE_BUTTON_STRING);
-		buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
+		JButton buttonCancel = new JButton(GuiPreference.DELETE_BUTTON_STRING);
+		buttonCancel.setFont(GuiPreference.CANCEL_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

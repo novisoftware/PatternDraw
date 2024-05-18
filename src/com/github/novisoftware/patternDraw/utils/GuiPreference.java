@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-public class Preference {
+public class GuiPreference {
 	/**
 	 * GUIの文字表示で使いたいフォントのリスト。
 	 * 見つかったものがあればそれを使用する。

@@ -9,8 +9,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.github.novisoftware.patternDraw.core.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
@@ -22,7 +22,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractEl
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  * ダイヤグラム中の定数値の編集を行う
@@ -77,9 +77,9 @@ public class InputConstantScalarWindow extends AbstractInputConstantWindow {
 			String value = valueParamList[i];
 
 			final JRadioButton radioButton = new JRadioButton(value);
-			radioButton.setFont(Preference.LABEL_FONT);
-			radioButton.setBackground(Preference.BG_COLOR);
-			radioButton.setForeground(Preference.TEXT_COLOR);
+			radioButton.setFont(GuiPreference.LABEL_FONT);
+			radioButton.setBackground(GuiPreference.BG_COLOR);
+			radioButton.setForeground(GuiPreference.TEXT_COLOR);
 
 			valueTypeChangeRadioButtons[i] = radioButton;
 			if (valueTypes[i].equals(element.getValueType())) {

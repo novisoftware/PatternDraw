@@ -17,7 +17,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractEl
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class OutputTextWindow extends JFrame2 {
 	public static final int WINDOW_POS_X = EditParamWindow.WINDOW_POS_X;
@@ -55,7 +55,7 @@ public class OutputTextWindow extends JFrame2 {
 
 	private OutputTextWindow() {
 		textArea = new JTextArea();
-		textArea.setFont(Preference.CONSOLE_FONT);
+		textArea.setFont(GuiPreference.CONSOLE_FONT);
 		JScrollPane scrollPane = new JScrollPane(textArea);
 //		p.add(a);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

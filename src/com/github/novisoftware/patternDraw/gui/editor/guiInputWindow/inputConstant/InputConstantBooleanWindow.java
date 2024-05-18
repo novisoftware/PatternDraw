@@ -9,7 +9,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import com.github.novisoftware.patternDraw.core.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
@@ -17,7 +17,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraph
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  * ダイヤグラム中の定数値の編集を行う

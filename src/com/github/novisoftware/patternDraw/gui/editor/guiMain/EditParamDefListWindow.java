@@ -18,13 +18,13 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.EditParamDefWindow;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  * パラメーター一覧の定義ウィンドウ。
@@ -77,8 +77,8 @@ public class EditParamDefListWindow extends JFrame2 {
 		// レイアウト
 		jp = new JPanel();
 		jp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		jp.setBackground(Preference.BG_COLOR);
-		jp.setForeground(Preference.TEXT_COLOR);
+		jp.setBackground(GuiPreference.BG_COLOR);
+		jp.setForeground(GuiPreference.TEXT_COLOR);
 
 		this.add(jp);
 		// Container pane = this.getContentPane();
@@ -144,8 +144,8 @@ public class EditParamDefListWindow extends JFrame2 {
 	JButton generateAddButton() {
 		final EditParamDefListWindow thisFrame = this;
 
-		JButton buttonCancel = new JButton(Preference.ADD_BUTTON_STRING);
-		buttonCancel.setFont(Preference.ADD_BUTTON_FONT);
+		JButton buttonCancel = new JButton(GuiPreference.ADD_BUTTON_STRING);
+		buttonCancel.setFont(GuiPreference.ADD_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

@@ -10,17 +10,17 @@ import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringRectUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringWidthUtil;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public abstract class P021____AbstractGraphNodeElement extends P020___AbstractElement {
 	/**
@@ -125,7 +125,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		// 結線
 		if (phase == 0) {
 			// 「端子」と結線されるよう表現する
-			g2.setStroke(Preference.STROKE_BOLD);
+			g2.setStroke(GuiPreference.STROKE_BOLD);
 			for (P010___ConnectTerminal connector : this.connectors) {
 				P021____AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
 				if (src != null) {
@@ -175,7 +175,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 
 			// 単連結グラフごとに、実行順を数字で表示する
 			if (this.groupHead != null) {
-				g2.setFont(Preference.GROUP_ID_FONT);
+				g2.setFont(GuiPreference.GROUP_ID_FONT);
 				g2.setColor(Color.GRAY);
 
 				int strWidth = strUtil.strWidth("" + this.groupHead, g2);
@@ -189,7 +189,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 
 		// 箱
 		if (phase == 1) {
-			g2.setFont(Preference.ICON_BOX_FONT);
+			g2.setFont(GuiPreference.ICON_BOX_FONT);
 			if (! (e.getKindId() == KindId.COMMENT)) {
 				g2.setColor(Color.GRAY);
 				String boxTitle = e.getKindString();
@@ -200,10 +200,10 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				g2.drawString(boxTitle, e.x + 30, e.y - 9);
 			}
 
-			g2.setColor(Preference.color);
+			g2.setColor(GuiPreference.color);
 			if (e.getKindId() == KindId.INPUT) {
 				// インタラクティブな入力
-				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, arcWidth, arcHeight);
 
 				BufferedImage image = GuiUtil.getImage(IconImage.EDIT, this);
@@ -214,7 +214,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 			else if (e.getKindId() == KindId.DISPLAY) {
 				// 表示
-				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 
 				BufferedImage image = GuiUtil.getImage(IconImage.DISPLAY, this);
@@ -222,7 +222,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 			else if (e.getKindId() == KindId.CONSTANT ) {
 				// 定数
-				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 
 				g2.setColor(Color.BLACK);
@@ -232,21 +232,21 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			else if (e.getKindId() == KindId.COMMENT) {
 				// コメント
 				if (this.isOnMouse()) {
-					g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+					g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 					g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, arcWidth, arcHeight);
 				}
 
-				g2.setColor(Preference.COMMENT_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.COMMENT_BACKGROUND_COLOR);
 				g2.fillRect(e.x + 16, e.y + e.h -3, e.w, 3);
 
 				g2.setColor(Color.BLACK);
-				g2.setFont(Preference.COMMENT_FONT);
+				g2.setFont(GuiPreference.COMMENT_FONT);
 				g2.drawString(e.getRepresentExpression()  //  t.getRpnString().replaceAll(";.*", "")
 								, e.x + 30, e.y + e.h / 2 + 10);
 			}
 			else if ( e.getKindId() == KindId.VARIABLE_SET ) {
 				// 変数を設定
-				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 				BufferedImage image = GuiUtil.getImage(IconImage.VAR_SET, this);
 				g2.drawImage(image, e.x + 26, e.y, null);
@@ -257,7 +257,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 			else if ( e.getKindId() == KindId.VARIABLE_REFER ) {
 				// 変数を参照
-				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, arcWidth, arcHeight);
 				BufferedImage image = GuiUtil.getImage(IconImage.VAR_REFER, this);
 				g2.drawImage(image, e.x + 26, e.y, null);
@@ -268,7 +268,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 			else if ( e.getKindId() == KindId.OPERATOR) {
 				// 演算子
-				g2.setColor(Preference.ICON_BACKGROUND_COLOR);
+				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillOval(e.x + 16, e.y, e.w, e.h);
 
 				String printMark = e.getRepresentExpression();
@@ -284,9 +284,9 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 
 				int r = e.h * 2 / 3;
 
-				g2.setStroke(Preference.STROKE_BOLD);
+				g2.setStroke(GuiPreference.STROKE_BOLD);
 				g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, r, r);
-				g2.setColor(Preference.ICON_BORDER_COLOR);
+				g2.setColor(GuiPreference.ICON_BORDER_COLOR);
 //				g2.drawOval(t.x, t.y, t.w, t.h);
 				g2.drawRoundRect(e.x + 12, e.y, e.w, e.h, r, r);
 
@@ -301,19 +301,19 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 
 			// コネクタ用の端子
-			g2.setStroke(Preference.STROKE_PLAIN);
+			g2.setStroke(GuiPreference.STROKE_PLAIN);
 			for (P010___ConnectTerminal connector : connectors) {
 				connector.paint(g2, phase);
 			}
 
 			if (this.editPanel.isVisibleDebugInfo) {
-				g2.setFont(Preference.ICON_BOX_FONT);
+				g2.setFont(GuiPreference.ICON_BOX_FONT);
 				g2.setColor(Color.RED);
 				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
 			}
 
 			if (this.isError) {
-				g2.setFont(Preference.ICON_BOX_FONT);
+				g2.setFont(GuiPreference.ICON_BOX_FONT);
 				BufferedImage image = GuiUtil.getImage2(IconImage.MESSAGE, this);
 				g2.drawImage(image, e.x + 40, e.y - 60, null);
 				g2.setColor(Color.BLACK);

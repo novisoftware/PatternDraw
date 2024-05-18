@@ -1,10 +1,10 @@
-package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
 import java.util.ArrayList;
 
-import com.github.novisoftware.patternDraw.geometry.Line;
-import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 public class ValuePosList extends Value {
 	public ValuePosList(ArrayList<Pos> p) {
 		super(ValueType.POS_LIST);

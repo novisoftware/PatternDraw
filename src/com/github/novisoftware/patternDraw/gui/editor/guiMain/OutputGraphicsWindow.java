@@ -28,7 +28,7 @@ import com.github.novisoftware.patternDraw.renderer.Renderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 import com.github.novisoftware.patternDraw.svg.SvgUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class OutputGraphicsWindow extends JFrame2 {
 	public static final int WINDOW_POS_X = 700;

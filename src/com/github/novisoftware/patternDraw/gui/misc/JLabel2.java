@@ -6,7 +6,7 @@ import java.awt.RenderingHints;
 
 import javax.swing.JLabel;
 
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  * JLabelの見た目を変更したもの。
@@ -14,7 +14,7 @@ import com.github.novisoftware.patternDraw.utils.Preference;
 public class JLabel2 extends JLabel {
 	public JLabel2(String text) {
 		super(text);
-		this.setFont(Preference.LABEL_FONT);
+		this.setFont(GuiPreference.LABEL_FONT);
 	}
 
 	@Override

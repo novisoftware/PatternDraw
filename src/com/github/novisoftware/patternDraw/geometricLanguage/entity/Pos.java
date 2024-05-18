@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometry;
+package com.github.novisoftware.patternDraw.geometricLanguage.entity;
 
 import java.util.ArrayList;
 

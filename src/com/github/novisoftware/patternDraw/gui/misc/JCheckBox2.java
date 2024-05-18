@@ -6,22 +6,22 @@ import java.awt.RenderingHints;
 
 import javax.swing.JCheckBox;
 
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class JCheckBox2 extends JCheckBox {
 	public JCheckBox2() {
 		super();
 
-		this.setBackground(Preference.BG_COLOR);
-	    this.setForeground(Preference.TEXT_COLOR);
+		this.setBackground(GuiPreference.BG_COLOR);
+	    this.setForeground(GuiPreference.TEXT_COLOR);
 	}
 
 	public JCheckBox2(String s) {
 		super(s);
 
-		this.setBackground(Preference.BG_COLOR);
-	    this.setForeground(Preference.TEXT_COLOR);
-		this.setFont(Preference.LABEL_FONT);
+		this.setBackground(GuiPreference.BG_COLOR);
+	    this.setForeground(GuiPreference.TEXT_COLOR);
+		this.setFont(GuiPreference.LABEL_FONT);
 	}
 
 	@Override

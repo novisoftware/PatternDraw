@@ -11,7 +11,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class JFrame2 extends JFrame {
 	/**
@@ -47,14 +47,14 @@ public class JFrame2 extends JFrame {
 
 		// ウィンドウタイトルバーのアイコンを設定(Windows向け)
 		try {
-			this.setIconImage(ImageIO.read(this.getClass().getResource(Preference.ICON_IMAGE_PATH)));
+			this.setIconImage(ImageIO.read(this.getClass().getResource(GuiPreference.ICON_IMAGE_PATH)));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 		Container contentPane = getContentPane();
-	    contentPane.setBackground(Preference.BG_COLOR);
-	    contentPane.setForeground(Preference.TEXT_COLOR);
+	    contentPane.setBackground(GuiPreference.BG_COLOR);
+	    contentPane.setForeground(GuiPreference.TEXT_COLOR);
 	}
 
 	protected void addHorizontalRule(Container c, int width) {

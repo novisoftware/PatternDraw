@@ -23,8 +23,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.core.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
@@ -32,7 +32,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractEl
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  *
@@ -379,8 +379,8 @@ public class InputOtherTypeWindow extends JFrame2 {
 				}
 			});
 
-			buttonOk.setFont(Preference.OK_BUTTON_FONT);
-			buttonCancel.setFont(Preference.CANCEL_BUTTON_FONT);
+			buttonOk.setFont(GuiPreference.OK_BUTTON_FONT);
+			buttonCancel.setFont(GuiPreference.CANCEL_BUTTON_FONT);
 
 			this.setLayout(new GridLayout(1, 3));
 			this.add(buttonOk);

@@ -3,7 +3,7 @@ package com.github.novisoftware.patternDraw.svg;
 import java.util.ArrayList;
 
 import com.github.novisoftware.patternDraw.Main;
-import com.github.novisoftware.patternDraw.geometry.Pos;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 
 public class SvgInstruction {
 	private final double ZOOM_SVG = 300;

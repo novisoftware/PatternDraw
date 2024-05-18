@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 

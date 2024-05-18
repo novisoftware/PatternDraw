@@ -29,15 +29,15 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Int2Double;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueBoolean;
-import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.BooleanChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
@@ -49,7 +49,7 @@ import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 
 /**
@@ -72,10 +72,10 @@ public class EditParamWindow extends JFrame2 {
 
 	static class CheckMessageLabel extends JLabel2 {
 		/** エラー時の文字色 */
-		private final Color COLOR_ERROR = Preference.MESSAGE_ERROR_COLOR;
+		private final Color COLOR_ERROR = GuiPreference.MESSAGE_ERROR_COLOR;
 		/** 正常時の文字色 */
-		private final Color COLOR_NORMAL = Preference.TEXT_COLOR;
-		private final Font MESSAGE_DISP_FONT = Preference.MESSAGE_DISP_FONT;
+		private final Color COLOR_NORMAL = GuiPreference.TEXT_COLOR;
+		private final Font MESSAGE_DISP_FONT = GuiPreference.MESSAGE_DISP_FONT;
 
 		/**
 		 * チェック処理
@@ -226,16 +226,16 @@ public class EditParamWindow extends JFrame2 {
 
 	static class EditParamPanel extends JPanel {
 		EditParamPanel() {
-		    this.setBackground(Preference.BG_COLOR);
-		    this.setForeground(Preference.TEXT_COLOR);
+		    this.setBackground(GuiPreference.BG_COLOR);
+		    this.setForeground(GuiPreference.TEXT_COLOR);
 	    }
 	}
 
 
 	static class SubPanel extends JPanel {
 		SubPanel() {
-		    this.setBackground(Preference.BG_COLOR);
-		    this.setForeground(Preference.TEXT_COLOR);
+		    this.setBackground(GuiPreference.BG_COLOR);
+		    this.setForeground(GuiPreference.TEXT_COLOR);
 		    this.setLayout(new FlowLayout(FlowLayout.LEADING));
 	    }
 	}
@@ -447,8 +447,8 @@ public class EditParamWindow extends JFrame2 {
 
 		SubPanel subPanel8 = new SubPanel();
 		pane.add(subPanel8);
-		JButton buttonOk = new JButton(Preference.RUN_BUTTON_STRING);
-		buttonOk.setFont(Preference.OK_BUTTON_FONT);
+		JButton buttonOk = new JButton(GuiPreference.RUN_BUTTON_STRING);
+		buttonOk.setFont(GuiPreference.OK_BUTTON_FONT);
 		subPanel8.add(buttonOk);
 		SubPanel subPanel9 = new SubPanel();
 		pane.add(subPanel9);

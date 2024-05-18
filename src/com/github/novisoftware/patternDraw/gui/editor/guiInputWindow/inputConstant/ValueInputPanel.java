@@ -12,7 +12,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Abs
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.Preference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 class ValueInputPanel extends JPanel {
 	final AbstractInputConstantWindow frame;
@@ -44,7 +44,7 @@ class ValueInputPanel extends JPanel {
 		this.add(new JLabel2(comment));
 		this.add(this.textField);
 		this.frame.messageDisp.setText(checker.message);
-		this.setBackground(Preference.BG_COLOR);
+		this.setBackground(GuiPreference.BG_COLOR);
 
 		// リスナーを設定
 		final ValueInputPanel thisObj = this;
