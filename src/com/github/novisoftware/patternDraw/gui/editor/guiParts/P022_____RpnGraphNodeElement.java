@@ -5,9 +5,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
-import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
-import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
+import com.github.novisoftware.patternDraw.core.CaliculateException;
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
+import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;

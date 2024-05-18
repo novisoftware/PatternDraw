@@ -12,12 +12,12 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInter
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
-import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.core.Rpn;
+import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;

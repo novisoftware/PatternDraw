@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
-import com.github.novisoftware.patternDraw.gui.editor.core.NetworkDataModel;
-import com.github.novisoftware.patternDraw.gui.editor.core.Rpn;
-import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
+import com.github.novisoftware.patternDraw.core.Rpn;
+import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.core.langSpec.typeSystem.ValueNumeric;

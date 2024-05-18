@@ -3,7 +3,7 @@ package com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConst
 import java.awt.Container;
 import java.awt.FlowLayout;
 
-import com.github.novisoftware.patternDraw.gui.editor.core.RpnUtil;
+import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;

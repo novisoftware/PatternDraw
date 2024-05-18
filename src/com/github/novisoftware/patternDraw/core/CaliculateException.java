@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.core;
+package com.github.novisoftware.patternDraw.core;
 
 /**
  * Rpnの計算エラー情報を保持する。

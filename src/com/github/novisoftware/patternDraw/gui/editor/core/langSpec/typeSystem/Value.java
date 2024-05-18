@@ -5,9 +5,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.geometry.Line;
 import com.github.novisoftware.patternDraw.geometry.Pos;
-import com.github.novisoftware.patternDraw.gui.editor.core.CaliculateException;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 
