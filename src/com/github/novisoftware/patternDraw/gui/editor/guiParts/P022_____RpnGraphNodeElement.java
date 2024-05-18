@@ -41,7 +41,6 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		System.out.println("rpn string = " + a[8]);
 
 		this.setRpnString(a[8]);
-		buildParameterList(this.getRpnString());
 	}
 
 	public String str() {
@@ -57,8 +56,14 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	 */
 	private Rpn rpn;
 
-	public void setRpnString (String rpnString) {
+	public void setRpnString(String rpnString) {
 		this.rpn = new Rpn(rpnString, this.editPanel.networkDataModel);
+		buildParameterList(this.getRpnString());
+	}
+
+	public void setRpn(Rpn r) {
+		this.rpn = r;
+		buildParameterList(this.getRpnString());
 	}
 
 	public Rpn getRpn() {

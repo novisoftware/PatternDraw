@@ -123,6 +123,16 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 		this.kindId = P020___AbstractElement.string2kind.get(kindString);
 	}
 
+	/**
+	 * @param kindId
+	 *            セットするkindId
+	 */
+	public void setKindId(KindId kindId) {
+		this.kindString =  P020___AbstractElement.kind2string.get(kindId);
+		this.kindId = kindId;
+	}
+
+
 	public KindId getKindId() {
 		return kindId;
 	}

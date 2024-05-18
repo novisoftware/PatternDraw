@@ -17,6 +17,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
@@ -38,6 +39,38 @@ public class ContextMenu extends JPopupMenu {
 		JMenuItem menuItem;
 
 		if (icon != null) {
+			if (icon instanceof P020___AbstractElement) {
+				P020___AbstractElement ti = (P020___AbstractElement) icon;
+
+				// 変数参照を取得
+				if (KindId.VARIABLE_SET.equals(ti.getKindId())) {
+					menuItem = new JMenuItem("変数参照を取得");
+					menuItem.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent ev) {
+							P020___AbstractElement c = ti.getCopy();
+							c.y = ti.y + ti.h + 3;
+							c.id = editPanel.networkDataModel.generateUniqueName(c.id);
+
+							c.setKindId(KindId.VARIABLE_REFER);
+
+							P022_____RpnGraphNodeElement r =
+							(P022_____RpnGraphNodeElement)c;
+							r.setRpn(r.getRpn().convSetToRecallVariable());
+
+							editPanel.networkDataModel.getElements().add(c);
+							// 注: 複製では単連結グラフが増えるため必要。
+							editPanel.networkDataModel.analyze();
+							editPanel.repaint();
+						}
+					});
+					this.add(menuItem);
+					this.addSeparator();
+				}
+			}
+		}
+
+		/*
+		if (icon != null) {
 			if (icon instanceof P022_____RpnGraphNodeElement) {
 				menuItem = new JMenuItem("テスト");
 				menuItem.addActionListener(new ActionListener() {
@@ -47,6 +80,7 @@ public class ContextMenu extends JPopupMenu {
 				this.add(menuItem);
 			}
 		}
+		*/
 
 		if (icon != null) {
 			if (icon instanceof P022_____RpnGraphNodeElement) {
@@ -80,7 +114,6 @@ public class ContextMenu extends JPopupMenu {
 				this.add(menuItem);
 			}
 		}
-
 		if (icon != null) {
 			if (icon instanceof P020___AbstractElement) {
 				P020___AbstractElement ti = (P020___AbstractElement) icon;

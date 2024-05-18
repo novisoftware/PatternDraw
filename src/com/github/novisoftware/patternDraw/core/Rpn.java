@@ -49,6 +49,31 @@ public class Rpn {
 		this.makeDisplayString();
 	}
 
+	public Rpn(ArrayList<String> array, NetworkDataModel networkDataModel) {
+		this.formula = RpnUtil.a2s(array);
+		this.array = array;
+		this.networkDataModel = networkDataModel;
+		this.makeDisplayString();
+	}
+
+
+	public Rpn convSetToRecallVariable() {
+		ArrayList<String> newArray = new ArrayList<String>();
+		for (String s : this.array) {
+			if (s.startsWith("'")) {
+				newArray.add(s.replaceAll(";.*", ""));
+			}
+			if (s.equals(":set-variable")) {
+				newArray.add(":recall-variable");
+			}
+			else {
+				// newArray.add(s);
+			}
+		}
+
+		return new Rpn(newArray, this.networkDataModel);
+	}
+
 	/**
 	 * 表示等に使用する文字列を生成します。
 	 *
