@@ -39,8 +39,10 @@ public class EditDiagramPanel extends JPanel {
 
 	EditDiagramPanel(String filename) {
 		this.networkDataModel = new NetworkDataModel(this, filename);
-		this.networkDataModel.load();
-		this.networkDataModel.analyze();
+		if (filename != null) {
+			this.networkDataModel.load();
+			this.networkDataModel.analyze();
+		}
 
 		MListener listener = new MListener(this);
 		this.addMouseListener(listener);

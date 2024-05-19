@@ -14,6 +14,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow;
@@ -28,6 +29,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 	// ファイル選択ダイアログ
 	static private JFileChooser pngFileChooser = new JFileChooser(".");
 	static private JFileChooser svgFileChooser = new JFileChooser(".");
+	static private JFileChooser saveAsFileChooser = null;
 
 	final EditDiagramPanel editPanel;
 	final EditDiagramWindow editDiagramWindow;
@@ -43,28 +45,130 @@ public class EditDiagramMenuBar extends JMenuBar {
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
 		this.fileMenu.add(open);
+		open.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				// TODO
+				// いまはそもそそもアンドゥバッファもないし、保存済かどうか管理していないけれど、
+				// 未保存の編集があったら聞く
+				if (editPanel.networkDataModel.getFilename() != null) {
+					int confirmResult =
+						JOptionPane.showConfirmDialog(editDiagramWindow,
+                                "現在編集中の内容は消えますがよろしいですか？",
+                                "確認",
+                                JOptionPane.YES_NO_OPTION,
+                                JOptionPane.WARNING_MESSAGE);
+					if (confirmResult != JOptionPane.YES_OPTION) {
+						return;
+					}
+				}
+
+				if (saveAsFileChooser == null) {
+					String oldFilename = editPanel.networkDataModel.getFilename();
+					if (oldFilename != null) {
+						// saveAsFileChooser =  new JFileChooser(new File(oldFilename).getParent());
+						saveAsFileChooser =  new JFileChooser(oldFilename);
+					}
+					else {
+						saveAsFileChooser = new JFileChooser(".");
+					}
+				}
+
+				int selected = saveAsFileChooser.showOpenDialog(editDiagramWindow);
+				if (selected == JFileChooser.APPROVE_OPTION) {
+					File file = saveAsFileChooser.getSelectedFile();
+					if (file == null) {
+						// 選択されなかった場合
+						return;
+					}
+
+					NetworkDataModel newModel = new NetworkDataModel(editDiagramPanel, file.getAbsolutePath());
+					editDiagramPanel.networkDataModel = newModel;
+					editDiagramPanel.networkDataModel.load();
+					editDiagramPanel.networkDataModel.analyze();
+					editDiagramPanel.repaint();
+				}
+			}
+		});
 		JMenuItem overWrite = new JMenuItem("上書き保存");
 		this.fileMenu.add(overWrite);
-		overWrite.addActionListener(new ActionListener() {
+
+		if (editPanel.networkDataModel.getFilename() == null) {
+			overWrite.setEnabled(false);
+		}
+		else {
+			overWrite.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ev) {
+					try {
+						editPanel.networkDataModel.save();
+					} catch (IOException ex) {
+						String message = String.format("保存に失敗しました。\n%s",
+								ex.getMessage());
+						JOptionPane
+								.showMessageDialog(
+										editDiagramWindow,
+										message,
+										"Error",
+										JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+				}
+			});
+		}
+
+		JMenuItem saveAs = new JMenuItem("名前を付けて保存");
+		this.fileMenu.add(saveAs);
+		saveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				try {
-					editPanel.networkDataModel.save();
-				} catch (IOException ex) {
-					String message = String.format("保存に失敗しました。\n%s",
-							ex.getMessage());
-					JOptionPane
-							.showMessageDialog(
-									editDiagramWindow,
-									message,
-									"Error",
-									JOptionPane.ERROR_MESSAGE);
-					return;
+				if (saveAsFileChooser == null) {
+					String oldFilename = editPanel.networkDataModel.getFilename();
+					if (oldFilename != null) {
+						// saveAsFileChooser =  new JFileChooser(new File(oldFilename).getParent());
+						saveAsFileChooser =  new JFileChooser(oldFilename);
+					}
+					else {
+						saveAsFileChooser = new JFileChooser(".");
+					}
+				}
+
+				int selected = saveAsFileChooser.showSaveDialog(editDiagramWindow);
+				if (selected == JFileChooser.APPROVE_OPTION) {
+					File file = saveAsFileChooser.getSelectedFile();
+					if (file == null) {
+						// 選択されなかった場合
+						return;
+					}
+					if (file.exists()) {
+						int confirmResult =
+							JOptionPane.showConfirmDialog(editDiagramWindow,
+	                                "すでにファイルが存在しますが、上書きしますか?",
+	                                "保存",
+	                                JOptionPane.YES_NO_OPTION,
+	                                JOptionPane.WARNING_MESSAGE);
+						if (confirmResult != JOptionPane.YES_OPTION) {
+							return;
+						}
+					}
+					try {
+						editPanel.networkDataModel.setFilename(file.getAbsolutePath());
+						editPanel.networkDataModel.save();
+					} catch (Exception ex) {
+						String message = String.format("保存に失敗しました。\n%s",
+								ex.getMessage());
+						JOptionPane
+								.showMessageDialog(
+										editDiagramWindow,
+										message,
+										"Error",
+										JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					// この動作は要らない?
+					JOptionPane.showMessageDialog(editDiagramWindow, "保存しました。");
 				}
 			}
 		});
 
-		JMenuItem saveAs = new JMenuItem("名前を付けて保存＜注意：まだnop＞");
-		this.fileMenu.add(saveAs);
 		this.fileMenu.addSeparator();
 		JMenuItem saveAsPNG = new JMenuItem("画像をPNG出力");
 		this.fileMenu.add(saveAsPNG);
@@ -73,7 +177,17 @@ public class EditDiagramMenuBar extends JMenuBar {
 				int selected = pngFileChooser.showSaveDialog(editDiagramWindow);
 				if (selected == JFileChooser.APPROVE_OPTION) {
 					File file = pngFileChooser.getSelectedFile();
-
+					if (file.exists()) {
+						int confirmResult =
+							JOptionPane.showConfirmDialog(editDiagramWindow,
+	                                "すでにファイルが存在しますが、上書きしますか?",
+	                                "保存",
+	                                JOptionPane.YES_NO_OPTION,
+	                                JOptionPane.WARNING_MESSAGE);
+						if (confirmResult != JOptionPane.YES_OPTION) {
+							return;
+						}
+					}
 					try {
 						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
 						outputGraphicsWindow.outputPNG(file);
@@ -101,6 +215,17 @@ public class EditDiagramMenuBar extends JMenuBar {
 				int selected = svgFileChooser.showSaveDialog(editDiagramWindow);
 				if (selected == JFileChooser.APPROVE_OPTION) {
 					File file = svgFileChooser.getSelectedFile();
+					if (file.exists()) {
+						int confirmResult =
+							JOptionPane.showConfirmDialog(editDiagramWindow,
+	                                "すでにファイルが存在しますが、上書きしますか?",
+	                                "保存",
+	                                JOptionPane.YES_NO_OPTION,
+	                                JOptionPane.WARNING_MESSAGE);
+						if (confirmResult != JOptionPane.YES_OPTION) {
+							return;
+						}
+					}
 
 					try {
 						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();

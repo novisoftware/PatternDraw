@@ -90,11 +90,6 @@ public class NetworkDataModel {
 	public HashMap<P010___ControlElement, ArrayList<P020___AbstractElement>> controlled_head;
 	public HashMap<P010___ControlElement, ArrayList<P020___AbstractElement>> controlled_all;
 
-
-	public ArrayList<P020___AbstractElement> getElements() {
-		return elements;
-	}
-
 	public NetworkDataModel(EditDiagramPanel editPanel, String filename) {
 		this.editPanel = editPanel;
 		this.filename = filename;
@@ -102,6 +97,18 @@ public class NetworkDataModel {
 		// this.paramVariables = new HashMap<String, Value>();
 		this.variables = new HashMap<String, Value>();
 		this.workCheckTypeVariables = new HashMap<String, ValueType>();
+	}
+
+	public ArrayList<P020___AbstractElement> getElements() {
+		return elements;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getFilename() {
+		return filename;
 	}
 
 	public void debugVariables() {
@@ -153,7 +160,7 @@ public class NetworkDataModel {
 			}
 
 			/*
-			// 0 を返してはいけない。オブジェクトが同一視される
+			// 位置だけで見て 0 を返してはいけない。オブジェクトが同一視される
 			// ★ TODO
 			// 以下でいいのかどうか。 return 0 にする場面が必要かどうか検討。
 			return 0;

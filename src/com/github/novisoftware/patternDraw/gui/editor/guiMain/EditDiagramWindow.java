@@ -421,9 +421,9 @@ public class EditDiagramWindow extends JFrame2 {
 	}
 
 	static public void main(String args[]) {
-		if (args.length == 0) {
-			System.err.println("引数を指定してください(定義ファイル)。");
-			return;
+		String filename = null;
+		if (args.length == 1) {
+			filename = args[0];
 		}
 		try {
 			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -437,7 +437,7 @@ public class EditDiagramWindow extends JFrame2 {
 		// setVisibleしないけれど、インスタンス生成は先にしておく
 		OutputGraphicsWindow.getInstance();
 
-		EditDiagramWindow frame = new EditDiagramWindow(args[0]);
+		EditDiagramWindow frame = new EditDiagramWindow(filename);
 		frame.setSize(1500, 800);
 		frame.setVisible(true);
 	}
