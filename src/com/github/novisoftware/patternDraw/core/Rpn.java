@@ -295,10 +295,16 @@ public class Rpn {
 				}
 			}
 			else if (s.equals(":pi")) {
-				stack.push(ValueType.FLOAT);
+				// 型が値なしとなってしまうための対処。
+				// TODO これはその場しのぎの応急対処
+				// stack.push(ValueType.FLOAT);
+				return ValueType.FLOAT;
 			}
 			else if (s.equals(":e")) {
-				stack.push(ValueType.FLOAT);
+				// 型が値なしとなってしまうための対処。
+				// TODO これはその場しのぎの応急対処
+				// stack.push(ValueType.FLOAT);
+				return ValueType.FLOAT;
 			}
 			else if (s.equals(":as-boolean")) {
 				stack.push(ValueType.BOOLEAN);
