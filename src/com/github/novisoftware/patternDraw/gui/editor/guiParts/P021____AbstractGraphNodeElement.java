@@ -164,6 +164,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	public abstract void evaluateExactly() throws CaliculateException;
 
 	static StringRectUtil str2rect = new StringRectUtil();
+	static StringRectUtil str2rect_forComment = new StringRectUtil();
 
 	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
@@ -278,18 +279,23 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 			else if (e.getKindId() == KindId.COMMENT) {
 				// コメント
+				// コメントの場合は width / height は無視する
+				String s = e.getRepresentExpression();
+				g2.setFont(GuiPreference.COMMENT_FONT);
+				Rectangle r = str2rect_forComment.str2rect(s, g2);
+				int sWidth = r.width < 16 ? 16 : r.width;
+
 				if (this.isOnMouse()) {
 					g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
-					g2.fillRoundRect(e.x + 12, e.y, e.w, e.h, arcWidth, arcHeight);
+					g2.fillRoundRect(e.x + 12, e.y, /* e.w */ sWidth + 38 , e.h, arcWidth, arcHeight);
 				}
 
 				g2.setColor(GuiPreference.COMMENT_BACKGROUND_COLOR);
-				g2.fillRect(e.x + 16, e.y + e.h -3, e.w, 3);
+				g2.fillRect(e.x + 16, e.y + e.h -3, /* e.w */ sWidth + 28  , 3);
 
 				g2.setColor(Color.BLACK);
-				g2.setFont(GuiPreference.COMMENT_FONT);
-				g2.drawString(e.getRepresentExpression()  //  t.getRpnString().replaceAll(";.*", "")
-								, e.x + 30, e.y + e.h / 2 + 10);
+				g2.drawString(s, e.x + 30, e.y + e.h / 2 + 10);
+
 			}
 			else if ( e.getKindId() == KindId.VARIABLE_SET ) {
 				// 変数を設定
