@@ -30,6 +30,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 			string2kind.put("変数を設定", KindId.VARIABLE_SET);
 			string2kind.put("変数を参照", KindId.VARIABLE_REFER);
 			string2kind.put("演算子", KindId.OPERATOR);
+			string2kind.put("処理", KindId.PROCESSING);
 			string2kind.put("制御", KindId.CONTROL);
 			string2kind.put("コメント", KindId.COMMENT);
 
@@ -46,7 +47,7 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	static HashMap<KindId, String> kind2string;
 
 	public static enum KindId {
-		INPUT, DISPLAY, CONSTANT, VARIABLE_SET, VARIABLE_REFER, OPERATOR, CONTROL, COMMENT
+		INPUT, DISPLAY, CONSTANT, VARIABLE_SET, VARIABLE_REFER, OPERATOR, PROCESSING, CONTROL, COMMENT
 	}
 
 	/**

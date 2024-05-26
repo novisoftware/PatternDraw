@@ -17,6 +17,11 @@ public interface FunctionDefInterface {
 	String getName();
 
 	/**
+	 * @return 関数名(表示用)
+	 */
+	String getDisplayName();
+
+	/**
 	 * @return 説明文
 	 */
 	String getDescription();

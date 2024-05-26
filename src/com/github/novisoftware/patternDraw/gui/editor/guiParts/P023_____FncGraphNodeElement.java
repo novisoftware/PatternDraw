@@ -120,7 +120,7 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 
 	@Override
 	String getRepresentExpression() {
-		return this.function.getDescription();
+		return this.function.getDisplayName();
 	}
 
 	@Override

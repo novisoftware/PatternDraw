@@ -24,6 +24,11 @@ public class PosToWalk implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "辿る";
+	}
+
+	@Override
 	public String getDescription() {
 		return "複数の座標の系列を辿ります。";
 	}

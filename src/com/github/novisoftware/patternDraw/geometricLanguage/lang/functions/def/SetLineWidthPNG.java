@@ -22,6 +22,11 @@ public class SetLineWidthPNG implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "太さを設定(PNG)";
+	}
+
+	@Override
 	public String getDescription() {
 		return "線分の太さを設定します(PNG)。";
 	}

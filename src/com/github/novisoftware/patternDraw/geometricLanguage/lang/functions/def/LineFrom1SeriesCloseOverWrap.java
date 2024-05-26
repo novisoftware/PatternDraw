@@ -25,6 +25,11 @@ public class LineFrom1SeriesCloseOverWrap implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "線でなぞる(オーバーラップ)";
+	}
+
+	@Override
 	public String getDescription() {
 		return "点を線で結び、閉じます(オーバーラップします)。";
 	}

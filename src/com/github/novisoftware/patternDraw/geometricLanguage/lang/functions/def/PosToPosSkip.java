@@ -25,6 +25,11 @@ public class PosToPosSkip implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "Nスキップ";
+	}
+
+	@Override
 	public String getDescription() {
 		return "座標の列をN飛ばしで辿ります。";
 	}

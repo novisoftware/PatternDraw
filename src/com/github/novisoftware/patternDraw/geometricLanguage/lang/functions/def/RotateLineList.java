@@ -26,8 +26,13 @@ public class RotateLineList  implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "並び順ローテート(線分)";
+	}
+
+	@Override
 	public String getDescription() {
-		return "座標の系列の並び順をローテートします。";
+		return "線分の系列の並び順をローテートします。";
 	}
 
 	@Override

@@ -25,6 +25,11 @@ public class LineFrom1SeriesClose implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "線でなぞる(閉じ)";
+	}
+
+	@Override
 	public String getDescription() {
 		return "点を線で結び、閉じます。";
 	}

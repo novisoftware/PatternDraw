@@ -25,6 +25,11 @@ public class LineFrom1Series implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "線でなぞる";
+	}
+
+	@Override
 	public String getDescription() {
 		return "点を線で結びます。";
 	}

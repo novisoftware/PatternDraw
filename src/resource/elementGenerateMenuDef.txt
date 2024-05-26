@@ -11,14 +11,14 @@ DESCRIPTION: コメントです。
 ---->DEFINE
 
 
-KIND: 演算子
+KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/円周上に並んだ点
 DESCRIPTION: 円周上に点を並べて配置します。
 FUNCTION: series_on_circle
 ---->DEFINE
 
-KIND: 演算子
+KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/並び順をローテート
 DESCRIPTION: 座標の系列の並び順をローテートします。
@@ -26,7 +26,7 @@ FUNCTION: rotate_point_list
 ---->DEFINE
 
 
-KIND: 演算子
+KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/点の集まりを辿る
 DESCRIPTION: 複数の座標の系列を辿ります。
@@ -34,7 +34,7 @@ FUNCTION: pos_to_walk
 ---->DEFINE
 
 
-KIND: 演算子
+KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/点の集まりをNスキップで辿る
 DESCRIPTION: 点の集まりをスキップしながら辿ります。
@@ -42,14 +42,14 @@ FUNCTION: pos_to_pos_skip
 ---->DEFINE
 
 
-KIND: 演算子
+KIND: 処理
 TYPE: LINE_LIST
 DISPNAME: 線の集まり/並び順をローテート
 DESCRIPTION: 座標の系列の並び順をローテートします。
 FUNCTION: rotate_line_list
 ---->DEFINE
 
-KIND: 演算子
+KIND: 処理
 TYPE: LINE_LIST
 DISPNAME: 線の集まり/点を線で結ぶ
 DESCRIPTION: 点を線で結びます。
@@ -57,7 +57,7 @@ FUNCTION: line_from_1_series
 ---->DEFINE
 
 
-KIND: 演算子
+KIND: 処理
 TYPE: LINE_LIST
 DISPNAME: 線の集まり/点を線で結ぶ(閉じる)
 DESCRIPTION: 点を線で結び、閉じます。
@@ -65,7 +65,7 @@ FUNCTION: line_from_1_series_close
 ---->DEFINE
 
 
-KIND: 演算子
+KIND: 処理
 TYPE: LINE_LIST
 DISPNAME: 線の集まり/点を線で結ぶ(オーバーラップして閉じる)
 DESCRIPTION: 点を線で結び、閉じます(オーバーラップします)。

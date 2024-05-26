@@ -116,10 +116,11 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 						node.x,
 						this.node.y + this.node.h + 10 + 30
 						);
+				String s2 = String.format("%s (%s)",
+						this.paraDescription,
+						Value.valueTypeToDescString(this.valueType));
 				g2.drawString(
-						"" + this.paraDescription + " ("
-				+ Value.valueTypeToDescString(this.valueType)
-				+ ")",
+						s2,
 						node.x,
 						this.node.y + this.node.h + 10 + 55
 						);

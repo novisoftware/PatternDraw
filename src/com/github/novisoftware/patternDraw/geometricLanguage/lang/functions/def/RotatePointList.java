@@ -27,8 +27,13 @@ public class RotatePointList  implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "並び順ローテート(座標)";
+	}
+
+	@Override
 	public String getDescription() {
-		return "線分の系列の並び順をローテートします。";
+		return "座標の系列の並び順をローテートします。";
 	}
 
 	@Override

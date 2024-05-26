@@ -28,6 +28,11 @@ public class PosToDrawPolyLine implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "線分として描画";
+	}
+
+	@Override
 	public String getDescription() {
 		return "点の集まりを線で辿って描画します。";
 	}

@@ -26,6 +26,11 @@ public class LineToDraw implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "線を描画";
+	}
+
+	@Override
 	public String getDescription() {
 		return "線分のリストを描画します。";
 	}

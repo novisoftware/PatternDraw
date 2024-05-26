@@ -24,8 +24,13 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "座標の系列";
+	}
+
+	@Override
 	public String getDescription() {
-		return "円周上に並んだ系列を生成します。";
+		return "円周上に並んだ座標の系列を生成します。";
 	}
 
 	@Override

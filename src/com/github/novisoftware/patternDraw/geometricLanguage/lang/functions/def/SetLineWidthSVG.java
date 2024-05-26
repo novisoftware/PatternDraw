@@ -21,6 +21,11 @@ public class SetLineWidthSVG implements FunctionDefInterface {
 	}
 
 	@Override
+	public String getDisplayName() {
+		return "太さを設定(SVG)";
+	}
+
+	@Override
 	public String getDescription() {
 		return "線分の太さを設定します(SVG)。";
 	}
