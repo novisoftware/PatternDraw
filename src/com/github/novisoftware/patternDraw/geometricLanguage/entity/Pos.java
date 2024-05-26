@@ -84,6 +84,16 @@ public class Pos {
 		return ret;
 	}
 
+	static public Pos rotate(Pos p, double th) {
+		double x = p.x;
+		double y = p.y;
+		double newX = x * Math.cos(th) - y * Math.sin(th);
+		double newY = x * Math.sin(th) + y * Math.cos(th);
+
+		return new Pos(newX, newY);
+
+	}
+
 	static public ArrayList<Pos> rotate(ArrayList<Pos> src, double th) {
 		ArrayList<Pos> ret = new ArrayList<Pos>();
 
