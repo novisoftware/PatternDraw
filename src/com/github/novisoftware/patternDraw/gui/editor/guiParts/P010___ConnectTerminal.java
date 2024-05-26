@@ -41,7 +41,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	public boolean isTypeChekResultValid = true;
 	public String typeChekErrorMessage = null;
 
-	public P010___ConnectTerminal(P021____AbstractGraphNodeElement abstractGraphNodeElement,
+	public P010___ConnectTerminal(
+			P021____AbstractGraphNodeElement abstractGraphNodeElement,
 			String paraName,
 			ValueType valueType,
 			String paraDescription,

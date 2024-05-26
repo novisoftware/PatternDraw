@@ -37,6 +37,8 @@ public class EditDiagramPanel extends JPanel {
 	P001_IconGuiInterface workLineFrom = null;
 	int workLineX, workLineY;
 
+	final MListener listener;
+
 	EditDiagramPanel(String filename) {
 		this.networkDataModel = new NetworkDataModel(this, filename);
 		if (filename != null) {
@@ -44,10 +46,18 @@ public class EditDiagramPanel extends JPanel {
 			this.networkDataModel.analyze();
 		}
 
-		MListener listener = new MListener(this);
+		this.listener = new MListener(this);
 		this.addMouseListener(listener);
 		this.addMouseMotionListener(listener);
 	}
+
+	/**
+	 * @return ドラッグ対象オブジェクト
+	 */
+	public P001_IconGuiInterface getHandledObject() {
+		return this.listener.handled;
+	}
+
 
 	public P020___AbstractElement getElementIcon(String name) {
 		for (P020___AbstractElement t : networkDataModel.getElements()) {

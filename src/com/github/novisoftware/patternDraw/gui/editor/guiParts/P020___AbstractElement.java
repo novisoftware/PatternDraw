@@ -176,6 +176,10 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 		y += moveY;
 	}
 
+	public boolean isHandled() {
+		return editPanel.getHandledObject() == this;
+	}
+
 	public P001_IconGuiInterface getTouchedObject(int x, int y) {
 		if (1.0f * (this.x + this.w / 2 - x) * (this.x + this.w / 2 - x) * this.h * this.h
 				+ 1.0f * (this.y + this.h / 2 - y) * (this.y + this.h / 2 - y) * this.w * this.w < 1.0f * this.h

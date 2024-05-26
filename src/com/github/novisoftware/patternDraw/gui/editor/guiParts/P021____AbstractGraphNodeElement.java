@@ -329,7 +329,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				Rectangle rect = str2rect.str2rect(printMark, g2);
 
 				g2.drawString(printMark, e.x  + 16 + (e.w - rect.width)/2, e.y + (e.h + rect.height)/ 2 - 4);
-			} else if ( e.getKindId() == KindId.PROCESSING) {
+			} else if (e.getKindId() == KindId.PROCESSING) {
 				// 処理
 				g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
 				g2.fillRoundRect(e.x + 16, e.y, e.w, e.h, 16, 16);
@@ -339,23 +339,6 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				Rectangle rect = str2rect.str2rect(printMark, g2);
 
 				g2.drawString(printMark, e.x  + 16 + (e.w - rect.width)/2, e.y + (e.h + rect.height)/ 2 - 4);
-
-				if (this.isOnMouse() && this instanceof P023_____FncGraphNodeElement) {
-					P023_____FncGraphNodeElement fe = (P023_____FncGraphNodeElement)this;
-					g2.setFont(GuiPreference.LABEL_FONT);
-					g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
-
-					g2.drawString(
-							fe.function.getDescription(),
-							e.x,
-							e.y + e.h + 10 + 30
-							);
-					g2.drawString(
-							"(" + Value.valueTypeToDescString(fe.function.getReturnType()) + ")",
-							e.x,
-							e.y + e.h + 10 + 55
-							);
-				}
 			}
 			else {
 				// なにか追加した場合の暫定動作用
@@ -377,6 +360,33 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 					g2.drawString(e.id, e.x + 18, e.y + e.h / 2);
 				}
 			}
+
+			if (e.getKindId() == KindId.PROCESSING
+					|| e.getKindId() == KindId.DISPLAY) {
+				if (this.isOnMouse() && (! this.isHandled()) && this instanceof P023_____FncGraphNodeElement) {
+					g2.setFont(GuiPreference.LABEL_FONT);
+					g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
+					P023_____FncGraphNodeElement fe = (P023_____FncGraphNodeElement)this;
+					g2.drawString(
+							fe.function.getDescription(),
+							e.x,
+							e.y + e.h + 10 + 30
+							);
+
+
+
+					if (fe.function.getReturnType() != null &&
+							!Value.ValueType.NONE.equals(fe.function.getReturnType())) {
+						g2.drawString(
+								"(" + Value.valueTypeToDescString(fe.function.getReturnType()) + ")",
+								e.x,
+								e.y + e.h + 10 + 55
+								);
+					}
+				}
+			}
+
+
 
 			// コネクタ用の端子
 			g2.setStroke(GuiPreference.STROKE_PLAIN);
