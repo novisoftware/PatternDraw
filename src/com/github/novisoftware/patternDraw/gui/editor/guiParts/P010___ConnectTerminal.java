@@ -107,7 +107,7 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
 					this.getTopY() - 2);
 		}
-		if (phase == 1) {
+		if (phase == 2) {
 			if (this.isOnMouse()) {
 				g2.setFont(GuiPreference.LABEL_FONT);
 				g2.setColor(GuiPreference.TIPS_TEXT_COLOR);

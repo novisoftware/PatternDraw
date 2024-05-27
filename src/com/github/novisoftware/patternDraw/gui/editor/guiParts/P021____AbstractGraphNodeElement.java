@@ -361,6 +361,21 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				}
 			}
 
+			// コネクタ用の端子
+			g2.setStroke(GuiPreference.STROKE_PLAIN);
+			for (P010___ConnectTerminal connector : connectors) {
+				connector.paint(g2, phase);
+			}
+
+			if (this.editPanel.isVisibleDebugInfo) {
+				g2.setFont(GuiPreference.ICON_BOX_FONT);
+				g2.setColor(Color.RED);
+				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
+			}
+		}
+
+		// 説明類
+		if (phase == 2) {
 			if (e.getKindId() == KindId.PROCESSING
 					|| e.getKindId() == KindId.DISPLAY) {
 				if (this.isOnMouse() && (! this.isHandled()) && this instanceof P023_____FncGraphNodeElement) {
@@ -373,8 +388,6 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 							e.y + e.h + 10 + 30
 							);
 
-
-
 					if (fe.function.getReturnType() != null &&
 							!Value.ValueType.NONE.equals(fe.function.getReturnType())) {
 						g2.drawString(
@@ -386,20 +399,13 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				}
 			}
 
-
-
 			// コネクタ用の端子
 			g2.setStroke(GuiPreference.STROKE_PLAIN);
 			for (P010___ConnectTerminal connector : connectors) {
 				connector.paint(g2, phase);
 			}
 
-			if (this.editPanel.isVisibleDebugInfo) {
-				g2.setFont(GuiPreference.ICON_BOX_FONT);
-				g2.setColor(Color.RED);
-				g2.drawString("" + e.id  /* e.getDebugIdString() */ + "  " + e.getValueType(), e.x + 30, e.y + 9);
-			}
-
+			// エラー表示
 			if (this.isError) {
 				g2.setFont(GuiPreference.ICON_BOX_FONT);
 				BufferedImage image = GuiUtil.getImage2(IconImage.MESSAGE, this);

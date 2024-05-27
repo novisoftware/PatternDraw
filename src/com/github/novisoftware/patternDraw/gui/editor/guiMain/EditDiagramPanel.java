@@ -101,7 +101,7 @@ public class EditDiagramPanel extends JPanel {
 		 * 関係線一式を先に描画し( phase == 0 )、その後、アイコン形状を描画します( phase == 2 )。
 		 */
 		g2.setColor(Color.GRAY);
-		for (int phase = 0; phase < 2; phase++) {
+		for (int phase = 0; phase < 3; phase++) {
 			for (P020___AbstractElement t : networkDataModel.getElements()) {
 				t.paintWithPhase(g2, phase);
 			}
