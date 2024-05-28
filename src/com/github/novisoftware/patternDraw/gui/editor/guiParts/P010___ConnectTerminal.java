@@ -90,8 +90,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	}
 
 	public boolean isTouched(int x, int y) {
-		if ( node.x < x && x < node.x + RENDER_WIDTH
-			&& this.getTopY() < y && y < this.getTopY() + RENDER_HEIGHT) {
+		if ( node.x <= x && x <= node.x + RENDER_WIDTH
+			&& this.getTopY() <= y && y <= this.getTopY() + RENDER_HEIGHT) {
 			return true;
 		}
 
@@ -109,7 +109,30 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 		}
 		if (phase == 2) {
 			if (this.isOnMouse()) {
-				g2.setFont(GuiPreference.LABEL_FONT);
+				int arcWidth = 10;
+				int arcHeight = 10;
+				int width = 200;
+				int height = 80;
+				int drawX = node.x;
+				int drawY = node.y + node.h;
+
+				g2.setColor(GuiPreference.TIPS_WINDOW_BACKGROUND_COLOR);
+				g2.setStroke(GuiPreference.TIPS_WINDOW_FRAME_STROKE);
+				g2.fillRoundRect(
+						drawX - 15,
+						drawY + 5,
+						width,
+						height,
+						arcWidth, arcHeight);
+				g2.setColor(GuiPreference.TIPS_WINDOW_FRAME_COLOR);
+				g2.drawRoundRect(
+						drawX - 15,
+						drawY + 5,
+						width,
+						height,
+						arcWidth, arcHeight);
+
+				g2.setFont(GuiPreference.TIPS_FONT);
 				g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
 
 				g2.drawString(

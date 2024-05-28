@@ -128,4 +128,8 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 		return false;
 	}
 
+	@Override
+	public String getDescription() {
+		return this.function.getDescription();
+	}
 }

@@ -20,6 +20,7 @@ import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeElement {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
+	String description = "";
 
 	public P022_____RpnGraphNodeElement(EditDiagramPanel editPanel) {
 		super(editPanel);
@@ -41,14 +42,22 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		System.out.println("rpn string = " + a[8]);
 
 		this.setRpnString(a[8]);
+
+		// 開発中データとしては Description なしが存在するため
+		if (a.length >= 10) {
+			this.setDescription(a[9]);
+		}
+
 	}
 
 	public String str() {
-		return String.format("RPN_ELEMENT: %d %d %d %d %s %s %s %s",
+		return String.format("RPN_ELEMENT: %d %d %d %d %s %s %s %s %s",
 								x, y, w, h, escape(id),
 								escape(getKindString()),
 								escape(Value.valueType2str.get(valueType)),
-								escape(getRpnString()));
+								escape(getRpnString()),
+								escape(this.getDescription())
+								);
 	}
 
 	/**
@@ -156,6 +165,15 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		P022_____RpnGraphNodeElement ret = new P022_____RpnGraphNodeElement(this.editPanel, this.str());
 
 		return ret;
+	}
+
+	@Override
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override

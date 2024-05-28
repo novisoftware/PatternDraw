@@ -28,7 +28,7 @@ public class PosToDrawPolyLineCloseOverWrap extends PosToDrawPolyLine {
 
 	@Override
 	public String getDescription() {
-		return "点の集まりを線で辿って描画します(閉じて、オーバーラップします)。";
+		return "点の集まりを線で辿って描画します。\\n(閉じて、オーバーラップします)";
 	}
 
 	@Override

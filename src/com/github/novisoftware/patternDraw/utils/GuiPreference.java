@@ -46,11 +46,12 @@ public class GuiPreference {
 	/**
 	 * GUIの文字表示に使用するフォント
 	 */
-	private static int LABEL_FONT_SIZE = 18;
-	private static int MESSAGE_DISP_FONT_SIZE = 14;
-	private static int OK_BUTTON_FONT_SIZE = 24;
-	private static int CANCEL_BUTTON_FONT_SIZE = 20;
-	private static int COSOLE_FONT_SIZE = 16;
+	public static int LABEL_FONT_SIZE = 18;
+	public static int TIPS_FONT_SIZE = 16;
+	public static int MESSAGE_DISP_FONT_SIZE = 14;
+	public static int OK_BUTTON_FONT_SIZE = 24;
+	public static int CANCEL_BUTTON_FONT_SIZE = 20;
+	public static int COSOLE_FONT_SIZE = 16;
 
 	public static String RUN_BUTTON_STRING = "実行";
 	public static String OK_BUTTON_STRING = "これに決める";
@@ -59,6 +60,9 @@ public class GuiPreference {
 
 	// JLabel用のフォント
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
+
+	// TIPS表示用のフォント
+	public static Font TIPS_FONT = initLabelFont(TIPS_FONT_SIZE);
 
 	// JTextField用のフォント
 	public static Font INPUT_FONT = initLabelFont(preferenceFontName_input, Font.BOLD, COSOLE_FONT_SIZE);
@@ -115,9 +119,30 @@ public class GuiPreference {
 	public static Color TEXT_COLOR = new Color(20,20,20);
 
 	/**
-	 * ダイヤグラムエディタでの文字の色
+	 * ダイヤグラムエディタでのTIPS域の囲み枠の色
 	 */
-	public static Color TIPS_TEXT_COLOR = new Color(0.5f, 0.5f, 0.5f);
+	public static Color TIPS_WINDOW_FRAME_COLOR = new Color(0.5f, 0.5f, 0.5f);
+
+	/**
+	 * ダイヤグラムエディタでのTIPS域の背景色
+	 */
+	public static Color TIPS_WINDOW_BACKGROUND_COLOR = new Color(1f, 1f, 1f, 0.6f);
+
+	/**
+	 * ダイヤグラムエディタでのTIPS域の囲み枠の角
+	 */
+	public static int TIPS_WINDOW_ARC_SIZE = 7;
+
+	/**
+	 * ダイヤグラムエディタでのTIPS域の囲み枠の太さ
+	 */
+	public static final BasicStroke TIPS_WINDOW_FRAME_STROKE = new BasicStroke(2f);
+
+
+	/**
+	 * ダイヤグラムエディタでのTIPS域の文字の色
+	 */
+	public static Color TIPS_TEXT_COLOR = new Color(0.2f, 0.2f, 0.2f);
 
 	/**
 	 * 妥当性エラーを表現するメッセージ色

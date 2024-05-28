@@ -166,11 +166,26 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	static StringRectUtil str2rect = new StringRectUtil();
 	static StringRectUtil str2rect_forComment = new StringRectUtil();
 
+	private String[] descriptionCache = null;
+
+	private String[] getDescriptionAsList() {
+		if (descriptionCache==null) {
+			String work = this.getDescription();
+
+			this.descriptionCache = work.split("\\\\n");
+		}
+
+		return descriptionCache;
+	}
+
 	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
 	 */
 	@Override
 	public void paintWithPhase(Graphics2D g2, int phase) {
+		int arcWidth = 10;
+		int arcHeight = 10;
+
 		P021____AbstractGraphNodeElement e = this;
 
 		// 結線
@@ -231,9 +246,6 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 
 		}
-
-		int arcWidth = 10;
-		int arcHeight = 10;
 
 		// 箱
 		if (phase == 1) {
@@ -377,25 +389,80 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		// 説明類
 		if (phase == 2) {
 			if (e.getKindId() == KindId.PROCESSING
+					|| e.getKindId() == KindId.OPERATOR
 					|| e.getKindId() == KindId.DISPLAY) {
-				if (this.isOnMouse() && (! this.isHandled()) && this instanceof P023_____FncGraphNodeElement) {
-					g2.setFont(GuiPreference.LABEL_FONT);
+				if (this.isOnMouse() && (! this.isHandled())
+						// && this instanceof P023_____FncGraphNodeElement
+						) {
+					int width = 300;
+					int height = 80;
+					int drawX = e.x;
+					int drawY = e.y + e.h;
+
+					String[] desc = this.getDescriptionAsList();
+					if (desc == null) {
+						String[] wk = {"NULL値"};
+						desc = wk;
+					}
+
+					String vDesc = this.getValueTypeDescString();
+
+					drawX += 40;
+
+					g2.setColor(GuiPreference.TIPS_WINDOW_BACKGROUND_COLOR);
+					g2.setStroke(GuiPreference.TIPS_WINDOW_FRAME_STROKE);
+					g2.fillRoundRect(
+							drawX - 5,
+							drawY + 5,
+							width,
+							height,
+							arcWidth, arcHeight);
+					g2.setColor(GuiPreference.TIPS_WINDOW_FRAME_COLOR);
+					g2.drawRoundRect(
+							drawX - 5,
+							drawY + 5,
+							width,
+							height,
+							arcWidth, arcHeight);
+
+					g2.setFont(GuiPreference.TIPS_FONT);
 					g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
+					/*
 					P023_____FncGraphNodeElement fe = (P023_____FncGraphNodeElement)this;
 					g2.drawString(
 							fe.function.getDescription(),
-							e.x,
-							e.y + e.h + 10 + 30
+							drawX,
+							drawY + 10 + 30
 							);
 
 					if (fe.function.getReturnType() != null &&
 							!Value.ValueType.NONE.equals(fe.function.getReturnType())) {
 						g2.drawString(
-								"(" + Value.valueTypeToDescString(fe.function.getReturnType()) + ")",
-								e.x,
-								e.y + e.h + 10 + 55
+								"型: " + Value.valueTypeToDescString(fe.function.getReturnType()),
+								drawX,
+								drawY + 10 + 55
 								);
 					}
+					*/
+
+					int adder = 0;
+					for (String d: desc) {
+						g2.drawString(
+								d,
+								drawX,
+								drawY + 10 + 30 + adder
+								);
+						adder += GuiPreference.TIPS_FONT_SIZE + 5;
+					}
+
+					if (vDesc.length() > 0) {
+						g2.drawString(
+								"型: " + vDesc,
+								drawX,
+								drawY + 10 + 30 + adder + 4
+								);
+					}
+
 				}
 			}
 
@@ -435,6 +502,11 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 
 
+		return null;
+	}
+
+	public String getDescription() {
+		// TODO 自動生成されたメソッド・スタブ
 		return null;
 	}
 

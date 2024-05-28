@@ -225,6 +225,7 @@ public class ElementFactory {
 				element.h = this.height;
 				element.setKindString(this.kindName);
 				element.setValueType(this.valueType);
+				element.setDescription(this.description);
 				// 演算式
 				element.setRpnString(P020___AbstractElement.unescape(this.rpn));
 				element.buildParameterList(element.getRpnString());
