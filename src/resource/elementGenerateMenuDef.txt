@@ -217,10 +217,10 @@ DESCRIPTION: 整数値を入力します。
 
 KIND: 演算子
 TYPE: SCALAR
-DISPNAME: 演算子(計算する)/加算(足す)
+DISPNAME: 算術演算子/加算(足す)
 WIDTH: 50
 HEIGHT: 50
-DESCRIPTION: 2つの入力を加算します。
+DESCRIPTION: 2つの数値を足します。
 <input1:SCALAR>
 <input2:SCALAR>
 +
@@ -229,10 +229,10 @@ DESCRIPTION: 2つの入力を加算します。
 
 KIND: 演算子
 TYPE: SCALAR
-DISPNAME: 演算子(計算する)/減算(引く)
+DISPNAME: 算術演算子/減算(引く)
 WIDTH: 50
 HEIGHT: 50
-DESCRIPTION: 入力1から入力2を減算します。
+DESCRIPTION: 数値1から数値2を引きます。
 <input1:SCALAR>
 <input2:SCALAR>
 -
@@ -241,10 +241,10 @@ DESCRIPTION: 入力1から入力2を減算します。
 
 KIND: 演算子
 TYPE: SCALAR
-DISPNAME: 演算子(計算する)/乗算(かける)
+DISPNAME: 算術演算子/乗算(かける)
 WIDTH: 50
 HEIGHT: 50
-DESCRIPTION: 2つの入力を乗算します。
+DESCRIPTION: 2つの数値を乗算します。
 <input1:SCALAR>
 <input2:SCALAR>
 *
@@ -253,10 +253,10 @@ DESCRIPTION: 2つの入力を乗算します。
 
 KIND: 演算子
 TYPE: SCALAR
-DISPNAME: 演算子(計算する)/除算(割る)
+DISPNAME: 算術演算子/除算(割る)
 WIDTH: 50
 HEIGHT: 50
-DESCRIPTION: 2つの入力を乗算します。
+DESCRIPTION: 数値1を数値2で割ります。
 <input1:SCALAR>
 <input2:SCALAR>
 /
@@ -265,10 +265,10 @@ DESCRIPTION: 2つの入力を乗算します。
 
 KIND: 演算子
 TYPE: SCALAR
-DISPNAME: 演算子(計算する)/剰余(あまり)
+DISPNAME: 算術演算子/剰余(あまり)
 WIDTH: 50
 HEIGHT: 50
-DESCRIPTION: 2つの入力の剰余を求めます。
+DESCRIPTION: 数値1を数値2で割った余りです。
 <input1:SCALAR>
 <input2:SCALAR>
 %
@@ -277,7 +277,7 @@ DESCRIPTION: 2つの入力の剰余を求めます。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 比較/＞
+DISPNAME: 比較演算子/＞
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがbより大きい場合、真になります。
@@ -289,7 +289,7 @@ DESCRIPTION: aがbより大きい場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 比較/≧
+DISPNAME: 比較演算子/≧
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがb以上の場合、真になります。
@@ -301,7 +301,7 @@ DESCRIPTION: aがb以上の場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 比較/＝
+DISPNAME: 比較演算子/＝
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbが等しい場合、真になります。
@@ -313,7 +313,7 @@ DESCRIPTION: aとbが等しい場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 比較/≠
+DISPNAME: 比較演算子/≠
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbが異なる場合、真になります。
@@ -325,7 +325,7 @@ DESCRIPTION: aとbが異なる場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 比較/≦
+DISPNAME: 比較演算子/≦
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがb以下の場合、真になります。
@@ -337,7 +337,7 @@ DESCRIPTION: aがb以下の場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 比較/＜
+DISPNAME: 比較演算子/＜
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aがbより小さい場合、真になります。
@@ -349,7 +349,7 @@ DESCRIPTION: aがbより小さい場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/AND
+DISPNAME: 論理演算子/AND(かつ)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbの両方が真の場合、真になります。
@@ -361,7 +361,7 @@ DESCRIPTION: aとbの両方が真の場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/OR
+DISPNAME: 論理演算子/OR(または)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbのどちらかが真の場合、真になります。
@@ -373,7 +373,7 @@ DESCRIPTION: aとbのどちらかが真の場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/XOR
+DISPNAME: 論理演算子/XOR(排他的論理和)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: aとbのどちらか片方だけが真の場合、真になります。
@@ -385,7 +385,7 @@ DESCRIPTION: aとbのどちらか片方だけが真の場合、真になりま�
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/NOT
+DISPNAME: 論理演算子/NOT(否定)
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 入力が偽の場合、真になります。
@@ -396,7 +396,7 @@ DESCRIPTION: 入力が偽の場合、真になります。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/NAND
+DISPNAME: 論理演算子/NAND
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 論理演算子NANDです。
@@ -408,7 +408,7 @@ DESCRIPTION: 論理演算子NANDです。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/NOR
+DISPNAME: 論理演算子/NOR
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 論理演算子NORです。
@@ -420,7 +420,7 @@ DESCRIPTION: 論理演算子NORです。
 
 KIND: 演算子
 TYPE: BOOLEAN
-DISPNAME: 論理演算/XNOR
+DISPNAME: 論理演算子/XNOR
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 論理演算子XNORです。
