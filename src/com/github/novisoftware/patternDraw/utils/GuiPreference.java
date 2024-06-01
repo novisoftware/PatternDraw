@@ -126,7 +126,7 @@ public class GuiPreference {
 	/**
 	 * ダイヤグラムエディタでのTIPS域の背景色
 	 */
-	public static Color TIPS_WINDOW_BACKGROUND_COLOR = new Color(1f, 1f, 1f, 0.6f);
+	public static Color TIPS_WINDOW_BACKGROUND_COLOR = new Color(1f, 1f, 1f, 0.8f);
 
 	/**
 	 * ダイヤグラムエディタでのTIPS域の囲み枠の角

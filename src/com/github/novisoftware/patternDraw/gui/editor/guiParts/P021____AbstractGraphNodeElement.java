@@ -3,7 +3,6 @@ package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.geom.CubicCurve2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,6 +15,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueT
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
@@ -59,6 +59,12 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 * コネクタ(端子)のオブジェクト
 	 */
 	public ArrayList<P010___ConnectTerminal> connectors;
+
+	/**
+	 * @return 説明のテキスト
+	 */
+	abstract public String getDescription();
+
 
 	static private GuiUtil.StringWidthUtil strUtil = new GuiUtil.StringWidthUtil();
 
@@ -213,18 +219,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 					double x2 = connector.getCenterX();
 					double y2 = connector.getCenterY();
 
-					// X_RATIO, Y_RATIO は3次元ベジエ曲線のパラメーター作成用のパラメーター。
-					double X_RATIO = 55;
-					double Y_RATIO = 95;
-					double x1a = (x0 * X_RATIO + x2 * (100-X_RATIO)) / 100.0;
-					double y1a = (y0 * Y_RATIO + y2 * (100-Y_RATIO)) / 100.0;
-					double x1b = (x0 * (100-X_RATIO) + x2 * X_RATIO) / 100.0;
-					double y1b = (y0 * (100-Y_RATIO) + y2 * Y_RATIO) / 100.0;
-
-					CubicCurve2D.Double curve1 = new CubicCurve2D.Double(
-							x0,y0,x1a,y1a,x1b,y1b,x2,y2);
-					g2.draw(curve1);
-
+					RenderingUtil.drawConnectorStroke(g2, x0, y0, x2, y2);
 
 					if (! connector.isTypeChekResultValid) {
 						double x1 = (x0 + x2) / 2;
@@ -248,7 +243,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 
 		// 箱
-		if (phase == 1) {
+		else if (phase == 1) {
 			g2.setFont(GuiPreference.ICON_BOX_FONT);
 			if (! (e.getKindId() == KindId.COMMENT)) {
 				g2.setColor(Color.GRAY);
@@ -387,82 +382,80 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 
 		// 説明類
-		if (phase == 2) {
+		else if (phase == 2) {
 			if (e.getKindId() == KindId.PROCESSING
 					|| e.getKindId() == KindId.OPERATOR
 					|| e.getKindId() == KindId.DISPLAY) {
 				if (this.isOnMouse() && (! this.isHandled())
 						// && this instanceof P023_____FncGraphNodeElement
 						) {
-					int width = 300;
-					int height = 80;
 					int drawX = e.x;
 					int drawY = e.y + e.h;
+					drawX += 40;
 
 					String[] desc = this.getDescriptionAsList();
 					if (desc == null) {
+						// 動作確認用。
 						String[] wk = {"NULL値"};
 						desc = wk;
 					}
 
+					ArrayList<String> aWork = new ArrayList<String>();
+					for (String s : desc) {
+						aWork.add(s);
+					}
+
 					String vDesc = this.getValueTypeDescString();
-
-					drawX += 40;
-
-					g2.setColor(GuiPreference.TIPS_WINDOW_BACKGROUND_COLOR);
-					g2.setStroke(GuiPreference.TIPS_WINDOW_FRAME_STROKE);
-					g2.fillRoundRect(
-							drawX - 5,
-							drawY + 5,
-							width,
-							height,
-							arcWidth, arcHeight);
-					g2.setColor(GuiPreference.TIPS_WINDOW_FRAME_COLOR);
-					g2.drawRoundRect(
-							drawX - 5,
-							drawY + 5,
-							width,
-							height,
-							arcWidth, arcHeight);
-
-					g2.setFont(GuiPreference.TIPS_FONT);
-					g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
-					/*
-					P023_____FncGraphNodeElement fe = (P023_____FncGraphNodeElement)this;
-					g2.drawString(
-							fe.function.getDescription(),
-							drawX,
-							drawY + 10 + 30
-							);
-
-					if (fe.function.getReturnType() != null &&
-							!Value.ValueType.NONE.equals(fe.function.getReturnType())) {
-						g2.drawString(
-								"型: " + Value.valueTypeToDescString(fe.function.getReturnType()),
-								drawX,
-								drawY + 10 + 55
-								);
-					}
-					*/
-
-					int adder = 0;
-					for (String d: desc) {
-						g2.drawString(
-								d,
-								drawX,
-								drawY + 10 + 30 + adder
-								);
-						adder += GuiPreference.TIPS_FONT_SIZE + 5;
-					}
-
 					if (vDesc.length() > 0) {
-						g2.drawString(
-								"型: " + vDesc,
-								drawX,
-								drawY + 10 + 30 + adder + 4
-								);
+						aWork.add("型: " + vDesc);
 					}
 
+					String[] desc2 = new String[aWork.size()];
+					for (int i = 0 ; i < desc2.length; i++) {
+						desc2[i] = aWork.get(i);
+					}
+
+					RenderingUtil.drawTipsWindow(g2, this.tipsWidthCache, drawX, drawY, desc2);
+				}
+			}
+
+			if (e.getKindId() == KindId.VARIABLE_SET
+					|| e.getKindId() == KindId.VARIABLE_REFER) {
+					if (this.isOnMouse() && (! this.isHandled())
+							) {
+					int drawX = e.x;
+					int drawY = e.y + e.h;
+					drawX += 80;
+
+					String[] desc = {};
+
+					if (e.getKindId() == KindId.VARIABLE_SET) {
+						String [] d = {
+								"変数を設定します。"
+						};
+						desc = d;
+					} else if (e.getKindId() == KindId.VARIABLE_REFER) {
+						String valueTypeStr = null;
+						if (this.actualValueTypeResult != null
+								&& !(ValueType.UNDEF.equals(this.actualValueTypeResult))) {
+							ValueType valueType = this.actualValueTypeResult;
+
+							valueTypeStr = Value.valueTypeToDescString(valueType);
+							String [] d = {
+									"変数を参照します。",
+									"型: " + valueTypeStr
+							};
+							desc = d;
+						}
+						else {
+							String [] d = {
+									"変数を参照します。"
+							};
+							desc = d;
+						}
+					}
+
+					RenderingUtil.drawTipsWindow(g2, this.tipsWidthCache, drawX, drawY, desc);
 				}
 			}
 
@@ -484,6 +477,8 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 	}
 
+	WidthCache tipsWidthCache = new WidthCache();
+
 	@Override
 	public P001_IconGuiInterface getTouchedObject(int x, int y) {
 		for (P010___ConnectTerminal connector : connectors) {
@@ -504,10 +499,4 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 
 		return null;
 	}
-
-	public String getDescription() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
-
 }

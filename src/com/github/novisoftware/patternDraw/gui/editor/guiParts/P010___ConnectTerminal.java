@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 
@@ -31,6 +32,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	private P021____AbstractGraphNodeElement node;
 	private int index;
 	private int nIndex;
+
+	private WidthCache tipsWidthCache = new WidthCache();
 
 	/**
 	 * 入力された型が妥当な場合 true
@@ -109,45 +112,35 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 		}
 		if (phase == 2) {
 			if (this.isOnMouse()) {
-				int arcWidth = 10;
-				int arcHeight = 10;
-				int width = 200;
-				int height = 80;
+
+				String srcValueType = null;
+				P021____AbstractGraphNodeElement src = node.paramMapObj.get(this.getParaName());
+				if (src != null &&
+						src.actualValueTypeResult != null &&
+						!(ValueType.UNDEF.equals(src.actualValueTypeResult))) {
+					ValueType valueType = src.actualValueTypeResult;
+
+					srcValueType = Value.valueTypeToDescString(valueType);
+				}
+
 				int drawX = node.x;
 				int drawY = node.y + node.h;
 
-				g2.setColor(GuiPreference.TIPS_WINDOW_BACKGROUND_COLOR);
-				g2.setStroke(GuiPreference.TIPS_WINDOW_FRAME_STROKE);
-				g2.fillRoundRect(
-						drawX - 15,
-						drawY + 5,
-						width,
-						height,
-						arcWidth, arcHeight);
-				g2.setColor(GuiPreference.TIPS_WINDOW_FRAME_COLOR);
-				g2.drawRoundRect(
-						drawX - 15,
-						drawY + 5,
-						width,
-						height,
-						arcWidth, arcHeight);
-
-				g2.setFont(GuiPreference.TIPS_FONT);
-				g2.setColor(GuiPreference.TIPS_TEXT_COLOR);
-
-				g2.drawString(
-						"" + paraName,
-						node.x,
-						this.node.y + this.node.h + 10 + 30
-						);
-				String s2 = String.format("%s (%s)",
+				String actual = "";
+				if (srcValueType != null) {
+					actual = srcValueType + " - ";
+				}
+				String s2 = String.format("%s (%s%s)",
 						this.paraDescription,
-						Value.valueTypeToDescString(this.valueType));
-				g2.drawString(
-						s2,
-						node.x,
-						this.node.y + this.node.h + 10 + 55
+						actual,
+						Value.valueTypeToDescString(this.valueType)
 						);
+
+				String[] desc = {
+						paraName,
+						s2
+				};
+				RenderingUtil.drawTipsWindow(g2, this.tipsWidthCache, drawX, drawY, desc);
 			}
 		}
 

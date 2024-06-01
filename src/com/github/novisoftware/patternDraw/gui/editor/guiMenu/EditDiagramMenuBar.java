@@ -301,7 +301,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 		});
 
 		this.windowMenu = new JMenu("ウィンドウ");
-		JMenuItem dispParaWin = new JMenuItem("パラメーター定義ウィンドウ");
+		JMenuItem dispParaWin = new JMenuItem("パラメーターの一覧");
 		this.windowMenu.add(dispParaWin);
 		dispParaWin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
