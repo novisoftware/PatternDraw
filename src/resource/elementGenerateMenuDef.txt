@@ -227,6 +227,26 @@ DESCRIPTION: 2つの数値を足します。
 -->RPN
 ---->DEFINE
 
+
+KIND: 演算子
+TYPE: SCALAR
+DISPNAME: 算術演算子/加算(5入力・実験的)
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力された数値を足します。
+<input1:SCALAR>
+<input2:SCALAR>
++
+<input3:SCALAR>
++
+<input4:SCALAR>
++
+<input5:SCALAR>
++
+-->RPN
+---->DEFINE
+
+
 KIND: 演算子
 TYPE: SCALAR
 DISPNAME: 算術演算子/減算(引く)
