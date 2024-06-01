@@ -41,7 +41,7 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"n", "r", "theta"};
+		String[] ret = {"n", "r", "angle"};
 		return ret;
 	}
 
@@ -60,12 +60,14 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 	public Value exec(List<Value> param, InstructionRenderer _t) throws CaliculateException {
 		int n = Value.getInteger(param.get(0)).intValue();
 		double r = Value.getDouble(param.get(1));
-		double theta = Value.getDouble(param.get(2));
+		double angle = Value.getDouble(param.get(2));
+		double theta = (2 * Math.PI / 360.0) * angle;
 
 		ArrayList<Pos> posList = new ArrayList<Pos>();
 		for (int i = 0; i < n; i++) {
-			double x = r * Math.cos(2 * Math.PI * i / n + theta);
-			double y = r * Math.sin(2 * Math.PI * i / n + theta);
+			// 時計回り
+			double x = r * Math.sin(2 * Math.PI * i / n + theta);
+			double y = -r * Math.cos(2 * Math.PI * i / n + theta);
 			posList.add(new Pos(x, y));
 		}
 
