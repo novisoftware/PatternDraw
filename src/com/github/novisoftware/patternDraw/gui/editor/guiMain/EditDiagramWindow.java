@@ -32,11 +32,13 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.NumberPicker;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 
 public class EditDiagramWindow extends JFrame2 {
@@ -231,11 +233,19 @@ public class EditDiagramWindow extends JFrame2 {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			Debug.println("mouse pressed(1)");
+
 			if (commonCheck()) {
 				return;
 			}
 
+			Debug.println("mouse pressed(2)");
+
 			P001_IconGuiInterface t__ = editPanel__.checkXY(e.getX(), e.getY());
+			if (t__ == null) {
+				return;
+			}
+
 			if (t__ instanceof P020___AbstractElement) {
 				P020___AbstractElement t = (P020___AbstractElement)t__;
 
@@ -254,8 +264,7 @@ public class EditDiagramWindow extends JFrame2 {
 					}
 				}
 			}
-
-			if (t__ != null && t__ instanceof P010___ConnectTerminal) {
+			else if (t__ instanceof P010___ConnectTerminal) {
 				P010___ConnectTerminal hd = (P010___ConnectTerminal)t__;
 
 				handled = hd;
@@ -267,6 +276,25 @@ public class EditDiagramWindow extends JFrame2 {
 					editPanel__.workLineX = hd.getCenterX();
 					editPanel__.workLineY = hd.getCenterY();
 				}
+			}
+			else if (t__ instanceof NumberPicker) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					NumberPicker hd = (NumberPicker)t__;
+					Debug.println("mousePressed in NumberPicker " + hd.number);
+
+					handled = hd;
+					old_x = e.getX();
+					old_y = e.getY();
+				}
+
+				// 数字の部分から線は引かない
+				/*
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					editPanel__.workLineFrom = hd;
+					editPanel__.workLineX = hd.getCenterX();
+					editPanel__.workLineY = hd.getCenterY();
+				}
+				*/
 			}
 		}
 
@@ -384,6 +412,14 @@ public class EditDiagramWindow extends JFrame2 {
 				else {
 					if (handled instanceof P020___AbstractElement) {
 						P020___AbstractElement h = (P020___AbstractElement)handled;
+
+						// 差分をアイコンオブジェクトに通知する
+						h.dragged(e.getX() - old_x, e.getY() - old_y);
+						old_x = e.getX();
+						old_y = e.getY();
+					}
+					else if (handled instanceof NumberPicker) {
+						NumberPicker h = (NumberPicker)handled;
 
 						// 差分をアイコンオブジェクトに通知する
 						h.dragged(e.getX() - old_x, e.getY() - old_y);

@@ -65,8 +65,9 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	abstract public String getDescription();
 
+	static private GuiUtil.StringRectUtil strUtil = new GuiUtil.StringRectUtil();
 
-	static private GuiUtil.StringWidthUtil strUtil = new GuiUtil.StringWidthUtil();
+	WidthCache tipsWidthCache = new WidthCache();
 
 	/**
 	 * コンストラクタ
@@ -75,6 +76,8 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	public P021____AbstractGraphNodeElement(EditDiagramPanel editPanel) {
 		super(editPanel);
+
+
 	}
 
 	public ArrayList<String> optStr() {
@@ -185,6 +188,12 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	}
 
 	/**
+	 * 数字の部分をドラッグすると、単連結グラフが移動する。
+	 * この処理するためのオブジェクト。
+	 */
+	NumberPicker numberPicker;
+
+	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
 	 */
 	@Override
@@ -236,8 +245,17 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				g2.setFont(GuiPreference.GROUP_ID_FONT);
 				g2.setColor(Color.GRAY);
 
-				int strWidth = strUtil.strWidth("" + this.groupHead, g2);
-				g2.drawString("" + this.groupHead, e.x - strWidth, e.y + 30);
+				//
+				String s = "" + this.groupHead;
+				Rectangle rect = strUtil.str2rect(s, g2);
+				int x = e.x - rect.width;
+				int y = e.y + 30;
+				g2.drawString(s, x, y);
+
+				this.numberPicker = new NumberPicker(this, this.editPanel, this.groupHead, x, y, rect);
+			}
+			else {
+				this.numberPicker = null;
 			}
 
 		}
@@ -477,13 +495,17 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 	}
 
-	WidthCache tipsWidthCache = new WidthCache();
-
 	@Override
 	public P001_IconGuiInterface getTouchedObject(int x, int y) {
 		for (P010___ConnectTerminal connector : connectors) {
 			if (connector.isTouched(x, y)) {
 				return connector;
+			}
+		}
+
+		if (this.numberPicker != null) {
+			if (this.numberPicker.isHit(x, y)) {
+				return this.numberPicker;
 			}
 		}
 
