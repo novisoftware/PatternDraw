@@ -1,6 +1,5 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -22,13 +21,10 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWi
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
-import com.github.novisoftware.patternDraw.svg.SvgUtil;
 import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class EditDiagramMenuBar extends JMenuBar {
 	// ファイル選択ダイアログ
-	static private JFileChooser pngFileChooser = new JFileChooser(".");
-	static private JFileChooser svgFileChooser = new JFileChooser(".");
 	static private JFileChooser saveAsFileChooser = null;
 
 	final EditDiagramPanel editPanel;
