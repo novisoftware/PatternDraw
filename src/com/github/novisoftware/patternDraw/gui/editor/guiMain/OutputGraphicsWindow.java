@@ -23,6 +23,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.Obj
 import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.gui.MyJPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.OutputGraphicsMenuBar;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
@@ -39,6 +40,9 @@ public class OutputGraphicsWindow extends JFrame2 {
 	static private OutputGraphicsWindow singleton;
 
 	private OutputGraphicsWindow() {
+		OutputGraphicsMenuBar menubar = new OutputGraphicsMenuBar(this);
+		this.setJMenuBar(menubar);
+
 		final InstructionRenderer renderer = new InstructionRenderer(new TokenList(new ArrayList<Token>()), new HashMap<String, ObjectHolder>());
 		BufferedImage buffer = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
