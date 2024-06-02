@@ -44,11 +44,12 @@ public class ContextMenu extends JPopupMenu {
 
 				// 変数参照を取得
 				if (KindId.VARIABLE_SET.equals(ti.getKindId())) {
-					menuItem = new JMenuItem("変数参照を取得");
+					menuItem = new JMenuItem("変数の参照を作成");
 					menuItem.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ev) {
 							P020___AbstractElement c = ti.getCopy();
-							c.y = ti.y + ti.h + 3;
+							c.x = ti.x + ti.w + 60;
+							// c.y = ti.y + ti.h + 3;
 							c.id = editPanel.networkDataModel.generateUniqueName(c.id);
 
 							c.setKindId(KindId.VARIABLE_REFER);
@@ -123,6 +124,7 @@ public class ContextMenu extends JPopupMenu {
 				menuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ev) {
 						P020___AbstractElement c = ti.getCopy();
+						c.x = ti.x + ti.w + 5;
 						c.y = ti.y + ti.h + 3;
 						c.id = editPanel.networkDataModel.generateUniqueName(c.id);
 
