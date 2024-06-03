@@ -61,7 +61,7 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 		int n = Value.getInteger(param.get(0)).intValue();
 		double r = Value.getDouble(param.get(1));
 		double angle = Value.getDouble(param.get(2));
-		double theta = (2 * Math.PI / 360.0) * angle;
+		double theta = Util.angleToRadian(angle);
 
 		ArrayList<Pos> posList = new ArrayList<Pos>();
 		for (int i = 0; i < n; i++) {
@@ -73,5 +73,4 @@ public class SeriesOnCircle  implements FunctionDefInterface {
 
 		return new ValuePosList(posList);
 	}
-
 }

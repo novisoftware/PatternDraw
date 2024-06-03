@@ -1,12 +1,17 @@
 package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
 
-import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
 
 public class FunctionUtil {
 	public static FunctionDefInterface getFunctionDef(String name) throws LangSpecException {
+		// 注:
+		// return しているので else if にする必要なし。
+		// (幅を揃えて誤記があったら分かるようにしている)
+		if (name.equals(ClosePosList.NAME)) {
+			return new ClosePosList();
+		}
 		if (name.equals(LineToDraw.NAME)) {
 			return new LineToDraw();
 		}
@@ -18,6 +23,9 @@ public class FunctionUtil {
 		}
 		if (name.equals(LineFrom1SeriesCloseOverWrap.NAME)) {
 			return new LineFrom1SeriesCloseOverWrap();
+		}
+		if (name.equals(LineFrom2Series.NAME)) {
+			return new LineFrom2Series();
 		}
 		if (name.equals(PosToWalk.NAME)) {
 			return new PosToWalk();
@@ -52,7 +60,9 @@ public class FunctionUtil {
 		if (name.equals(SetLineWidthPNG.NAME)) {
 			return new SetLineWidthPNG();
 		}
-
+		if (name.equals(SinglePosition.NAME)) {
+			return new SinglePosition();
+		}
 
 		throw new LangSpecException("Specified function name '" + name + "' does not found.");
 	}

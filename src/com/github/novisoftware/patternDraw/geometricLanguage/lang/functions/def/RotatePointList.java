@@ -38,7 +38,7 @@ public class RotatePointList  implements FunctionDefInterface {
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.INTEGER, ValueType.LINE_LIST};
+		ValueType[] ret = {ValueType.INTEGER, ValueType.POS_LIST};
 		return ret;
 	}
 
@@ -50,13 +50,13 @@ public class RotatePointList  implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"ローテートさせる数", "線分の系列"};
+		String[] ret = {"ローテートさせる数", "点の系列"};
 		return ret;
 	}
 
 	@Override
 	public ValueType getReturnType() {
-		return ValueType.LINE_LIST;
+		return ValueType.POS_LIST;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -66,8 +66,9 @@ public class RotatePointList  implements FunctionDefInterface {
 		 * 系列をローテートさせる
 		 */
 		int n = Value.getInteger(param.get(0)).intValue();
-		ArrayList<Pos> a = Value.getPosList(param.get(1));
-		Collections.rotate((ArrayList<Pos>)a.clone(), n);
+		ArrayList<Pos> org = Value.getPosList(param.get(1));
+		ArrayList<Pos> a = (ArrayList<Pos>)org.clone();
+		Collections.rotate(a, n);
 
 		return new ValuePosList(a);
 	}
