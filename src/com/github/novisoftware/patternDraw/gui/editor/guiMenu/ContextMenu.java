@@ -144,8 +144,8 @@ public class ContextMenu extends JPopupMenu {
 						editPanel.networkDataModel.getElements().remove(icon);
 						// 参照を削除
 						for (P020___AbstractElement ei : editPanel.networkDataModel.getElements()) {
-							if (ei instanceof P022_____RpnGraphNodeElement) {
-								P022_____RpnGraphNodeElement ele = (P022_____RpnGraphNodeElement) ei;
+							if (ei instanceof P021____AbstractGraphNodeElement) {
+								P021____AbstractGraphNodeElement ele = (P021____AbstractGraphNodeElement) ei;
 
 								for (P010___ConnectTerminal connector : ele.connectors) {
 									P021____AbstractGraphNodeElement src = ele.paramMapObj.get(connector.getParaName());
@@ -154,7 +154,6 @@ public class ContextMenu extends JPopupMenu {
 										ele.paramMapObj.remove(connector.getParaName());
 									}
 								}
-
 							}
 						}
 					}
