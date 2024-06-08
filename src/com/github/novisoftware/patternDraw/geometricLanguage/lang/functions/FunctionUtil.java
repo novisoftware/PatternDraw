@@ -9,6 +9,9 @@ public class FunctionUtil {
 		// 注:
 		// return しているので else if にする必要なし。
 		// (幅を揃えて誤記があったら分かるようにしている)
+		if (name.equals(Add2PosintSeries.NAME)) {
+			return new Add2PosintSeries();
+		}
 		if (name.equals(ClosePosList.NAME)) {
 			return new ClosePosList();
 		}
@@ -38,6 +41,9 @@ public class FunctionUtil {
 		}
 		if (name.equals(SeriesOnCircle.NAME)) {
 			return new SeriesOnCircle();
+		}
+		if (name.equals(SeriesOnCircle2.NAME)) {
+			return new SeriesOnCircle2();
 		}
 		if (name.equals(LineToDraw.NAME)) {
 			return new LineToDraw();
