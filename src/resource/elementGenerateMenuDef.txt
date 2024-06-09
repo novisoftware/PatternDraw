@@ -148,6 +148,27 @@ DESCRIPTION: 点の集まりに対して変換を実行します
 FUNCTION: do_transform_pos
 ---->DEFINE
 
+KIND: 処理
+TYPE: COLOR
+DISPNAME: 色/HSVカラー
+DESCRIPTION: HSV値から色を生成します。
+FUNCTION: hsv_to_color
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 色/色を設定(PNG)
+DESCRIPTION: 色を設定します(PNG)。
+FUNCTION: set_color_png
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 色/色を設定(SVG)
+DESCRIPTION: 色を設定します(SVG)。
+FUNCTION: set_color_svg
+---->DEFINE
+
 # TODO
 #
 # KIND: 処理

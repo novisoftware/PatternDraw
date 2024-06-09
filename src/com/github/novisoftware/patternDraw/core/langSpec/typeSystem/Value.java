@@ -41,6 +41,7 @@ public class Value {
 		POS_LIST,
 		LINE_LIST,
 		TRANSFORM,
+		COLOR,
 		ANY,
 		NONE,
 		UNDEF
@@ -80,6 +81,9 @@ public class Value {
 		if (ValueType.TRANSFORM.equals(valueType)) {
 			return "変換";
 		}
+		if (ValueType.COLOR.equals(valueType)) {
+			return "色";
+		}
 		if (ValueType.ANY.equals(valueType)) {
 			return "任意";
 		}
@@ -112,6 +116,7 @@ public class Value {
 		str2valueType.put("POS_LIST", ValueType.POS_LIST);
 		str2valueType.put("LINE_LIST", ValueType.LINE_LIST);
 		str2valueType.put("TRANSFORM", ValueType.TRANSFORM);
+		str2valueType.put("COLOR", ValueType.COLOR);
 		str2valueType.put("ANY", ValueType.ANY);
 		str2valueType.put("NONE", ValueType.NONE);
 
@@ -125,6 +130,7 @@ public class Value {
 		valueType2str.put(ValueType.POS_LIST   , "POS_LIST");
 		valueType2str.put(ValueType.LINE_LIST  , "LINE_LIST");
 		valueType2str.put(ValueType.TRANSFORM  , "TRANSFORM");
+		valueType2str.put(ValueType.COLOR    , "COLOR");
 		valueType2str.put(ValueType.ANY      , "ANY");
 		valueType2str.put(ValueType.NONE     , "NONE");
 	}

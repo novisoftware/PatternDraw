@@ -3,6 +3,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.color.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.transform.*;
 
 public class FunctionUtil {
@@ -71,7 +72,7 @@ public class FunctionUtil {
 			return new SinglePosition();
 		}
 
-		// 以降変換関連
+		// 以降、変換関連
 		if (name.equals(CombineTransforms.NAME)) {
 			return new CombineTransforms();
 		}
@@ -89,6 +90,17 @@ public class FunctionUtil {
 		}
 		if (name.equals(DoTransformPos.NAME)) {
 			return new DoTransformPos();
+		}
+
+		// 以降、色関連
+		if (name.equals(HsvToColor.NAME)) {
+			return new HsvToColor();
+		}
+		if (name.equals(SetColorPNG.NAME)) {
+			return new SetColorPNG();
+		}
+		if (name.equals(SetColorSVG.NAME)) {
+			return new SetColorSVG();
 		}
 
 		throw new LangSpecException("Specified function name '" + name + "' does not found.");
