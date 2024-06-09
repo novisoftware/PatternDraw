@@ -6,14 +6,10 @@ import java.util.List;
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueFloat;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueInteger;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
 
 public class SeriesOnCircle  implements FunctionDefInterface {
 	public static final String NAME = "series_on_circle";
