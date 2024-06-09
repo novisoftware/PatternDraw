@@ -3,6 +3,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.transform.*;
 
 public class FunctionUtil {
 	public static FunctionDefInterface getFunctionDef(String name) throws LangSpecException {
@@ -68,6 +69,26 @@ public class FunctionUtil {
 		}
 		if (name.equals(SinglePosition.NAME)) {
 			return new SinglePosition();
+		}
+
+		// 以降変換関連
+		if (name.equals(CombineTransforms.NAME)) {
+			return new CombineTransforms();
+		}
+		if (name.equals(CreateMoveTransform.NAME)) {
+			return new CreateMoveTransform();
+		}
+		if (name.equals(CreateRotTransform.NAME)) {
+			return new CreateRotTransform();
+		}
+		if (name.equals(CreateScaleTransform.NAME)) {
+			return new CreateScaleTransform();
+		}
+		if (name.equals(CreateSkewTransform.NAME)) {
+			return new CreateSkewTransform();
+		}
+		if (name.equals(DoTransformPos.NAME)) {
+			return new DoTransformPos();
 		}
 
 		throw new LangSpecException("Specified function name '" + name + "' does not found.");

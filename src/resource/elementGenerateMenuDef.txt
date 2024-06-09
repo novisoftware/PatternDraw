@@ -106,6 +106,57 @@ DESCRIPTION: 2系列の点を線で結びます。
 FUNCTION: line_from_2_series
 ---->DEFINE
 
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 変換/回転変換を生成
+DESCRIPTION: 回転します。
+FUNCTION: create_rot_transform
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 変換/移動変換を生成
+DESCRIPTION: 移動します。
+FUNCTION: create_move_transform
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 変換/拡大縮小変換を生成
+DESCRIPTION: 拡大縮小します。
+FUNCTION: create_scale_transform
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 変換/傾ける変換を生成
+DESCRIPTION: 傾けます。
+FUNCTION: create_skew_transform
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 変換/変換を結合
+DESCRIPTION: 2つの変換を結合します
+FUNCTION: combine_transforms
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 変換/点の集まりを変換
+DESCRIPTION: 点の集まりに対して変換を実行します
+FUNCTION: do_transform_pos
+---->DEFINE
+
+# TODO
+#
+# KIND: 処理
+# TYPE: LINE_LIST
+# DISPNAME: 変換/線の集まりを変換
+# DESCRIPTION: 線の集まりに対して変換を行います
+# FUNCTION: do_transform_lines
+# ---->DEFINE
+
 KIND: 定数
 TYPE: INTEGER
 HEIGHT: 35

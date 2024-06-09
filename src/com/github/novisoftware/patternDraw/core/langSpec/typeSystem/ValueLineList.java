@@ -6,7 +6,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 
 public class ValueLineList extends Value {
 	public ValueLineList(ArrayList<Line> lineList) {
-		super(ValueType.POS_LIST);
+		super(ValueType.LINE_LIST);
 		internal = lineList;
 	}
 

@@ -40,6 +40,7 @@ public class Value {
 		STRING,
 		POS_LIST,
 		LINE_LIST,
+		TRANSFORM,
 		ANY,
 		NONE,
 		UNDEF
@@ -76,6 +77,9 @@ public class Value {
 		if (ValueType.LINE_LIST.equals(valueType)) {
 			return "線";
 		}
+		if (ValueType.TRANSFORM.equals(valueType)) {
+			return "変換";
+		}
 		if (ValueType.ANY.equals(valueType)) {
 			return "任意";
 		}
@@ -107,6 +111,7 @@ public class Value {
 		str2valueType.put("STRING", ValueType.STRING);
 		str2valueType.put("POS_LIST", ValueType.POS_LIST);
 		str2valueType.put("LINE_LIST", ValueType.LINE_LIST);
+		str2valueType.put("TRANSFORM", ValueType.TRANSFORM);
 		str2valueType.put("ANY", ValueType.ANY);
 		str2valueType.put("NONE", ValueType.NONE);
 
@@ -119,6 +124,7 @@ public class Value {
 		valueType2str.put(ValueType.STRING   , "STRING");
 		valueType2str.put(ValueType.POS_LIST   , "POS_LIST");
 		valueType2str.put(ValueType.LINE_LIST  , "LINE_LIST");
+		valueType2str.put(ValueType.TRANSFORM  , "TRANSFORM");
 		valueType2str.put(ValueType.ANY      , "ANY");
 		valueType2str.put(ValueType.NONE     , "NONE");
 	}
@@ -145,6 +151,7 @@ public class Value {
 			return true;
 		}
 		if (send.equals(receive)) {
+			// 送り側と受け側が同一の場合
 			return true;
 		}
 		if (send.equals(ValueType.INTEGER) && receive.equals(ValueType.NUMERIC)) {
@@ -174,10 +181,10 @@ public class Value {
 		}
 		if (valueKind == ValueType.BOOLEAN) {
 			String s_ = s.toLowerCase();
-			if (s.equals(ValueBoolean.LABEL_TRUE)) {
+			if (s_.equals(ValueBoolean.LABEL_TRUE)) {
 				return ValueBoolean.TRUE;
 			}
-			else if(s.equals(ValueBoolean.LABEL_FALSE)) {
+			else if(s_.equals(ValueBoolean.LABEL_FALSE)) {
 				return ValueBoolean.FALSE;
 			}
 			else {
@@ -239,6 +246,17 @@ public class Value {
 	public static ArrayList<Line> getLineList(Value v) throws CaliculateException {
 		try {
 			return ((ValueLineList)v).getInternal();
+		} catch(ClassCastException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+		}
+	}
+
+	/**
+	 * @throws CaliculateException
+	 */
+	public static double[][] getTransform(Value v) throws CaliculateException {
+		try {
+			return ((ValueTransform)v).getInternal();
 		} catch(ClassCastException e) {
 			throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
 		}
