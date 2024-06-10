@@ -6,24 +6,31 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.Vector;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -31,6 +38,7 @@ import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueFloat;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
@@ -58,6 +66,12 @@ import com.github.novisoftware.patternDraw.utils.GuiPreference;
  *
  */
 public class EditParamWindow extends JFrame2 {
+	/**
+	 * 連番PNG出力時のディレクトリ選択用
+	 */
+	static private JFileChooser pngsFileChooser = new JFileChooser(".");
+
+
 	public static final int WINDOW_POS_X = 50;
 	public static final int WINDOW_POS_Y = 50;
 	public static final int WINDOW_WIDTH = 640;
@@ -250,6 +264,7 @@ public class EditParamWindow extends JFrame2 {
 			final ArrayList<ParameterDefine> paramDefList
 			) {
 		super();
+		final EditParamWindow thisObj = this;
 
 		EditParamPanel editParamPanel = new EditParamPanel();
 		// editParamPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -450,11 +465,161 @@ public class EditParamWindow extends JFrame2 {
 		JButton buttonOk = new JButton(GuiPreference.RUN_BUTTON_STRING);
 		buttonOk.setFont(GuiPreference.OK_BUTTON_FONT);
 		subPanel8.add(buttonOk);
-		SubPanel subPanel9 = new SubPanel();
-		pane.add(subPanel9);
+
+		// ★ アニメGIF用の連番PNGを生成する機能。
+		// TODO
+		// 見え方をもう少し控えめにしたほうが良い気もする。
+
+		/*
+ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"  -f gif output.gif
+
+		 */
+
+		final LinkedHashMap<String,ParameterDefine> map = new LinkedHashMap<String,ParameterDefine>();
+		final LinkedHashMap<String,String> nameMap = new LinkedHashMap<String,String>();
+		final Vector<String> labels = new Vector<String>();
+		final Vector<String> varNames = new Vector<String>();
+		for (ParameterDefine param__ : paramDefList) {
+			if (param__.enableSlider) {
+				// String label = param__.name + "(" + param__.description + ")";
+				// ComboBox の表示用ラベル
+				String label = param__.name + " (" + param__.description + ")";
+				labels.add(label);
+				nameMap.put(label, param__.name);
+				varNames.add(param__.name);
+				map.put(param__.name, param__);
+			}
+		}
+		if (!map.isEmpty()) {
+			SubPanel subPanel9 = new SubPanel();
+			pane.add(subPanel9);
+			subPanel9.add(new JLabel2("アニメーション用の連番画像を出力することができます。"));
+
+			final JComboBox<String> combo = new JComboBox<String>(labels);
+			subPanel9.add(combo);
+
+			JButton savePNGs = new JButton(GuiPreference.OUTPUT_PNGS_BUTTON_STRING);
+			savePNGs.setFont(GuiPreference.OK_BUTTON_FONT);
+			subPanel9.add(savePNGs);
+
+			savePNGs.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent ev) {
+					pngsFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					int selected = pngsFileChooser  . showSaveDialog(thisObj);
+					if (selected == JFileChooser.APPROVE_OPTION) {
+						File file = pngsFileChooser.getSelectedFile();
+						if (!file.isDirectory()) {
+							// ない筈
+							Debug.println("想定と異なるため打ち切り");
+							return;
+						}
+
+						String keyName = null;
+						try {
+							keyName = varNames.elementAt(combo.getSelectedIndex());
+						} catch (Exception e) {
+							// 発生しなさそう
+							e.printStackTrace();
+							return;
+						}
+
+						ParameterDefine param = map.get(keyName);
+
+						double min;
+						double max;
+						try {
+							min = Double.parseDouble(param.sliderMin);
+							max = Double.parseDouble(param.sliderMax);
+						} catch (Exception e) {
+							// 発生しないはず(?)
+							// (min, max が設定されていないと元のウィンドウは表示されない?)
+							e.printStackTrace();
+							return;
+						}
+						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+						int N_SPLIT = 30;
+						String filename = "image%05d.png";
+
+						final String f_keyName = keyName;
+						Runnable r = new Runnable() {
+							@Override
+							public void run() {
+								for (int i = 0 ; i < N_SPLIT ; i++) {
+									double r = 1.0 * i / N_SPLIT;
+									double doubleValue = ( max - min ) * r + min;
+
+									Value value = new ValueFloat(doubleValue);
+									thisObj.getVariables().put(f_keyName, value);
+									thisObj.callback.run();
+
+									try {
+										Thread.sleep(500);
+									} catch (InterruptedException e) {
+									}
+									System.out.println("" + doubleValue);
+
+
+									File outputFile = new File(file, String.format(filename, i));
+
+									try {
+										outputGraphicsWindow.outputPNG(outputFile);
+									} catch (IOException ex) {
+										return;
+										/*
+										String message = String.format("ファイル出力に失敗しました。\n%s\n%s",
+												outputFile.getAbsolutePath(),
+												ex.getMessage());
+										JOptionPane
+												.showMessageDialog(
+														thisObj,
+														message,
+														"Error",
+														JOptionPane.ERROR_MESSAGE);
+										return;
+										*/
+									}
+								}
+							}
+						};
+						SwingUtilities.invokeLater(r);
+						/*
+						if (file.exists()) {
+							int confirmResult =
+								JOptionPane.showConfirmDialog(thisObj.outputGraphicsWindow,
+		                                "すでにファイルが存在しますが、上書きしますか?",
+		                                "保存",
+		                                JOptionPane.YES_NO_OPTION,
+		                                JOptionPane.WARNING_MESSAGE);
+							if (confirmResult != JOptionPane.YES_OPTION) {
+								return;
+							}
+						}
+						try {
+							// OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+							outputGraphicsWindow.outputPNG(file);
+						} catch (Exception ex) {
+							String message = String.format("保存に失敗しました。\n%s",
+									ex.getMessage());
+							JOptionPane
+									.showMessageDialog(
+											thisObj.outputGraphicsWindow,
+											message,
+											"Error",
+											JOptionPane.ERROR_MESSAGE);
+							return;
+						}
+						*/
+					}
+				}
+			});
+		}
+
+		SubPanel subPanel10 = new SubPanel();
+		pane.add(subPanel10);
 		// subPanel9.add(boxSpacer(5, 100));
 		pane.add(Box.createGlue());
 		pane.add(boxSpacer(5, 100));
+
 
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);

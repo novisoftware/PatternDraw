@@ -29,18 +29,17 @@ public class OutputGraphicsMenuBar extends JMenuBar {
 	// ファイル選択ダイアログ
 	static private JFileChooser pngFileChooser = new JFileChooser(".");
 	static private JFileChooser svgFileChooser = new JFileChooser(".");
-	static private JFileChooser saveAsFileChooser = null;
 
 	final OutputGraphicsWindow outputGraphicsWindow;
 
 	final JMenu fileMenu;
 	public OutputGraphicsMenuBar(final OutputGraphicsWindow outputGraphicsWindow) {
+		final OutputGraphicsMenuBar thisObj = this;
+
 		this.outputGraphicsWindow = outputGraphicsWindow;
 		this.fileMenu = new JMenu("ファイル");
 		JMenuItem saveAsPNG = new JMenuItem("画像をPNG出力");
 		this.fileMenu.add(saveAsPNG);
-
-		final OutputGraphicsMenuBar thisObj = this;
 
 		saveAsPNG.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {

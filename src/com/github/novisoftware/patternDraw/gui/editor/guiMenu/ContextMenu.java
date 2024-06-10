@@ -225,6 +225,16 @@ public class ContextMenu extends JPopupMenu {
 				}
 			});
 			this.add(menuItem);
+
+
+			menuItem = GuiUtil.createMenuItem("printf系のデバッグ情報を出力",  Debug.enable);
+			menuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					Debug.enable = !Debug.enable;
+				}
+			});
+			this.add(menuItem);
+
 		}
 	}
 

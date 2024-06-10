@@ -5,7 +5,7 @@ package com.github.novisoftware.patternDraw.utils;
  *
  */
 public class Debug {
-	public static boolean enable = true;
+	public static boolean enable = false;
 
 	static boolean kindFilter( String s ) {
 		// if( s.indexOf( "sorter" )  != -1 ) return false;
@@ -17,6 +17,10 @@ public class Debug {
 	}
 
 	public static void println( String kind, String s ) {
+		if (!enable) {
+			return;
+		}
+
 		if( kindFilter(kind) ) {
 			return;
 		}
@@ -24,6 +28,9 @@ public class Debug {
 	}
 
 	static void print( String kind, String s ) {
+		if (!enable) {
+			return;
+		}
 		if( kindFilter(kind) ) {
 			return;
 		}
@@ -38,18 +45,21 @@ public class Debug {
 
 
 	public static void println( String s ) {
-		if( isDisabled(s) ) {
+		if (!enable) {
 			return;
 		}
 		System.out.println( "--debug--" + s );
 	}
 
 	public static void println() {
+		if (!enable) {
+			return;
+		}
 		System.out.println();
 	}
 
 	public static void print( String s ) {
-		if( isDisabled(s ) ) {
+		if (!enable) {
 			return;
 		}
 		System.out.print( s );
