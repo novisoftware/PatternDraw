@@ -52,6 +52,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Flo
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
+import com.github.novisoftware.patternDraw.gui.misc.JComboBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
@@ -471,39 +472,90 @@ public class EditParamWindow extends JFrame2 {
 		// 見え方をもう少し控えめにしたほうが良い気もする。
 
 		/*
+		 gifアニメにする場合のffmpeg の実行例は以下。
 ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"  -f gif output.gif
 
 		 */
 
-		final LinkedHashMap<String,ParameterDefine> map = new LinkedHashMap<String,ParameterDefine>();
-		final LinkedHashMap<String,String> nameMap = new LinkedHashMap<String,String>();
-		final Vector<String> labels = new Vector<String>();
+		final Vector<String> comboBoxLabels = new Vector<String>();
 		final Vector<String> varNames = new Vector<String>();
+		final LinkedHashMap<String,ParameterDefine> map = new LinkedHashMap<String,ParameterDefine>();
 		for (ParameterDefine param__ : paramDefList) {
 			if (param__.enableSlider) {
 				// String label = param__.name + "(" + param__.description + ")";
 				// ComboBox の表示用ラベル
 				String label = param__.name + " (" + param__.description + ")";
-				labels.add(label);
-				nameMap.put(label, param__.name);
+				comboBoxLabels.add(label);
 				varNames.add(param__.name);
 				map.put(param__.name, param__);
 			}
 		}
-		if (!map.isEmpty()) {
-			SubPanel subPanel9 = new SubPanel();
-			pane.add(subPanel9);
-			subPanel9.add(new JLabel2("アニメーション用の連番画像を出力することができます。"));
+		if (!comboBoxLabels.isEmpty()) {
+			SubPanel subPanel9a = new SubPanel();
+			pane.add(subPanel9a);
+			subPanel9a.add(new JLabel2("アニメーション用の連番画像を出力することができます。"));
 
-			final JComboBox<String> combo = new JComboBox<String>(labels);
-			subPanel9.add(combo);
+			SubPanel subPanel9b = new SubPanel();
+			pane.add(subPanel9b);
+			subPanel9b.add(spacer(30));
+			subPanel9b.add(new JLabel2("動かすパラメーター: "));
+			final JComboBox2 combo = new JComboBox2(comboBoxLabels);
+			subPanel9b.add(combo);
 
-			JButton savePNGs = new JButton(GuiPreference.OUTPUT_PNGS_BUTTON_STRING);
-			savePNGs.setFont(GuiPreference.OK_BUTTON_FONT);
-			subPanel9.add(savePNGs);
 
-			savePNGs.addActionListener(new ActionListener() {
+			SubPanel subPanel9c = new SubPanel();
+			pane.add(subPanel9c);
+			subPanel9c.add(spacer(30));
+			subPanel9c.add(new JLabel2("フレーム数: "));
+			final JTextField2 nFramesInput = new JTextField2("30");
+			subPanel9c.add(nFramesInput);
+
+
+			// 連番PNG保存ボタン
+			SubPanel subPanel9d = new SubPanel();
+			pane.add(subPanel9d);
+			subPanel9d.add(spacer(30));
+
+			JButton savePNGsButton = new JButton(GuiPreference.OUTPUT_PNGS_BUTTON_STRING);
+			savePNGsButton.setFont(GuiPreference.OK_BUTTON_FONT);
+			subPanel9d.add(savePNGsButton);
+
+			savePNGsButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent ev) {
+					int nFrames = 0;
+					boolean frameInputError = false;
+					try {
+						nFrames = Integer.parseInt(nFramesInput.getText(), 10);
+					} catch(Exception e) {
+						frameInputError = true;
+					}
+					if (frameInputError || nFrames <= 0) {
+						String message = String.format("フレーム数の指定に誤りがあります。");
+						JOptionPane
+								.showMessageDialog(
+										thisObj,
+										message,
+										"Error",
+										JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
+					// 数億枚とかを指定されるとムリなので、どこかでは制限する。
+					// ループGIFを想定すると 1000 は多すぎるぐらいなので、1000で。
+					int frames_max = 1000;
+					if (nFrames >= 1000) {
+						String message = String.format("指定するフレーム数が多すぎます。"
+								+ "\n"
+								+ "(" + frames_max + "以内にしてください。)" );
+						JOptionPane
+								.showMessageDialog(
+										thisObj,
+										message,
+										"Error",
+										JOptionPane.ERROR_MESSAGE);
+						return;
+					}
+
 					pngsFileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 					int selected = pngsFileChooser  . showSaveDialog(thisObj);
 					if (selected == JFileChooser.APPROVE_OPTION) {
@@ -537,7 +589,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 							return;
 						}
 						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
-						int N_SPLIT = 30;
+						int N_SPLIT = nFrames;
 						String filename = "image%05d.png";
 
 						final String f_keyName = keyName;
