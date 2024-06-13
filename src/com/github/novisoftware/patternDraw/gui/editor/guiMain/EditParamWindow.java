@@ -596,44 +596,59 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 						Runnable r = new Runnable() {
 							@Override
 							public void run() {
-								for (int i = 0 ; i < N_SPLIT ; i++) {
-									double r = 1.0 * i / N_SPLIT;
-									double doubleValue = ( max - min ) * r + min;
-
-									Value value = new ValueFloat(doubleValue);
-									thisObj.getVariables().put(f_keyName, value);
-									thisObj.callback.run();
+								try {
+									Thread.sleep(500);
+								} catch (InterruptedException e) {
+								}
+								for (int i_ = 0 ; i_ < N_SPLIT ; i_++) {
+									final int i = i_;
 
 									try {
 										Thread.sleep(500);
 									} catch (InterruptedException e) {
 									}
-									System.out.println("" + doubleValue);
+
+									Runnable r = new Runnable() {
+										@Override
+										public void run() {
+
+										double r = 1.0 * i / N_SPLIT;
+										double doubleValue = ( max - min ) * r + min;
+
+										Value value = new ValueFloat(doubleValue);
+										thisObj.getVariables().put(f_keyName, value);
+										thisObj.callback.run();
+
+										System.out.println("====================================");
+										System.out.println("" + doubleValue);
 
 
-									File outputFile = new File(file, String.format(filename, i));
+										File outputFile = new File(file, String.format(filename, i));
 
-									try {
-										outputGraphicsWindow.outputPNG(outputFile);
-									} catch (IOException ex) {
-										return;
-										/*
-										String message = String.format("ファイル出力に失敗しました。\n%s\n%s",
-												outputFile.getAbsolutePath(),
-												ex.getMessage());
-										JOptionPane
-												.showMessageDialog(
-														thisObj,
-														message,
-														"Error",
-														JOptionPane.ERROR_MESSAGE);
-										return;
-										*/
+										try {
+											outputGraphicsWindow.outputPNG(outputFile);
+										} catch (IOException ex) {
+											return;
+											/*
+											String message = String.format("ファイル出力に失敗しました。\n%s\n%s",
+													outputFile.getAbsolutePath(),
+													ex.getMessage());
+											JOptionPane
+													.showMessageDialog(
+															thisObj,
+															message,
+															"Error",
+															JOptionPane.ERROR_MESSAGE);
+											return;
+											*/
+										}
 									}
+									};
+									SwingUtilities.invokeLater(r);
 								}
 							}
 						};
-						SwingUtilities.invokeLater(r);
+						new Thread(r).start();
 						/*
 						if (file.exists()) {
 							int confirmResult =
