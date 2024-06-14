@@ -593,6 +593,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 						String filename = "image%05d.png";
 
 						final String f_keyName = keyName;
+						final HashSet<Integer> isContaisError = new HashSet<Integer>();
 						Runnable r = new Runnable() {
 							@Override
 							public void run() {
@@ -607,10 +608,24 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 										Thread.sleep(500);
 									} catch (InterruptedException e) {
 									}
+									if (! isContaisError.isEmpty()) {
+										return;
+									}
 
+									/*
+									 * 以下のまとまりを行うスレッドをInvokeLaterで行う。
+									 * スレッドの単一性は Swing 側が保証する。
+									 * ・パラメーターの設定
+									 * ・通知(repaintさせる)
+									 * ・PNG出力
+									 */
 									Runnable r = new Runnable() {
 										@Override
 										public void run() {
+											if (! isContaisError.isEmpty()) {
+												return;
+											}
+
 
 										double r = 1.0 * i / N_SPLIT;
 										double doubleValue = ( max - min ) * r + min;
@@ -628,8 +643,8 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 										try {
 											outputGraphicsWindow.outputPNG(outputFile);
 										} catch (IOException ex) {
-											return;
-											/*
+											isContaisError.add(new Integer(1));
+
 											String message = String.format("ファイル出力に失敗しました。\n%s\n%s",
 													outputFile.getAbsolutePath(),
 													ex.getMessage());
@@ -640,7 +655,6 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 															"Error",
 															JOptionPane.ERROR_MESSAGE);
 											return;
-											*/
 										}
 									}
 									};
@@ -649,33 +663,6 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 							}
 						};
 						new Thread(r).start();
-						/*
-						if (file.exists()) {
-							int confirmResult =
-								JOptionPane.showConfirmDialog(thisObj.outputGraphicsWindow,
-		                                "すでにファイルが存在しますが、上書きしますか?",
-		                                "保存",
-		                                JOptionPane.YES_NO_OPTION,
-		                                JOptionPane.WARNING_MESSAGE);
-							if (confirmResult != JOptionPane.YES_OPTION) {
-								return;
-							}
-						}
-						try {
-							// OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
-							outputGraphicsWindow.outputPNG(file);
-						} catch (Exception ex) {
-							String message = String.format("保存に失敗しました。\n%s",
-									ex.getMessage());
-							JOptionPane
-									.showMessageDialog(
-											thisObj.outputGraphicsWindow,
-											message,
-											"Error",
-											JOptionPane.ERROR_MESSAGE);
-							return;
-						}
-						*/
 					}
 				}
 			});
