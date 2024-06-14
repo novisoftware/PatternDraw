@@ -6,7 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
@@ -36,7 +36,7 @@ public class AbstractInputConstantWindow extends JFrame2 {
 		this.setSize(500, 250);
 	}
 
-	public 	AbstractInputConstantWindow(final P010___ControlElement element, final EditDiagramPanel editPanel) {
+	public 	AbstractInputConstantWindow(final P030____ControlElement element, final EditDiagramPanel editPanel) {
 		super();
 		Debug.println("ElementEdit", "RPN to Edit is " + element.getRpnString());
 		rpnArray = element.getRpn().getArrayCopy();

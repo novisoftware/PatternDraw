@@ -30,7 +30,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueT
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
@@ -60,7 +60,7 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 		c2(element, editPanel);
 	}
 
-	public InputOtherTypeWindow(final P010___ControlElement element, final EditDiagramPanel editPanel) {
+	public InputOtherTypeWindow(final P030____ControlElement element, final EditDiagramPanel editPanel) {
 		super(element, editPanel);
 		this.targetElement = element;
 		c2(element, editPanel);
@@ -80,8 +80,8 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 		messageDisp = new JLabel2(" ");
 		pane.add(messageDisp);
 
-		if (element instanceof P010___ControlElement) {
-			P010___ControlElement e = (P010___ControlElement) element;
+		if (element instanceof P030____ControlElement) {
+			P030____ControlElement e = (P030____ControlElement) element;
 			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
 			rpnArray = e.getRpn().getArray();
 		} else if (element instanceof P022_____RpnGraphNodeElement) {

@@ -19,7 +19,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
@@ -159,8 +159,8 @@ public class ContextMenu extends JPopupMenu {
 					}
 
 					public void actionPerformed(ActionEvent event) {
-						if (ti instanceof P010___ControlElement && ((P010___ControlElement) ti).controllerGroup != null) {
-							for (P010___ControlElement c : ((P010___ControlElement) ti).controllerGroup) {
+						if (ti instanceof P030____ControlElement && ((P030____ControlElement) ti).controllerGroup != null) {
+							for (P030____ControlElement c : ((P030____ControlElement) ti).controllerGroup) {
 								this.removeIcon(c);
 							}
 						} else {

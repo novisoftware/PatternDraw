@@ -1,6 +1,7 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -111,7 +112,7 @@ public class EditDiagramPanel extends JPanel {
 	P001_IconGuiInterface checkXY(int x, int y) {
 		P001_IconGuiInterface hit = null;
 		for (P020___AbstractElement t : networkDataModel.getElements()) {
-			P001_IconGuiInterface check = t.getTouchedObject(x, y);
+			P001_IconGuiInterface check = t.getTouchedObject(this, x, y);
 			if (check != null) {
 				// System.out.println("h mouse(" + x + "," + y +") obj(" + t.x +
 				// "," + t.y +")" );
@@ -121,6 +122,10 @@ public class EditDiagramPanel extends JPanel {
 				// breakがあると、重なったときに「下側」のを拾うことになる。
 				// break;
 			}
+		}
+
+		if (hit == null) {
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		}
 
 		return hit;

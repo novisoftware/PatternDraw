@@ -1,6 +1,7 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -496,15 +497,17 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	}
 
 	@Override
-	public P001_IconGuiInterface getTouchedObject(int x, int y) {
+	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {
 		for (P010___ConnectTerminal connector : connectors) {
 			if (connector.isTouched(x, y)) {
+				editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 				return connector;
 			}
 		}
 
 		if (this.numberPicker != null) {
 			if (this.numberPicker.isHit(x, y)) {
+				editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 				return this.numberPicker;
 			}
 		}
@@ -515,6 +518,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				<
 				1.0f * this.h*this.h*this.w*this.w/4
 				) {
+			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			return this;
 		}
 

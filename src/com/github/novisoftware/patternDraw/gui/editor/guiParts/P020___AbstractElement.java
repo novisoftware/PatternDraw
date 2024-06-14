@@ -1,5 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
+import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -180,10 +181,11 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 		return editPanel.getHandledObject() == this;
 	}
 
-	public P001_IconGuiInterface getTouchedObject(int x, int y) {
+	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {
 		if (1.0f * (this.x + this.w / 2 - x) * (this.x + this.w / 2 - x) * this.h * this.h
 				+ 1.0f * (this.y + this.h / 2 - y) * (this.y + this.h / 2 - y) * this.w * this.w < 1.0f * this.h
 						* this.h * this.w * this.w / 4) {
+			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 			return this;
 		}
 		return null;

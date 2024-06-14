@@ -10,7 +10,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.EditParamDe
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
@@ -26,8 +26,8 @@ public class Util {
 			public void actionPerformed(ActionEvent ev) {
 				System.out.println("Set RPN:" + RpnUtil.a2s(tf.rpnArray));
 				P020___AbstractElement te = tf.targetElement;
-				if (te instanceof P010___ControlElement) {
-					P010___ControlElement e = (P010___ControlElement) te;
+				if (te instanceof P030____ControlElement) {
+					P030____ControlElement e = (P030____ControlElement) te;
 					e.setRpnString(RpnUtil.a2s(tf.rpnArray));
 				} else if (te instanceof P022_____RpnGraphNodeElement) {
 					P022_____RpnGraphNodeElement e = (P022_____RpnGraphNodeElement) te;

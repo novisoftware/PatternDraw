@@ -1,6 +1,7 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiParts;
 
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -17,7 +18,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueNumeric
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
@@ -30,19 +31,19 @@ import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
-public class P010___ControlElement extends P020___AbstractElement {
+public class P030____ControlElement extends P020___AbstractElement {
 	/**
 	 * 制御用の箱の集まり・かたまり
 	 */
 	public String controlType;
 
-	public HashSet<P010___ControlElement> controllerGroup;
+	public HashSet<P030____ControlElement> controllerGroup;
 
-	public P010___ControlElement(EditDiagramPanel EditPanel) {
+	public P030____ControlElement(EditDiagramPanel EditPanel) {
 		super(EditPanel);
 	}
 
-	public P010___ControlElement(EditDiagramPanel EditPanel, String s) {
+	public P030____ControlElement(EditDiagramPanel EditPanel, String s) {
 		super(EditPanel);
 
 		String a[] = FileReadUtil.tokenizeToArray(s);
@@ -139,8 +140,8 @@ public class P010___ControlElement extends P020___AbstractElement {
 	}
 
 	@Override
-	public P010___ControlElement getCopy() {
-		P010___ControlElement ret = new P010___ControlElement(this.editPanel, this.str());
+	public P030____ControlElement getCopy() {
+		P030____ControlElement ret = new P030____ControlElement(this.editPanel, this.str());
 
 		return ret;
 	}
@@ -159,7 +160,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 	 */
 	@Override
 	public void paintWithPhase(Graphics2D g2, int phase) {
-		P010___ControlElement t = this;
+		P030____ControlElement t = this;
 
 		// 結線
 		if (phase == 0) {
@@ -236,12 +237,13 @@ public class P010___ControlElement extends P020___AbstractElement {
 	 * ドラッグ開始時
 	 */
 	@Override
-	public P001_IconGuiInterface getTouchedObject(int x, int y) {
+	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {
 		if ( this.x < x && x < this.x + this.MARK_WIDTH
 				&& this.y < y && y < this.y + this.w) {
 			this.dragMode = DragMode.MOVE;
 
 			Debug.println("controller", "移動開始");
+			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
 
 			return this;
 		}
@@ -249,6 +251,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 				&& this.y < y && y < this.y + this.w) {
 			this.dragMode = DragMode.RESIZE;
 
+			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
 			Debug.println("controller", "リサイズ開始");
 
 			return this;
@@ -282,7 +285,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 			this.x += x;
 			this.y += y;
 
-			HashMap<P010___ControlElement, ArrayList<P020___AbstractElement>> map = this.editPanel.networkDataModel.controlled_head;
+			HashMap<P030____ControlElement, ArrayList<P020___AbstractElement>> map = this.editPanel.networkDataModel.controlled_head;
 
 			if (map.containsKey(this)) {
 				for (P020___AbstractElement ei : map.get(this)) {
@@ -325,8 +328,8 @@ public class P010___ControlElement extends P020___AbstractElement {
 			ArrayList<P020___AbstractElement> cList = this.editPanel.networkDataModel.control_contains.get(this);
 			if (cList != null) {
 				for (P020___AbstractElement ei : cList) {
-					if (ei instanceof P010___ControlElement) {
-						P010___ControlElement other = (P010___ControlElement)ei;
+					if (ei instanceof P030____ControlElement) {
+						P030____ControlElement other = (P030____ControlElement)ei;
 
 						// if (this.x < other.x && this.y < other.y && other.x + other.w < this.x + this.w && other.y + other.h < this.y + this.h) {
 							// other.dragged(x, y);
@@ -339,7 +342,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 
 			if (requetOrigin) {
 				if (controllerGroup != null) {
-					for (P010___ControlElement c : controllerGroup) {
+					for (P030____ControlElement c : controllerGroup) {
 						if (c != this) {
 //							Debug.println("controller", "recursive drag.");
 							c.dragMode = this.dragMode;
@@ -382,7 +385,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 			}
 
 			if (controllerGroup != null) {
-				for (P010___ControlElement c : controllerGroup) {
+				for (P030____ControlElement c : controllerGroup) {
 					if (c != this) {
 						if (c.y == this.y && c.x > this.x) {
 							c.x += this.w - w_old;
@@ -404,7 +407,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 			StringBuilder sb = new StringBuilder();
 			sb.append("CONTROL_GROUP:");
 
-			for (P010___ControlElement c : controllerGroup) {
+			for (P030____ControlElement c : controllerGroup) {
 				sb.append(' ');
 				sb.append(c.id);
 			}

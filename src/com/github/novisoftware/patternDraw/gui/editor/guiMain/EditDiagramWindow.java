@@ -18,7 +18,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
@@ -199,8 +199,8 @@ public class EditDiagramWindow extends JFrame2 {
 							this.inputWindow = f;
 						}
 					}
-					else if (obj instanceof P010___ControlElement) {
-						P010___ControlElement element = (P010___ControlElement)obj;
+					else if (obj instanceof P030____ControlElement) {
+						P030____ControlElement element = (P030____ControlElement)obj;
 						PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 						Point p = pointerInfo.getLocation();
 
@@ -326,7 +326,7 @@ public class EditDiagramWindow extends JFrame2 {
 				return;
 			}
 
-			if (handled instanceof P010___ControlElement && editPanel__.workLineFrom != null) {
+			if (handled instanceof P030____ControlElement && editPanel__.workLineFrom != null) {
 				/*
 				Controller from = (Controller)handled;
 				// 仮実装

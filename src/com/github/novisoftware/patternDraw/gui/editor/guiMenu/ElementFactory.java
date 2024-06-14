@@ -3,7 +3,7 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ControlElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P023_____FncGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
@@ -160,7 +160,7 @@ public class ElementFactory {
 		if (this.defType.equals(PartsType.TYPE_RPNDEF)) {
 			if (this.kindName.equals("制御")) {
 				if (this.controlType.equals("IF")) {
-					P010___ControlElement controlBlock = new P010___ControlElement(this.editPanel);
+					P030____ControlElement controlBlock = new P030____ControlElement(this.editPanel);
 					String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
 
 					controlBlock.id = name;
@@ -176,7 +176,7 @@ public class ElementFactory {
 					eleList.add(controlBlock);
 
 
-					P010___ControlElement controlBlock2 = new P010___ControlElement(this.editPanel);
+					P030____ControlElement controlBlock2 = new P030____ControlElement(this.editPanel);
 					String name2 = editPanel.networkDataModel.generateUniqueName("THEN" + "0");
 
 					controlBlock2.id = name2;
@@ -191,7 +191,7 @@ public class ElementFactory {
 
 					eleList.add(controlBlock2);
 
-					HashSet<P010___ControlElement> controllerGroup = new HashSet<P010___ControlElement>();
+					HashSet<P030____ControlElement> controllerGroup = new HashSet<P030____ControlElement>();
 					controllerGroup.add(controlBlock);
 					controllerGroup.add(controlBlock2);
 
@@ -200,7 +200,7 @@ public class ElementFactory {
 				}
 				else {
 					String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
-					P010___ControlElement controlBlock = new P010___ControlElement(this.editPanel);
+					P030____ControlElement controlBlock = new P030____ControlElement(this.editPanel);
 
 					controlBlock.id = name;
 					controlBlock.x = x;
