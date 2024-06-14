@@ -25,72 +25,16 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
 
 public class ElementFactory {
-	final protected EditDiagramPanel editPanel;
-
-	public ElementFactory(EditDiagramPanel editPanel, PartsType defType) {
-		this.editPanel = editPanel;
-		this.defType = defType;
-	}
-
-	static final String reg2str(String s) {
-		return s.replaceAll("\\\\", "");
-	}
-
 	static final String CONST_REG__META_EXIST_VARIABLE = "\\{exist-variable\\}";
 	static final String CONST_STR__META_EXIST_VARIABLE = reg2str(CONST_REG__META_EXIST_VARIABLE);
 
 	static final String CONST_REG__META_NEW_VARIABLE = "\\{new-variable\\}";
 	static final String CONST_STR__META_NEW_VARIABLE = reg2str(CONST_REG__META_NEW_VARIABLE);
 
-	/**
-	// メニュー要素を展開する
-	// (定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する)
-	 *
-	 * @param editPanel editPanelオブジェクト
-	 * @param partsList 展開前のパーツリスト
-	 * @return 展開後のパーツリスト
-	 */
-	public static ArrayList<ElementFactory> partsListExtend(EditDiagramPanel editPanel, ArrayList<ElementFactory> partsList) {
-		// 定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する。
-		ArrayList<ElementFactory> expandedParts = new ArrayList<>();
-		for (final ElementFactory nParts : partsList) {
-			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
-				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
 
-				ArrayList<String> variableNames = new ArrayList<String>();
-				variableNames.addAll(editPanel.networkDataModel.variableNameList);
+	final protected EditDiagramPanel editPanel;
 
-				for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
-					variableNames.add(param.name);
-				}
 
-				for (String varName : variableNames) {
-					ElementFactory add = nParts.getCopy();
-
-					add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE, varName);
-					add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE,  varName);
-//					Debug.println("expand rpn: " + add.rpn);
-					expandedParts.add(add);
-				}
-			}
-			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
-				Debug.println("match " + ElementFactory.CONST_STR__META_NEW_VARIABLE);
-
-				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.variableNameList, "");
-				ElementFactory add = nParts.getCopy();
-
-				add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE , newVariableName);
-				add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE,  newVariableName);
-				Debug.println("expand rpn: " + add.rpn);
-				expandedParts.add(add);
-			}
-			else {
-				expandedParts.add(nParts);
-			}
-		}
-
-		return expandedParts;
-	}
 
 	/**
 	 * 説明文
@@ -145,6 +89,63 @@ public class ElementFactory {
 
 	public int width;
 	public int height;
+
+
+	public ElementFactory(EditDiagramPanel editPanel, PartsType defType) {
+		this.editPanel = editPanel;
+		this.defType = defType;
+	}
+
+
+	/**
+	// メニュー要素を展開する
+	// (定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する)
+	 *
+	 * @param editPanel editPanelオブジェクト
+	 * @param partsList 展開前のパーツリスト
+	 * @return 展開後のパーツリスト
+	 */
+	public static ArrayList<ElementFactory> partsListExtend(EditDiagramPanel editPanel, ArrayList<ElementFactory> partsList) {
+		// 定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する。
+		ArrayList<ElementFactory> expandedParts = new ArrayList<>();
+		for (final ElementFactory nParts : partsList) {
+			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
+				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
+
+				ArrayList<String> variableNames = new ArrayList<String>();
+				variableNames.addAll(editPanel.networkDataModel.variableNameList);
+
+				for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
+					variableNames.add(param.name);
+				}
+
+				for (String varName : variableNames) {
+					ElementFactory add = nParts.getCopy();
+
+					add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE, varName);
+					add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE,  varName);
+//					Debug.println("expand rpn: " + add.rpn);
+					expandedParts.add(add);
+				}
+			}
+			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
+				Debug.println("match " + ElementFactory.CONST_STR__META_NEW_VARIABLE);
+
+				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.variableNameList, "");
+				ElementFactory add = nParts.getCopy();
+
+				add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE , newVariableName);
+				add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE,  newVariableName);
+				Debug.println("expand rpn: " + add.rpn);
+				expandedParts.add(add);
+			}
+			else {
+				expandedParts.add(nParts);
+			}
+		}
+
+		return expandedParts;
+	}
 
 	/**
 	 * 編集パネルに新しいエレメントを追加する
@@ -272,6 +273,10 @@ public class ElementFactory {
 		parts.height = this.height;
 
 		return parts;
+	}
+
+	static final String reg2str(String s) {
+		return s.replaceAll("\\\\", "");
 	}
 
 	/*

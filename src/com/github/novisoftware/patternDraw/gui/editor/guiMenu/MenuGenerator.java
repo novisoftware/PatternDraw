@@ -124,6 +124,7 @@ public class MenuGenerator {
 						parts.description = workDescription != null ? workDescription : tmpFunc.getDescription();
 						parts.valueType = tmpFunc.getReturnType();
 						parts.kindName = workKindName;
+						parts.controlType = "";
 						parts.rpn = "";
 						parts.fncName = workFncName;
 						parts.width = workWidth;
