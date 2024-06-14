@@ -136,6 +136,8 @@ public class EditDiagramWindow extends JFrame2 {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				P001_IconGuiInterface obj = editPanel__.checkXY(e.getX(), e.getY());
 				if (obj != null) {
+					// TODO
+					// オブジェクト側に処理を書く方が素直かも知れない。
 					if (obj instanceof P022_____RpnGraphNodeElement) {
 						P022_____RpnGraphNodeElement element = (P022_____RpnGraphNodeElement)obj;
 						if (element.getKindId() == KindId.CONSTANT) {
@@ -197,6 +199,19 @@ public class EditDiagramWindow extends JFrame2 {
 							this.inputWindow = f;
 						}
 					}
+					else if (obj instanceof P010___ControlElement) {
+						P010___ControlElement element = (P010___ControlElement)obj;
+						PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+						Point p = pointerInfo.getLocation();
+
+						InputOtherTypeWindow f = new InputOtherTypeWindow(element, editPanel__);
+						f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						f.addWindowListener(inputWindowCloseListener);
+						f.setLocation(p);
+						f.setVisible(true);
+						this.inputWindow = f;
+					}
+
 					// TODO: FuncGraphNode の場合は、特に反応させないけれど、
 					// なにか設定したほうが良いか自体から、考える。
 				}

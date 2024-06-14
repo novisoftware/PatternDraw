@@ -20,6 +20,15 @@ class ValueInputPanel extends JPanel {
 	AbstractInputChecker checker;
 	final String  fixedHeader;
 
+	/*
+	public ValueInputPanel(InputOtherTypeWindow inputOtherTypeWindow,
+			int index,
+			String comment, String value,
+			InputChecker inputChecker) {
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
+	*/
+
 	public ValueInputPanel(
 			AbstractInputConstantWindow frame,
 			int param_index,

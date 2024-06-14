@@ -27,6 +27,7 @@ import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllB
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class P010___ControlElement extends P020___AbstractElement {
@@ -37,16 +38,6 @@ public class P010___ControlElement extends P020___AbstractElement {
 
 	public HashSet<P010___ControlElement> controllerGroup;
 
-	public String str() {
-		return String.format("CONTROL: %d %d %d %d %s %s %s %s", x, y, w, h, escape(id), escape(getKindString()), escape(controlType), escape(getRpnString()));
-	}
-
-	public ArrayList<String> optStr() {
-		ArrayList<String> ret = new ArrayList<>();
-
-		return ret;
-	}
-
 	public P010___ControlElement(EditDiagramPanel EditPanel) {
 		super(EditPanel);
 	}
@@ -54,7 +45,7 @@ public class P010___ControlElement extends P020___AbstractElement {
 	public P010___ControlElement(EditDiagramPanel EditPanel, String s) {
 		super(EditPanel);
 
-		String a[] =s.split(" ");
+		String a[] = FileReadUtil.tokenizeToArray(s);
 		this.x = Integer.parseInt(a[1], 10);
 		this.y = Integer.parseInt(a[2], 10);
 		this.w = Integer.parseInt(a[3], 10);
@@ -68,6 +59,25 @@ public class P010___ControlElement extends P020___AbstractElement {
 
 	public String getControlType() {
 		return this.controlType;
+	}
+
+
+	public String str() {
+		return String.format("CONTROL: %d %d %d %d %s %s %s %s",
+				x,
+				y,
+				w,
+				h,
+				escape(id),
+				escape(getKindString()),
+				escape(controlType),
+				escape(getRpnString()));
+	}
+
+	public ArrayList<String> optStr() {
+		ArrayList<String> ret = new ArrayList<>();
+
+		return ret;
 	}
 
 	// Looper looper;
@@ -93,7 +103,6 @@ public class P010___ControlElement extends P020___AbstractElement {
 	public String getRepresentExpression() {
 		return this.rpn.getDisplayString();
 	}
-
 
 	/***
 	 * 実行時の初期化
@@ -166,7 +175,13 @@ public class P010___ControlElement extends P020___AbstractElement {
 				g2.drawString(t.getDebugIdString(), t.x + 30, t.y + 9);
 			}
 
-			String typeDisplay = t.getKindString() + ": " + t.controlType;
+			String typeDisplay = "";
+			if (t.controlType.equals("REPEAT")) {
+					typeDisplay = "LOOP";
+			}
+			else {
+				typeDisplay = t.getKindString() + ": " + t.controlType;
+			}
 
 			g2.setColor(Color.GRAY);
 			g2.drawString(typeDisplay, t.x + 30, t.y - 9);
@@ -222,14 +237,6 @@ public class P010___ControlElement extends P020___AbstractElement {
 	 */
 	@Override
 	public P001_IconGuiInterface getTouchedObject(int x, int y) {
-		/*
-		for (GraphConnector connector : connectors) {
-			if (connector.isTouched(x, y)) {
-				return connector;
-			}
-		}
-		*/
-
 		if ( this.x < x && x < this.x + this.MARK_WIDTH
 				&& this.y < y && y < this.y + this.w) {
 			this.dragMode = DragMode.MOVE;
