@@ -8,7 +8,6 @@ import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Stack;
 
 import javax.swing.JFrame;

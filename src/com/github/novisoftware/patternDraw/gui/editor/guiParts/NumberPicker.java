@@ -4,7 +4,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.utils.Debug;
 
 /**
  * 単連結グラフの先頭の場合は、

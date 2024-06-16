@@ -11,7 +11,6 @@ import javax.imageio.ImageIO;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InvaliScriptException;
-import com.github.novisoftware.patternDraw.renderer.Renderer;
 
 public class PngUtil {
 	/*

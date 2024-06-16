@@ -6,7 +6,6 @@ import java.awt.Rectangle;
 import java.awt.geom.CubicCurve2D;
 
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class RenderingUtil {
 	static public void drawTipsWindowFrame(Graphics2D g2, int drawX, int drawY, int width, int height) {

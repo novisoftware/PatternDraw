@@ -189,6 +189,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 					EditParamWindow editParamWindow =
 					new EditParamWindow(
 							editDiagramPanel.networkDataModel.paramDefList);
+					outputGraphicsWindow.editParamWindow = editParamWindow;
+					outputGraphicsWindow.editDiagramWindow = editDiagramWindow;
 
 					// パラメーター値が設定されたときのコールバック
 					Runnable callback = new Runnable() {
@@ -205,6 +207,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 					Debug.println("END");
 				}
 				else {
+					outputGraphicsWindow.editParamWindow = null;
+					outputGraphicsWindow.editDiagramWindow = null;
 					Debug.println("START");
 					editDiagramPanel.networkDataModel.analyze();
 					editDiagramPanel.networkDataModel.runProgram();

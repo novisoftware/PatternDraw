@@ -1,7 +1,5 @@
 package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
-import com.github.novisoftware.patternDraw.core.CaliculateException;
-
 public abstract class ValueAbstractScalar extends Value {
 	protected ValueAbstractScalar(ValueType valueKind) {
 		super(valueKind);

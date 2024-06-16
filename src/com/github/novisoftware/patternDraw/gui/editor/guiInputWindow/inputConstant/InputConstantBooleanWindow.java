@@ -17,7 +17,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraph
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 /**
  * ダイヤグラム中の定数値の編集を行う

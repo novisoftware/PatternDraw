@@ -2,21 +2,10 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
-import com.github.novisoftware.patternDraw.core.RpnUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
-import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class OutputTextWindow extends JFrame2 {

@@ -9,7 +9,6 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	public abstract String str();

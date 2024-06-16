@@ -1,37 +1,19 @@
 package com.github.novisoftware.patternDraw.svg;
 
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import com.github.novisoftware.patternDraw.renderer.Renderer;
+import com.github.novisoftware.patternDraw.utils.FileWriteUtil;
 
 public class SvgUtil {
-	private static final String LF = "\n";
-
-	public static void fileOutput(File file, ArrayList<String> buff) {
-		try {
-			BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-			OutputStreamWriter br = new OutputStreamWriter(bos);
-			for (String line : buff) {
-				br.write(line);
-				br.write(LF);
-			}
-			br.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-	}
-
-	public static void outSvg(SvgInstruction s, String filename, Renderer renderer) {
+	public static void outSvg(SvgInstruction s, String filename, Renderer renderer) throws IOException {
 		SvgUtil.outSvg(s, new File(filename), renderer);
 	}
 
-	public static void outSvg(SvgInstruction s, File file, Renderer renderer) {
+	public static void outSvg(SvgInstruction s, File file, Renderer renderer) throws IOException {
 		ArrayList<String> out = new ArrayList<String>();
 
 		out.add("<?xml version=\"1.0\"?>");
@@ -41,6 +23,6 @@ public class SvgUtil {
 
 		out.add("</svg>");
 
-		fileOutput(file, out);
+		FileWriteUtil.fileOutput(file, out);
 	}
 }

@@ -1,7 +1,5 @@
 package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
-import java.math.BigInteger;
-
 public class ValueFloat extends ValueAbstractScalar {
 	public ValueFloat(String s) {
 		super(ValueType.FLOAT);

@@ -19,8 +19,6 @@ import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -37,17 +35,14 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueFloat;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Int2Double;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderParameter;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.BooleanChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
@@ -67,22 +62,25 @@ import com.github.novisoftware.patternDraw.utils.GuiPreference;
  *
  */
 public class EditParamWindow extends JFrame2 {
-	/**
-	 * 連番PNG出力時のディレクトリ選択用
-	 */
-	static private JFileChooser pngsFileChooser = new JFileChooser(".");
-
-
 	public static final int WINDOW_POS_X = 50;
 	public static final int WINDOW_POS_Y = 50;
 	public static final int WINDOW_WIDTH = 640;
 	public static final int WINDOW_HEIGHT = 600;
+
+	/**
+	 * 連番PNG出力時のディレクトリ選択用
+	 */
+	private static JFileChooser pngsFileChooser = new JFileChooser(".");
 
 	private final ArrayList<ParameterDefine> paramDefList;
 	private final HashMap<String, Value> variables;
 	private Runnable callback;
 	private final HashMap<String,JTextField> textFields;
 
+	/**
+	 * 入力チェックして、NGだったパラメーター。
+	 * NGだったパラメーターがあったら、スクリプトを実行しない。
+	 */
 	private final HashSet<AbstractInputChecker> ngInputs;
 
 	static class CheckMessageLabel extends JLabel2 {
@@ -255,6 +253,32 @@ public class EditParamWindow extends JFrame2 {
 	    }
 	}
 
+	public static String jsonItem(String k, String v, boolean isLast) {
+		return String.format("\"%s\": \"%s\"%s",
+				k,
+				v,
+				isLast ? "" : ",");
+	}
+
+	public String getVariablesPrint() {
+		StringBuilder sb = new StringBuilder();
+
+		boolean isFirst = true;
+		for (ParameterDefine paramDef : this.paramDefList) {
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				sb.append(",\n");
+			}
+
+			String name = paramDef.name;
+			Value value = this.getVariables().get(paramDef.name);
+			if (value != null) {
+				sb.append(jsonItem(name, value.toString(), true));
+			}
+		}
+		return sb.toString();
+	}
 
 	/**
 	 *
@@ -296,9 +320,6 @@ public class EditParamWindow extends JFrame2 {
 		this.setTitle("条件を指定します");
 
 		// レイアウト
-		/*
-		Container pane = this.getContentPane();
-		*/
 		JPanel pane = editParamPanel;
 
 		// pane.setLayout(new FlowLayout(FlowLayout.LEADING));
@@ -509,7 +530,6 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 			subPanel9c.add(new JLabel2("フレーム数: "));
 			final JTextField2 nFramesInput = new JTextField2("30");
 			subPanel9c.add(nFramesInput);
-
 
 			// 連番PNG保存ボタン
 			SubPanel subPanel9d = new SubPanel();

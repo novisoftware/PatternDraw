@@ -3,26 +3,18 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P023_____FncGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P010___ConnectTerminal;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.GuiUtil;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.core.Rpn;
-import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
-import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P023_____FncGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
+import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class ElementFactory {
 	static final String CONST_REG__META_EXIST_VARIABLE = "\\{exist-variable\\}";

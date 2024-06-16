@@ -9,20 +9,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
-import com.github.novisoftware.patternDraw.core.NetworkDataModel;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringRectUtil;
-import com.github.novisoftware.patternDraw.utils.GuiUtil.StringWidthUtil;
-import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public abstract class P021____AbstractGraphNodeElement extends P020___AbstractElement {
 	/**
