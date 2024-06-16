@@ -3,10 +3,11 @@ package com.github.novisoftware.patternDraw.core;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -28,6 +29,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiParts.P021____AbstractG
 import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.FileWriteUtil;
 import com.github.novisoftware.patternDraw.utils.OtherUtil;
 
 public class NetworkDataModel {
@@ -808,7 +810,9 @@ public class NetworkDataModel {
 		// ファイルから読み込む
 		BufferedReader reader;
 		try {
-			reader = new BufferedReader(new FileReader( new File(filename) ));
+			reader = new BufferedReader(
+							new InputStreamReader(
+							new FileInputStream(new File(filename)), FileWriteUtil.UTF8));
 			ArrayList<String> refInfo = new ArrayList<>();
 			HashMap<String, P030____ControlElement> controllerMap = new HashMap<String, P030____ControlElement>();
 

@@ -40,6 +40,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.fileMenu = new JMenu("ファイル");
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
+		JMenuItem overWrite = new JMenuItem("上書き保存");
+		JMenuItem saveAs = new JMenuItem("名前を付けて保存");
+
 		this.fileMenu.add(open);
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
@@ -82,36 +85,35 @@ public class EditDiagramMenuBar extends JMenuBar {
 					editDiagramPanel.networkDataModel.load();
 					editDiagramPanel.networkDataModel.analyze();
 					editDiagramPanel.repaint();
+
+					overWrite.setEnabled(true);
 				}
 			}
 		});
-		JMenuItem overWrite = new JMenuItem("上書き保存");
 		this.fileMenu.add(overWrite);
 
 		if (editPanel.networkDataModel.getFilename() == null) {
 			overWrite.setEnabled(false);
 		}
-		else {
-			overWrite.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ev) {
-					try {
-						editPanel.networkDataModel.save();
-					} catch (IOException ex) {
-						String message = String.format("保存に失敗しました。\n%s",
-								ex.getMessage());
-						JOptionPane
-								.showMessageDialog(
-										editDiagramWindow,
-										message,
-										"Error",
-										JOptionPane.ERROR_MESSAGE);
-						return;
-					}
+		overWrite.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				try {
+					Debug.println("filename = " + editPanel.networkDataModel.getFilename());
+					editPanel.networkDataModel.save();
+				} catch (IOException ex) {
+					String message = String.format("保存に失敗しました。\n%s",
+							ex.getMessage());
+					JOptionPane
+							.showMessageDialog(
+									editDiagramWindow,
+									message,
+									"Error",
+									JOptionPane.ERROR_MESSAGE);
+					return;
 				}
-			});
-		}
+			}
+		});
 
-		JMenuItem saveAs = new JMenuItem("名前を付けて保存");
 		this.fileMenu.add(saveAs);
 		saveAs.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
