@@ -16,6 +16,30 @@ public class GuiPreference {
 	 * 見つかったものがあればそれを使用する。
 	 */
 	static String[] preferenceFontName_label = {
+			"BIZ UDゴシック",
+			"UD デジタル 教科書体 N-B",
+			"メイリオ",
+			"游ゴシック",
+			"Takako",
+			"Noto Sans CJK JP",
+			"Takako"
+	};
+
+
+	static String[] preferenceFontName_in_icon = {
+			"BIZ UDゴシック",
+			"UD デジタル 教科書体 N-B",
+			"メイリオ",
+			"游ゴシック",
+			"Takako",
+			"Noto Sans CJK JP",
+			"Takako"
+	};
+
+
+	static String[] preferenceFontName_in_group_id = {
+			"Meiryo UI",
+			"BIZ UDゴシック",
 			"UD デジタル 教科書体 N-B",
 			"メイリオ",
 			"游ゴシック",
@@ -25,6 +49,7 @@ public class GuiPreference {
 	};
 
 	static String[] preferenceFontName_message = {
+			"BIZ UDゴシック",
 			"BIZ UDPゴシック",
 			"UD デジタル 教科書体 N-R",
 			"游ゴシック",
@@ -37,6 +62,7 @@ public class GuiPreference {
 		//	"Comic Shanns Regular",
 		//	"Comic Sans MS",
 		//	"UD デジタル 教科書体 N-R",
+			"BIZ UDゴシック",
 			"BIZ UDPゴシック",
 			"游ゴシック",
 			"Noto Sans CJK JP",
@@ -56,7 +82,7 @@ public class GuiPreference {
 	/**
 	 * 連番PNGを生成する
 	 */
-	public static String OUTPUT_PNGS_BUTTON_STRING = "アニメーション生成";
+	public static String OUTPUT_PNGS_BUTTON_STRING = "連番画像を出力";
 	public static String RUN_BUTTON_STRING = "実行";
 	public static String OK_BUTTON_STRING = "これに決める";
 	public static String CANCEL_BUTTON_STRING = "やめる";
@@ -215,11 +241,11 @@ public class GuiPreference {
 	 */
 	public final static Color ICON_BACKGROUND_COLOR = new Color( 0.9f, 0.9f, 0.9f );
 
-	public final static Font GROUP_ID_FONT = new Font("Meiryo UI", Font.BOLD, 40);
+	public final static Font GROUP_ID_FONT = initLabelFont(preferenceFontName_in_group_id, Font.BOLD, 40);
 
 	public final static Color COMMENT_BACKGROUND_COLOR = new Color( 0.5f, 0.5f, 0.5f );
 
-	public final static Font COMMENT_FONT = new Font("Meiryo UI", Font.BOLD, 16);
+	public final static Font COMMENT_FONT = initLabelFont(preferenceFontName_in_icon, Font.BOLD, 16);
 
 
 	public final static Font CONNECTOR_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
@@ -227,7 +253,7 @@ public class GuiPreference {
 	/**
 	 * アイコンの箱の中の文字
 	 */
-	public final static Font ICON_BOX_FONT = new Font("Meiryo UI", Font.BOLD, 13);
+	public final static Font ICON_BOX_FONT = initLabelFont(preferenceFontName_in_icon, Font.BOLD, 13);
 
 	public final static BasicStroke STROKE_PLAIN = new BasicStroke(1);
 
