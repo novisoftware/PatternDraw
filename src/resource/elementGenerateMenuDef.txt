@@ -654,9 +654,22 @@ DISPNAME: 制御/繰り返し(添字なし固定回数ループ)
 WIDTH: 600
 HEIGHT: 300
 DESCRIPTION: 繰り返します。
+1 10;繰り返す回数 :loop
+-->RPN
+---->DEFINE
+
+
+KIND: 制御
+TYPE: NONE
+CONTROL_TYPE: REPEAT
+DISPNAME: 制御/繰り返し(添字あり固定回数ループ)
+WIDTH: 600
+HEIGHT: 300
+DESCRIPTION: 繰り返します。
 1;開始 10;終了 :loop
 -->RPN
 ---->DEFINE
+
 
 KIND: 制御
 TYPE: NONE
