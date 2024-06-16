@@ -35,6 +35,7 @@ public class RenderingUtil {
 
 	static public void drawTipsWindow(Graphics2D g2, WidthCache wc, int drawX, int drawY, String[] msg) {
 		g2.setFont(GuiPreference.TIPS_FONT);
+		/*
 		if (wc.width == null) {
 			FontMetrics fm = g2.getFontMetrics();
 
@@ -50,6 +51,23 @@ public class RenderingUtil {
 		}
 
 		int width = wc.width;
+		*/
+		FontMetrics fm = g2.getFontMetrics();
+
+		int widthMax = 0;
+		for (String s: msg) {
+			Rectangle rect = fm.getStringBounds(s, g2).getBounds();
+			if (rect.width > widthMax) {
+				widthMax = rect.width;
+			}
+		}
+		int width = widthMax;
+		// ↑
+		// 注:
+		// キャッシュしたほうが良いと思っていたけれど、
+		// 表示内容更新時にキャッシュの破棄を入れるのが複雑になりそう。
+		// 一旦キャッシュは見合わせ。
+
 		int height = (msg.length) * (GuiPreference.TIPS_FONT_SIZE + 8);
 		int xMargin = 20;
 
