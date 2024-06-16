@@ -11,6 +11,8 @@ import javax.swing.event.ChangeListener;
 import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.FloatChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
@@ -18,8 +20,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Non
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement.KindId;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;

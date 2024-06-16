@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiParts;
+package com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

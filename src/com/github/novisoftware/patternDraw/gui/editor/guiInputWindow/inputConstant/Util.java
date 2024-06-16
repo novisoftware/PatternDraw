@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 
 import com.github.novisoftware.patternDraw.core.RpnUtil;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.EditParamDefWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P020___AbstractElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P030____ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class Util {

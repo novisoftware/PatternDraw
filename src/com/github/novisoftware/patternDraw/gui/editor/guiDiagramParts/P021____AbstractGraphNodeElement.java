@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiParts;
+package com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts;
 
 import java.awt.Color;
 import java.awt.Cursor;
@@ -11,8 +11,8 @@ import java.util.HashMap;
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;

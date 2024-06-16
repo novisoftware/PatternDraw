@@ -16,7 +16,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 
-import com.github.novisoftware.patternDraw.gui.editor.guiParts.P001_IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 
 public class GuiUtil {
 	public static final String FRAME_TITLE_BASE = "pattern drawing: ";

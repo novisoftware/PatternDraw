@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.guiParts;
+package com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts;
 
 public abstract class P002__AbstractIcon implements P001_IconGuiInterface {
 
