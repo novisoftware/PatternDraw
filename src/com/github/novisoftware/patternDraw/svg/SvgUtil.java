@@ -1,7 +1,6 @@
 package com.github.novisoftware.patternDraw.svg;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 

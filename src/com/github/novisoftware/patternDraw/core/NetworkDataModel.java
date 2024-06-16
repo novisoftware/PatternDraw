@@ -15,7 +15,6 @@ import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
