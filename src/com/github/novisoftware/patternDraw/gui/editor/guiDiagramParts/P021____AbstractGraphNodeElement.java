@@ -495,7 +495,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {
 		for (P010___ConnectTerminal connector : connectors) {
 			if (connector.isTouched(x, y)) {
-				editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+				editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 				return connector;
 			}
 		}
