@@ -30,6 +30,9 @@ public class RpnUtil {
 	}
 
 	static public String getComment(String value) {
+		if (value.indexOf(';') == -1) {
+			return "";
+		}
 		return value.replaceAll("[^;]+;(.*)", "$1");
 	}
 

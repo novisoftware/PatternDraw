@@ -1,5 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -131,6 +132,46 @@ public class P030____ControlElement extends P020___AbstractElement {
 		return ret;
 	}
 
+	/***
+	 * UI表示用文字列を取得
+	 */
+	public String getDisplayString() {
+		ControllBase ret = null;
+		Stack<String> stack = new Stack<>();
+		Stack<String> commentStack = new Stack<>();
+
+		Rpn rpn = this.getRpn();
+		for (String s : rpn.getArray()) {
+			String r = RpnUtil.getRepresent(s);
+			String c = RpnUtil.getComment(s);
+
+			if (r.equals(":loop")) {
+				String to = stack.pop();
+				String from = stack.pop();
+				String c_to = commentStack.pop();
+				String c_from = commentStack.pop();
+
+				if (c_from.length() == 0) {
+					return "  " + to;
+				}
+				else {
+					return "  " + from + " → " + to + " loop";
+				}
+			}
+			else if (r.startsWith("<")) {
+				// Value v = this.editPanel.networkDataModel.variables.get();
+				stack.push(r.replaceAll("[<>]", ""));
+				commentStack.push(c);
+			}
+			else {
+				stack.push(r);
+				commentStack.push(c);
+			}
+		}
+
+		return null;
+	}
+
 	@Override
 	public P030____ControlElement getCopy() {
 		P030____ControlElement ret = new P030____ControlElement(this.editPanel, this.str());
@@ -170,7 +211,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 			String typeDisplay = "";
 			if (t.controlType.equals("REPEAT")) {
-					typeDisplay = "LOOP";
+					typeDisplay = "LOOP" + this.getDisplayString();
 			}
 			else {
 				typeDisplay = t.getKindString() + ": " + t.controlType;
@@ -189,6 +230,8 @@ public class P030____ControlElement extends P020___AbstractElement {
 					g2.setColor(colorLine);
 					g2.fillRect(t.x, t.y, MARK_WIDTH, t.h);
 				}
+
+				g2.setStroke(new BasicStroke(1));
 
 				g2.setColor(colorBorder);
 				g2.drawRect(t.x, t.y, t.w, t.h);
