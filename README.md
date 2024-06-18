@@ -26,12 +26,18 @@ BIZ UDGothic をインストールしてください。
 
 https://fonts.google.com/specimen/BIZ+UDGothic
 
+## インストール (アンインストール)
+
+以下のファイルをダウンロードし、適当なフォルダに保存します(アンインストールする場合は、ファイルを削除します)。
+
+PatternDraw.jar
+
+
 ## 使ってみる
 
 PatternDraw.jar のダブルクリック、または以下のコマンドラインで起動します。
 
-java -jar ./jar/PatternDraw.jar
-
+java -jar PatternDraw.jar
 
 
 ## サンプルを動かしてみる
