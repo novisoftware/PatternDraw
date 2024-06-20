@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -52,6 +54,7 @@ public class EditParamDefWindow extends JFrame2 {
 	public static final int WINDOW_HEIGHT = 800;
 
 	private final ParameterDefine param;
+	private final boolean isNew;
 	final ParameterDefine backupParam;
 	// final Parameter param;
 	private final JButton buttonOk;
@@ -82,24 +85,26 @@ public class EditParamDefWindow extends JFrame2 {
 	final ValueInputPanel field_sliderMax;
 
 	final HashSet<ValueInputPanel> ngInputPanels;
+	final private ArrayList<ParameterDefine> params;
 
 	public EditParamDefWindow(// final RpnGraphNodeElement element,
 			final EditParamDefListWindow parent, final ParameterDefine param,
-			final HashSet<String> variableNameSet) {
+			ArrayList<ParameterDefine> params, final HashSet<String> variableNameSet, boolean isNew) {
 		super();
 		this.setTitle("パラメーターを設定します。");
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 
+		this.params = params;
+		this.isNew = isNew;
+		
 		// 変数名一覧の設定
 		this.variableNameSet = variableNameSet;
 		this.param = param;
 		this.backupParam = param.clone();
 
-
 		// 入力項目でNGになっているものがあるかどうかで、 OK ボタンを制御する
 		this.ngInputPanels = new HashSet<ValueInputPanel>();
-
 
 		// 変数名のチェック結果
 		this.messageDisp_varName = new JLabel3_messageDisp(" ");
@@ -117,7 +122,14 @@ public class EditParamDefWindow extends JFrame2 {
 		final ArrayList<JComponent> enumBuilderPartsSet = new ArrayList<JComponent>();
 		final ArrayList<JComponent> sliderBuilderPartsSet = new ArrayList<JComponent>();
 
-
+		final EditParamDefWindow thisObj = this;
+		
+		this.addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+            	thisObj.revert();
+            	parent.subWindowDisposeNotify();
+            }
+        });
 
 		////////////////////////////////////////////////////////////////////
 		// レイアウト
@@ -138,11 +150,13 @@ public class EditParamDefWindow extends JFrame2 {
 		// 変数名のチェック結果
 		pane.add(this.messageDisp_varName);
 
+		VariableNameChecker variableNameChecker = new VariableNameChecker(this.variableNameSet);
+		
 		field_name = new ValueInputPanel(this, new Let() {
 			public void let(String s) {
 				param.name = s;
 			}
-		}, "変数名:", param.name, new VariableNameChecker(this.variableNameSet), this.messageDisp_varName);
+		}, "変数名:", param.name, variableNameChecker, this.messageDisp_varName);
 		pane.add(field_name);
 
 		pane.add(horizontalRule(5));
@@ -284,17 +298,30 @@ public class EditParamDefWindow extends JFrame2 {
 		///////////////////
 		// キャンセルボタン
 		pane.add(Util.generateCancelButton2(parent, this));
+
 		///////////////////
 		// アイテムを削除
-		pane.add(spacer(10));
-		pane.add(Util.generateDeleteButton2(parent, this));
+		if (! isNew) {
+			pane.add(spacer(10));
+			pane.add(Util.generateDeleteButton2(parent, this));
+		}
 
+		
+		if ("".equals(param.name)) {
+			// 変数名が空文字列の場合、決定できないようにエラー状態にしておく
+			field_name.updateMessage();
+		}
 
 		initialSetter.set(param.valueType);
 	}
 
 	public void revert() {
-		getParam().updateTo(backupParam);
+		if (isNew) {
+			this.params.remove(this.param);
+		}
+		else {
+			getParam().updateTo(backupParam);
+		}
 	}
 
 	static interface ValueTypeSetter {

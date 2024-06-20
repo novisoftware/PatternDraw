@@ -10,19 +10,15 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
@@ -39,7 +35,7 @@ import com.github.novisoftware.patternDraw.utils.GuiPreference;
 public class EditParamDefListWindow extends JFrame2 {
 	public static final int WINDOW_POS_X = 50;
 	public static final int WINDOW_POS_Y = 50;
-	public static final int WINDOW_WIDTH = 640;
+	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
 
 	final JPanel jp;
@@ -48,19 +44,6 @@ public class EditParamDefListWindow extends JFrame2 {
 	 * パラメーター一覧
 	 */
 	public final ArrayList<ParameterDefine> params;
-	/**
-	 * パラメーター名の一覧(設定された変数のみを対象にする)
-	 */
-	// final public ArrayList<String> variableNameList;
-
-	/**
-	 * パラメーター一覧の定義ウィンドウに貼り付けてある、 パラメーターに対応するコンポーネントのリスト。
-	 * <ul>
-	 * <li>パラメーターの情報を表示するコンポーネントは、JPanel等でまとめずに個別に直接 pane に貼り付けている。
-	 * </ul>
-	 */
-	// 削除する
-	HashMap<ParameterDefine, ArrayList<JComponent>> componentOnPane;
 
 	/**
 	 * 子ウィンドウ(個別パラメーターの設定画面)
@@ -103,25 +86,16 @@ public class EditParamDefListWindow extends JFrame2 {
 		this.paramDefListPanel = new ParamDefListPanel(this, params);
 		paramDefListPanel.setBackground(GuiPreference.BG_COLOR);
 		paramDefListPanel.setForeground(GuiPreference.TEXT_COLOR);
-		paramDefListPanel.setMinimumSize(new Dimension(500, 400));
-		paramDefListPanel.setPreferredSize(new Dimension(500, 400));
-		paramDefListPanel.setSize(new Dimension(500, 400));
+		Dimension panelDimension = new Dimension(WINDOW_WIDTH - 4, 400);
+		
+		paramDefListPanel.setMinimumSize(panelDimension);
+		paramDefListPanel.setPreferredSize(panelDimension);
+		paramDefListPanel.setSize(panelDimension);
 		pane.add(paramDefListPanel);
 		pane.add(horizontalRule(7));
 
-
 		// Container pane = this.getContentPane();
 		// this.setLayout(new FlowLayout(FlowLayout.LEADING));
-
-		// コンテナ管理用
-		// パラメーターに対応する JLabel 等をpaneに直接貼り付けている。
-		// これを削除する際に使用する。
-		this.componentOnPane = new HashMap<ParameterDefine, ArrayList<JComponent>>();
-		/*
-		for (ParameterDefine p : params) {
-			addParamDefToPane(p);
-		}
-		*/
 
 		this.addButton = generateAddButton();
 		pane.add(addButton);
@@ -155,9 +129,9 @@ public class EditParamDefListWindow extends JFrame2 {
 			
 			layoutInfo = new LayoutInfo();
 			layoutInfo.startPos.add(10);
-			layoutInfo.startPos.add(200);
-			layoutInfo.startPos.add(100);
-			layoutInfo.startPos.add(100);
+			layoutInfo.startPos.add(150);
+			layoutInfo.startPos.add(340);
+			layoutInfo.startPos.add(150);
 			
 			this.params = params;
 			updateParamDefDisplays();
@@ -169,10 +143,10 @@ public class EditParamDefListWindow extends JFrame2 {
 		}
 
 		String[] title = {
-				"型",
 				"変数名",
-				"初期値",
-				"意味"
+				"説明",
+				"型",
+				"デフォルト値"
 		};
 
 		public void updateParamDefDisplays() {
@@ -262,10 +236,14 @@ public class EditParamDefListWindow extends JFrame2 {
 
 		void updateLabels() {
 			labels = new ArrayList<String>();
-			labels.add(Value.valueTypeToDescString(para.valueType));
+			// 変数名
 			labels.add(para.name);
-			labels.add(para.defaultValue);
+			// 説明
 			labels.add(para.description);
+			// 型
+			labels.add(Value.valueTypeToDescString(para.valueType));
+			// デフォルト値
+			labels.add(para.defaultValue);
 		}
 
 		
@@ -381,7 +359,7 @@ public class EditParamDefListWindow extends JFrame2 {
 			if (p == null) {
 				return;
 			}
-			this.paramDefListPanel.editParamDefListWindow.createInputWindow(p.para);
+			this.paramDefListPanel.editParamDefListWindow.createInputWindow(p.para, false);
 			
 		}
 
@@ -416,8 +394,11 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 			if (!this.handledObj.isDragging2 ||
 					(this.handledObj.isDragging2 && this.handledObj.index == this.handledObj.indexToUpdate)) {
+				this.handledObj.isDragging = false;
+				this.handledObj.isDragging2 = false;
+				paramDefListPanel.repaint();
 				// あまり動かなかったドラッグの場合は、クリック扱いにする
-				this.paramDefListPanel.editParamDefListWindow.createInputWindow(handledObj.para);
+				this.paramDefListPanel.editParamDefListWindow.createInputWindow(handledObj.para, false);
 				return;
 			}
 
@@ -446,7 +427,7 @@ public class EditParamDefListWindow extends JFrame2 {
 		addButton.setEnabled(true);
 	}
 
-	private void createInputWindow(ParameterDefine para) {
+	private void createInputWindow(ParameterDefine para, boolean isNew) {
 		HashSet<String> variableNameSet = new HashSet<String>();
 		for (ParameterDefine p : params) {
 			if (p != para) {
@@ -455,7 +436,7 @@ public class EditParamDefListWindow extends JFrame2 {
 		}
 
     	if (inputParamDefWindow == null) {
-			inputParamDefWindow = new EditParamDefWindow(this, para, variableNameSet);
+			inputParamDefWindow = new EditParamDefWindow(this, para, params, variableNameSet, isNew);
     	}
 		inputParamDefWindow.setVisible(true);
 		addButton.setEnabled(false);
@@ -468,8 +449,6 @@ public class EditParamDefListWindow extends JFrame2 {
 	 * @param pane
 	 */
 	JButton generateAddButton() {
-		final EditParamDefListWindow thisFrame = this;
-
 		JButton buttonCancel = new JButton(GuiPreference.ADD_BUTTON_STRING);
 		buttonCancel.setFont(GuiPreference.ADD_BUTTON_FONT);
 		buttonCancel.addActionListener(new ActionListener() {
@@ -478,90 +457,11 @@ public class EditParamDefListWindow extends JFrame2 {
 				ParameterDefine parameter = new ParameterDefine("", "", "0", ValueType.INTEGER,
 						false, "", false, "", "");
 				params.add(parameter);
-
-				thisFrame.jp.remove(addButton);
-				thisFrame.addParamDefToPane(parameter);
-				thisFrame.jp.add(addButton);
-
-				thisFrame.repaintHard();
-				createInputWindow(parameter);
+				createInputWindow(parameter, true);
 			}
 		});
 
 		return buttonCancel;
-	}
-
-	/**
-	 * repaint() だとコンポーネントの再レイアウトが行われないので (スキマがあくので)再描画する。
-	 */
-	public void repaintHard() {
-		// TODO
-		// リペイントの指示をしたい。。
-		// (repaintでは再描画されない)
-		// もう少し綺麗な書き方で書きたい。
-		Dimension d = this.getSize();
-		d.setSize(d.getWidth() + 1, d.getHeight());
-		this.setSize(d);
-		d.setSize(d.getWidth() - 1, d.getHeight());
-		this.setSize(d);
-
-	}
-
-	void addParamDefToPane(final ParameterDefine para) {
-		ArrayList<JComponent> pList = new ArrayList<JComponent>();
-		this.componentOnPane.put(para, pList);
-
-		JLabel2 typeDesc = new JLabel2("");
-		pList.add(typeDesc);
-		JLabel2 name = new JLabel2("");
-		pList.add(name);
-		JLabel2 defo = new JLabel2("");
-		pList.add(defo);
-		JLabel2 desc = new JLabel2("");
-		pList.add(desc);
-		// 追加情報は TODO
-		JLabel2 addtional = new JLabel2("(追加情報)");
-		pList.add(addtional);
-
-		pList.add(horizontalRule(5));
-
-		Container pane = this.jp;
-		for (JComponent c : pList) {
-			pane.add(c);
-		}
-		this.updateParamDef(para);
-
-		// 押したときの動作を設定
-		final EditParamDefListWindow thisFrame = this;
-		MouseAdapter mlis = new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-            	thisFrame.createInputWindow(para);
-            }
-        };
-		for (JComponent c : pList) {
-			if (c instanceof JLabel) {
-				((JLabel) c).addMouseListener(mlis);
-			}
-		}
-
-	}
-
-	public void updateParamDef(ParameterDefine para) {
-		ArrayList<JComponent> pList = this.componentOnPane.get(para);
-		((JLabel2) (pList.get(0))).setText(para.name);
-		((JLabel2) (pList.get(1))).setText(para.defaultValue);
-		((JLabel2) (pList.get(2))).setText(Value.valueTypeToDescString(para.valueType));
-		((JLabel2) (pList.get(3))).setText(para.description);
-	}
-
-	public void removeParamDefFromPane(ParameterDefine para) {
-		ArrayList<JComponent> pList = this.componentOnPane.get(para);
-		this.componentOnPane.remove(para);
-		Container pane = this.jp;
-		for (JComponent c : pList) {
-			pane.remove(c);
-		}
 	}
 
 	static public void main(String args[]) {

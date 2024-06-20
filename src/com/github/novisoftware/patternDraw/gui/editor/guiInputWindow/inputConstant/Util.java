@@ -67,9 +67,6 @@ public class Util {
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				// 更新済パラメーターに合わせて、パラメタ一覧ウィンドウを更新する
-				caller.updateParamDef(tf.getParam());
-
 				caller.paramDefListPanel.updateParamDefDisplays();
 				caller.paramDefListPanel.repaint();
 				caller.repaint();
