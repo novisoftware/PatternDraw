@@ -396,6 +396,9 @@ public class EditDiagramWindow extends JFrame2 {
 					editPanel__.networkDataModel.analyze();
 					editPanel__.repaint();
 				// }
+			} else if (handled != null) {
+				editPanel__.networkDataModel.analyze();
+				editPanel__.repaint();
 			}
 
 			handled = null;

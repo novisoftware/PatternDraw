@@ -69,6 +69,9 @@ public class Util {
 			public void actionPerformed(ActionEvent ev) {
 				// 更新済パラメーターに合わせて、パラメタ一覧ウィンドウを更新する
 				caller.updateParamDef(tf.getParam());
+
+				caller.paramDefListPanel.updateParamDefDisplays();
+				caller.paramDefListPanel.repaint();
 				caller.repaint();
 				// 呼び出し元の参照を削除
 				caller.subWindowDisposeNotify();
@@ -93,6 +96,9 @@ public class Util {
 				tf.revert();
 				// 呼び出し元の参照を削除
 				caller.subWindowDisposeNotify();
+				// repaint要求を設定する
+				caller.paramDefListPanel.repaint();
+				caller.repaint();
 				// 編集ウィンドウは閉じる
 				tf.dispose();
 			}
@@ -114,8 +120,14 @@ public class Util {
 				caller.params.remove(tf.getParam());
 
 				// 変更を元に戻す
+				caller.params.remove(tf.getParam());
+				caller.paramDefListPanel.updateParamDefDisplays();
+				caller.paramDefListPanel.repaint();
+				caller.repaint();
+				/*
 				caller.removeParamDefFromPane(tf.getParam());
 				caller.repaintHard();
+				*/
 				// 呼び出し元の参照を削除
 				caller.subWindowDisposeNotify();
 				// 編集ウィンドウは閉じる
