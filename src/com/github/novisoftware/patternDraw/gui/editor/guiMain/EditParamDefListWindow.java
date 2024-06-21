@@ -37,6 +37,15 @@ public class EditParamDefListWindow extends JFrame2 {
 	public static final int WINDOW_POS_Y = 50;
 	public static final int WINDOW_WIDTH = 800;
 	public static final int WINDOW_HEIGHT = 600;
+	public static final int RULE_MARGIN = 9;
+	static final BasicStroke CARET_STROKE = new BasicStroke(2f);
+	static final BasicStroke RULE_STROKE_N = new BasicStroke(1f);
+	static final BasicStroke RULE_STROKE_B = new BasicStroke(2f);
+//	static final Color RULE_COLOR = new Color(100, 100, 100);
+	static final Color RULE_COLOR_N = new Color(160, 160, 160);
+	static final Color RULE_COLOR_B = new Color(100, 100, 100);
+	static final Color ON_MOUSE_BACKGROUND_COLOR = new Color(240, 240, 240);
+	static final Color ON_MOUSE_BACKGROUND_COLOR2 = new Color(0x80E0E0E0, true);
 
 	final JPanel jp;
 
@@ -148,6 +157,7 @@ public class EditParamDefListWindow extends JFrame2 {
 				"型",
 				"デフォルト値"
 		};
+		public ParamDefDisplay onMouseObj;
 
 		public void updateParamDefDisplays() {
 			paramDefDisplay = new ArrayList<ParamDefDisplay>();
@@ -160,6 +170,8 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 		}
 
+
+		
 		@Override
 		public void paint(Graphics g) {
 			Graphics2D g2 = (Graphics2D)g;
@@ -167,11 +179,35 @@ public class EditParamDefListWindow extends JFrame2 {
 
 			g2.clearRect(0, 0, 1000, 1000);
 			int y = 0;
+			boolean isFirst = true;
 			for (ParamDefDisplay p : paramDefDisplay) {
 				y = y + 1  * Y_INTERVAL;
 				p.x = 0;
 				p.y = y;
+
+				if (isFirst) {
+					isFirst = false;
+					y += RULE_MARGIN;
+				}
 			}
+
+			ParamDefDisplay p0 = paramDefDisplay.get(0);
+			int ADDER = 8;
+			g2.setColor(RULE_COLOR_N);
+			g2.setStroke(RULE_STROKE_N);
+			g2.drawLine(5, p0.y - Y_INTERVAL  + ADDER, WINDOW_WIDTH - 30, p0.y - Y_INTERVAL + ADDER);
+			g2.setColor(RULE_COLOR_B);
+			g2.setStroke(RULE_STROKE_B);
+			g2.drawLine(5, p0.y + ADDER , WINDOW_WIDTH - 30, p0.y + ADDER);
+
+			ParamDefDisplay pN = paramDefDisplay.get(paramDefDisplay.size() - 1);
+			g2.setColor(RULE_COLOR_N);
+			g2.setStroke(RULE_STROKE_N);
+			int yPos = pN.y + ADDER
+					/* 0行の場合は空白を加算 */
+					+ (p0 == pN ? Y_INTERVAL : 0);
+			
+			g2.drawLine(5, yPos, WINDOW_WIDTH - 30, yPos);
 
 			
 			for (ParamDefDisplay p : paramDefDisplay) {
@@ -181,6 +217,10 @@ public class EditParamDefListWindow extends JFrame2 {
 		
 		public ParamDefDisplay getHandledObj(int y) {
 			for (ParamDefDisplay p : this.paramDefDisplay) {
+				if (p.paramDefListPanel == null) {
+					// 見出し行は、インタラクションの対象にしない
+					continue;
+				}
 				if (p.y - 20 < y && y < p.y ) {
 					return p;
 				}
@@ -199,8 +239,6 @@ public class EditParamDefListWindow extends JFrame2 {
 	}
 	
 	static class ParamDefDisplay {
-		static final BasicStroke STROKE = new BasicStroke(2f);
-
 		int index;
 
 		boolean isDragging = false;
@@ -232,8 +270,6 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 		}
 
-		
-
 		void updateLabels() {
 			labels = new ArrayList<String>();
 			// 変数名
@@ -246,8 +282,18 @@ public class EditParamDefListWindow extends JFrame2 {
 			labels.add(para.defaultValue);
 		}
 
-		
 		void paint(Graphics2D g2, LayoutInfo layoutInfo) {
+			if (!this.isDragging && this.paramDefListPanel != null) {
+				if (this.paramDefListPanel.onMouseObj == this) {
+					g2.setColor(ON_MOUSE_BACKGROUND_COLOR);
+					g2.fillRoundRect(this.x,
+							this.y - ParamDefListPanel.Y_INTERVAL + 9,
+							WINDOW_WIDTH - 30,
+							ParamDefListPanel.Y_INTERVAL - 5,
+							4, 4);
+				}
+			}
+
 			g2.setFont(GuiPreference.LABEL_FONT);
 			if (this.isDragging) {
 				g2.setColor(Color.GRAY);
@@ -256,7 +302,6 @@ public class EditParamDefListWindow extends JFrame2 {
 				g2.setColor(Color.BLACK);
 			}
 
-			
 			{
 				int x = 0;
 				for (int i = 0 ; i < 4 ; i++ ) {
@@ -266,9 +311,16 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 			
 			if (this.isDragging) {
-				this.isDragging2 = true;
+				g2.setColor(ON_MOUSE_BACKGROUND_COLOR2);
+				g2.fillRoundRect(this.x
+						+ this.dragX - this.dragStartX,
+						this.y - ParamDefListPanel.Y_INTERVAL + 9
+						+ this.dragY - this.dragStartY,
+						WINDOW_WIDTH - 30,
+						ParamDefListPanel.Y_INTERVAL - 5,
+						4, 4);
+				
 				g2.setColor(Color.BLACK);
-
 				int x = 0;
 				for (int i = 0 ; i < 4 ; i++ ) {
 					x += layoutInfo.startPos.get(i);
@@ -282,19 +334,27 @@ public class EditParamDefListWindow extends JFrame2 {
 				int yDiff = this.dragY - this.dragStartY;
 				int indexDiff = (int)Math.round(1.0 * yDiff/ParamDefListPanel.Y_INTERVAL);
 				if (indexDiff != 0) {
-					if (indexDiff + this.index < -1) {
-						indexDiff = - this.index - 1;
-					}
-					if (indexDiff + this.index > paramDefListPanel.params.size() - 1) {
-						indexDiff = paramDefListPanel.params.size() - this.index - 1;
-					}
+					this.isDragging2 = true;
+					if (indexDiff != -1) {
+						// 移動が 0 の場合と、移動が -1 の場合は実質的に順番の入れ替わりが発生しない。
+						// このため「線」を描画しない。
+						// 移動が -1 の場合は、途中でドラッグが発生したフラグを設定する
+						// (クリック扱いから外す)
 
-					this.indexToUpdate = indexDiff + this.index;
-
-					int newY = 6 + this.y + indexDiff * ParamDefListPanel.Y_INTERVAL;
-					g2.setColor(Color.GRAY);
-					g2.setStroke(STROKE);
-					g2.drawLine(5, newY, 500, newY);
+						if (indexDiff + this.index < -1) {
+							indexDiff = - this.index - 1;
+						}
+						if (indexDiff + this.index > paramDefListPanel.params.size() - 1) {
+							indexDiff = paramDefListPanel.params.size() - this.index - 1;
+						}
+	
+						this.indexToUpdate = indexDiff + this.index;
+	
+						int newY = 6 + this.y + indexDiff * ParamDefListPanel.Y_INTERVAL;
+						g2.setColor(Color.GRAY);
+						g2.setStroke(CARET_STROKE);
+						g2.drawLine(5, newY, WINDOW_WIDTH - 10, newY);
+					}
 				} else {
 					this.indexToUpdate = this.index;
 				}
@@ -302,15 +362,15 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 		}
 
-		public void updateIndex() {
+		public boolean updateIndex() {
 			if (! isDragging2) {
 				// 注:
-				// 実際にドラッグ操作のインタラクションをしていなかった場合は NOP で返す。
-				return;
+				// 実際にドラッグ操作のインタラクションをしていなかった場合は NOP で制御を戻す。
+				return false;
 			}
 			
 			if (this.indexToUpdate == this.index) {
-				return;
+				return false;
 			}
 			if (this.indexToUpdate < this.index) {
 				ParameterDefine p = this.paramDefListPanel.params.remove(this.index);
@@ -324,6 +384,8 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 			
 			this.paramDefListPanel.updateParamDefDisplays();
+			
+			return true;
 		}
 	}
 	
@@ -349,62 +411,80 @@ public class EditParamDefListWindow extends JFrame2 {
 
 		@Override
 		public void mouseMoved(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+			ParamDefDisplay pOld =  paramDefListPanel.onMouseObj;
+			ParamDefDisplay p = paramDefListPanel.getHandledObj(e.getY());
+			paramDefListPanel.onMouseObj = p;
+			if (pOld != p) {
+				paramDefListPanel.repaint();
+			}
+			// System.out.println("on mouse obj = "  +p);
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			ParamDefDisplay p = paramDefListPanel.getHandledObj(e.getY());
-			if (p == null) {
-				return;
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				ParamDefDisplay p = paramDefListPanel.getHandledObj(e.getY());
+				if (p == null) {
+					return;
+				}
+				this.paramDefListPanel.editParamDefListWindow.createInputWindow(p.para, false);
 			}
-			this.paramDefListPanel.editParamDefListWindow.createInputWindow(p.para, false);
-			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-	    	if (this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow != null) {
-				// 入力中のウィンドウがあったら、それを前面にだす。
-	    		// ドラッグ等の操作をさせない
-	    		this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow.setVisible(true);
-	    		return;
-	    	}
-			
-			int y = e.getY();
-			
-			ParamDefDisplay p = paramDefListPanel.getHandledObj(y);
-			if (p == null) {
-				return;
+			if (e.getButton() == MouseEvent.BUTTON1) {
+		    	if (this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow != null) {
+					// 入力中のウィンドウがあったら、それを前面にだす。
+		    		// ドラッグ等の操作をさせない
+		    		this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow.setVisible(true);
+		    		return;
+		    	}
+				
+				int y = e.getY();
+				
+				ParamDefDisplay p = paramDefListPanel.getHandledObj(y);
+				if (p == null) {
+					return;
+				}
+				this.handledObj = p;
+				this.handledObj.isDragging = true;
+				this.handledObj.dragStartX = e.getX();
+				this.handledObj.dragStartY = y;
+				this.handledObj.dragX = this.handledObj.dragStartX;
+				this.handledObj.dragY = this.handledObj.dragStartY;
+				paramDefListPanel.repaint();
 			}
-			this.handledObj = p;
-			this.handledObj.isDragging = true;
-			this.handledObj.dragStartX = e.getX();
-			this.handledObj.dragStartY = y;
-			this.handledObj.dragX = this.handledObj.dragStartX;
-			this.handledObj.dragY = this.handledObj.dragStartY;
-			paramDefListPanel.repaint();
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			if (this.handledObj == null) {
-				return;
-			}
-			if (!this.handledObj.isDragging2 ||
-					(this.handledObj.isDragging2 && this.handledObj.index == this.handledObj.indexToUpdate)) {
-				this.handledObj.isDragging = false;
-				this.handledObj.isDragging2 = false;
-				paramDefListPanel.repaint();
-				// あまり動かなかったドラッグの場合は、クリック扱いにする
-				this.paramDefListPanel.editParamDefListWindow.createInputWindow(handledObj.para, false);
-				return;
-			}
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				if (this.handledObj == null) {
+					return;
+				}
+				// if (!this.handledObj.isDragging2 ||
+				//		(this.handledObj.isDragging2 && this.handledObj.index == this.handledObj.indexToUpdate)) {
+				if (!this.handledObj.isDragging2) {
+					// あまり動かなかったドラッグの場合は、クリック扱いにする
+					ParameterDefine para = handledObj.para;
+					this.handledObj.isDragging = false;
+					this.handledObj.isDragging2 = false;
+					this.handledObj = null;
+					paramDefListPanel.repaint();
+					this.paramDefListPanel.editParamDefListWindow.createInputWindow(para, false);
+					return;
+				}
 
-			this.handledObj.updateIndex();
-			this.handledObj = null;
-			paramDefListPanel.repaint();
+				if (this.handledObj.updateIndex()) {
+					paramDefListPanel.repaint();
+				}
+				else {
+					this.handledObj.isDragging = false;
+					this.handledObj.isDragging2 = false;
+				}
+				this.handledObj = null;
+			}
 		}
 
 		@Override
@@ -420,7 +500,6 @@ public class EditParamDefListWindow extends JFrame2 {
 		}
 		
 	}
-	
 	
 	public void subWindowDisposeNotify() {
 		inputParamDefWindow = null;
@@ -462,15 +541,5 @@ public class EditParamDefListWindow extends JFrame2 {
 		});
 
 		return buttonCancel;
-	}
-
-	static public void main(String args[]) {
-		ArrayList<ParameterDefine> params = new ArrayList<ParameterDefine>();
-
-		// このmainは、このウィンドウだけを立ち上げて動作確認するためのもの。
-		EditParamDefListWindow frame = new EditParamDefListWindow(params, null);
-		frame.setVisible(true);
-		frame.setLocation(900, 40);
-		return;
 	}
 }
