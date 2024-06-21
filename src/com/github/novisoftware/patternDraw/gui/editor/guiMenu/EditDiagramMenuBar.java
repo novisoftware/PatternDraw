@@ -205,6 +205,10 @@ public class EditDiagramMenuBar extends JMenuBar {
 					};
 					editParamWindow.setCallback(callback);
 					editParamWindow.setVisible(true);
+					
+					if (editParamWindow.isOk()) {
+						callback.run();
+					}
 
 					Debug.println("END");
 				}

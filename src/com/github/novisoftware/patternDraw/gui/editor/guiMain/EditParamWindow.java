@@ -83,6 +83,10 @@ public class EditParamWindow extends JFrame2 {
 	 */
 	private final HashSet<AbstractInputChecker> ngInputs;
 
+	public boolean isOk() {
+		return this.ngInputs.isEmpty();
+	}
+
 	static class CheckMessageLabel extends JLabel2 {
 		/** エラー時の文字色 */
 		private final Color COLOR_ERROR = GuiPreference.MESSAGE_ERROR_COLOR;
@@ -472,7 +476,6 @@ public class EditParamWindow extends JFrame2 {
 					}
 				}
 			}
-
 		}
 
 		// 「実行」ボタン
