@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.NumberPicker;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P102___NumberPicker;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
@@ -289,9 +289,9 @@ public class EditDiagramWindow extends JFrame2 {
 					editPanel__.workLineY = hd.getCenterY();
 				}
 			}
-			else if (t__ instanceof NumberPicker) {
+			else if (t__ instanceof P102___NumberPicker) {
 				if (e.getButton() == MouseEvent.BUTTON1) {
-					NumberPicker hd = (NumberPicker)t__;
+					P102___NumberPicker hd = (P102___NumberPicker)t__;
 					Debug.println("mousePressed in NumberPicker " + hd.number);
 
 					handled = hd;
@@ -433,8 +433,8 @@ public class EditDiagramWindow extends JFrame2 {
 						old_x = e.getX();
 						old_y = e.getY();
 					}
-					else if (handled instanceof NumberPicker) {
-						NumberPicker h = (NumberPicker)handled;
+					else if (handled instanceof P102___NumberPicker) {
+						P102___NumberPicker h = (P102___NumberPicker)handled;
 
 						// 差分をアイコンオブジェクトに通知する
 						h.dragged(e.getX() - old_x, e.getY() - old_y);

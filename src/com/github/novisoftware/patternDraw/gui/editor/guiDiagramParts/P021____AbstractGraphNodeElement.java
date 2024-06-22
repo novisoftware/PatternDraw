@@ -187,7 +187,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 * 数字の部分をドラッグすると、単連結グラフが移動する。
 	 * この処理するためのオブジェクト。
 	 */
-	NumberPicker numberPicker;
+	P102___NumberPicker numberPicker;
 
 	/**
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
@@ -251,7 +251,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 				int y = e.y + 30;
 				g2.drawString(s, x, y);
 
-				this.numberPicker = new NumberPicker(this, this.editPanel, this.groupHead, x, y, rect);
+				this.numberPicker = new P102___NumberPicker(this, this.editPanel, this.groupHead, x, y, rect);
 			}
 			else {
 				this.numberPicker = null;
