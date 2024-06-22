@@ -273,6 +273,12 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 					// 整数とか浮動小数点とかの区別を表示する
 					boxTitle += " - " + Value.valueTypeToDescString(this.getValueType());
 				}
+				else if (e.getKindId() == KindId.DISPLAY) {
+					// どのような動作か書く。
+					// 「表示」という文言はわざわざ出さない
+					// boxTitle += " - " + this.getDescription();
+					boxTitle = this.getDescription();
+				}
 				g2.drawString(boxTitle, e.x + 30, e.y - 9);
 			}
 
