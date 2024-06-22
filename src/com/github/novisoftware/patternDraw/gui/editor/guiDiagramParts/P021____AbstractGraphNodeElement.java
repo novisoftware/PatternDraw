@@ -198,6 +198,9 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		int arcHeight = 10;
 
 		P021____AbstractGraphNodeElement e = this;
+		// 「演算子」の場合は、引数名を表示しない。
+		boolean isDisplayConnectName = (e.getKindId() != KindId.OPERATOR);
+
 
 		// 結線
 		if (phase == 0) {
@@ -259,7 +262,11 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		// 箱
 		else if (phase == 1) {
 			g2.setFont(GuiPreference.ICON_BOX_FONT);
-			if (! (e.getKindId() == KindId.COMMENT)) {
+			if (! (e.getKindId() == KindId.COMMENT
+					|| e.getKindId() == KindId.OPERATOR
+					)) {
+				// コメントや、演算子の上に、わざわざ「コメント」「演算子」と表示しない。
+				
 				g2.setColor(Color.GRAY);
 				String boxTitle = e.getKindString();
 				if (e.getKindId() == KindId.CONSTANT) {
@@ -385,7 +392,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			// コネクタ用の端子
 			g2.setStroke(GuiPreference.STROKE_PLAIN);
 			for (P010___ConnectTerminal connector : connectors) {
-				connector.paint(g2, phase);
+				connector.paint(g2, phase, isDisplayConnectName);
 			}
 
 			if (this.editPanel.isVisibleDebugInfo) {
@@ -476,7 +483,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			// コネクタ用の端子
 			g2.setStroke(GuiPreference.STROKE_PLAIN);
 			for (P010___ConnectTerminal connector : connectors) {
-				connector.paint(g2, phase);
+				connector.paint(g2, phase, isDisplayConnectName);
 			}
 
 			// エラー表示

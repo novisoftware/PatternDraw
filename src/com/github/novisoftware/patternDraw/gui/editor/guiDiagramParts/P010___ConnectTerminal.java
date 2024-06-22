@@ -101,19 +101,21 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 		return false;
 	}
 
-	public void paint(Graphics2D g2, int phase) {
+	public void paint(Graphics2D g2, int phase, boolean isDisplayConnectName) {
 		if (phase == 1) {
 			g2.setFont(GuiPreference.CONNECTOR_TEXT_FONT);
 			g2.setColor(GuiPreference.CONNECTOR_FILL_COLOR);
 			g2.fillOval(node.x, this.getTopY(), RENDER_WIDTH, RENDER_HEIGHT);
-			g2.setColor(Color.BLACK);
-			g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
-					this.getTopY() - 2);
+			if (isDisplayConnectName) {
+				g2.setColor(Color.BLACK);
+				g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
+						this.getTopY() - 2);
+			}
 		}
 		if (phase == 2) {
 			if (this.isOnMouse()) {
 
-				String srcValueType = null;
+				String srcValueType = "";
 				P021____AbstractGraphNodeElement src = node.paramMapObj.get(this.getParaName());
 				if (src != null &&
 						src.actualValueTypeResult != null &&
@@ -126,20 +128,26 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 				int drawX = node.x;
 				int drawY = node.y + node.h;
 
-				String actual = "";
-				if (srcValueType != null) {
-					actual = srcValueType + " - ";
-				}
-				String s2 = String.format("%s (%s%s)",
-						this.paraDescription,
-						actual,
-						Value.valueTypeToDescString(this.valueType)
-						);
+				String aceptableType = "受け付ける型: " + Value.valueTypeToDescString(this.valueType);
+				String actualType  = "入力された型: " + srcValueType;
 
-				String[] desc = {
-						paraName,
-						s2
-				};
+				String[] desc;
+				if (isDisplayConnectName) {
+					String[] _d= {
+							paraName,
+							aceptableType,
+							actualType
+					};
+					desc = _d;
+				}
+				else {
+					String[] _d= {
+							aceptableType,
+							actualType
+					};
+					desc = _d;
+				}
+
 				RenderingUtil.drawTipsWindow(g2, this.tipsWidthCache, drawX, drawY, desc);
 			}
 		}
