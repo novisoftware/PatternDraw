@@ -10,7 +10,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
  * 数字をドラッグすると単連結グラフが動くようにしたい
  *
  */
-public class NumberPicker extends P002__AbstractIcon {
+public class P102___NumberPicker extends P002__AbstractIcon {
 	final P001_IconGuiInterface parent;
 	final EditDiagramPanel editPanel;
 	final int x;
@@ -18,7 +18,7 @@ public class NumberPicker extends P002__AbstractIcon {
 	final Rectangle rect;
 	final public int number;
 
-	NumberPicker(P001_IconGuiInterface parent, EditDiagramPanel editPanel, int number, int x, int y, Rectangle rect) {
+	P102___NumberPicker(P001_IconGuiInterface parent, EditDiagramPanel editPanel, int number, int x, int y, Rectangle rect) {
 		this.parent = this;
 		this.editPanel = editPanel;
 		this.number = number;
