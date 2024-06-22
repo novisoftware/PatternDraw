@@ -10,45 +10,58 @@ SVG, PNG の形式での出力を行います。
 ごく初期のCGは、レンダリング方法が素朴で、表示装置も低い解像度でした。
 両方が進化した現在でも、素朴な段階のレンダリング方法にも魅力があり、これを今の表示装置で表示したいというのが動機です。
 
-## 前提ソフトウェア
+## 導入方法
+### 前提ソフトウェア
 
-### OS
+#### OS
 Windowsの環境で動作確認をしています。
 
-### Java
+#### Java
 Javaの実行環境が必要です。
 無料で使える OpenJDK の Microsoft Build がいいと思います。
 
 https://learn.microsoft.com/ja-jp/java/openjdk/download#openjdk-21
 
-### フォント
+#### フォント
 BIZ UDGothic をインストールしてください。
 
 https://fonts.google.com/specimen/BIZ+UDGothic
 
-## インストール (アンインストール)
+### インストール (アンインストール)
 
 以下のファイルをダウンロードし、適当なフォルダに保存します(アンインストールする場合は、ファイルを削除します)。
 
 PatternDraw.jar
 
 
-## 使ってみる
+## 使用方法
 
-PatternDraw.jar のダブルクリック、または以下のコマンドラインで起動します。
+### 起動
+
+Windows の場合はエクスプローラーから PatternDraw.jar をダブルクリック、または以下のコマンドラインで起動します。
 
 java -jar PatternDraw.jar
 
 
-## サンプルを動かしてみる
+### サンプルを動かしてみる
 
 - 正多角形を描画する
 - コッホ曲線
 
 ## スクリプトを書くには(模様の作図の指示を作成する)
 
-## 実行する
-（未執筆）
+### アイコンを配置する
+
+左クリックでメニューが表示されます。
+メニューから配置したいアイコンを選びます。
+
+### 線で結ぶ
+
+端子をドラッグすると線が伸び、アイコンとアイコンを結ぶことができます。
+
+
+
+
 
 ## SVGを出力する
 作成した模様はSVG(Scalable Vector Graphics)形式のファイルとして出力することができます。
@@ -58,7 +71,6 @@ InkScapeに読み込んでPDF(Portable Document Format)形式に変換するこ�
 # 図形生成スクリプトを作る
 ## ダイヤグラムでのプログラミング(Script as Diagram)
 字を入力するのではなく、箱を線でつないだ図形の組み合わせでプログラミングします。
-
 
 
 # ワード一覧
@@ -74,4 +86,5 @@ Default Icon by interactivemania is licensed under a Creative Commons Attributio
 
 ## アイコン以外
 © copyright NOVISOFTWARE (japan) 2024
-それ以外の部分のライセンスは Apache License 2.0 です。
+
+アイコン以外の部分のライセンスは Apache License 2.0 です。
