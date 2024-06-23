@@ -47,6 +47,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 		JMenuItem open = new JMenuItem("開く");
 		JMenuItem overWrite = new JMenuItem("上書き保存");
 		JMenuItem saveAs = new JMenuItem("名前を付けて保存");
+		JMenuItem setTitle = new JMenuItem("タイトルを設定する");
 
 		this.fileMenu.add(open);
 		open.addActionListener(new ActionListener() {
@@ -172,6 +173,19 @@ public class EditDiagramMenuBar extends JMenuBar {
 			}
 		});
 
+		this.fileMenu.addSeparator();
+		this.fileMenu.add(setTitle);
+		setTitle.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ev) {
+				String oldTitle = editPanel.networkDataModel.title;
+				String value = JOptionPane.showInputDialog(editDiagramWindow, "タイトルを入力してください", oldTitle);
+				if (value != null) {
+					editPanel.networkDataModel.title = value;
+					editDiagramWindow.updateTitle();
+				}
+			}
+		});
+		
 		this.fileMenu.addSeparator();
 		JMenuItem exit = new JMenuItem("終了");
 		this.fileMenu.add(exit);

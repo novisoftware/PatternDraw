@@ -9,6 +9,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -50,7 +51,7 @@ public class EditDiagramWindow extends JFrame2 {
 		this.editMenuBar = new EditDiagramMenuBar(this, this.editPanel);
 
 		this.setJMenuBar(this.editMenuBar);
-		this.setTitle("ダイヤグラムを編集: " + this.editPanel.networkDataModel.title);
+		this.updateTitle();
 		this.editPanel.setPreferredSize(new Dimension(1500,2000));
 		this.editPanel.setSize(1500,2000);
 		JScrollPane sp = new JScrollPane(this.editPanel);
@@ -60,6 +61,19 @@ public class EditDiagramWindow extends JFrame2 {
 		this.add(sp);
 	}
 
+	public void updateTitle() {
+		String filename = this.editPanel.networkDataModel.getFilename();
+		String adder = "";
+		if (filename == null) {
+			adder = this.editPanel.networkDataModel.title;
+		}
+		else {
+			adder = new File(filename).getName() + " - " + this.editPanel.networkDataModel.title;
+		}
+		
+		this.setTitle("ダイヤグラムを編集: " + adder);
+	}
+	
 	public static class MListener implements MouseListener, MouseMotionListener {
 		JFrame inputWindow = null;
 		WindowListener inputWindowCloseListener;
