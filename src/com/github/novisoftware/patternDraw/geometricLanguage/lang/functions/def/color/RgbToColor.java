@@ -10,8 +10,8 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueT
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueColor;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class HsvToColor implements FunctionDefInterface {
-	public static final String NAME = "hsv_to_color";
+public class RgbToColor implements FunctionDefInterface {
+	public static final String NAME = "rgb_to_color";
 
 	@Override
 	public String getName() {
@@ -20,12 +20,12 @@ public class HsvToColor implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "hsvカラー";
+		return "rgbカラー";
 	}
 
 	@Override
 	public String getDescription() {
-		return "色相・彩度・明度を基準に色情報を生成します。";
+		return "赤青緑の値により色情報を生成します。";
 	}
 
 	@Override
@@ -36,19 +36,30 @@ public class HsvToColor implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"hue", "saturation", "value"};
+		String[] ret = {"red", "green", "blue"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"色相(0-360)", "彩度(0-1)", "明度(0-1)"};
+		String[] ret = {"赤(0-1)", "緑(0-1)", "青(0-1)"};
 		return ret;
 	}
 
 	@Override
 	public ValueType getReturnType() {
 		return ValueType.COLOR;
+	}
+
+	static double fitToRange(double min, double max, double input) {
+		if (input < min) {
+			return min;
+		}
+		if (input > max) {
+			return max;
+		}
+		
+		return input;
 	}
 
 	@Override
@@ -60,31 +71,11 @@ public class HsvToColor implements FunctionDefInterface {
 			throw new CaliculateException("入力が設定されていません。");
 		}
 
-		double hue = Value.getDouble(p0);
-		double saturation = Value.getDouble(p1);
-		double value = Value.getDouble(p2);
+		double r = fitToRange(0, 1, Value.getDouble(p0));
+		double g = fitToRange(0, 1, Value.getDouble(p1));
+		double b = fitToRange(0, 1, Value.getDouble(p2));
 
-		// 注: java.awt.Color.getHSBColor の仕様より、
-		// hueは任意の値で良い。
-		hue /= 360;
-
-		if (saturation < 0) {
-			saturation = 0.0;
-		}
-		if (saturation > 1) {
-			saturation = 1.0;
-		}
-		if (value < 0) {
-			value = 0.0;
-		}
-		if (value > 1) {
-			value = 1.0;
-		}
-
-		Color c = Color.getHSBColor(
-				(float)hue,
-				(float)saturation,
-				(float)value);
+		Color c = new Color((float) r, (float) g, (float) b);
 
 		return new ValueColor(c);
 	}

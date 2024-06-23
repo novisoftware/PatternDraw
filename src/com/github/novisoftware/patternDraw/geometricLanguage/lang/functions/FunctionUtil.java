@@ -96,6 +96,12 @@ public class FunctionUtil {
 		if (name.equals(HsvToColor.NAME)) {
 			return new HsvToColor();
 		}
+		if (name.equals(RgbToColor.NAME)) {
+			return new RgbToColor();
+		}
+		if (name.equals(HtmlColor.NAME)) {
+			return new HtmlColor();
+		}
 		if (name.equals(SetColorPNG.NAME)) {
 			return new SetColorPNG();
 		}

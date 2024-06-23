@@ -10,8 +10,8 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueT
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueColor;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class HsvToColor implements FunctionDefInterface {
-	public static final String NAME = "hsv_to_color";
+public class HtmlColor implements FunctionDefInterface {
+	public static final String NAME = "html_color";
 
 	@Override
 	public String getName() {
@@ -20,29 +20,29 @@ public class HsvToColor implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "hsvカラー";
+		return "文字列カラー";
 	}
 
 	@Override
 	public String getDescription() {
-		return "色相・彩度・明度を基準に色情報を生成します。";
+		return "#000000から#FFFFFFの文字列により色情報を生成します。";
 	}
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.FLOAT, ValueType.FLOAT, ValueType.FLOAT};
+		ValueType[] ret = {ValueType.STRING};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"hue", "saturation", "value"};
+		String[] ret = {"color_string"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"色相(0-360)", "彩度(0-1)", "明度(0-1)"};
+		String[] ret = {"#000000 - #FFFFFF の形式の文字列"};
 		return ret;
 	}
 
@@ -54,37 +54,16 @@ public class HsvToColor implements FunctionDefInterface {
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
 		Value p0 = param.get(0);
-		Value p1 = param.get(1);
-		Value p2 = param.get(2);
-		if (p0 == null || p1 == null || p2 == null) {
+		if (p0 == null) {
 			throw new CaliculateException("入力が設定されていません。");
 		}
 
-		double hue = Value.getDouble(p0);
-		double saturation = Value.getDouble(p1);
-		double value = Value.getDouble(p2);
-
-		// 注: java.awt.Color.getHSBColor の仕様より、
-		// hueは任意の値で良い。
-		hue /= 360;
-
-		if (saturation < 0) {
-			saturation = 0.0;
-		}
-		if (saturation > 1) {
-			saturation = 1.0;
-		}
-		if (value < 0) {
-			value = 0.0;
-		}
-		if (value > 1) {
-			value = 1.0;
+		String text = p0.toString().toLowerCase();
+		if (! text.matches("#[a-f0-9]{6}")) {
+			throw new CaliculateException("文字列の指定に誤りがあります(#000000 - #FFFFFF のパターンでない)。");
 		}
 
-		Color c = Color.getHSBColor(
-				(float)hue,
-				(float)saturation,
-				(float)value);
+		Color c = new Color(Integer.parseInt(text.substring(1), 16));
 
 		return new ValueColor(c);
 	}

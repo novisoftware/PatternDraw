@@ -155,6 +155,20 @@ DESCRIPTION: HSV値から色を生成します。
 FUNCTION: hsv_to_color
 ---->DEFINE
 
+KIND: 処理
+TYPE: COLOR
+DISPNAME: 色/RGBカラー
+DESCRIPTION: RGB値から色を生成します。
+FUNCTION: rgb_to_color
+---->DEFINE
+
+KIND: 処理
+TYPE: COLOR
+DISPNAME: 色/色指定文字列からカラー
+DESCRIPTION: #000000から#FFFFFFの文字列により色情報を生成します。
+FUNCTION: html_color
+---->DEFINE
+
 KIND: 表示
 TYPE: NONE
 DISPNAME: 色/色を設定(PNG)
