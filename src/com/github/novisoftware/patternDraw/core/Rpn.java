@@ -324,7 +324,7 @@ public class Rpn {
 				stack.pop();
 				stack.push(ValueType.BOOLEAN);
 			}
-			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor") || s.equals(":not")
+			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor")
 					|| s.equals(":nand") || s.equals(":nor") || s.equals(":xnor")) {
 				stack.pop();
 				stack.pop();
@@ -562,7 +562,7 @@ public class Rpn {
 					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}
 			}
-			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor") || s.equals(":not")
+			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor")
 					|| s.equals(":nand") || s.equals(":nor") || s.equals(":xnor")) {
 				try {
 					Value b = stack.pop();
