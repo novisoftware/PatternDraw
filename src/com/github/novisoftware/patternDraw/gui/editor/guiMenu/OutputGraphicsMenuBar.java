@@ -63,7 +63,7 @@ public class OutputGraphicsMenuBar extends JMenuBar {
 
 					try {
 						// 実行パラメーターログの保存用ファイル
-						File varFile = FileWriteUtil.replaceSuffix(file, "paramlog.txt");
+						File varFile = FileWriteUtil.replaceSuffix(file, "paramlog.json");
 						outputGraphicsWindow.outputParameterLog(varFile, file);
 					} catch (Exception ex) {
 						String message = String.format("パラメーターログ出力に失敗しました。\n%s",
@@ -121,7 +121,7 @@ public class OutputGraphicsMenuBar extends JMenuBar {
 
 					try {
 						// 実行パラメーターログの保存用ファイル
-						File varFile = FileWriteUtil.replaceSuffix(file, "paramlog.txt");
+						File varFile = FileWriteUtil.replaceSuffix(file, "paramlog.json");
 						outputGraphicsWindow.outputParameterLog(varFile, file);
 					} catch (Exception ex) {
 						String message = String.format("パラメーターログ出力に失敗しました。\n%s",

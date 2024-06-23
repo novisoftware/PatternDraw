@@ -72,7 +72,7 @@ public class EditParamWindow extends JFrame2 {
 	 */
 	private static JFileChooser pngsFileChooser = new JFileChooser(".");
 
-	private final ArrayList<ParameterDefine> paramDefList;
+	private ArrayList<ParameterDefine> paramDefList;
 	private HashMap<String, Value> variables;
 	private Runnable callback;
 	private final HashMap<String,JTextField> textFields;
@@ -113,6 +113,7 @@ public class EditParamWindow extends JFrame2 {
 		final EditParamWindow thisObj = this;
 
 		HashMap<String, Value> oldVariables = this.variables;
+		this.paramDefList = paramDefList;
 		this.variables = new HashMap<String, Value>();
 
 		EditParamPanel editParamPanel = new EditParamPanel();
@@ -743,10 +744,16 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 	    }
 	}
 
+	static public String jsonEscape(String s) {
+		return s.replaceAll("[\\\\]", "\\\\\\\\")
+				.replaceAll("[\"]", "\\\\\"")
+				.replaceAll("/", "\\\\/");
+	}
+
 	public static String jsonItem(String k, String v, boolean isLast) {
 		return String.format("\"%s\": \"%s\"%s",
-				k,
-				v,
+				jsonEscape(k),
+				jsonEscape(v),
 				isLast ? "" : ",");
 	}
 

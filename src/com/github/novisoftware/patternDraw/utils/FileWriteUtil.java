@@ -31,8 +31,10 @@ public class FileWriteUtil {
 
 	public static File replaceSuffix(File file, String newSuffix) {
 		String newFileName = file.getAbsolutePath().replaceAll("[.]...$", "." + newSuffix);
-		if (!newFileName.endsWith(".txt")) {
-			newFileName = newFileName + ".txt";
+		if (!newFileName.endsWith(newSuffix)) {
+			// replaceAll() では置き換わらなかった場合。
+			// (元々拡張子が付いていないなど)
+			newFileName = newFileName + newSuffix;
 		}
 		return new File(newFileName);
 	}
