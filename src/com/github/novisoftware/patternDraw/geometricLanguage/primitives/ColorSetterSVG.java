@@ -14,7 +14,7 @@ public class ColorSetterSVG implements Renderer {
 
 	public ColorSetterSVG(Color color) {
 		this.color = color;
-		this.colorString = String.format("#%06x", this.color.getRGB());
+		this.colorString = String.format("#%06x", (this.color.getRGB() & 0xFFFFFF));
 		// Debug.println("SET SVG STROKE COLOR " + colorString);
 	}
 

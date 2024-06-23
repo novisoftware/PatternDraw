@@ -24,12 +24,12 @@ public class SetColorSVG implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "色を設定(PNG)";
+		return "色を設定(SVG)";
 	}
 
 	@Override
 	public String getDescription() {
-		return "色を設定します(PNG)。";
+		return "色を設定します(SVG)。";
 	}
 
 	@Override
