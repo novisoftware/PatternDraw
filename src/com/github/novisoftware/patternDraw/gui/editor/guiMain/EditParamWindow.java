@@ -73,7 +73,7 @@ public class EditParamWindow extends JFrame2 {
 	private static JFileChooser pngsFileChooser = new JFileChooser(".");
 
 	private final ArrayList<ParameterDefine> paramDefList;
-	private final HashMap<String, Value> variables;
+	private HashMap<String, Value> variables;
 	private Runnable callback;
 	private final HashMap<String,JTextField> textFields;
 
@@ -82,207 +82,6 @@ public class EditParamWindow extends JFrame2 {
 	 * NGだったパラメーターがあったら、スクリプトを実行しない。
 	 */
 	private final HashSet<AbstractInputChecker> ngInputs;
-
-	public boolean isOk() {
-		return this.ngInputs.isEmpty();
-	}
-
-	static class CheckMessageLabel extends JLabel2 {
-		/** エラー時の文字色 */
-		private final Color COLOR_ERROR = GuiPreference.MESSAGE_ERROR_COLOR;
-		/** 正常時の文字色 */
-		private final Color COLOR_NORMAL = GuiPreference.TEXT_COLOR;
-		private final Font MESSAGE_DISP_FONT = GuiPreference.MESSAGE_DISP_FONT;
-
-		/**
-		 * チェック処理
-		 */
-		private final AbstractInputChecker checker;
-		/**
-		 * 不正な(invalidな)入力を含む場合に COMMIT ボタンを押させないなどの制御に使う
-		 */
-		private final Set<AbstractInputChecker> ngInputs;
-		private final Let let;
-
-		/**
-		 * パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途
-		 */
-		private final Runnable callback;
-
-		public CheckMessageLabel(
-				AbstractInputChecker checker,
-				Set<AbstractInputChecker> ngInputs,
-				Let let,
-				Runnable callback) {
-			super(checker.message);
-			this.setFont(MESSAGE_DISP_FONT);
-			this.checker = checker;
-			this.ngInputs = ngInputs;
-			this.let = let;
-			this.callback = callback;
-		}
-
-		void updateMessage(String text) {
-			checker.check(text);
-			if (checker.isOk()) {
-				ngInputs.remove(checker);
-				this.setForeground(COLOR_NORMAL);
-				this.setText(checker.message);
-			} else {
-				ngInputs.add(checker);
-				this.setForeground(COLOR_ERROR);
-				this.setText(checker.message);
-			}
-
-			if (checker.isOk()) {
-				let.let(text);
-			}
-
-			if (ngInputs.isEmpty()) {
-				callback.run();
-			}
-		}
-	}
-
-	static interface Let {
-		public void let(String s);
-	}
-
-	/**
-	 *
-	 * @param textField
-	 * @param checker
-	 * @param ngInputs
-	 * @param let チェック処理でOKだった場合(validだった場合)の代入動作
-	 * @param callback (パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途)
-	 * @return
-	 */
-	static CheckMessageLabel setupCheckerToTextField(JTextField textField,
-			AbstractInputChecker checker,
-			Set<AbstractInputChecker> ngInputs,
-			final Let let,
-			Runnable callback
-			) {
-		final CheckMessageLabel check = new CheckMessageLabel(checker, ngInputs, let, callback);
-		textField.getDocument().addDocumentListener(new DocumentListener() {
-			void update() {
-				String text = textField.getText();
-				check.updateMessage(text);
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// update()に移譲
-				update();
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				// update()に移譲
-				update();
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				// update()に移譲
-				update();
-			}
-		});
-
-		return check;
-	}
-
-	static interface BooleanLet {
-		void let(ValueBoolean b);
-	}
-
-	static void addPaneToBooleanSelector(
-			final Container pane,
-			final ValueBoolean initValue,
-			final BooleanLet let,
-			final Runnable callback) {
-		JRadioButton radioButtons[] = new JRadioButton[2];
-		ButtonGroup group = new ButtonGroup();
-		ValueBoolean[] values = {ValueBoolean.TRUE, ValueBoolean.FALSE};
-		for (int i = 0 ; i < values.length ; i ++) {
-			final JRadioButton radioButton = new JRadioButton2(values[i].toString());
-			group.add(radioButton);
-			radioButtons[i] = radioButton;
-			pane.add(radioButton);
-		}
-		Debug.println("radioButtons  initValue = " + initValue);
-		Debug.println("radioButtons  initValue.getInternal() = " + initValue.getInternal());
-		for (int i = 0 ; i < values.length ; i ++) {
-			Debug.println("radioButtons  values[i].getInternal() = " + values[i].getInternal());
-			if (initValue != null && initValue.getInternal().equals(values[i].getInternal())) {
-				Debug.println("radioButtons["  + i + "].setSelected(true);");
-				radioButtons[i].setSelected(true);
-			}
-		}
-		for (int i = 0 ; i < values.length ; i ++) {
-			final JRadioButton radioButton = radioButtons[i];
-			final ValueBoolean newValue = values[i];
-			radioButton.addChangeListener(new ChangeListener() {
-				Boolean isSelectedOld = initValue == null ? null:
-											(initValue.getInternal() == newValue.getInternal());
-
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					if (radioButton.isSelected()) {
-						let.let(newValue);
-
-						if (isSelectedOld != null || isSelectedOld != radioButton.isSelected()) {
-							callback.run();
-						}
-						isSelectedOld = radioButton.isSelected();
-					}
-				}
-			});
-		}
-	}
-
-	static class EditParamPanel extends JPanel {
-		EditParamPanel() {
-		    this.setBackground(GuiPreference.BG_COLOR);
-		    this.setForeground(GuiPreference.TEXT_COLOR);
-	    }
-	}
-
-
-	static class SubPanel extends JPanel {
-		SubPanel() {
-		    this.setBackground(GuiPreference.BG_COLOR);
-		    this.setForeground(GuiPreference.TEXT_COLOR);
-		    this.setLayout(new FlowLayout(FlowLayout.LEADING));
-	    }
-	}
-
-	public static String jsonItem(String k, String v, boolean isLast) {
-		return String.format("\"%s\": \"%s\"%s",
-				k,
-				v,
-				isLast ? "" : ",");
-	}
-
-	public String getVariablesPrint() {
-		StringBuilder sb = new StringBuilder();
-
-		boolean isFirst = true;
-		for (ParameterDefine paramDef : this.paramDefList) {
-			if (isFirst) {
-				isFirst = false;
-			} else {
-				sb.append(",\n");
-			}
-
-			String name = paramDef.name;
-			Value value = this.getVariables().get(paramDef.name);
-			if (value != null) {
-				sb.append(jsonItem(name, value.toString(), true));
-			}
-		}
-		return sb.toString();
-	}
 
 	/**
 	 *
@@ -298,7 +97,7 @@ public class EditParamWindow extends JFrame2 {
 		this.textFields = new HashMap<String,JTextField>();
 
 		this.setTitle("条件を指定します");
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 	}
@@ -312,6 +111,9 @@ public class EditParamWindow extends JFrame2 {
 			final ArrayList<ParameterDefine> paramDefList
 			) {
 		final EditParamWindow thisObj = this;
+
+		HashMap<String, Value> oldVariables = this.variables;
+		this.variables = new HashMap<String, Value>();
 
 		EditParamPanel editParamPanel = new EditParamPanel();
 		// editParamPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -342,6 +144,18 @@ public class EditParamWindow extends JFrame2 {
 		// for (String varName : items.keySet()) {
 		for (ParameterDefine param__ : paramDefList) {
 			final ParameterDefine param = param__;
+			/*
+			 * パラメーターの定義が同じかどうかは分からないので作りなおすが、
+			 * 前と同じ値で設定済のものがあったら、それで設定する。
+			 */
+			
+			Value oldValue = oldVariables.get(param.name);
+			ValueType oldValueType = (oldValue == null) ? null : oldValue.valueType;
+			if (param.valueType.equals(oldValueType)) {
+				oldValue = null;
+				oldValueType = null;
+			}
+
 			OnChangeActionListener listner1 = null;
 			listner1 = new OnChangeActionListener(this, param, callbackWraped);
 
@@ -355,8 +169,12 @@ public class EditParamWindow extends JFrame2 {
 					ValueType.STRING.equals(param.valueType) ||
 					(param.defaultValue).length() > 0 ) ) {
 				isDefaultSetted = true;
-				Value value = Value.createValue(param.valueType, param.defaultValue);
-				this.variables.put(param.name, value);
+				if (oldValue != null) {
+					this.variables.put(param.name, oldValue);
+				} else {
+					Value value = Value.createValue(param.valueType, param.defaultValue);
+					this.variables.put(param.name, value);
+				}
 
 				Debug.println("initinal set " + param.name + " = (String) " + param.defaultValue);
 			}
@@ -374,12 +192,18 @@ public class EditParamWindow extends JFrame2 {
 
 				subPanel2.add(spacer(30));
 				subPanel2.add(new JLabel2(param.name + " ="));
-				addPaneToBooleanSelector(subPanel2, new ValueBoolean(param.defaultValue),
+				
+				ValueBoolean initValue = oldValue != null ?
+						(ValueBoolean)oldValue :
+							new ValueBoolean(param.defaultValue);
+
+				addPaneToBooleanSelector(subPanel2, initValue,
 						let, callbackWraped);
-				Debug.println("(defaultValue)  " + param.name + " ... " + param.defaultValue);
 			}
 			else {
-				final JTextField2 field = new JTextField2(param.defaultValue);
+				String initParaStr = oldValue != null ? oldValue.toString() : param.defaultValue;
+
+				final JTextField2 field = new JTextField2(initParaStr);
 				textFields.put(param.name, field);
 
 				Let let = new Let() {
@@ -402,7 +226,7 @@ public class EditParamWindow extends JFrame2 {
 				}
 				if (c != null) {
 					////////////////
-					c.check(param.defaultValue);
+					c.check(initParaStr);
 					CheckMessageLabel check = null;
 					check = setupCheckerToTextField(field, c,
 							this.ngInputs, let, callbackWraped);
@@ -430,7 +254,7 @@ public class EditParamWindow extends JFrame2 {
 					// この時点でもともと param は変数として持っているのに。
 					// ここでSliderParameterを作るツギハギ感。
 					// クラス階層 Parameter は本当に必要?
-					SliderParameter p = new SliderParameter(param.name, param.description, param.defaultValue,
+					SliderParameter p = new SliderParameter(param.name, param.description, initParaStr,
 							Double.parseDouble(param.sliderMin), Double.parseDouble(param.sliderMax));
 
 					JSlider slider = new JSlider(0, 500);
@@ -458,7 +282,7 @@ public class EditParamWindow extends JFrame2 {
 					EnumParameter e = new EnumParameter(
 							param.name,
 							param.description,
-							param.defaultValue,
+							initParaStr,
 							opts_
 							);
 					ButtonGroup group = new ButtonGroup();
@@ -712,6 +536,207 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 		}
 		this.add(sp);
 		this.lastAddedPane = sp;
+	}
+	
+	public boolean isOk() {
+		return this.ngInputs.isEmpty();
+	}
+
+	static class CheckMessageLabel extends JLabel2 {
+		/** エラー時の文字色 */
+		private final Color COLOR_ERROR = GuiPreference.MESSAGE_ERROR_COLOR;
+		/** 正常時の文字色 */
+		private final Color COLOR_NORMAL = GuiPreference.TEXT_COLOR;
+		private final Font MESSAGE_DISP_FONT = GuiPreference.MESSAGE_DISP_FONT;
+
+		/**
+		 * チェック処理
+		 */
+		private final AbstractInputChecker checker;
+		/**
+		 * 不正な(invalidな)入力を含む場合に COMMIT ボタンを押させないなどの制御に使う
+		 */
+		private final Set<AbstractInputChecker> ngInputs;
+		private final Let let;
+
+		/**
+		 * パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途
+		 */
+		private final Runnable callback;
+
+		public CheckMessageLabel(
+				AbstractInputChecker checker,
+				Set<AbstractInputChecker> ngInputs,
+				Let let,
+				Runnable callback) {
+			super(checker.message);
+			this.setFont(MESSAGE_DISP_FONT);
+			this.checker = checker;
+			this.ngInputs = ngInputs;
+			this.let = let;
+			this.callback = callback;
+		}
+
+		void updateMessage(String text) {
+			checker.check(text);
+			if (checker.isOk()) {
+				ngInputs.remove(checker);
+				this.setForeground(COLOR_NORMAL);
+				this.setText(checker.message);
+			} else {
+				ngInputs.add(checker);
+				this.setForeground(COLOR_ERROR);
+				this.setText(checker.message);
+			}
+
+			if (checker.isOk()) {
+				let.let(text);
+			}
+
+			if (ngInputs.isEmpty()) {
+				callback.run();
+			}
+		}
+	}
+
+	static interface Let {
+		public void let(String s);
+	}
+
+	/**
+	 *
+	 * @param textField
+	 * @param checker
+	 * @param ngInputs
+	 * @param let チェック処理でOKだった場合(validだった場合)の代入動作
+	 * @param callback (パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途)
+	 * @return
+	 */
+	static CheckMessageLabel setupCheckerToTextField(JTextField textField,
+			AbstractInputChecker checker,
+			Set<AbstractInputChecker> ngInputs,
+			final Let let,
+			Runnable callback
+			) {
+		final CheckMessageLabel check = new CheckMessageLabel(checker, ngInputs, let, callback);
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			void update() {
+				String text = textField.getText();
+				check.updateMessage(text);
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// update()に移譲
+				update();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// update()に移譲
+				update();
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				// update()に移譲
+				update();
+			}
+		});
+
+		return check;
+	}
+
+	static interface BooleanLet {
+		void let(ValueBoolean b);
+	}
+
+	static void addPaneToBooleanSelector(
+			final Container pane,
+			final ValueBoolean initValue,
+			final BooleanLet let,
+			final Runnable callback) {
+		JRadioButton radioButtons[] = new JRadioButton[2];
+		ButtonGroup group = new ButtonGroup();
+		ValueBoolean[] values = {ValueBoolean.TRUE, ValueBoolean.FALSE};
+		for (int i = 0 ; i < values.length ; i ++) {
+			final JRadioButton radioButton = new JRadioButton2(values[i].toString());
+			group.add(radioButton);
+			radioButtons[i] = radioButton;
+			pane.add(radioButton);
+		}
+		Debug.println("radioButtons  initValue = " + initValue);
+		Debug.println("radioButtons  initValue.getInternal() = " + initValue.getInternal());
+		for (int i = 0 ; i < values.length ; i ++) {
+			Debug.println("radioButtons  values[i].getInternal() = " + values[i].getInternal());
+			if (initValue != null && initValue.getInternal().equals(values[i].getInternal())) {
+				Debug.println("radioButtons["  + i + "].setSelected(true);");
+				radioButtons[i].setSelected(true);
+			}
+		}
+		for (int i = 0 ; i < values.length ; i ++) {
+			final JRadioButton radioButton = radioButtons[i];
+			final ValueBoolean newValue = values[i];
+			radioButton.addChangeListener(new ChangeListener() {
+				Boolean isSelectedOld = initValue == null ? null:
+											(initValue.getInternal() == newValue.getInternal());
+
+				@Override
+				public void stateChanged(ChangeEvent e) {
+					if (radioButton.isSelected()) {
+						let.let(newValue);
+
+						if (isSelectedOld != null || isSelectedOld != radioButton.isSelected()) {
+							callback.run();
+						}
+						isSelectedOld = radioButton.isSelected();
+					}
+				}
+			});
+		}
+	}
+
+	static class EditParamPanel extends JPanel {
+		EditParamPanel() {
+		    this.setBackground(GuiPreference.BG_COLOR);
+		    this.setForeground(GuiPreference.TEXT_COLOR);
+	    }
+	}
+
+
+	static class SubPanel extends JPanel {
+		SubPanel() {
+		    this.setBackground(GuiPreference.BG_COLOR);
+		    this.setForeground(GuiPreference.TEXT_COLOR);
+		    this.setLayout(new FlowLayout(FlowLayout.LEADING));
+	    }
+	}
+
+	public static String jsonItem(String k, String v, boolean isLast) {
+		return String.format("\"%s\": \"%s\"%s",
+				k,
+				v,
+				isLast ? "" : ",");
+	}
+
+	public String getVariablesPrint() {
+		StringBuilder sb = new StringBuilder();
+
+		boolean isFirst = true;
+		for (ParameterDefine paramDef : this.paramDefList) {
+			if (isFirst) {
+				isFirst = false;
+			} else {
+				sb.append(",\n");
+			}
+
+			String name = paramDef.name;
+			Value value = this.getVariables().get(paramDef.name);
+			if (value != null) {
+				sb.append(jsonItem(name, value.toString(), true));
+			}
+		}
+		return sb.toString();
 	}
 
 	/**
