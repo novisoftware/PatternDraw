@@ -711,6 +711,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 			this.remove(this.lastAddedPane);
 		}
 		this.add(sp);
+		this.lastAddedPane = sp;
 	}
 
 	/**
