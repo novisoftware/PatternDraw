@@ -284,12 +284,12 @@ true;定数 :as-boolean
 -->RPN
 ---->DEFINE
 
-KIND: 変数を設定
+KIND: 変数を参照
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: 変数/新しい変数に設定 {new-variable}
-DESCRIPTION: 新しい変数
-<value:ANY> '{new-variable};変数名 :set-variable
+DISPNAME: 変数/既存の変数を参照/{exist-variable}
+DESCRIPTION: 変数を参照します。
+'{exist-variable} :recall-variable
 -->RPN
 ---->DEFINE
 
@@ -302,15 +302,14 @@ DESCRIPTION: 変数を設定します。
 -->RPN
 ---->DEFINE
 
-KIND: 変数を参照
+KIND: 変数を設定
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: 変数/既存の変数を参照/{exist-variable}
-DESCRIPTION: 変数を参照します。
-'{exist-variable} :recall-variable
+DISPNAME: 変数/新しい変数に設定 {new-variable}
+DESCRIPTION: 新しい変数
+<value:ANY> '{new-variable};変数名 :set-variable
 -->RPN
 ---->DEFINE
-
 
 KIND: 入力
 TYPE: INTEGER
