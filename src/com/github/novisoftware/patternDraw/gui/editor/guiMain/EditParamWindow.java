@@ -250,14 +250,37 @@ public class EditParamWindow extends JFrame2 {
 
 				// スライダー有効パラメーター
 				if (param.enableSlider) {
+					double min = Double.parseDouble(param.sliderMin);
+					double max = Double.parseDouble(param.sliderMax);
+
 					// TODO:
 					// この時点でもともと param は変数として持っているのに。
 					// ここでSliderParameterを作るツギハギ感。
 					// クラス階層 Parameter は本当に必要?
 					SliderParameter p = new SliderParameter(param.name, param.description, initParaStr,
-							Double.parseDouble(param.sliderMin), Double.parseDouble(param.sliderMax));
+							min, max);
 
-					JSlider slider = new JSlider(0, 500);
+					int SLIDER_SCALE = 500;
+					
+					JSlider slider = new JSlider(0, SLIDER_SCALE);
+
+					// スライダー・タブの初期位置を設定する
+					if (min != max) {
+						Double initValue = null;
+						try {
+							initValue = Double.parseDouble(initParaStr);
+						} catch(Exception e) {
+						}
+						if (initValue != null) {
+							
+							double d_SliderInitValue = 
+									(initValue - min) /
+									(max - min);
+							int sliderInitValue = (int)Math.round(d_SliderInitValue * SLIDER_SCALE);
+							slider.setValue(sliderInitValue);
+						}
+					}
+
 					slider.addChangeListener(new SliederChangeListener(slider,
 							field,
 							p,
@@ -278,31 +301,39 @@ public class EditParamWindow extends JFrame2 {
 					for (String s : opts) {
 						opts_.add(s);
 					}
-
-					EnumParameter e = new EnumParameter(
-							param.name,
-							param.description,
-							initParaStr,
-							opts_
-							);
-					ButtonGroup group = new ButtonGroup();
-
-					SubPanel subPanel4 = new SubPanel();
-					pane.add(subPanel4);
-
-					subPanel4.add(spacer(30 + 20));
-					for (String value : e.opts) {
-						final JRadioButton radioButton = new JRadioButton2(value);
-						group.add(radioButton);
-						subPanel4.add(radioButton);
-
-						radioButton.addChangeListener(new ChangeListener() {
-							public void stateChanged(ChangeEvent e) {
-								if (radioButton.isSelected()) {
-									field.setText(value);
-								}
+					if (opts_.size() > 1) {
+						// ↑
+						// 暫定で、2未満の選択肢はラジオボタンを作らない。
+						// UI上、見て分からないので。
+						
+						EnumParameter e = new EnumParameter(
+								param.name,
+								param.description,
+								initParaStr,
+								opts_
+								);
+						ButtonGroup group = new ButtonGroup();
+	
+						SubPanel subPanel4 = new SubPanel();
+						pane.add(subPanel4);
+	
+						subPanel4.add(spacer(30 + 20));
+						for (String value : e.opts) {
+							final JRadioButton radioButton = new JRadioButton2(value);
+							group.add(radioButton);
+							subPanel4.add(radioButton);
+							if (value.equals(initParaStr)) {
+								radioButton.setSelected(true);
 							}
-						});
+	
+							radioButton.addChangeListener(new ChangeListener() {
+								public void stateChanged(ChangeEvent e) {
+									if (radioButton.isSelected()) {
+										field.setText(value);
+									}
+								}
+							});
+						}
 					}
 				}
 			}
