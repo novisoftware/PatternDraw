@@ -151,7 +151,7 @@ public class EditParamWindow extends JFrame2 {
 			
 			Value oldValue = oldVariables.get(param.name);
 			ValueType oldValueType = (oldValue == null) ? null : oldValue.valueType;
-			if (param.valueType.equals(oldValueType)) {
+			if (! param.valueType.equals(oldValueType)) {
 				oldValue = null;
 				oldValueType = null;
 			}
