@@ -68,6 +68,7 @@ public class EditDiagramWindow extends JFrame2 {
 		// この変数が true の場合は Popup を開かない。
 		// TODO
 		// ただし、 Popup が閉じるのを確実には拾えていないので、何回か押す必要がある場合が発生する。
+		// (Popupが閉じるのを拾えない状況: )
 		public boolean isPopupExists = false;
 
 		/**

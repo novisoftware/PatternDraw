@@ -290,9 +290,27 @@ public class EditParamWindow extends JFrame2 {
 	 * @param variables 設定したパラメーターの値
 	 */
 	public EditParamWindow(
-			final ArrayList<ParameterDefine> paramDefList
 			) {
 		super();
+		this.paramDefList = new ArrayList<ParameterDefine>();
+		this.variables = new HashMap<String, Value>();
+		this.ngInputs = new HashSet<AbstractInputChecker>();
+		this.textFields = new HashMap<String,JTextField>();
+
+		this.setTitle("条件を指定します");
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
+	}
+
+	/**
+	 *
+	 * @param paramDefList パラメーターを設定するために必要な、型や名称の定義情報
+	 * @param variables 設定したパラメーターの値
+	 */
+	public void update(
+			final ArrayList<ParameterDefine> paramDefList
+			) {
 		final EditParamWindow thisObj = this;
 
 		EditParamPanel editParamPanel = new EditParamPanel();
@@ -312,24 +330,12 @@ public class EditParamWindow extends JFrame2 {
 			}
 		};
 
-		this.paramDefList = paramDefList;
-		this.variables = new HashMap<String, Value>();
-		this.ngInputs = new HashSet<AbstractInputChecker>();
-
-		// this.display = display;
-		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
-
-		this.setTitle("条件を指定します");
-
 		// レイアウト
 		JPanel pane = editParamPanel;
 
 		// pane.setLayout(new FlowLayout(FlowLayout.LEADING));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
 
-		this.textFields = new HashMap<String,JTextField>();
 		SubPanel subPanel0 = new SubPanel();
 		pane.add(subPanel0);
 		subPanel0.add(new JLabel2("実行パラメーターを指定します。"));
@@ -697,12 +703,20 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 		pane.add(Box.createGlue());
 		pane.add(boxSpacer(5, 100));
 
-
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		sp.setPreferredSize(editParamPanel.getPreferredSize());
+
+		if (this.lastAddedPane != null) {
+			this.remove(this.lastAddedPane);
+		}
 		this.add(sp);
 	}
+
+	/**
+	 * 直近にaddされた JScrollPane を覚えておく。 更新されたときに remove する。
+	 */
+	JScrollPane lastAddedPane = null;
 
 	public boolean DUMMY_FALSE = true;
 

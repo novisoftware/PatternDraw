@@ -27,16 +27,21 @@ public class EditDiagramMenuBar extends JMenuBar {
 	// ファイル選択ダイアログ
 	static private JFileChooser saveAsFileChooser = null;
 
+	// 親
 	final EditDiagramPanel editPanel;
 	final EditDiagramWindow editDiagramWindow;
+	// 子
+	final EditParamWindow editParamWindow;
 
 	final JMenu fileMenu;
 	final JMenu runMenu;
 	final JMenu windowMenu;
 	final JMenu helpMenu;
 	public EditDiagramMenuBar(final EditDiagramWindow editDiagramWindow, final EditDiagramPanel editDiagramPanel) {
-		this.editDiagramWindow = editDiagramWindow;
+		final EditDiagramMenuBar thisObj = this;
 		this.editPanel = editDiagramPanel;
+		this.editDiagramWindow = editDiagramWindow;
+		this.editParamWindow = new EditParamWindow();
 		this.fileMenu = new JMenu("ファイル");
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
@@ -188,9 +193,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 
 				if (editDiagramPanel.networkDataModel.paramDefList.size() > 0) {
 					Debug.println("START");
-					EditParamWindow editParamWindow =
-					new EditParamWindow(
-							editDiagramPanel.networkDataModel.paramDefList);
+					
+					thisObj.editParamWindow.update(editDiagramPanel.networkDataModel.paramDefList);
 					outputGraphicsWindow.editParamWindow = editParamWindow;
 					outputGraphicsWindow.editDiagramWindow = editDiagramWindow;
 
