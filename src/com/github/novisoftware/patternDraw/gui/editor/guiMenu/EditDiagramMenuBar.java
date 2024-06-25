@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
@@ -12,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
@@ -198,7 +200,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 		});
 
 		this.runMenu = new JMenu("実行");
-		JMenuItem run = new JMenuItem("実行");
+		final JMenuItem run = new JMenuItem("実行");
+		final JMenuItem stopRequest = new JMenuItem("実行を止める");
+
 		this.runMenu.add(run);
 		run.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -225,7 +229,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 					editParamWindow.setVisible(true);
 					
 					if (editParamWindow.isOk()) {
-						callback.run();
+						new Thread(callback).start();
+						// callback.run();
 					}
 
 					Debug.println("END");
@@ -234,8 +239,29 @@ public class EditDiagramMenuBar extends JMenuBar {
 					outputGraphicsWindow.editParamWindow = null;
 					outputGraphicsWindow.editDiagramWindow = null;
 					Debug.println("START");
-					editDiagramPanel.networkDataModel.analyze();
-					editDiagramPanel.networkDataModel.runProgram();
+					
+					Runnable callback = new Runnable() {
+						@Override
+						public void run() {
+							try {
+								try {
+									SwingUtilities.invokeAndWait(new Runnable() {
+										@Override
+										public void run() {
+											stopRequest.setEnabled(true);
+										}
+									});
+								} catch (InvocationTargetException e) {
+								}
+								
+								Thread.sleep(200);
+								editDiagramPanel.networkDataModel.analyze();
+								editDiagramPanel.networkDataModel.runProgram();
+							} catch (InterruptedException e) {
+							}
+						}
+					};
+					new Thread(callback).start();
 					Debug.println("END");
 				}
 				outputTextWindow.setVisible(true);
@@ -243,6 +269,15 @@ public class EditDiagramMenuBar extends JMenuBar {
 				editDiagramPanel.repaint();
 			}
 		});
+
+		this.runMenu.add(stopRequest);
+		stopRequest.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				editDiagramPanel.networkDataModel.hasStopRequest = true;
+				stopRequest.setEnabled(false);
+			}
+		});
+		stopRequest.setEnabled(false);
 
 		this.windowMenu = new JMenu("ウィンドウ");
 		JMenuItem dispParaWin = new JMenuItem("パラメーターの一覧");

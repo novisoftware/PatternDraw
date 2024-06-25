@@ -20,6 +20,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
@@ -393,7 +394,8 @@ public class Rpn {
 			}
 
 			if (s.equals(":print")) {
-				OutputTextWindow.println(stack.pop().toString());
+				OutputTextInterface outputTextInterface = OutputTextWindow.getInstance();
+				outputTextInterface.println(stack.pop().toString());
 			}
 			else if (s.equals(":input:integer")) {
 				// インタラクティブな入力（試作レベル）

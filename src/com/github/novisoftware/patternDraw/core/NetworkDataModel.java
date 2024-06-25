@@ -26,6 +26,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____Co
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -670,6 +671,10 @@ public class NetworkDataModel {
 					}
 				}
 
+				if (this.hasStopRequest) {
+					return;
+				}
+				
 				c.nextState();
 			}
 		}
@@ -684,6 +689,10 @@ public class NetworkDataModel {
 					}
 					else if (e0 instanceof P030____ControlElement) {
 						Debug.println("RUN", "INVALID STRUCTURE. 妥当でない構造。");
+					}
+					
+					if (this.hasStopRequest) {
+						return;
 					}
 				}
 			}
@@ -713,6 +722,10 @@ public class NetworkDataModel {
 						else if (e0 instanceof P030____ControlElement) {
 							evaluateControl((P030____ControlElement)e0);
 						}
+						
+						if (this.hasStopRequest) {
+							return;
+						}
 					}
 				}
 			}
@@ -729,6 +742,10 @@ public class NetworkDataModel {
 						else if (e0 instanceof P030____ControlElement) {
 							evaluateControl((P030____ControlElement)e0);
 						}
+						
+						if (this.hasStopRequest) {
+							return;
+						}
 					}
 				}
 			}
@@ -736,39 +753,75 @@ public class NetworkDataModel {
 
 	}
 
-	public void runProgram() {
-		OutputTextWindow.clear();
-		OutputGraphicsWindow.reset();
-		Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
+	OutputTextInterface outputTextInterface;
+	private boolean isRunning = false;
+	public boolean hasStopRequest = false;
 
-
-		//////////////////////////////////////////////////////////
-		// ここから実行
-		Debug.println("evaluate", "--------------------------------------------- 「実行」★");
-
-
-		try {
-			for (P020___AbstractElement elementIcon : this.rootElement) {
-				if (elementIcon instanceof P021____AbstractGraphNodeElement) {
-					evaluateOneGraph((P021____AbstractGraphNodeElement)elementIcon);
-					/*
-					ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
-					for(GraphNodeElement element : eList) {
-						element.evaluate();
-
-						Debug.println("evaluate", "done: " + element.id);
-					}
-					*/
-				}
-				else if(elementIcon instanceof P030____ControlElement) {
-					evaluateControl((P030____ControlElement)elementIcon);
-				}
-			}
-		} catch (CaliculateException e) {
-			// 特に処理不要
+	/**
+	 * 排他制御付きの isRunning フラグのセット
+	 * 
+	 * @return フラグをセットできた場合 true
+	 */
+	synchronized public boolean setRunning() {
+		if (isRunning) {
+			return false;
 		}
+		isRunning = true;
+		return true;
+	}
+	
+	/**
+	 * 厳密な排他制御が必要ない場面でのプログラム実行中かどうかの状態取得
+	 * @return
+	 */
+	public boolean isRunning() {
+		return this.isRunning;
+	}
+	
+	public void runProgram() {
+		try {
+			if (! setRunning()) {
+				return;
+			}
+			outputTextInterface = OutputTextWindow.getInstance();
+			
+			outputTextInterface.clear();
+			OutputGraphicsWindow.reset();
+			Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
 
-		OutputGraphicsWindow.refresh();
+
+			try {
+				//////////////////////////////////////////////////////////
+				// ここから実行
+				Debug.println("evaluate", "--------------------------------------------- 「実行」★");
+				for (P020___AbstractElement elementIcon : this.rootElement) {
+					if (elementIcon instanceof P021____AbstractGraphNodeElement) {
+						evaluateOneGraph((P021____AbstractGraphNodeElement)elementIcon);
+						/*
+						ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
+						for(GraphNodeElement element : eList) {
+							element.evaluate();
+	
+							Debug.println("evaluate", "done: " + element.id);
+						}
+						*/
+					}
+					else if(elementIcon instanceof P030____ControlElement) {
+						evaluateControl((P030____ControlElement)elementIcon);
+					}
+					if (this.hasStopRequest) {
+						break;
+					}
+				}
+			} catch (CaliculateException e) {
+				// 特に処理不要
+			}
+	
+			OutputGraphicsWindow.refresh();
+		} finally {
+			isRunning = false;
+			hasStopRequest = false;
+		}
 	}
 
 
