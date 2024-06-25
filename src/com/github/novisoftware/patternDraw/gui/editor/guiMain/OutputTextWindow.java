@@ -46,7 +46,6 @@ public class OutputTextWindow extends JFrame2 {
 		textArea = new JTextArea();
 		textArea.setFont(GuiPreference.CONSOLE_FONT);
 		JScrollPane scrollPane = new JScrollPane(textArea);
-//		p.add(a);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		getContentPane().add(scrollPane, BorderLayout.CENTER);
