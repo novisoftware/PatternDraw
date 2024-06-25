@@ -4,12 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -18,8 +15,10 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import javax.swing.JButton;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
@@ -35,7 +34,7 @@ import com.github.novisoftware.patternDraw.utils.GuiPreference;
 public class EditParamDefListWindow extends JFrame2 {
 	public static final int WINDOW_POS_X = 50;
 	public static final int WINDOW_POS_Y = 50;
-	public static final int WINDOW_WIDTH = 800;
+	public static final int WINDOW_WIDTH = 820;
 	public static final int WINDOW_HEIGHT = 600;
 	public static final int RULE_MARGIN = 9;
 	static final BasicStroke CARET_STROKE = new BasicStroke(2f);
@@ -59,11 +58,6 @@ public class EditParamDefListWindow extends JFrame2 {
 	 */
 	public EditParamDefWindow inputParamDefWindow = null;
 
-	/**
-	 * 追加ボタン
-	 */
-	final JButton addButton;
-
 	public ParamDefListPanel paramDefListPanel;
 	
 	public EditParamDefListWindow(
@@ -82,32 +76,32 @@ public class EditParamDefListWindow extends JFrame2 {
 		jp.setBackground(GuiPreference.BG_COLOR);
 		jp.setForeground(GuiPreference.TEXT_COLOR);
 
-		
-		this.add(jp);
+		JScrollPane scrollPane = new JScrollPane(jp);
+		this.add(scrollPane);
 		// Container pane = this.getContentPane();
 		Container pane = jp;// .getContentPane();
 		// this.setLayout(new FlowLayout(FlowLayout.LEADING));
-		jp.setLayout(new FlowLayout(FlowLayout.LEADING));
+		
+		// new BoxLayout(jp, BoxLayout.Y_AXIS);
+		jp.setLayout(new BoxLayout(jp, BoxLayout.PAGE_AXIS));
 
+		pane.add(boxSpacer(10, 7));
 		pane.add(new JLabel2("パラメーターの一覧"));
-		pane.add(horizontalRule(7));
+		pane.add(boxSpacer(10, 7));
 
 		this.paramDefListPanel = new ParamDefListPanel(this, params);
-		paramDefListPanel.setBackground(GuiPreference.BG_COLOR);
-		paramDefListPanel.setForeground(GuiPreference.TEXT_COLOR);
+		/*
 		Dimension panelDimension = new Dimension(WINDOW_WIDTH - 4, 400);
-		
 		paramDefListPanel.setMinimumSize(panelDimension);
 		paramDefListPanel.setPreferredSize(panelDimension);
 		paramDefListPanel.setSize(panelDimension);
+		*/
 		pane.add(paramDefListPanel);
-		pane.add(horizontalRule(7));
+		// pane.add(horizontalRule(7));
 
 		// Container pane = this.getContentPane();
 		// this.setLayout(new FlowLayout(FlowLayout.LEADING));
 
-		this.addButton = generateAddButton();
-		pane.add(addButton);
 
 
 		this.addWindowListener(new WindowAdapter() {
@@ -133,8 +127,11 @@ public class EditParamDefListWindow extends JFrame2 {
 
 		ParamDefListPanel(EditParamDefListWindow editParamDefListWindow, ArrayList<ParameterDefine> params) {
 			super();
-			
+			this.setBackground(GuiPreference.BG_COLOR);
+			this.setForeground(GuiPreference.TEXT_COLOR);
+
 			this.editParamDefListWindow = editParamDefListWindow;
+
 			
 			layoutInfo = new LayoutInfo();
 			layoutInfo.startPos.add(10);
@@ -157,17 +154,24 @@ public class EditParamDefListWindow extends JFrame2 {
 				"型",
 				"デフォルト値"
 		};
+		String[] appender = {
+				"新しいパラメーターを追加"
+		};
 		public ParamDefDisplay onMouseObj;
 
 		public void updateParamDefDisplays() {
+			this.setPreferredSize(new Dimension(WINDOW_WIDTH - 40, Y_INTERVAL  * params.size() + 40));
+			
 			paramDefDisplay = new ArrayList<ParamDefDisplay>();
-			paramDefDisplay.add(new ParamDefDisplay(title));
+			paramDefDisplay.add(new ParamDefDisplay(this, title, -1, false));
 
 			int index = 0;
 			for (ParameterDefine p : params) {
 				paramDefDisplay.add(new ParamDefDisplay(this, p, index));
 				index ++;
 			}
+
+			paramDefDisplay.add(new ParamDefDisplay(this, appender, params.size(), true));
 		}
 
 
@@ -204,9 +208,13 @@ public class EditParamDefListWindow extends JFrame2 {
 			g2.setColor(RULE_COLOR_N);
 			g2.setStroke(RULE_STROKE_N);
 			int yPos = pN.y + ADDER
-					/* 0行の場合は空白を加算 */
+					;
+					// + Y_INTERVAL;
+			/*
+					// 0行の場合は空白を加算
 					+ (p0 == pN ? Y_INTERVAL : 0);
-			
+		*/
+					
 			g2.drawLine(5, yPos, WINDOW_WIDTH - 30, yPos);
 
 			
@@ -239,6 +247,8 @@ public class EditParamDefListWindow extends JFrame2 {
 	}
 	
 	static class ParamDefDisplay {
+		boolean isHeader = false;
+		boolean isAppender = false;
 		int index;
 
 		boolean isDragging = false;
@@ -255,6 +265,7 @@ public class EditParamDefListWindow extends JFrame2 {
 		ParameterDefine para;
 		private ParamDefListPanel paramDefListPanel;
 
+		// 内容
 		public ParamDefDisplay(ParamDefListPanel paramDefListPanel, ParameterDefine para, int index) {
 			this.paramDefListPanel = paramDefListPanel;
 			this.para = para;
@@ -262,8 +273,12 @@ public class EditParamDefListWindow extends JFrame2 {
 			updateLabels();
 		}
 
-		public ParamDefDisplay(String[] initArray) {
-			this.index = -1;
+		// ヘッダー
+		public ParamDefDisplay(ParamDefListPanel paramDefListPanel, String[] initArray, int index, boolean isAppender) {
+			this.paramDefListPanel = paramDefListPanel;
+			this.index = index;
+			this.isHeader = ! isAppender;
+			this.isAppender = isAppender;
 			labels = new ArrayList<String>();
 			for (String s : initArray) {
 				labels.add(s);
@@ -283,7 +298,7 @@ public class EditParamDefListWindow extends JFrame2 {
 		}
 
 		void paint(Graphics2D g2, LayoutInfo layoutInfo) {
-			if (!this.isDragging && this.paramDefListPanel != null) {
+			if (!this.isDragging && !this.isHeader) {
 				if (this.paramDefListPanel.onMouseObj == this) {
 					g2.setColor(ON_MOUSE_BACKGROUND_COLOR);
 					g2.fillRoundRect(this.x,
@@ -304,13 +319,13 @@ public class EditParamDefListWindow extends JFrame2 {
 
 			{
 				int x = 0;
-				for (int i = 0 ; i < 4 ; i++ ) {
+				for (int i = 0 ; i < labels.size() ; i++ ) {
 					x += layoutInfo.startPos.get(i);
 					g2.drawString(labels.get(i), x, this.y);
 				}
 			}
 			
-			if (this.isDragging) {
+			if (this.isDragging && (!this.isAppender) && (!this.isHeader)) {
 				g2.setColor(ON_MOUSE_BACKGROUND_COLOR2);
 				g2.fillRoundRect(this.x
 						+ this.dragX - this.dragStartX,
@@ -322,7 +337,7 @@ public class EditParamDefListWindow extends JFrame2 {
 				
 				g2.setColor(Color.BLACK);
 				int x = 0;
-				for (int i = 0 ; i < 4 ; i++ ) {
+				for (int i = 0 ; i < labels.size() ; i++ ) {
 					x += layoutInfo.startPos.get(i);
 					g2.drawString(labels.get(i),
 							x +
@@ -422,17 +437,34 @@ public class EditParamDefListWindow extends JFrame2 {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
+			if (this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow != null) {
+				this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow.setVisible(true);
+				return;
+			}
+
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				ParamDefDisplay p = paramDefListPanel.getHandledObj(e.getY());
 				if (p == null) {
 					return;
 				}
-				this.paramDefListPanel.editParamDefListWindow.createInputWindow(p.para, false);
+				if (p.para != null) {
+					this.paramDefListPanel.editParamDefListWindow.createInputWindow(p.para, false);
+				} else {
+					ParameterDefine parameter = createNewParameter();
+					this.paramDefListPanel.editParamDefListWindow.params.add(parameter);
+					this.paramDefListPanel.editParamDefListWindow.createInputWindow(
+							parameter, true);
+				}
 			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if (this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow != null) {
+				this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow.setVisible(true);
+				return;
+			}
+			
 			if (e.getButton() == MouseEvent.BUTTON1) {
 		    	if (this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow != null) {
 					// 入力中のウィンドウがあったら、それを前面にだす。
@@ -459,6 +491,10 @@ public class EditParamDefListWindow extends JFrame2 {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			if (this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow != null) {
+				this.paramDefListPanel.editParamDefListWindow.inputParamDefWindow.setVisible(true);
+				return;
+			}
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				if (this.handledObj == null) {
 					return;
@@ -472,7 +508,14 @@ public class EditParamDefListWindow extends JFrame2 {
 					this.handledObj.isDragging2 = false;
 					this.handledObj = null;
 					paramDefListPanel.repaint();
-					this.paramDefListPanel.editParamDefListWindow.createInputWindow(para, false);
+					if (para != null) {
+						this.paramDefListPanel.editParamDefListWindow.createInputWindow(para, false);
+					} else {
+						ParameterDefine parameter = createNewParameter();
+						this.paramDefListPanel.editParamDefListWindow.params.add(parameter);
+						this.paramDefListPanel.editParamDefListWindow.createInputWindow(
+								parameter, true);
+					}
 					return;
 				}
 
@@ -487,6 +530,11 @@ public class EditParamDefListWindow extends JFrame2 {
 			}
 		}
 
+		static ParameterDefine createNewParameter() {
+			return new ParameterDefine("", "", "0", ValueType.INTEGER,
+					false, "", false, "", "");
+		}
+		
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
@@ -500,13 +548,12 @@ public class EditParamDefListWindow extends JFrame2 {
 		}
 		
 	}
-	
+
 	public void subWindowDisposeNotify() {
 		inputParamDefWindow = null;
-		addButton.setEnabled(true);
 	}
 
-	private void createInputWindow(ParameterDefine para, boolean isNew) {
+	public void createInputWindow(ParameterDefine para, boolean isNew) {
 		HashSet<String> variableNameSet = new HashSet<String>();
 		for (ParameterDefine p : params) {
 			if (p != para) {
@@ -518,28 +565,5 @@ public class EditParamDefListWindow extends JFrame2 {
 			inputParamDefWindow = new EditParamDefWindow(this, para, params, variableNameSet, isNew);
     	}
 		inputParamDefWindow.setVisible(true);
-		addButton.setEnabled(false);
-	}
-
-
-	/**
-	 * 追加ボタンを作る
-	 *
-	 * @param pane
-	 */
-	JButton generateAddButton() {
-		JButton buttonCancel = new JButton(GuiPreference.ADD_BUTTON_STRING);
-		buttonCancel.setFont(GuiPreference.ADD_BUTTON_FONT);
-		buttonCancel.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				ParameterDefine parameter = new ParameterDefine("", "", "0", ValueType.INTEGER,
-						false, "", false, "", "");
-				params.add(parameter);
-				createInputWindow(parameter, true);
-			}
-		});
-
-		return buttonCancel;
 	}
 }
