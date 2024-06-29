@@ -128,7 +128,7 @@ public class EditParamWindow extends JFrame2 {
 			@Override
 			public void run() {
 				if (thisWindow.callback != null) {
-					thisWindow.callback.run();
+					new Thread(thisWindow.callback).start();
 				}
 			}
 		};
