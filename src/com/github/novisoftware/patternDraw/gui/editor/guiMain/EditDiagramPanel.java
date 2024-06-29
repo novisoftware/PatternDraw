@@ -6,6 +6,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.dnd.DropTarget;
+import java.io.File;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -31,6 +33,8 @@ public class EditDiagramPanel extends JPanel {
 	 */
 	public EditParamDefListWindow paramDefEditWindow = null;
 
+	final public EditDiagramWindow editDiagramWindow;
+	
 	Font font1 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
 	Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
@@ -40,7 +44,8 @@ public class EditDiagramPanel extends JPanel {
 
 	final MListener listener;
 
-	EditDiagramPanel(String filename) {
+	EditDiagramPanel(EditDiagramWindow editDiagramWindow, String filename) {
+		this.editDiagramWindow = editDiagramWindow;
 		this.networkDataModel = new NetworkDataModel(this, filename);
 		if (filename != null) {
 			this.networkDataModel.load();
@@ -50,6 +55,12 @@ public class EditDiagramPanel extends JPanel {
 		this.listener = new MListener(this);
 		this.addMouseListener(listener);
 		this.addMouseMotionListener(listener);
+
+		// 注:
+		// new DropTarget(コンポーネント, リスナー);を実行すると、
+		// DropTargetの内部でaddDropTargetListenerされる。
+		// (だから、コンストラクタのみで良い)
+		new DropTarget(this, new EditDiagramDropTargetListener(this));
 	}
 
 	/**
@@ -59,6 +70,13 @@ public class EditDiagramPanel extends JPanel {
 		return this.listener.handled;
 	}
 
+	public void loadFile(File file) {
+		NetworkDataModel newModel = new NetworkDataModel(this, file.getAbsolutePath());
+		this.networkDataModel = newModel;
+		this.networkDataModel.load();
+		this.networkDataModel.analyze();
+		this.repaint();
+	}
 
 	public P020___AbstractElement getElementIcon(String name) {
 		for (P020___AbstractElement t : networkDataModel.getElements()) {

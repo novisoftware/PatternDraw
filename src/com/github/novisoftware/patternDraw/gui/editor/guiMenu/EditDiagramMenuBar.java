@@ -54,19 +54,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.fileMenu.add(open);
 		open.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ev) {
-				// TODO
-				// いまはそもそそもアンドゥバッファもないし、保存済かどうか管理していないけれど、
-				// 未保存の編集があったら聞く
-				if (editPanel.networkDataModel.getFilename() != null) {
-					int confirmResult =
-						JOptionPane.showConfirmDialog(editDiagramWindow,
-                                "現在編集中の内容は消えますがよろしいですか？",
-                                "確認",
-                                JOptionPane.YES_NO_OPTION,
-                                JOptionPane.WARNING_MESSAGE);
-					if (confirmResult != JOptionPane.YES_OPTION) {
-						return;
-					}
+				if (!editDiagramWindow.dataLostConfirm()) {
+					return;
 				}
 
 				if (saveAsFileChooser == null) {
@@ -88,12 +77,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 						return;
 					}
 
-					NetworkDataModel newModel = new NetworkDataModel(editDiagramPanel, file.getAbsolutePath());
-					editDiagramPanel.networkDataModel = newModel;
-					editDiagramPanel.networkDataModel.load();
-					editDiagramPanel.networkDataModel.analyze();
-					editDiagramPanel.repaint();
-
+					editDiagramPanel.loadFile(file);
 					overWrite.setEnabled(true);
 				}
 			}

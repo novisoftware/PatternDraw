@@ -13,6 +13,7 @@ import java.io.File;
 
 import javax.swing.JFrame;
 import javax.swing.JMenu;
+import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -47,7 +48,7 @@ public class EditDiagramWindow extends JFrame2 {
 		super();
 
 		this.setSize(1500, 700);
-		this.editPanel = new EditDiagramPanel(filename);
+		this.editPanel = new EditDiagramPanel(this, filename);
 		this.editMenuBar = new EditDiagramMenuBar(this, this.editPanel);
 
 		this.setJMenuBar(this.editMenuBar);
@@ -61,6 +62,26 @@ public class EditDiagramWindow extends JFrame2 {
 		this.add(sp);
 	}
 
+	public boolean dataLostConfirm() {
+		// いまはそもそそもアンドゥバッファもないし、保存済かどうか管理していないけれど、
+		// 未保存の編集があったら聞く
+		if (editPanel.networkDataModel.getFilename() == null) {
+			return true;
+		}
+		int confirmResult =
+				JOptionPane.showConfirmDialog(this,
+                        "現在編集中の内容は消えますがよろしいですか？",
+                        "確認",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+		if (confirmResult == JOptionPane.YES_OPTION) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 	public void updateTitle() {
 		String filename = this.editPanel.networkDataModel.getFilename();
 		String adder = "";
