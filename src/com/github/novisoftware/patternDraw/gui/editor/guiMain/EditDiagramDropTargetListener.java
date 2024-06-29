@@ -53,6 +53,7 @@ public class EditDiagramDropTargetListener implements DropTargetListener {
 						return;
 					}
 					editDiagramPanel.loadFile(file);
+					editDiagramPanel.editDiagramWindow.editMenuBar.setEnableOverWriteMenuItem(true);
 					/*
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

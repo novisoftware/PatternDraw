@@ -39,6 +39,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 	final JMenu runMenu;
 	final JMenu windowMenu;
 	final JMenu helpMenu;
+	
+	final JMenuItem overWrite;
+	
 	public EditDiagramMenuBar(final EditDiagramWindow editDiagramWindow, final EditDiagramPanel editDiagramPanel) {
 		final EditDiagramMenuBar thisObj = this;
 		this.editPanel = editDiagramPanel;
@@ -47,7 +50,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.fileMenu = new JMenu("ファイル");
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
-		JMenuItem overWrite = new JMenuItem("上書き保存");
+		this.overWrite = new JMenuItem("上書き保存");
 		JMenuItem saveAs = new JMenuItem("名前を付けて保存");
 		JMenuItem setTitle = new JMenuItem("タイトルを設定する");
 
@@ -78,7 +81,6 @@ public class EditDiagramMenuBar extends JMenuBar {
 					}
 
 					editDiagramPanel.loadFile(file);
-					overWrite.setEnabled(true);
 				}
 			}
 		});
@@ -302,5 +304,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.add(this.runMenu);
 		this.add(this.windowMenu);
 		this.add(this.helpMenu);
+	}
+
+	public void setEnableOverWriteMenuItem(boolean tf) {
+		overWrite.setEnabled(tf);;
 	}
 }

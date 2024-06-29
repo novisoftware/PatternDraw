@@ -10,7 +10,7 @@ public class JTextField2 extends JTextField {
 	public JTextField2(String s) {
 		super(s);
 
-		this.setPreferredSize(new Dimension(200,20));
+		this.setPreferredSize(new Dimension(240,24));
 		this.setFont(GuiPreference.INPUT_FONT);
 	}
 

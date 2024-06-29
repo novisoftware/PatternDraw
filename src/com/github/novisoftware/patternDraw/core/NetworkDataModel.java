@@ -178,13 +178,10 @@ public class NetworkDataModel {
 
 	/**
 	 * 実行順をきめる等を行う。
-	 *
+	 * @throws CaliculateException 
 	 *
 	 */
-	public void
-	analyze(
-//			ArrayList<Element> returnList, HashMap<Element,HashMap<String,Integer>> name2index
-			) {
+	public void analyze() {
 		// 上から下の順にソートした Element
 		TreeSet<P020___AbstractElement> positionSortedElements = new TreeSet<>(new posComparator());
 		for (P020___AbstractElement e : elements) {
@@ -844,6 +841,7 @@ public class NetworkDataModel {
 	 *
 	 * 実際に計算しても良いが、
 	 * 実際の計算だとゼロ除算等の実行時のエラーが発生しうるので、型の検査のみする。
+	 * @throws CaliculateException 
 	 *
 	 */
 	public void typeCheck() {

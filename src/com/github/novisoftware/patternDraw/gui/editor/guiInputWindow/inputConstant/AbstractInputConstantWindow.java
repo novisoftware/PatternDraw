@@ -33,7 +33,7 @@ public class AbstractInputConstantWindow extends JFrame2 {
 
 		String message = element.getKindString() + " を設定します。";
 		this.setTitle(message);
-		this.setSize(500, 250);
+		this.setSize(550, 250);
 	}
 
 	public 	AbstractInputConstantWindow(final P030____ControlElement element, final EditDiagramPanel editPanel) {
@@ -46,7 +46,7 @@ public class AbstractInputConstantWindow extends JFrame2 {
 
 		String message = element.getKindString() + " を設定します。";
 		this.setTitle(message);
-		this.setSize(500, 250);
+		this.setSize(550, 250);
 	}
 
 }

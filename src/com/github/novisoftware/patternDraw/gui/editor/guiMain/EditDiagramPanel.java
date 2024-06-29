@@ -76,6 +76,8 @@ public class EditDiagramPanel extends JPanel {
 		this.networkDataModel.load();
 		this.networkDataModel.analyze();
 		this.repaint();
+
+		this.editDiagramWindow.updateTitle();
 	}
 
 	public P020___AbstractElement getElementIcon(String name) {

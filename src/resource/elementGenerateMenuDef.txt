@@ -222,6 +222,15 @@ DESCRIPTION: 定数値です。
 KIND: 定数
 TYPE: FLOAT
 HEIGHT: 35
+DISPNAME: 定数/浮動小数点 0
+DESCRIPTION: 定数値です。
+0;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: FLOAT
+HEIGHT: 35
 DISPNAME: 定数/浮動小数点 1
 DESCRIPTION: 定数値です。
 1;定数 :as-numeric
@@ -230,9 +239,29 @@ DESCRIPTION: 定数値です。
 
 KIND: 定数
 TYPE: FLOAT
+HEIGHT: 35
+DISPNAME: 定数/浮動小数点 2
+DESCRIPTION: 定数値です。
+2;定数 :as-numeric
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: FLOAT
 WIDTH: 40
 HEIGHT: 35
-DISPNAME: 定数/浮動小数点 π
+DISPNAME: 定数/浮動小数点 e (2.718...)
+DESCRIPTION: 定数e です。
+:e
+e :as-display-string
+-->RPN
+---->DEFINE
+
+KIND: 定数
+TYPE: FLOAT
+WIDTH: 40
+HEIGHT: 35
+DISPNAME: 定数/浮動小数点 π (3.14...)
 DESCRIPTION: 定数πです。
 :pi
 π :as-display-string
@@ -243,30 +272,10 @@ KIND: 定数
 TYPE: FLOAT
 WIDTH: 40
 HEIGHT: 35
-DISPNAME: 定数/浮動小数点 2π
+DISPNAME: 定数/浮動小数点 2π (6.28...)
 DESCRIPTION: 定数2πです。
 :pi 2 :as-numeric *
 2π :as-display-string
--->RPN
----->DEFINE
-
-KIND: 定数
-TYPE: FLOAT
-WIDTH: 40
-HEIGHT: 35
-DISPNAME: 定数/浮動小数点 e (2.718..)
-DESCRIPTION: 定数e です。
-:e
-e :as-display-string
--->RPN
----->DEFINE
-
-KIND: 定数
-TYPE: FLOAT
-HEIGHT: 35
-DISPNAME: 定数/浮動小数点 1
-DESCRIPTION: 定数値です。
-1;定数 :as-numeric
 -->RPN
 ---->DEFINE
 

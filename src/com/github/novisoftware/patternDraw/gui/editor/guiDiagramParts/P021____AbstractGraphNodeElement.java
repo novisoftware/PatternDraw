@@ -147,9 +147,11 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			else {
 				// 入力が妥当でないと判定した場合
 				connector.isTypeChekResultValid = false;
-				connector.typeChekErrorMessage = "入力: " +  Value.valueTypeToDescString(src.actualValueTypeResult) +
-						"(受付可能: " + Value.valueTypeToDescString(connector.valueType) + ")";
-				Debug.println("INVALID INPUT TYPE: " +  connector.typeChekErrorMessage);
+				connector.typeChekErrorMessage = 
+						CaliculateException.MESSAGE_INVALID_CLASS
+						+ "(入力: " +  Value.valueTypeToDescString(src.actualValueTypeResult) +
+						", 受付可能: " + Value.valueTypeToDescString(connector.valueType) + ")";
+				// throw new CaliculateException(connector.typeChekErrorMessage);
 			}
 		}
 
