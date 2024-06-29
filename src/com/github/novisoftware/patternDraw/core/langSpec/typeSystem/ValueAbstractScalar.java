@@ -37,6 +37,12 @@ public abstract class ValueAbstractScalar extends Value {
 	 * @return
 	 */
 	public abstract ValueAbstractScalar mod(ValueAbstractScalar a);
+	/**
+	 * 剰余
+	 * @param a
+	 * @return
+	 */
+	public abstract ValueAbstractScalar pow(ValueAbstractScalar a);
 
 	/**
 	 * ゼロかどうかを判定する

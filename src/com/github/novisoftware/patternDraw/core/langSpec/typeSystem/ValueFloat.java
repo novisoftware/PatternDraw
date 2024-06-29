@@ -52,6 +52,11 @@ public class ValueFloat extends ValueAbstractScalar {
 	}
 
 	@Override
+	public ValueAbstractScalar pow(ValueAbstractScalar a) {
+		return new ValueFloat(Math.pow(this.internal, ((ValueFloat)a).internal));
+	}
+
+	@Override
 	public int compareInternal(ValueAbstractScalar a) {
 		return this.internal.compareTo(((ValueFloat)a).internal);
 	}

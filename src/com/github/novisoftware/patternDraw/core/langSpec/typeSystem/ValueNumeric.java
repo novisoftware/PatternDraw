@@ -65,6 +65,19 @@ public class ValueNumeric extends ValueAbstractScalar {
 		return new ValueNumeric(this.internal.remainder(a2));
 	}
 
+	/**
+	 * 注:
+	 * 
+	 * 現時点での実装としては、 double にしてから Math.pow() を呼び出して取得された値を再度 BigDecimal にして返す。
+	 */
+	@Override
+	public ValueAbstractScalar pow(ValueAbstractScalar a) {
+		BigDecimal a2 = ((ValueNumeric)a).internal;
+		
+		double dValue = Math.pow(this.internal.doubleValue(), a2.doubleValue());
+		return new ValueNumeric(new BigDecimal(dValue));
+	}
+
 	@Override
 	public int compareInternal(ValueAbstractScalar a) {
 		return this.internal.compareTo(((ValueNumeric)a).internal);

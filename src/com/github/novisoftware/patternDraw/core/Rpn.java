@@ -3,6 +3,7 @@ package com.github.novisoftware.patternDraw.core;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
@@ -320,6 +321,20 @@ public class Rpn {
 				ValueType a0 = stack.pop();
 				stack.push(TypeUtil.upCastValueType(a0, b0));
 			}
+			else if (s.equals("^")) {
+				ValueType b0 = stack.pop();
+				ValueType a0 = stack.pop();
+				stack.push(TypeUtil.upCastValueType(a0, b0));
+			}
+			else if (s.equals(":C") || s.equals(":P")) {
+				stack.pop();
+				stack.pop();
+				stack.push(ValueType.INTEGER);
+			}
+			else if (s.equals("!")) {
+				stack.pop();
+				stack.push(ValueType.INTEGER);
+			}
 			else if (s.equals(">") || s.equals(">=") || s.equals("<") || s.equals("<=") || s.equals("==") || s.equals("!=")) {
 				stack.pop();
 				stack.pop();
@@ -477,7 +492,70 @@ public class Rpn {
 					stack.push(b0);
 				}
 			}
-			else if (s.equals("-") || s.equals("/") || s.equals("%") || s.equals("+") || s.equals("*")) {
+			else if (s.equals(":P")) {
+				// 順列組合せ
+				// https://ja.wikipedia.org/wiki/%E9%A0%86%E5%88%97
+				
+				Value k0 = stack.pop();
+				Value n0 = stack.pop();
+				if (!(k0 instanceof ValueInteger)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				if (!(n0 instanceof ValueInteger)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				// n!
+				BigInteger n_f = ValueInteger.fractional(Value.getInteger(n0).intValue());
+				// (n-k)!
+				BigInteger n_k_f = ValueInteger.fractional(
+						Value.getInteger(n0).subtract(Value.getInteger(k0)).intValue() );
+				BigInteger p = n_f.divide(n_k_f);
+
+				stack.push(new ValueInteger(p));
+			}
+			else if (s.equals(":C")) {
+				// 組合せ
+				// https://ja.wikipedia.org/wiki/%E7%B5%84%E5%90%88%E3%81%9B_(%E6%95%B0%E5%AD%A6)
+
+				Value k0 = stack.pop();
+				Value n0 = stack.pop();
+				if (!(k0 instanceof ValueInteger)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				if (!(n0 instanceof ValueInteger)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				// n!
+				BigInteger n_f = ValueInteger.fractional(Value.getInteger(n0).intValue());
+				// (n-k)!
+				BigInteger n_k_f = ValueInteger.fractional(
+						Value.getInteger(n0).subtract(Value.getInteger(k0)).intValue() );
+				BigInteger k_f = ValueInteger.fractional(
+						Value.getInteger(k0).intValue() );
+				BigInteger c = n_f.divide(n_k_f).divide(k_f);
+
+				stack.push(new ValueInteger(c));
+			}
+			else if (s.equals("!")) {
+				Value a0 = stack.pop();
+				if (!(a0 instanceof ValueInteger)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				int a = Value.getInteger(a0).intValue();
+				BigInteger work = BigInteger.ONE;
+				for (int m = 2; m <= a; m++) {
+					work = work.multiply(new BigInteger("" + m));
+				}
+				stack.push(new ValueInteger(work));
+			}
+			else if (s.equals("-") || s.equals("/") || s.equals("%") || s.equals("+") || s.equals("*")
+					 || s.equals("^")
+					) {
 				try {
 					Value b0 = stack.pop();
 					Value a0 = stack.pop();
@@ -511,6 +589,9 @@ public class Rpn {
 						}
 						else if (s.equals("*")) {
 							stack.push(a.mul(b));
+						}
+						else if (s.equals("^")) {
+							stack.push(a.pow(b));
 						}
 					} catch(CaliculateException e) {
 						throw e;

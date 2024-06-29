@@ -415,6 +415,53 @@ DESCRIPTION: 数値1を数値2で割った余りです。
 ---->DEFINE
 
 KIND: 演算子
+TYPE: SCALAR
+DISPNAME: 算術演算子/べき乗
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: (数値1) の (数値2) 乗です。
+<input1:SCALAR>
+<input2:SCALAR>
+^
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: INTEGER
+DISPNAME: 組合せの算術演算子/階乗
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 数値の階乗 n! を計算します。
+<input1:INTEGER>
+!
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: INTEGER
+DISPNAME: 組合せの算術演算子/順列組合せ
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 順列組合せ P(n,k) を計算します。
+<input1:INTEGER>
+<input2:INTEGER>
+:P
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: SCALAR
+DISPNAME: 組合せの算術演算子/組合せ
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 組合せ C(n,k) を計算します。
+<input1:INTEGER>
+<input2:INTEGER>
+:C
+-->RPN
+---->DEFINE
+
+KIND: 演算子
 TYPE: BOOLEAN
 DISPNAME: 比較演算子/＞
 WIDTH: 50

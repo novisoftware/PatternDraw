@@ -3,6 +3,8 @@ package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+import com.github.novisoftware.patternDraw.core.CaliculateException;
+
 /**
  * 整数。多倍長整数( java.math.BigInteger )を内部で使用しています。
  *
@@ -76,6 +78,28 @@ public class ValueInteger extends ValueAbstractScalar {
 		return new ValueInteger(this.internal.mod(a2));
 	}
 
+	@Override
+	public ValueAbstractScalar pow(ValueAbstractScalar a) {
+		BigInteger a2 = ((ValueInteger)a).internal;
+		return new ValueInteger(this.internal.pow(a2.intValue()));
+	}
+
+	/**
+	 * 階乗を計算します。
+	 * @param n
+	 * @return nの階乗
+	 * @throws CaliculateException
+	 */
+	static public BigInteger fractional(int n) {
+		BigInteger work = BigInteger.ONE;
+		for (int m = 2; m <= n; m++) {
+			work = work.multiply(new BigInteger("" + m));
+		}
+
+		return work;
+	}
+	
+	
 	@Override
 	public int compareInternal(ValueAbstractScalar a) {
 		return this.internal.compareTo(((ValueInteger)a).internal);
