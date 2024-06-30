@@ -503,7 +503,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 									final int i = i_;
 
 									try {
-										Thread.sleep(500);
+										Thread.sleep(10);
 									} catch (InterruptedException e) {
 									}
 									if (! isContaisError.isEmpty()) {
@@ -531,7 +531,19 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 										Value value = new ValueFloat(doubleValue);
 										thisObj.getVariables().put(f_keyName, value);
 										thisObj.callback.setJoin(true);
-										thisObj.callback.run();
+										Thread t = new Thread(thisObj.callback);
+										System.out.println("個別処理(1枚)の開始中 ... " + i + "/" + N_SPLIT);
+										t.start();
+										System.out.println("個別処理(1枚)の開始(起動済)");
+										try {
+											t.join();
+										} catch (InterruptedException e) {
+											System.out.println("個別処理(1枚)の打ち切り");
+											// 中断の場合、後続するファイル出力等はしない。
+											return;
+										}
+										System.out.println("個別処理(1枚)の終了");
+										// thisObj.callback.run();
 
 										System.out.println("====================================");
 										System.out.println("" + doubleValue);
@@ -559,9 +571,25 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 									};
 									SwingUtilities.invokeLater(r);
 								}
+
+								SwingUtilities.invokeLater(new Runnable() {
+									@Override
+									public void run() {
+										JOptionPane
+										.showMessageDialog(
+												thisObj,
+												"処理が終了しました。",
+												"Info",
+												JOptionPane.PLAIN_MESSAGE);
+									}
+									
+								});
 							}
 						};
-						new Thread(r).start();
+						System.out.println("starting worker thread.");
+						Thread t = new Thread(r);
+						t.start();
+						System.out.println("worker thread started.");
 					}
 				}
 			});

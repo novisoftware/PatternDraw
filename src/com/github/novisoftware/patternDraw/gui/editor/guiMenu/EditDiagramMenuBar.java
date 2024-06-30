@@ -214,14 +214,16 @@ public class EditDiagramMenuBar extends JMenuBar {
 						public void run() {
 
 							try {
-								try {
-									SwingUtilities.invokeAndWait(new Runnable() {
-										@Override
-										public void run() {
-											stopRequest.setEnabled(true);
-										}
-									});
-								} catch (InvocationTargetException e) {
+								if (!isJoin) {
+									try {
+										SwingUtilities.invokeAndWait(new Runnable() {
+											@Override
+											public void run() {
+												stopRequest.setEnabled(true);
+											}
+										});
+									} catch (InvocationTargetException e) {
+									}
 								}
 	
 								// 計算終了時のコールバック
@@ -229,15 +231,17 @@ public class EditDiagramMenuBar extends JMenuBar {
 									@Override
 									public void run() {
 										editDiagramPanel.repaint();
-										try {
-											SwingUtilities.invokeAndWait(new Runnable() {
-												@Override
-												public void run() {
-													stopRequest.setEnabled(false);
-												}
-											});
-										} catch (InvocationTargetException e) {
-										} catch (InterruptedException e) {
+										if (!isJoin) {
+											try {
+												SwingUtilities.invokeAndWait(new Runnable() {
+													@Override
+													public void run() {
+														stopRequest.setEnabled(false);
+													}
+												});
+											} catch (InvocationTargetException e) {
+											} catch (InterruptedException e) {
+											}
 										}
 									}
 								};

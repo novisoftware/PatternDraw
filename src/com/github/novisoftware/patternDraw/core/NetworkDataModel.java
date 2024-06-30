@@ -776,8 +776,8 @@ public class NetworkDataModel {
 			}
 			currentRunning = t;
 			this.hasStopRequest = false;
-			return true;
 		}
+		return true;
 	}
 
 	public void unsetRunning() {
@@ -795,10 +795,7 @@ public class NetworkDataModel {
 	}
 	
 	public void waitRunning() {
-		Thread t = null;
-		synchronized (semaphore) {
-			t = currentRunning;
-		}
+		Thread t = currentRunning;
 		if (t != null) {
 			try {
 				t.join();
@@ -824,6 +821,7 @@ public class NetworkDataModel {
 			HashMap<String, Value> hashMap, Runnable callback, boolean isJoin) {
 		boolean isRun = false;
 		try {
+			System.out.println("runProgram ... starting");
 			if (!isJoin) {
 				// すでに実行中の場合に、実行しないモード：
 				if (setRunning(Thread.currentThread())) {
@@ -842,6 +840,8 @@ public class NetworkDataModel {
 					}
 				}
 			}
+
+			System.out.println("runProgram ... started.");
 
 			// 更新用のパラメーターが指定されていたら、パラメーターの更新を行う。
 			if (hashMap != null) {
@@ -1012,11 +1012,11 @@ public class NetworkDataModel {
 				t.paramMapObj.put(parameterName, targetObj);
 			}
 		} catch (FileNotFoundException e) {
-			System.err.println("新規にファイルを作成します。" + filename);
+			// System.err.println("新規にファイルを作成します。" + filename);
 		} catch (IOException e) {
-			System.err.println("途中でエラーが発生しました。処理を継続します。" + e.toString());
+			// System.err.println("途中でエラーが発生しました。処理を継続します。" + e.toString());
 		} catch (LangSpecException e) {
-			System.err.println("途中でエラーが発生しました。該当ノードは作成せず、処理を継続します。" + e.toString());
+			// System.err.println("途中でエラーが発生しました。該当ノードは作成せず、処理を継続します。" + e.toString());
 		}
 	}
 
