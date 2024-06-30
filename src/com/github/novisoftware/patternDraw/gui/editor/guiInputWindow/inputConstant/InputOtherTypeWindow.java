@@ -47,6 +47,11 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 		c2(element, editPanel);
 	}
 
+	private boolean hasInputArea = false;
+	public boolean hasInputArea() {
+		return hasInputArea;
+	}
+	
 	public void c2(final P020___AbstractElement element, final EditDiagramPanel editPanel) {
 		this.setTitle(element.getKindString() + " を編集");
 
@@ -90,6 +95,8 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 
 						ValueInputPanel p = new ValueInputPanel(this, index, "", comment, value, inputChecker);
 						pane.add(p);
+
+						this.hasInputArea = true;
 					}
 				}
 			}
@@ -118,6 +125,7 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 						// (this, index, comment, value, inputChecker);
 
 						pane.add(p);
+						this.hasInputArea = true;
 					}
 				}
 			}

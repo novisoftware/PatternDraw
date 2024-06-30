@@ -225,11 +225,15 @@ public class EditDiagramWindow extends JFrame2 {
 							Point p = pointerInfo.getLocation();
 
 							InputOtherTypeWindow f = new InputOtherTypeWindow(element, editPanel__);
-							f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-							f.addWindowListener(inputWindowCloseListener);
-							f.setLocation(p);
-							f.setVisible(true);
-							this.inputWindow = f;
+							if (f.hasInputArea()) {
+								f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+								f.addWindowListener(inputWindowCloseListener);
+								f.setLocation(p);
+								f.setVisible(true);
+								this.inputWindow = f;
+							} else {
+								f.dispose();
+							}
 						}
 					}
 					else if (obj instanceof P030____ControlElement) {
