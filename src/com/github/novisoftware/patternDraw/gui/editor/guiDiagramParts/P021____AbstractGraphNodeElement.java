@@ -106,7 +106,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	public void evaluate() throws CaliculateException {
 		try {
-			evaluateExactly();
+			evaluateValue();
 			this.isError = false;
 			this.errorMessage = null;
 		} catch (CaliculateException e) {
@@ -168,7 +168,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	}
 
 
-	public abstract void evaluateExactly() throws CaliculateException;
+	public abstract void evaluateValue() throws CaliculateException;
 
 	static StringRectUtil str2rect = new StringRectUtil();
 	static StringRectUtil str2rect_forComment = new StringRectUtil();

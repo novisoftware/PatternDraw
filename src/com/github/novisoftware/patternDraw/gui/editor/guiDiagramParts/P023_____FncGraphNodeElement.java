@@ -82,7 +82,7 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	@Override
-	public void evaluateExactly() throws CaliculateException {
+	public void evaluateValue() throws CaliculateException {
 		InstructionRenderer target = OutputGraphicsWindow.getRenderer();
 		ArrayList<Value> args = new ArrayList<Value>();
 

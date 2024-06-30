@@ -651,7 +651,7 @@ public class NetworkDataModel {
 		return e.workValue;
 	}
 
-	void evaluateControl(P030____ControlElement control) throws CaliculateException {
+	void evaluateControl(P030____ControlElement control) throws CaliculateException, InterruptedException {
 		Debug.println("evaluate", "------------------------ CONTROL"  + "  " + control.id);
 		if (control.getControlType().equals("REPEAT")) {
 			ControllBase c = control.init();
@@ -671,7 +671,8 @@ public class NetworkDataModel {
 				if (this.hasStopRequest) {
 					return;
 				}
-				
+				Thread.sleep(0);
+
 				c.nextState();
 			}
 		}
@@ -687,10 +688,11 @@ public class NetworkDataModel {
 					else if (e0 instanceof P030____ControlElement) {
 						Debug.println("RUN", "INVALID STRUCTURE. 妥当でない構造。");
 					}
-					
+
 					if (this.hasStopRequest) {
 						return;
 					}
+					Thread.sleep(0);
 				}
 			}
 			Debug.println("RUN", "last value is " + lastValue + (lastValue != null ? ("  " + lastValue.toDebugString()):""));
@@ -719,10 +721,10 @@ public class NetworkDataModel {
 						else if (e0 instanceof P030____ControlElement) {
 							evaluateControl((P030____ControlElement)e0);
 						}
-						
 						if (this.hasStopRequest) {
 							return;
 						}
+						Thread.sleep(0);
 					}
 				}
 			}
@@ -743,6 +745,7 @@ public class NetworkDataModel {
 						if (this.hasStopRequest) {
 							return;
 						}
+						Thread.sleep(0);
 					}
 				}
 			}
@@ -750,42 +753,69 @@ public class NetworkDataModel {
 
 	}
 
+	static Object semaphore = new Object();
+	
 	OutputTextInterface outputTextInterface;
-	private boolean isRunning = false;
-	public boolean hasStopRequest = false;
+
+	private Thread currentRunning = null;
+	private boolean hasStopRequest = false;
+	
+	public boolean hasStopRequest() {
+		return hasStopRequest;
+	}
 
 	/**
 	 * 排他制御付きの isRunning フラグのセット
 	 * 
 	 * @return フラグをセットできた場合 true
 	 */
-	synchronized public boolean setRunning() {
-		if (isRunning) {
-			return false;
+	public boolean setRunning(Thread t) {
+		synchronized (semaphore) {
+			if (currentRunning != null) {
+				return false;
+			}
+			currentRunning = t;
+			this.hasStopRequest = false;
+			return true;
 		}
-		isRunning = true;
-		return true;
 	}
-	
+
+	public void unsetRunning() {
+		synchronized (semaphore) {
+			currentRunning = null;
+		}
+	}
+	public void requestStop() {
+		this.hasStopRequest = true;
+		synchronized (semaphore) {
+			if (currentRunning != null) {
+				currentRunning.interrupt();
+			}
+		}
+	}
+
 	/**
 	 * 厳密な排他制御が必要ない場面でのプログラム実行中かどうかの状態取得
 	 * @return
 	 */
 	public boolean isRunning() {
-		return this.isRunning;
+		if (currentRunning != null) {
+			return true;
+		}
+
+		return false;
 	}
 	
-	public void runProgram() {
+	public void runProgram(Runnable callback) {
 		try {
-			if (! setRunning()) {
+			if (! setRunning(Thread.currentThread())) {
 				return;
 			}
 			outputTextInterface = OutputTextWindow.getInstance();
-			
+
 			outputTextInterface.clear();
 			OutputGraphicsWindow.reset();
 			Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
-
 
 			try {
 				//////////////////////////////////////////////////////////
@@ -806,18 +836,18 @@ public class NetworkDataModel {
 					else if(elementIcon instanceof P030____ControlElement) {
 						evaluateControl((P030____ControlElement)elementIcon);
 					}
-					if (this.hasStopRequest) {
-						break;
-					}
+					Thread.sleep(0);
 				}
 			} catch (CaliculateException e) {
+				// 特に処理不要
+			} catch (InterruptedException e) {
 				// 特に処理不要
 			}
 	
 			OutputGraphicsWindow.refresh();
 		} finally {
-			isRunning = false;
-			hasStopRequest = false;
+			this.unsetRunning();
+			callback.run();
 		}
 	}
 

@@ -142,8 +142,15 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	@Override
-	public void evaluateExactly() throws CaliculateException {
-		this.workValue = this.getRpn().doCaliculate(this, this.editPanel.networkDataModel.variables);
+	public void evaluateValue() throws CaliculateException {
+		try {
+			this.workValue = this.getRpn().doCaliculate(this, this.editPanel.networkDataModel.variables);
+		} catch (InterruptedException e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_INTERRUPTED);
+		} catch (OutOfMemoryError e) {
+			throw new CaliculateException(CaliculateException.MESSAGE_OUT_OF_MEMORY);
+		}
+
 	}
 
 	/**

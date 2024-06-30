@@ -195,7 +195,11 @@ public class EditDiagramMenuBar extends JMenuBar {
 				OutputTextWindow outputTextWindow = OutputTextWindow.getInstance();
 				OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
 
+				
+				
 				if (editDiagramPanel.networkDataModel.paramDefList.size() > 0) {
+					// パラメーター値がある場合
+					
 					Debug.println("START");
 					
 					thisObj.editParamWindow.update(editDiagramPanel.networkDataModel.paramDefList);
@@ -206,9 +210,42 @@ public class EditDiagramMenuBar extends JMenuBar {
 					Runnable callback = new Runnable() {
 						@Override
 						public void run() {
-							editDiagramPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
-							editDiagramPanel.networkDataModel.analyze();
-							editDiagramPanel.networkDataModel.runProgram();
+
+							try {
+								try {
+									SwingUtilities.invokeAndWait(new Runnable() {
+										@Override
+										public void run() {
+											stopRequest.setEnabled(true);
+										}
+									});
+								} catch (InvocationTargetException e) {
+								}
+	
+								// 計算終了時のコールバック
+								Runnable caliculationDoneCb = new Runnable() {
+									@Override
+									public void run() {
+										editDiagramPanel.repaint();
+										try {
+											SwingUtilities.invokeAndWait(new Runnable() {
+												@Override
+												public void run() {
+													stopRequest.setEnabled(false);
+												}
+											});
+										} catch (InvocationTargetException e) {
+										} catch (InterruptedException e) {
+										}
+									}
+								};
+	
+								editDiagramPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
+								editDiagramPanel.networkDataModel.analyze();
+								editDiagramPanel.networkDataModel.runProgram(caliculationDoneCb);
+							} catch (InterruptedException e) {
+								// 特に処理不要
+							}
 						}
 					};
 					editParamWindow.setCallback(callback);
@@ -222,6 +259,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 					Debug.println("END");
 				}
 				else {
+					// パラメーター値が無い場合
+					
 					outputGraphicsWindow.editParamWindow = null;
 					outputGraphicsWindow.editDiagramWindow = null;
 					Debug.println("START");
@@ -230,6 +269,24 @@ public class EditDiagramMenuBar extends JMenuBar {
 						@Override
 						public void run() {
 							try {
+								// 計算終了時のコールバック
+								Runnable caliculationDoneCb = new Runnable() {
+									@Override
+									public void run() {
+										editDiagramPanel.repaint();
+										try {
+											SwingUtilities.invokeAndWait(new Runnable() {
+												@Override
+												public void run() {
+													stopRequest.setEnabled(false);
+												}
+											});
+										} catch (InvocationTargetException e) {
+										} catch (InterruptedException e) {
+										}
+									}
+								};
+
 								try {
 									SwingUtilities.invokeAndWait(new Runnable() {
 										@Override
@@ -242,7 +299,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 								
 								Thread.sleep(200);
 								editDiagramPanel.networkDataModel.analyze();
-								editDiagramPanel.networkDataModel.runProgram();
+								editDiagramPanel.networkDataModel.runProgram(caliculationDoneCb);
 							} catch (InterruptedException e) {
 							}
 						}
@@ -259,7 +316,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 		this.runMenu.add(stopRequest);
 		stopRequest.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				editDiagramPanel.networkDataModel.hasStopRequest = true;
+				editDiagramPanel.networkDataModel.requestStop();;
 				stopRequest.setEnabled(false);
 			}
 		});

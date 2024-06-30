@@ -373,12 +373,17 @@ public class Rpn {
 	}
 
 	public Value doCaliculate(P022_____RpnGraphNodeElement ele, HashMap<String, Value> variables)
-		throws CaliculateException {
+		throws CaliculateException, InterruptedException {
 		Stack<Value> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
 		// ArrayList<String> array = Rpn.s2a(this.getRpnString());
 		for (String s : array) {
+			// Thread に interrupt が入ったら終了させる作りにする
+			if (Thread.currentThread().isInterrupted()) {
+				throw new CaliculateException(CaliculateException.MESSAGE_INTERRUPTED);
+			}
+
 			Debug.println("RPN DETAIL", "op is ***" + s + "***");
 			Debug.println("STACK DEBUG 1/2 (Value stack)", "");
 			for (Value x : stack) {
@@ -550,6 +555,12 @@ public class Rpn {
 				BigInteger work = BigInteger.ONE;
 				for (int m = 2; m <= a; m++) {
 					work = work.multiply(new BigInteger("" + m));
+
+					// 単発でも処理に時間がかかる可能性があるため、
+					// Thread に interrupt が入ったら終了させる作りにする
+					if (Thread.currentThread().isInterrupted()) {
+						throw new CaliculateException(CaliculateException.MESSAGE_INTERRUPTED);
+					}
 				}
 				stack.push(new ValueInteger(work));
 			}
