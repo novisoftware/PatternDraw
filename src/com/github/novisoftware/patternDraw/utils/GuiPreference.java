@@ -72,6 +72,7 @@ public class GuiPreference {
 	/**
 	 * GUIの文字表示に使用するフォント
 	 */
+	public static int TITLE_FONT_SIZE = 22;
 	public static int LABEL_FONT_SIZE = 18;
 	public static int TIPS_FONT_SIZE = 16;
 	public static int MESSAGE_DISP_FONT_SIZE = 14;
@@ -90,6 +91,9 @@ public class GuiPreference {
 
 	// JLabel用のフォント
 	public static Font LABEL_FONT = initLabelFont(LABEL_FONT_SIZE);
+
+	// 見出し用のフォント
+	public static Font TITLE_FONT = initLabelFont(TITLE_FONT_SIZE);
 
 	// TIPS表示用のフォント
 	public static Font TIPS_FONT = initLabelFont(TIPS_FONT_SIZE);
