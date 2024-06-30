@@ -37,16 +37,12 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		this.setKindString(a[6]);
 		String strOutputType = a[7];
 		this.valueType = Value.str2valueType.get(strOutputType);
-
-		System.out.println("rpn string = " + a[8]);
-
 		this.setRpnString(a[8]);
 
 		// 開発中データとしては Description なしが存在するため
 		if (a.length >= 10) {
 			this.setDescription(a[9]);
 		}
-
 	}
 
 	public String str() {

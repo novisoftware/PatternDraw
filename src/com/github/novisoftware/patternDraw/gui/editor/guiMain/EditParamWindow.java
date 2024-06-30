@@ -47,9 +47,11 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Flo
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar.CB2;
 import com.github.novisoftware.patternDraw.gui.misc.JComboBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
+import com.github.novisoftware.patternDraw.gui.misc.JLabel4_title;
 import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -74,7 +76,7 @@ public class EditParamWindow extends JFrame2 {
 
 	private ArrayList<ParameterDefine> paramDefList;
 	private HashMap<String, Value> variables;
-	private Runnable callback;
+	private CB2 callback;
 	private final HashMap<String,JTextField> textFields;
 
 	/**
@@ -108,6 +110,7 @@ public class EditParamWindow extends JFrame2 {
 	 * @param variables 設定したパラメーターの値
 	 */
 	public void update(
+			String title,
 			final ArrayList<ParameterDefine> paramDefList
 			) {
 		final EditParamWindow thisObj = this;
@@ -121,13 +124,16 @@ public class EditParamWindow extends JFrame2 {
 		JScrollPane sp = new JScrollPane(editParamPanel);
 
 		/**
-		 * このコンストラクタが呼ばれたときは callback はまだ設定されていないので。
+		 * このコンストラクタが呼ばれたときは callback はまだ設定されていないので、
+		 * 設定されていれば呼び出すようなオブジェクトを作成する。
+		 * これは、スライダー値等、値が変更された際に逐次呼び出される。
 		 */
 		final EditParamWindow thisWindow = this;
 		Runnable callbackWraped = new Runnable() {
 			@Override
 			public void run() {
 				if (thisWindow.callback != null) {
+					thisWindow.callback.setJoin(false);
 					new Thread(thisWindow.callback).start();
 				}
 			}
@@ -138,6 +144,13 @@ public class EditParamWindow extends JFrame2 {
 
 		// pane.setLayout(new FlowLayout(FlowLayout.LEADING));
 		pane.setLayout(new BoxLayout(pane, BoxLayout.Y_AXIS));
+
+		if (title != null) {
+			SubPanel titlePanel = new SubPanel();
+			pane.add(titlePanel);
+			titlePanel.add(new JLabel4_title(title));
+			titlePanel.add(spacer(30));
+		}
 
 		SubPanel subPanel0 = new SubPanel();
 		pane.add(subPanel0);
@@ -517,6 +530,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 
 										Value value = new ValueFloat(doubleValue);
 										thisObj.getVariables().put(f_keyName, value);
+										thisObj.callback.setJoin(true);
 										thisObj.callback.run();
 
 										System.out.println("====================================");
@@ -557,7 +571,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 		pane.add(subPanel10);
 		// subPanel9.add(boxSpacer(5, 100));
 		pane.add(Box.createGlue());
-		pane.add(boxSpacer(5, 100));
+		pane.add(boxSpacer(5, 500));
 
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -787,7 +801,7 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 	/**
   	 * @param callback パラメーター変更時に呼び出すコールバック
 	 */
-	public void setCallback(Runnable callback) {
+	public void setCallback(CB2 callback) {
 		this.callback = callback;
 	}
 

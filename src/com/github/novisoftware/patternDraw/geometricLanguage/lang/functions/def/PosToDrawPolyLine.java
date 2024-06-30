@@ -75,7 +75,6 @@ public class PosToDrawPolyLine implements FunctionDefInterface {
 
 		if (t != null) {
 			t.primitiveList.add(path);
-			System.out.println("pathList added." );
 		}
 
 		return null;

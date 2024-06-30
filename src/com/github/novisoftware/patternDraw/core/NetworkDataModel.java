@@ -793,6 +793,20 @@ public class NetworkDataModel {
 			}
 		}
 	}
+	
+	public void waitRunning() {
+		Thread t = null;
+		synchronized (semaphore) {
+			t = currentRunning;
+		}
+		if (t != null) {
+			try {
+				t.join();
+			} catch (InterruptedException e) {
+				// ここには interrupt しない
+			}
+		}
+	}
 
 	/**
 	 * 厳密な排他制御が必要ない場面でのプログラム実行中かどうかの状態取得
@@ -806,13 +820,35 @@ public class NetworkDataModel {
 		return false;
 	}
 	
-	public void runProgram(Runnable callback) {
+	public void runProgram(
+			HashMap<String, Value> hashMap, Runnable callback, boolean isJoin) {
+		boolean isRun = false;
 		try {
-			if (! setRunning(Thread.currentThread())) {
-				return;
+			if (!isJoin) {
+				// すでに実行中の場合に、実行しないモード：
+				if (setRunning(Thread.currentThread())) {
+					isRun = true;
+				} else {
+					return;
+				}
+			} else {
+				// すでに実行中の場合に、実行が終わるまで待つモード：
+				while (true) {
+					if (setRunning(Thread.currentThread())) {
+						isRun = true;
+						break;
+					} else {
+						waitRunning();
+					}
+				}
 			}
-			outputTextInterface = OutputTextWindow.getInstance();
 
+			// 更新用のパラメーターが指定されていたら、パラメーターの更新を行う。
+			if (hashMap != null) {
+				this.resetVariables(hashMap);
+			}
+
+			outputTextInterface = OutputTextWindow.getInstance();
 			outputTextInterface.clear();
 			OutputGraphicsWindow.reset();
 			Debug.println("evaluate", "control_contains: " + control_contains.keySet().size());
@@ -846,8 +882,19 @@ public class NetworkDataModel {
 	
 			OutputGraphicsWindow.refresh();
 		} finally {
-			this.unsetRunning();
-			callback.run();
+			if (isRun) {
+				try {
+					// callback の呼び出しは、
+					// 実行中に計算エラーの例外が発生したり、実行を中断したとしても行う。
+					// ただし、 callback の呼び出し中、さらに例外が発生しても
+					// unsetRunning() は実行する。
+					// (さらに次が呼び出せなくなるため)
+					callback.run();
+				} catch (Exception e) {
+					// 処理不要
+				}
+				this.unsetRunning();
+			}
 		}
 	}
 

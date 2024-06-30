@@ -89,14 +89,12 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 		for (String paraName : this.function.getParameterNames()) {
 			P021____AbstractGraphNodeElement pObj = this.paramMapObj.get(paraName);
 			if (pObj == null) {
-				System.out.println("param not satisfied.");
-				return;
+				throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 			}
 
 			args.add(this.paramMapObj.get(paraName).workValue);
 		}
 		// TODO 副作用先のオブジェクトを持たせる
-		System.out.println("呼び出し元");
 		this.workValue = this.function.exec(args, target);
 	}
 

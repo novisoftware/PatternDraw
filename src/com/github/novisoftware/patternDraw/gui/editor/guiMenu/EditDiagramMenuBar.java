@@ -202,12 +202,14 @@ public class EditDiagramMenuBar extends JMenuBar {
 					
 					Debug.println("START");
 					
-					thisObj.editParamWindow.update(editDiagramPanel.networkDataModel.paramDefList);
+					thisObj.editParamWindow.update(
+							editDiagramPanel.networkDataModel.title,
+							editDiagramPanel.networkDataModel.paramDefList);
 					outputGraphicsWindow.editParamWindow = editParamWindow;
 					outputGraphicsWindow.editDiagramWindow = editDiagramWindow;
 
 					// パラメーター値が設定されたときのコールバック
-					Runnable callback = new Runnable() {
+					CB2 callback = new CB2() {
 						@Override
 						public void run() {
 
@@ -240,9 +242,11 @@ public class EditDiagramMenuBar extends JMenuBar {
 									}
 								};
 	
-								editDiagramPanel.networkDataModel.resetVariables(editParamWindow.getVariables());
-								editDiagramPanel.networkDataModel.analyze();
-								editDiagramPanel.networkDataModel.runProgram(caliculationDoneCb);
+								// editDiagramPanel.networkDataModel.analyze();
+								editDiagramPanel.networkDataModel.runProgram(
+										editParamWindow.getVariables(),
+										caliculationDoneCb,
+										isJoin);
 							} catch (InterruptedException e) {
 								// 特に処理不要
 							}
@@ -298,8 +302,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 								}
 								
 								Thread.sleep(200);
-								editDiagramPanel.networkDataModel.analyze();
-								editDiagramPanel.networkDataModel.runProgram(caliculationDoneCb);
+								editDiagramPanel.networkDataModel.runProgram(null,
+										caliculationDoneCb,
+										false);
 							} catch (InterruptedException e) {
 							}
 						}
@@ -365,5 +370,22 @@ public class EditDiagramMenuBar extends JMenuBar {
 
 	public void setEnableOverWriteMenuItem(boolean tf) {
 		overWrite.setEnabled(tf);;
+	}
+	
+	public static abstract class CB2 implements Runnable {
+		/**
+		 * 前のプログラム実行が未終了だった場合に、終わるのを待ってから実行するか、単に実行しないか。
+		 * isJoin が true の場合は、終わるのを待ってから実行する。
+		 * isJoin が false　の場合は実行しない。
+		 */
+		boolean isJoin;
+		
+		CB2() {
+			this.isJoin = false;
+		}
+		
+		public void setJoin(boolean isJoin) {
+			this.isJoin = isJoin;
+		}
 	}
 }

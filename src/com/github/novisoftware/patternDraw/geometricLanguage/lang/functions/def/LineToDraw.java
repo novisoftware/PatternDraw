@@ -73,10 +73,8 @@ public class LineToDraw implements FunctionDefInterface {
 
 			if (t != null) {
 				t.primitiveList.add(path);
-				System.out.println("pathList added." );
 			}
 		}
-		System.out.println("pathList added (" + lineList.size() + ")" );
 
 		return null;
 	}
