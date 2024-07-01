@@ -53,6 +53,9 @@ public class FunctionUtil {
 		if (name.equals(LineToDraw.NAME)) {
 			return new LineToDraw();
 		}
+		if (name.equals(PosSortByAngle.NAME)) {
+			return new PosSortByAngle();
+		}
 		if (name.equals(PosToDrawPolyLine.NAME)) {
 			return new PosToDrawPolyLine();
 		}

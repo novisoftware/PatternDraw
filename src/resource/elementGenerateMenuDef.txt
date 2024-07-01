@@ -70,6 +70,13 @@ FUNCTION: pos_to_pos_skip
 
 
 KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりを角度でソート
+DESCRIPTION: 点の集まりを角度順に並べ替えます。
+FUNCTION: pos_sort
+---->DEFINE
+
+KIND: 処理
 TYPE: LINE_LIST
 DISPNAME: 線の集まり/並び順をローテート
 DESCRIPTION: 座標の系列の並び順をローテートします。
