@@ -3,8 +3,6 @@ package com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-
 public class ValueNumeric extends ValueAbstractScalar {
 	public ValueNumeric(String s) {
 		super(ValueType.NUMERIC);

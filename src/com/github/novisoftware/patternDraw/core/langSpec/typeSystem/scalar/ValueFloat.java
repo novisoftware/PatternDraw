@@ -1,7 +1,5 @@
 package com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar;
 
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-
 public class ValueFloat extends ValueAbstractScalar {
 	public ValueFloat(String s) {
 		super(ValueType.FLOAT);
