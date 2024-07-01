@@ -8,9 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.dnd.DropTarget;
 import java.io.File;
+import java.io.IOException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
@@ -46,12 +48,8 @@ public class EditDiagramPanel extends JPanel {
 
 	EditDiagramPanel(EditDiagramWindow editDiagramWindow, String filename) {
 		this.editDiagramWindow = editDiagramWindow;
-		this.networkDataModel = new NetworkDataModel(this, filename);
-		if (filename != null) {
-			this.networkDataModel.load();
-			this.networkDataModel.analyze();
-		}
-
+		this.networkDataModel = new NetworkDataModel(this, null);
+		this.networkDataModel.analyze();
 		this.listener = new MListener(this);
 		this.addMouseListener(listener);
 		this.addMouseMotionListener(listener);
@@ -61,6 +59,10 @@ public class EditDiagramPanel extends JPanel {
 		// DropTargetの内部でaddDropTargetListenerされる。
 		// (だから、コンストラクタのみで良い)
 		new DropTarget(this, new EditDiagramDropTargetListener(this));
+
+		if (filename != null) {
+			this.loadFile(new File(filename));
+		}
 	}
 
 	/**
@@ -70,14 +72,41 @@ public class EditDiagramPanel extends JPanel {
 		return this.listener.handled;
 	}
 
+	/**
+	 * 読み込み失敗時のエラーダイアログ
+	 * 
+	 * @param e
+	 */
+	public void showFileReadErrorDialog(Exception e) {
+		e.printStackTrace();
+		
+		String subMessage = e.getMessage();
+		if (e instanceof IOException) {
+			subMessage = "入出力エラー。 " + subMessage;
+		}
+		String message = String.format("ファイルの読み込みに失敗しました。\n%s",
+				subMessage);
+		JOptionPane
+				.showMessageDialog(
+						editDiagramWindow,
+						message,
+						"Error",
+						JOptionPane.ERROR_MESSAGE);
+	}
+	
 	public void loadFile(File file) {
-		NetworkDataModel newModel = new NetworkDataModel(this, file.getAbsolutePath());
-		this.networkDataModel = newModel;
-		this.networkDataModel.load();
-		this.networkDataModel.analyze();
-		this.repaint();
-
-		this.editDiagramWindow.updateTitle();
+		NetworkDataModel oldModel = this.networkDataModel;
+		
+		try {
+			NetworkDataModel newModel = new NetworkDataModel(this, file.getAbsolutePath());
+			this.networkDataModel = newModel;
+			this.networkDataModel.load();
+			this.networkDataModel.analyze();
+			this.repaint();
+		} catch(Exception e) {
+			this.networkDataModel = oldModel;
+			showFileReadErrorDialog(e);
+		}
 	}
 
 	public P020___AbstractElement getElementIcon(String name) {

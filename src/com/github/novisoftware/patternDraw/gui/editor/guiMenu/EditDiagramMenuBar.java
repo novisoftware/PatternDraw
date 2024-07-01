@@ -81,6 +81,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 					}
 
 					editDiagramPanel.loadFile(file);
+					editDiagramWindow.updateTitle();
 				}
 			}
 		});

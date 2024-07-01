@@ -934,7 +934,36 @@ public class NetworkDataModel {
 		}
 	}
 
-	public void load() {
+	String FORMAT_STR = "PD_FORMAT_REV: ";
+	String FORMAT_REV = "1.1";
+
+	private void checkFileRevision(String firstLine) throws LangSpecException {
+		boolean formatSettingCheckError = false;
+		
+		if (firstLine == null) {
+			formatSettingCheckError = true;
+		}
+		else if (! firstLine.startsWith(FORMAT_STR)) {
+			formatSettingCheckError = true;
+		} else {
+			String revStr = firstLine.substring(firstLine.length());
+			double verInFile = 0;
+			double nowVer = Double.parseDouble(FORMAT_REV);
+			try {
+				verInFile = Double.parseDouble(revStr);
+				if (verInFile < nowVer) {
+					throw new LangSpecException("ファイル側のフォーマット版数の方が新しいです。");
+				}
+			} catch (Exception e) {
+				formatSettingCheckError = true;
+			}
+		}
+		if (formatSettingCheckError) {
+			throw new LangSpecException("ファイルフォーマットのエラー。");
+		}
+	}
+	
+	public void load() throws LangSpecException, IOException {
 		// ファイルから読み込む
 		BufferedReader reader;
 		try {
@@ -944,50 +973,62 @@ public class NetworkDataModel {
 			ArrayList<String> refInfo = new ArrayList<>();
 			HashMap<String, P030____ControlElement> controllerMap = new HashMap<String, P030____ControlElement>();
 
-			while( true ) {
-				String line = reader.readLine();
-				if( line==null ) {
-					break;
-				}
-				if (line.length() == 0 || line.startsWith("#")) {
-					continue;
-				}
-				if (line.startsWith("TITLE:")) {
-					this.title = line.substring("TITLE:".length());
-				} else if (line.startsWith("PARAMETER:")) {
-					this.paramDefList.add(ParameterDefine.getParameterDefineToEdit(line));
-				} else if (line.startsWith("RPN_ELEMENT:")) {
-					this.getElements().add(new P022_____RpnGraphNodeElement(this.editPanel, line));
-				} else if (line.startsWith("FNC_ELEMENT:")) {
-					this.getElements().add(new P023_____FncGraphNodeElement(this.editPanel, line));
-				} else if (line.startsWith("CONTROL:")) {
-					P030____ControlElement c = new P030____ControlElement(this.editPanel, line);
-					this.getElements().add(c);
-
-					controllerMap.put(c.id, c);
-				} else if (line.startsWith("REF:")) {
-					refInfo.add(line);
-				} else if (line.startsWith("CONTROL_GROUP:")) {
-					HashSet<P030____ControlElement> controllerGroup = new HashSet<P030____ControlElement>();
-					for (String id : line.substring("CONTROL_GROUP:".length()).split(" ")) {
-						if (id.equals("")) {
-							continue;
+			try {
+				boolean isFirstLine = true;
+				while( true ) {
+					String line = reader.readLine();
+					if (isFirstLine) {
+						isFirstLine = false;
+						try {
+							this.checkFileRevision(line);
+						} catch(Exception e) {
+							// しばらくはリビジョンチェックを捨てる。
 						}
-						// String t_ = t.replaceAll(" ", "");
-						P030____ControlElement c = controllerMap.get(id);
-						Debug.println("LOAD", "Control_Group   id='" + id + "'  obj=" + c);
-						controllerGroup.add(c);
 					}
-					for (P030____ControlElement c : controllerGroup) {
-						Debug.println("LOAD", "c = " + (c));
-
-						c.controllerGroup = controllerGroup;
+					if( line==null ) {
+						break;
 					}
-				} else {
-					System.err.println("UNKNOWN LINE: " + line);
+					if (line.length() == 0 || line.startsWith("#")) {
+						continue;
+					}
+					if (line.startsWith("TITLE:")) {
+						this.title = line.substring("TITLE:".length());
+					} else if (line.startsWith("PARAMETER:")) {
+						this.paramDefList.add(ParameterDefine.getParameterDefineToEdit(line));
+					} else if (line.startsWith("RPN_ELEMENT:")) {
+						this.getElements().add(new P022_____RpnGraphNodeElement(this.editPanel, line));
+					} else if (line.startsWith("FNC_ELEMENT:")) {
+						this.getElements().add(new P023_____FncGraphNodeElement(this.editPanel, line));
+					} else if (line.startsWith("CONTROL:")) {
+						P030____ControlElement c = new P030____ControlElement(this.editPanel, line);
+						this.getElements().add(c);
+	
+						controllerMap.put(c.id, c);
+					} else if (line.startsWith("REF:")) {
+						refInfo.add(line);
+					} else if (line.startsWith("CONTROL_GROUP:")) {
+						HashSet<P030____ControlElement> controllerGroup = new HashSet<P030____ControlElement>();
+						for (String id : line.substring("CONTROL_GROUP:".length()).split(" ")) {
+							if (id.equals("")) {
+								continue;
+							}
+							// String t_ = t.replaceAll(" ", "");
+							P030____ControlElement c = controllerMap.get(id);
+							Debug.println("LOAD", "Control_Group   id='" + id + "'  obj=" + c);
+							controllerGroup.add(c);
+						}
+						for (P030____ControlElement c : controllerGroup) {
+							Debug.println("LOAD", "c = " + (c));
+	
+							c.controllerGroup = controllerGroup;
+						}
+					} else {
+						System.err.println("UNKNOWN LINE: " + line);
+					}
 				}
+			} finally {
+				reader.close();
 			}
-			reader.close();
 
 			System.out.println("make s2t. getElements size = " + getElements().size());
 			HashMap<String, P021____AbstractGraphNodeElement> s2t = new HashMap<>();
@@ -1013,17 +1054,21 @@ public class NetworkDataModel {
 			}
 		} catch (FileNotFoundException e) {
 			// System.err.println("新規にファイルを作成します。" + filename);
-		} catch (IOException e) {
+		}
+		/*
+		catch (IOException e) {
 			// System.err.println("途中でエラーが発生しました。処理を継続します。" + e.toString());
 		} catch (LangSpecException e) {
 			// System.err.println("途中でエラーが発生しました。該当ノードは作成せず、処理を継続します。" + e.toString());
 		}
+		*/
 	}
 
 	public void save() throws IOException {
 		// ファイルに書き込む
 		BufferedWriter writer;
 		writer = new BufferedWriter(new FileWriter( new File(filename) ));
+		writer.write(FORMAT_STR + FORMAT_REV + "\n");
 		writer.write("");
 		writer.write("TITLE:" + this.title + "\n");
 		writer.write("\n");
