@@ -100,6 +100,13 @@ FUNCTION: line_from_1_series_close_ow
 ---->DEFINE
 
 KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 線の集まり/2系列の線から交点を抽出する
+DESCRIPTION: 2系列の線から、交わる点を抽出します。
+FUNCTION: lines_to_cross_points
+---->DEFINE
+
+KIND: 処理
 TYPE: LINE_LIST
 DISPNAME: 線の集まり/2系列の点を線で結ぶ
 DESCRIPTION: 2系列の点を線で結びます。

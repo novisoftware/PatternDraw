@@ -17,6 +17,9 @@ public class FunctionUtil {
 		if (name.equals(ClosePosList.NAME)) {
 			return new ClosePosList();
 		}
+		if (name.equals(LinesToCrossPoints.NAME)) {
+			return new LinesToCrossPoints();
+		}
 		if (name.equals(LineToDraw.NAME)) {
 			return new LineToDraw();
 		}
