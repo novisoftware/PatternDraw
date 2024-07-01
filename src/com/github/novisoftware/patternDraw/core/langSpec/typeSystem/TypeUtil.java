@@ -1,6 +1,10 @@
 package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueAbstractScalar;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueFloat;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueInteger;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
 
 public class TypeUtil {
 	public static class TwoValues {

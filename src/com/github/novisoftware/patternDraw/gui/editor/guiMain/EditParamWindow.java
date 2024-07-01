@@ -36,8 +36,8 @@ import javax.swing.event.DocumentListener;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueFloat;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueFloat;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.EnumParameter;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Int2Double;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;

@@ -1,9 +1,10 @@
-package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 
 /**
  * 整数。多倍長整数( java.math.BigInteger )を内部で使用しています。

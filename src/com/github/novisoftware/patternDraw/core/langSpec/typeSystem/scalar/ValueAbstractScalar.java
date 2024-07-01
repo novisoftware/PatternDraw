@@ -1,4 +1,7 @@
-package com.github.novisoftware.patternDraw.core.langSpec.typeSystem;
+package com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar;
+
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 
 public abstract class ValueAbstractScalar extends Value {
 	protected ValueAbstractScalar(ValueType valueKind) {
