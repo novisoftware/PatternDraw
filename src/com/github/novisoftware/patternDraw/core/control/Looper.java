@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.parts.controlSub;
+package com.github.novisoftware.patternDraw.core.control;
 
 public class Looper implements ControllBase {
 	// 単純なループ(添え字なし固定回数ループ)
@@ -19,7 +19,11 @@ public class Looper implements ControllBase {
 	 *
 	 */
 	public boolean hasNext() {
-		if (loopCounter < this.loopTo) {
+		// 注:
+		// C や Java では 「 ループインデックス < 最大 」でループ処理が行われることが多い。
+		// ループカウンタの最大値を INT_MAX にできないため。
+		// 特に気にする必要がないため、「 ループインデックス ≦ 最大値 」の条件でループする。
+		if (loopCounter <= this.loopTo) {
 			return true;
 		}
 

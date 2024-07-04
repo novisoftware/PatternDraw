@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.parts.controlSub;
+package com.github.novisoftware.patternDraw.core.control;
 
 public interface ControllBase {
 	public boolean hasNext();

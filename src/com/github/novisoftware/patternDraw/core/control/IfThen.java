@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.gui.editor.parts.controlSub;
+package com.github.novisoftware.patternDraw.core.control;
 
 public class IfThen implements ControllBase {
 	int phase = 0; /* 0, 1 */

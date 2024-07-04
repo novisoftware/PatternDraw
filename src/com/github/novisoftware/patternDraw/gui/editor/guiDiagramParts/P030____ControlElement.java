@@ -13,12 +13,12 @@ import java.util.Stack;
 
 import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.core.RpnUtil;
+import com.github.novisoftware.patternDraw.core.control.ControllBase;
+import com.github.novisoftware.patternDraw.core.control.Looper;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
-import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.ControllBase;
-import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
