@@ -745,14 +745,16 @@ DESCRIPTION: 繰り返します。
 KIND: 制御
 TYPE: NONE
 CONTROL_TYPE: REPEAT
-DISPNAME: 制御/繰り返し(添字あり固定回数ループ)
+DISPNAME: 制御/繰り返し(添字ありループ)
 WIDTH: 600
 HEIGHT: 300
 DESCRIPTION: 繰り返します。
-1;開始 10;終了 :loop
+<from:NUMERIC>
+<to:NUMERIC>
+<step:NUMERIC>
+:loop
 -->RPN
 ---->DEFINE
-
 
 KIND: 制御
 TYPE: NONE
@@ -775,3 +777,5 @@ DESCRIPTION: 繰り返します。
 1;開始 100;終了 :loop
 -->RPN
 ---->DEFINE
+
+

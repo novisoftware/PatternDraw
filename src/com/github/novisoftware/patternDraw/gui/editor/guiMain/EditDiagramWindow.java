@@ -402,7 +402,7 @@ public class EditDiagramWindow extends JFrame2 {
 				if (t != null && t != from && t instanceof P010___ConnectTerminal) {
 					P010___ConnectTerminal conn = (P010___ConnectTerminal)t;
 					if (conn.getNode() != from) {
-						P021____AbstractGraphNodeElement to = conn.getNode();
+						P020___AbstractElement to = conn.getNode();
 
 						to.paramMapInfo.put(conn.getParaName(), from.id);
 						to.paramMapObj.put(conn.getParaName(), from);

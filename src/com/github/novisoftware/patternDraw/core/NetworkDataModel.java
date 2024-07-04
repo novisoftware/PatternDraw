@@ -1031,12 +1031,10 @@ public class NetworkDataModel {
 			}
 
 			System.out.println("make s2t. getElements size = " + getElements().size());
-			HashMap<String, P021____AbstractGraphNodeElement> s2t = new HashMap<>();
+			HashMap<String, P020___AbstractElement> s2t = new HashMap<>();
 			for( P020___AbstractElement t : getElements()) {
-				if (t instanceof P021____AbstractGraphNodeElement) {
-					s2t.put(t.id, (P021____AbstractGraphNodeElement)t);
-					System.out.println("  name = " + t.id);
-				}
+				s2t.put(t.id, t);
+				//System.out.println("  name = " + t.id);
 			}
 			System.out.println();
 			for(String line : refInfo) {
@@ -1044,13 +1042,20 @@ public class NetworkDataModel {
 				String name = a[1];
 				String parameterName = a[2];
 				String targetName = a[3];
-				P021____AbstractGraphNodeElement t = s2t.get(name);
-				P021____AbstractGraphNodeElement targetObj = s2t.get(targetName);
-				System.out.println("LINE = " + line);
-				System.out.println("  name = " + name);
-				System.out.println("  paramMapInfo = " + t.paramMapInfo);
-				t.paramMapInfo.put(parameterName, targetName);
-				t.paramMapObj.put(parameterName, targetObj);
+				// 参照しているオブジェクト
+				P020___AbstractElement referFrom = s2t.get(name);
+				// 参照されているオブジェクト
+				P020___AbstractElement referTo = s2t.get(targetName);
+				// System.out.println("LINE = " + line);
+				// System.out.println("  name = " + name);
+				// System.out.println("  paramMapInfo = " + t.paramMapInfo);
+				referFrom.paramMapInfo.put(parameterName, targetName);
+				if (referTo instanceof P021____AbstractGraphNodeElement) {
+					referFrom.paramMapObj.put(parameterName, (P021____AbstractGraphNodeElement)referTo);
+				}
+				else {
+					throw new LangSpecException(LangSpecException.WRONG_EXPORT_FILE);
+				}
 			}
 		} catch (FileNotFoundException e) {
 			// System.err.println("新規にファイルを作成します。" + filename);

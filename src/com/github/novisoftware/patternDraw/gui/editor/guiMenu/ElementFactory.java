@@ -202,7 +202,7 @@ public class ElementFactory {
 					controlBlock.setKindString(this.kindName);
 					controlBlock.controlType = this.controlType;
 					controlBlock.setRpnString(P020___AbstractElement.unescape(this.rpn));
-					// element.buildParameterList(element.getRpnString());
+					P022_____RpnGraphNodeElement.buildParameterList2(controlBlock, controlBlock.getRpnString());
 
 					eleList.add(controlBlock);
 				}
@@ -221,7 +221,7 @@ public class ElementFactory {
 				element.setDescription(this.description);
 				// 演算式
 				element.setRpnString(P020___AbstractElement.unescape(this.rpn));
-				element.buildParameterList(element.getRpnString());
+				P022_____RpnGraphNodeElement.buildParameterList2(element, element.getRpnString());
 
 				eleList.add(element);
 			}

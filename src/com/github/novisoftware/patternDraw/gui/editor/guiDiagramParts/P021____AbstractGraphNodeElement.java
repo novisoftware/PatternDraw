@@ -42,21 +42,6 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	public String errorMessage;
 
 	/**
-	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
-	 */
-	public HashMap<String, String> paramMapInfo;
-
-	/**
-	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
-	 */
-	public HashMap<String, P021____AbstractGraphNodeElement> paramMapObj;
-
-	/**
-	 * コネクタ(端子)のオブジェクト
-	 */
-	public ArrayList<P010___ConnectTerminal> connectors;
-
-	/**
 	 * @return 説明のテキスト
 	 */
 	abstract public String getDescription();
@@ -72,26 +57,6 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	public P021____AbstractGraphNodeElement(EditDiagramPanel editPanel) {
 		super(editPanel);
-
-
-	}
-
-	public ArrayList<String> optStr() {
-		ArrayList<String> ret = new ArrayList<>();
-
-		for (String s: paramMapInfo.keySet()) {
-			ret.add(String.format("REF: %s %s %s", escape(id), escape(s), escape(paramMapInfo.get(s))));
-		}
-		return ret;
-	}
-
-	/**
-	 * 構造化されているか（外部パラメタを持つか）。
-	 *
-	 * @return
-	 */
-	public boolean hasParameter() {
-		return connectors.size() != 0;
 	}
 
 	/**
@@ -117,56 +82,18 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		}
 	}
 
-	/**
-	 * 入力によって結果が変わる場合がある。
-	 * この変数は入力に応じた型を記録する。
-	 *
-	 */
-	public ValueType actualValueTypeResult;
-
-	public void typeCheck() {
-		P021____AbstractGraphNodeElement e = this;
-
-		/*
-		 * この演算子への入力の妥当性の検査
-		 */
-		for (P010___ConnectTerminal connector : this.connectors) {
-			P021____AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
-			if (src == null || ValueType.UNDEF.equals(src.actualValueTypeResult)) {
-				// 入力がない場合や、入力もとで既にエラーになっている場合は、
-				// エラー表示しても仕方がないので(自明のため)、エラー検出扱いしない。
-				// （端子に対するエラーとはしない）
-				connector.isTypeChekResultValid = true;
-				connector.typeChekErrorMessage = null;
-			}
-			else if (Value.isAcceptable(src.actualValueTypeResult, connector.valueType) ) {
-				// 入力が妥当だと判定した場合
-				connector.isTypeChekResultValid = true;
-				connector.typeChekErrorMessage = null;
-			}
-			else {
-				// 入力が妥当でないと判定した場合
-				connector.isTypeChekResultValid = false;
-				connector.typeChekErrorMessage = 
-						CaliculateException.MESSAGE_INVALID_CLASS
-						+ "(入力: " +  Value.valueTypeToDescString(src.actualValueTypeResult) +
-						", 受付可能: " + Value.valueTypeToDescString(connector.valueType) + ")";
-				// throw new CaliculateException(connector.typeChekErrorMessage);
-			}
-		}
-
-		/*
-		 * この演算子の型
-		 */
-		if (this instanceof P022_____RpnGraphNodeElement) {
-			actualValueTypeResult = ((P022_____RpnGraphNodeElement)this).evaluateValueType();
-		} else if (this instanceof P023_____FncGraphNodeElement) {
-			// TODO
-			// 現時点では FNC node element には、入力に応じて返り値が変化する機能なし
-			actualValueTypeResult = this.getValueType();
-		}
+	public int getXc() {
+		return x;
 	}
-
+	public int getYc() {
+		return y;
+	}
+	public int getWc() {
+		return w;
+	}
+	public int getHc() {
+		return h;
+	}
 
 	public abstract void evaluateValue() throws CaliculateException;
 
@@ -203,43 +130,9 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		// 「演算子」の場合は、引数名を表示しない。
 		boolean isDisplayConnectName = (e.getKindId() != KindId.OPERATOR);
 
-
 		// 結線
 		if (phase == 0) {
-			// 「端子」と結線されるよう表現する
-			g2.setStroke(GuiPreference.STROKE_BOLD);
-			for (P010___ConnectTerminal connector : this.connectors) {
-				P021____AbstractGraphNodeElement src = e.paramMapObj.get(connector.getParaName());
-				if (src != null) {
-					if (connector.isTypeChekResultValid) {
-						g2.setColor(Color.GRAY);
-					}
-					else {
-						// エラー時
-						g2.setColor(Color.RED);
-					}
-
-					// 線分描画
-					// 直線
-					// g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
-
-					// double x0 = src.getCenterX() ;
-					double x0 = src.getConnectOutputX();
-					double y0 = src.getCenterY();
-					double x2 = connector.getCenterX();
-					double y2 = connector.getCenterY();
-
-					RenderingUtil.drawConnectorStroke(g2, x0, y0, x2, y2);
-
-					if (! connector.isTypeChekResultValid) {
-						double x1 = (x0 + x2) / 2;
-						double y1 = (y0 + y2) / 2;
-						g2.setFont(GuiPreference.ICON_BOX_FONT);
-						g2.drawString(connector.typeChekErrorMessage, (int)x1, (int)y1);
-					}
-
-				}
-			}
+			this.paintConnectedLine(g2);
 
 			// 単連結グラフごとに、実行順を数字で表示する
 			if (this.groupHead != null) {

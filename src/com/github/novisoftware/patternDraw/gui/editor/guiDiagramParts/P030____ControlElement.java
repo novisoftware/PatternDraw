@@ -22,6 +22,7 @@ import com.github.novisoftware.patternDraw.gui.editor.parts.controlSub.Looper;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class P030____ControlElement extends P020___AbstractElement {
@@ -49,12 +50,32 @@ public class P030____ControlElement extends P020___AbstractElement {
 		this.controlType = a[7];
 		this.setRpnString(a[8]);
 //		buildParameterList(this.getRpnString());
+		
+		/*
+		connectors = new ArrayList<P010___ConnectTerminal>();
+		connectors.add(new P010___ConnectTerminal(this, "test", Value.ValueType.NUMERIC, "",  0, 2));
+		*/
 	}
 
+	// コネクタ表示用
+	public int getXc() {
+		return x - 20;
+	}
+	public int getYc() {
+		return y + 60;
+	}
+	public int getWc() {
+		return w;
+	}
+	public int getHc() {
+		return 50;
+	}
+
+
+	
 	public String getControlType() {
 		return this.controlType;
 	}
-
 
 	public String str() {
 		return String.format("CONTROL: %d %d %d %d %s %s %s %s",
@@ -68,14 +89,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 				escape(getRpnString()));
 	}
 
-	public ArrayList<String> optStr() {
-		ArrayList<String> ret = new ArrayList<>();
-
-		return ret;
-	}
-
 	// Looper looper;
-
 
 	/**
 	 * 要素のRPN式。RPNは逆ポーランド記法。
@@ -84,6 +98,8 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 	public void setRpnString (String rpnString) {
 		this.rpn = new Rpn(rpnString, this.editPanel.networkDataModel);
+
+		P022_____RpnGraphNodeElement.buildParameterList2(this, this.getRpnString());
 	}
 
 	public Rpn getRpn() {
@@ -181,7 +197,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 
 //	final Color colorBorder = new Color( 0.5f, 0.5f, 0.5f );
-	private final Color colorBorder = new Color( 0.3f, 0.3f, 0.3f );
+	private final Color colorBorder = new Color( 0.5f, 0.5f, 0.5f );
 	private final Color colorLine = new Color( 0.9f, 0.9f, 1.0f );
 	private int MARK_WIDTH = 20;
 
@@ -197,7 +213,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 		// 結線
 		if (phase == 0) {
-			// 処理不要
+			paintConnectedLine(g2);
 		}
 
 		// 箱
@@ -231,10 +247,10 @@ public class P030____ControlElement extends P020___AbstractElement {
 					g2.fillRect(t.x, t.y, MARK_WIDTH, t.h);
 				}
 
-				g2.setStroke(new BasicStroke(1));
+				g2.setStroke(new BasicStroke(3));
 
 				g2.setColor(colorBorder);
-				g2.drawRect(t.x, t.y, t.w, t.h);
+				g2.drawRoundRect(t.x, t.y, t.w, t.h, 15, 15);
 
 				if (t.controlType.equals("REPEAT")) {
 					BufferedImage image = GuiUtil.getImage(IconImage.LOOP, this);
@@ -252,13 +268,11 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 		}
 
-		/*
-		// 端子
-		g2.setStroke(strokePlain);
-		for (GraphConnector connector : connectors) {
-			connector.paint(g2, phase);
+		// コネクタ用の端子
+		g2.setStroke(GuiPreference.STROKE_PLAIN);
+		for (P010___ConnectTerminal connector : connectors) {
+			connector.paint(g2, phase, true);
 		}
-		*/
 	}
 
 	enum DragMode {
@@ -273,6 +287,13 @@ public class P030____ControlElement extends P020___AbstractElement {
 	 */
 	@Override
 	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {
+		for (P010___ConnectTerminal connector : connectors) {
+			if (connector.isTouched(x, y)) {
+				editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+				return connector;
+			}
+		}
+
 		if ( this.x < x && x < this.x + this.MARK_WIDTH
 				&& this.y < y && y < this.y + this.w) {
 			this.dragMode = DragMode.MOVE;

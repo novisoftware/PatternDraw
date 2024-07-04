@@ -29,7 +29,7 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	private String paraName;
 	private String paraDescription;
 	public Value.ValueType valueType;
-	private P021____AbstractGraphNodeElement node;
+	private P020___AbstractElement node;
 	private int index;
 	private int nIndex;
 
@@ -45,12 +45,12 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	public String typeChekErrorMessage = null;
 
 	public P010___ConnectTerminal(
-			P021____AbstractGraphNodeElement abstractGraphNodeElement,
+			P020___AbstractElement abstractElement,
 			String paraName,
 			ValueType valueType,
 			String paraDescription,
 			int index, int indexNum) {
-		this.node = abstractGraphNodeElement;
+		this.node = abstractElement;
 		this.valueType = valueType;
 		this.paraName = paraName;
 		this.paraDescription = paraDescription;
@@ -58,7 +58,7 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 		this.nIndex = indexNum;
 	}
 
-	public P021____AbstractGraphNodeElement getNode() {
+	public P020___AbstractElement getNode() {
 		return this.node;
 	}
 
@@ -73,12 +73,12 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	 */
 	@Override
 	public int getCenterX() {
-		return node.x + RENDER_WIDTH / 2;
+		return node.getXc() + RENDER_WIDTH / 2;
 	}
 
 
 	public int getTopY() {
-		return node.y + (node.h - Y_INTERVAL * nIndex) / 2 + index * Y_INTERVAL +
+		return node.getYc() + (node.getHc() - Y_INTERVAL * nIndex) / 2 + index * Y_INTERVAL +
 				/* 注: Y_INTERVAL / 5 は、微調整で追加 */ + Y_INTERVAL / 5;
 	}
 
@@ -93,7 +93,7 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	}
 
 	public boolean isTouched(int x, int y) {
-		if ( node.x <= x && x <= node.x + RENDER_WIDTH
+		if ( node.getXc() <= x && x <= node.getXc() + RENDER_WIDTH
 			&& this.getTopY() <= y && y <= this.getTopY() + RENDER_HEIGHT) {
 			return true;
 		}
@@ -105,10 +105,10 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 		if (phase == 1) {
 			g2.setFont(GuiPreference.CONNECTOR_TEXT_FONT);
 			g2.setColor(GuiPreference.CONNECTOR_FILL_COLOR);
-			g2.fillOval(node.x, this.getTopY(), RENDER_WIDTH, RENDER_HEIGHT);
+			g2.fillOval(node.getXc(), this.getTopY(), RENDER_WIDTH, RENDER_HEIGHT);
 			if (isDisplayConnectName) {
 				g2.setColor(Color.BLACK);
-				g2.drawString(paraName, node.x + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
+				g2.drawString(paraName, node.getXc() + RENDER_WIDTH   - strUtil.strWidth(paraName, g2),
 						this.getTopY() - 2);
 			}
 		}
@@ -116,7 +116,7 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 			if (this.isOnMouse()) {
 
 				String srcValueType = "";
-				P021____AbstractGraphNodeElement src = node.paramMapObj.get(this.getParaName());
+				P020___AbstractElement src = node.paramMapObj.get(this.getParaName());
 				if (src != null &&
 						src.actualValueTypeResult != null &&
 						!(ValueType.UNDEF.equals(src.actualValueTypeResult))) {
@@ -125,8 +125,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 					srcValueType = Value.valueTypeToDescString(valueType);
 				}
 
-				int drawX = node.x;
-				int drawY = node.y + node.h;
+				int drawX = node.getXc();
+				int drawY = node.getYc() + node.getHc();
 
 				String aceptableType = "受け付ける型: " + Value.valueTypeToDescString(this.valueType);
 				String actualType  = "入力された型: " + srcValueType;

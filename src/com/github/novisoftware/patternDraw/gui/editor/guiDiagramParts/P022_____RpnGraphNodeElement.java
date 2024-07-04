@@ -62,12 +62,12 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 
 	public void setRpnString(String rpnString) {
 		this.rpn = new Rpn(rpnString, this.editPanel.networkDataModel);
-		buildParameterList(this.getRpnString());
+		P022_____RpnGraphNodeElement.buildParameterList2(this, this.getRpnString());
 	}
 
 	public void setRpn(Rpn r) {
 		this.rpn = r;
-		buildParameterList(this.getRpnString());
+		P022_____RpnGraphNodeElement.buildParameterList2(this, this.getRpnString());
 	}
 
 	public Rpn getRpn() {
@@ -105,9 +105,9 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		return this.valueType;
 	}
 
-	public void buildParameterList(String s0) {
+	static public void buildParameterList2(P020___AbstractElement element, String s0) {
 		ArrayList<String> a = Rpn.s2a(s0);
-		connectors = new ArrayList<>();
+		element.connectors = new ArrayList<>();
 
 		ArrayList<String> workParameters = new ArrayList<String>();
 		for (String s : a) {
@@ -128,13 +128,13 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 					valueType = Value.str2valueType.get(paraType);
 				}
 
-				connectors.add(new P010___ConnectTerminal(this, paraName, valueType, "", index, n));
+				element.connectors.add(new P010___ConnectTerminal(element, paraName, valueType, "", index, n));
 				index ++;
 			}
 		}
 
-		this.paramMapInfo = new HashMap<String,String>();
-		this.paramMapObj = new HashMap<String,P021____AbstractGraphNodeElement>();
+		element.paramMapInfo = new HashMap<String,String>();
+		element.paramMapObj = new HashMap<String, P021____AbstractGraphNodeElement>();
 	}
 
 	@Override
