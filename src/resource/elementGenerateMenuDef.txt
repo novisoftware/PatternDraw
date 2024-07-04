@@ -324,9 +324,9 @@ true;定数 :as-boolean
 KIND: 変数を参照
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: 変数/既存の変数を参照/{exist-variable}
+DISPNAME: 変数/既存の変数を参照/{exist-variable-ref}
 DESCRIPTION: 変数を参照します。
-'{exist-variable} :recall-variable
+'{exist-variable-ref} :recall-variable
 -->RPN
 ---->DEFINE
 
@@ -737,22 +737,37 @@ DISPNAME: 制御/繰り返し(添字なし固定回数ループ)
 WIDTH: 600
 HEIGHT: 300
 DESCRIPTION: 繰り返します。
-1 10;繰り返す回数 :loop
+1
+10;繰り返す回数 :loop
 -->RPN
 ---->DEFINE
-
 
 KIND: 制御
 TYPE: NONE
 CONTROL_TYPE: REPEAT
-DISPNAME: 制御/繰り返し(添字ありループ)
+DISPNAME: 制御/繰り返し(添字あり固定回数ループ)
 WIDTH: 600
 HEIGHT: 300
 DESCRIPTION: 繰り返します。
-<from:NUMERIC>
-<to:NUMERIC>
-<step:NUMERIC>
-:loop
+1;n,開始
+10;n,終了
+1;n,刻み幅
+index;v,代入先の変数名
+:index_loop
+-->RPN
+---->DEFINE
+
+KIND: 制御
+TYPE: NONE
+CONTROL_TYPE: REPEAT
+DISPNAME: 制御/繰り返し(添字あり可変回数ループ)_まだ動作なし
+WIDTH: 600
+HEIGHT: 300
+DESCRIPTION: 繰り返します。
+<from:NUMERIC>;開始
+<to:NUMERIC>;終了
+<step:NUMERIC>;刻み幅
+:step_index_loop
 -->RPN
 ---->DEFINE
 

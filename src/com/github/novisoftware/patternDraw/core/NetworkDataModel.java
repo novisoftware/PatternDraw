@@ -72,9 +72,14 @@ public class NetworkDataModel {
 	public final ArrayList<ParameterDefine> paramDefList;
 
 	/**
-	 *  変数名の一覧(設定された変数のみを対象にする)
+	 *  参照可能な - 変数名の一覧(設定された変数のみを対象にする)
 	 */
-	public ArrayList<String> variableNameList;
+	public ArrayList<String> refVariableNameList;
+
+	/**
+	 *  上書き可能な - 変数名の一覧(設定された変数のみを対象にする)
+	 */
+	public ArrayList<String> overWriteVariableNameList;
 
 	/**
 	 *  実行順情報: 制御用エレメントの配下のエレメント
@@ -119,6 +124,11 @@ public class NetworkDataModel {
 		}
 	}
 
+	/**
+	 * プログラムの実行時に、既存の値をクリアしてパラメーターを変数初期値として設定する。
+	 * 
+	 * @param initVariables
+	 */
 	public void resetVariables(HashMap<String, Value> initVariables) {
 		this.variables.clear();
 		this.variables.putAll(initVariables);
@@ -192,22 +202,34 @@ public class NetworkDataModel {
 
 
 		// 変数名の一覧(設定された変数のみを対象にする)
-		variableNameList = new ArrayList<>();
-
+		// 参照可能な
+		refVariableNameList = new ArrayList<>();
+		// 上書き可能な
+		overWriteVariableNameList = new ArrayList<>();
+		
 		// 変数名の一覧を作成する
 		for (P020___AbstractElement elementIcon : positionSortedElements) {
 			if (elementIcon instanceof P022_____RpnGraphNodeElement) {
 				if (((P022_____RpnGraphNodeElement)elementIcon).getKindId().equals(KindId.VARIABLE_SET)) {
 				// if (((RpnGraphNodeElement)elementIcon).getKindString().equals("変数を設定")) {
 					String rep = ((P022_____RpnGraphNodeElement)elementIcon).getRepresentExpression();
-					if (! variableNameList.contains(rep)) {
-						variableNameList.add(rep);
+					if (! refVariableNameList.contains(rep)) {
+						refVariableNameList.add(rep);
 					}
+					if (! overWriteVariableNameList.contains(rep)) {
+						overWriteVariableNameList.add(rep);
+					}
+				}
+			}
+			if (elementIcon instanceof P030____ControlElement) {
+				String rep = ((P030____ControlElement)elementIcon).getVariableName();
+				if (! refVariableNameList.contains(rep)) {
+					refVariableNameList.add(rep);
 				}
 			}
 		}
 
-		for (String varName: variableNameList) {
+		for (String varName: refVariableNameList) {
 			Debug.println("Evaluate", "var name: " + varName);
 		}
 

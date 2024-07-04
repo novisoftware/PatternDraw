@@ -120,11 +120,11 @@ public class InputConstantScalarWindow extends AbstractInputConstantWindow {
 					} else if (element.getKindId() == KindId.VARIABLE_SET) {
 						Debug.println("2   element.getKindId() = " + element.getKindId());
 						value = value.replaceAll("'", "");
-						inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.variableNameList);
+						inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.refVariableNameList);
 					}
 					messageDisp.setText(inputChecker.message);
 
-					ValueInputPanel p = new ValueInputPanel(this, index, "", comment, value, inputChecker);
+					ValueInputPanel p = new ValueInputPanel(this, index, "", comment, comment, value, inputChecker);
 
 					// チェック処理を切り替える
 					if (valueTypeChangeRadioButtons != null) {

@@ -17,6 +17,9 @@ import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____Co
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.AbstractInputChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -76,8 +79,13 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 			rpnArray = e.getRpn().getArray();
 		}
 
-		if (element.getKindId() == KindId.CONSTANT || element.getKindId() == KindId.CONTROL
-				|| element.getKindId() == KindId.VARIABLE_SET) { // element.getKindString().equals("定数"))
+		if (   // CONSTANT, VARIABLE_SET の場合は来ない。
+				// element.getKindId() == KindId.CONSTANT || 
+				// || element.getKindId() == KindId.VARIABLE_SET
+				element.getKindId() == KindId.CONTROL
+				
+				
+				) { // element.getKindString().equals("定数"))
 																	// {
 			for (int index = 0; index < rpnArray.size(); index++) {
 				String s0 = rpnArray.get(index);
@@ -90,10 +98,30 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 					Debug.println("element.getKindId() = " + element.getKindId());
 
 					if (comment.length() > 0) {
-						IntegerChecker inputChecker = new IntegerChecker();
+						// 入力に対して行う検査の種類
+						String checkType = comment.substring(0, 1);
+						// 表示部
+						String comment2 = comment.replaceAll(".*,", "");
+
+						System.out.println("s0 = " + s0);
+						System.out.println("checkType = " + checkType + "   .... " + comment);
+						
+						AbstractInputChecker inputChecker;
+						if (checkType.equals("n")) {
+							inputChecker = new NumericChecker();
+						}
+						else if (checkType.equals("v")) {
+							inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.refVariableNameList);
+						}
+						else if (checkType.equals("i")) {
+							inputChecker = new IntegerChecker();
+						}
+						else {
+							inputChecker = new IntegerChecker();
+						}
 						messageDisp.setText(inputChecker.message);
 
-						ValueInputPanel p = new ValueInputPanel(this, index, "", comment, value, inputChecker);
+						ValueInputPanel p = new ValueInputPanel(this, index, "", comment, comment2, value, inputChecker);
 						pane.add(p);
 
 						this.hasInputArea = true;
@@ -120,7 +148,7 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 						// {
 
 						ValueSelectPanel p = new ValueSelectPanel(this, comment, value,
-								editPanel.networkDataModel.variableNameList);
+								editPanel.networkDataModel.refVariableNameList);
 
 						// (this, index, comment, value, inputChecker);
 

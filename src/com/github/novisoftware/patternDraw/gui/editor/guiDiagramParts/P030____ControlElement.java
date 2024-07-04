@@ -6,6 +6,7 @@ import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +18,7 @@ import com.github.novisoftware.patternDraw.core.control.ControllBase;
 import com.github.novisoftware.patternDraw.core.control.Looper;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -71,8 +72,16 @@ public class P030____ControlElement extends P020___AbstractElement {
 		return 50;
 	}
 
-
 	
+	/**
+	 * 添字ループの場合の変数名
+	 */
+	String variableName = null;
+
+	public String getVariableName() {
+		return this.variableName;
+	}
+
 	public String getControlType() {
 		return this.controlType;
 	}
@@ -100,6 +109,8 @@ public class P030____ControlElement extends P020___AbstractElement {
 		this.rpn = new Rpn(rpnString, this.editPanel.networkDataModel);
 
 		P022_____RpnGraphNodeElement.buildParameterList2(this, this.getRpnString());
+
+		this.variableName = P030____ControlElement.analyzeGetVariableName(this.rpn);
 	}
 
 	public Rpn getRpn() {
@@ -114,6 +125,36 @@ public class P030____ControlElement extends P020___AbstractElement {
 		return this.rpn.getDisplayString();
 	}
 
+	/**
+	 * コントロール用のRPN解析: 添え字とかの「代入先変数名」を取得する。
+	 * 
+	 * @param rpn
+	 * @return
+	 */
+	static public String analyzeGetVariableName(Rpn rpn) {
+		Stack<Value> stack = new Stack<>();
+
+		for (String s : rpn.getArray()) {
+			String r = RpnUtil.getRepresent(s);
+
+			if (r.equals(":loop")) {
+				return null;
+			}
+			else if (r.equals(":index_loop")) {
+				String varName = ((ValueString)(stack.pop())).toString();
+				return varName;
+			}
+			else if (r.startsWith("<")) {
+				// 何もしない
+			}
+			else {
+				stack.push(new ValueString(r));
+			}
+		}
+
+		return null;
+	}
+
 	/***
 	 * 実行時の初期化
 	 */
@@ -126,9 +167,27 @@ public class P030____ControlElement extends P020___AbstractElement {
 			String r = RpnUtil.getRepresent(s);
 
 			if (r.equals(":loop")) {
-				int to = ((ValueNumeric)(stack.pop())).getInternal().intValue();
-				int from = ((ValueNumeric)(stack.pop())).getInternal().intValue();
-				ret = new Looper(from, to);
+				String s_to = ((ValueString)(stack.pop())).toString();
+				String s_from = ((ValueString)(stack.pop())).toString();
+				BigDecimal to = new BigDecimal(s_to);
+				BigDecimal from = new BigDecimal(s_from);
+				BigDecimal step = BigDecimal.ONE;
+				ret = new Looper(from, to, step);
+				break;
+			}
+			else if (r.equals(":index_loop")) {
+				String varName = ((ValueString)(stack.pop())).toString();
+				String s_step = ((ValueString)(stack.pop())).toString();
+				String s_to = ((ValueString)(stack.pop())).toString();
+				String s_from = ((ValueString)(stack.pop())).toString();
+
+				BigDecimal step = new BigDecimal(s_step);
+				BigDecimal to = new BigDecimal(s_to);
+				BigDecimal from = new BigDecimal(s_from);
+
+				ret = new Looper(this.editPanel.networkDataModel.variables,
+						varName,
+						from, to, step);
 				break;
 			}
 			else if (r.startsWith("<")) {
@@ -137,7 +196,8 @@ public class P030____ControlElement extends P020___AbstractElement {
 				stack.push(v);
 			}
 			else {
-				stack.push(new ValueNumeric(r));
+				System.out.println("r = " + r);
+				stack.push(new ValueString(r));
 			}
 		}
 
@@ -162,17 +222,19 @@ public class P030____ControlElement extends P020___AbstractElement {
 			String c = RpnUtil.getComment(s);
 
 			if (r.equals(":loop")) {
-				String to = stack.pop();
-				String from = stack.pop();
-				String c_to = commentStack.pop();
-				String c_from = commentStack.pop();
+				String s_to = stack.pop().toString();
+				String s_from = stack.pop().toString();
 
-				if (c_from.length() == 0) {
-					return "  " + to;
-				}
-				else {
-					return "  " + from + " → " + to + " loop";
-				}
+
+				return "  × " + s_to;
+			}
+			else if (r.equals(":index_loop")) {
+				String varName = stack.pop().toString();
+				String s_step = stack.pop().toString();
+				String s_to = stack.pop().toString();
+				String s_from = stack.pop().toString();
+
+				return "  " + varName + ": " + s_from + " → " + s_to + "  (刻み幅: " + s_step +" )";
 			}
 			else if (r.startsWith("<")) {
 				// Value v = this.editPanel.networkDataModel.variables.get();

@@ -33,7 +33,10 @@ class ValueInputPanel extends JPanel {
 			AbstractInputConstantWindow frame,
 			int param_index,
 			String fixedHeader,
+			// comment ... RPN の再構成に使用する
 			String comment,
+			// commentToShow ... 表示にだけ使用する
+			String commentToShow,
 			String ini,
 			AbstractInputChecker checker) {
 		Debug.println("Comment: " + comment);
@@ -50,7 +53,7 @@ class ValueInputPanel extends JPanel {
 		this.textField.setFont(Preference.CONSOLE_FONT);
 		*/
 		this.setLayout(new GridLayout(1, 2));
-		this.add(new JLabel2(comment));
+		this.add(new JLabel2(commentToShow));
 		this.add(this.textField);
 		this.frame.messageDisp.setText(checker.message);
 		this.setBackground(GuiPreference.BG_COLOR);

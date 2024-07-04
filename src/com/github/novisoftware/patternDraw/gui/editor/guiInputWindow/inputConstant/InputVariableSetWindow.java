@@ -58,8 +58,9 @@ public class InputVariableSetWindow extends AbstractInputConstantWindow {
 							index,
 							"'",
 							comment,
+							comment,
 							value,
-							new VariableNameChecker(value, editPanel.networkDataModel.variableNameList));
+							new VariableNameChecker(value, editPanel.networkDataModel.refVariableNameList));
 
 					pane.add(p);
 				}

@@ -20,6 +20,9 @@ public class ElementFactory {
 	static final String CONST_REG__META_EXIST_VARIABLE = "\\{exist-variable\\}";
 	static final String CONST_STR__META_EXIST_VARIABLE = reg2str(CONST_REG__META_EXIST_VARIABLE);
 
+	static final String CONST_REG__META_EXIST_VARIABLE_REF = "\\{exist-variable-ref\\}";
+	static final String CONST_STR__META_EXIST_VARIABLE_REF = reg2str(CONST_REG__META_EXIST_VARIABLE_REF);
+
 	static final String CONST_REG__META_NEW_VARIABLE = "\\{new-variable\\}";
 	static final String CONST_STR__META_NEW_VARIABLE = reg2str(CONST_REG__META_NEW_VARIABLE);
 
@@ -101,11 +104,32 @@ public class ElementFactory {
 		// 定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する。
 		ArrayList<ElementFactory> expandedParts = new ArrayList<>();
 		for (final ElementFactory nParts : partsList) {
-			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
+			if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE_REF) != -1) {
+				// 既存の変数を参照
+				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE_REF);
+
+				ArrayList<String> variableNames = new ArrayList<String>();
+				variableNames.addAll(editPanel.networkDataModel.refVariableNameList);
+
+				for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
+					variableNames.add(param.name);
+				}
+
+				for (String varName : variableNames) {
+					ElementFactory add = nParts.getCopy();
+
+					add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE_REF, varName);
+					add.rpn = add.rpn.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE_REF,  varName);
+//					Debug.println("expand rpn: " + add.rpn);
+					expandedParts.add(add);
+				}
+			}
+			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_EXIST_VARIABLE) != -1) {
+				// 既存の変数を上書き
 				Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
 
 				ArrayList<String> variableNames = new ArrayList<String>();
-				variableNames.addAll(editPanel.networkDataModel.variableNameList);
+				variableNames.addAll(editPanel.networkDataModel.overWriteVariableNameList);
 
 				for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
 					variableNames.add(param.name);
@@ -121,9 +145,10 @@ public class ElementFactory {
 				}
 			}
 			else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
+				// 新しい変数に設定
 				Debug.println("match " + ElementFactory.CONST_STR__META_NEW_VARIABLE);
 
-				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.variableNameList, "");
+				String newVariableName = GuiUtil.generateUniqName(editPanel.networkDataModel.refVariableNameList, "");
 				ElementFactory add = nParts.getCopy();
 
 				add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_NEW_VARIABLE , newVariableName);
