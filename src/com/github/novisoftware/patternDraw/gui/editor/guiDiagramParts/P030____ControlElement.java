@@ -16,6 +16,7 @@ import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.core.control.ControllBase;
 import com.github.novisoftware.patternDraw.core.control.Looper;
+import com.github.novisoftware.patternDraw.core.control.Looper2D;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueString;
@@ -72,14 +73,16 @@ public class P030____ControlElement extends P020___AbstractElement {
 		return 50;
 	}
 
-	
+	HashSet<String> variableNames = new HashSet<String>();
+
 	/**
 	 * 添字ループの場合の変数名
+	 * 「変数を参照する」メニュー要素を作成するために必要。
+	 *
+	 * @return
 	 */
-	String variableName = null;
-
-	public String getVariableName() {
-		return this.variableName;
+	public HashSet<String> getVariableNames() {
+		return this.variableNames;
 	}
 
 	public String getControlType() {
@@ -110,7 +113,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 		P022_____RpnGraphNodeElement.buildParameterList2(this, this.getRpnString());
 
-		this.variableName = P030____ControlElement.analyzeGetVariableName(this.rpn);
+		this.variableNames = P030____ControlElement.analyzeGetVariableNames(this.rpn);
 	}
 
 	public Rpn getRpn() {
@@ -126,23 +129,38 @@ public class P030____ControlElement extends P020___AbstractElement {
 	}
 
 	/**
-	 * コントロール用のRPN解析: 添え字とかの「代入先変数名」を取得する。
+	 * コントロール用のRPN解析:
+	 * 
+	 * たとえばループの場合、添え字をループ内で利用する。
+	 * このループ添え字の「代入先変数名」のリストを取得する。
 	 * 
 	 * @param rpn
 	 * @return
 	 */
-	static public String analyzeGetVariableName(Rpn rpn) {
+	static public HashSet<String> analyzeGetVariableNames(Rpn rpn) {
 		Stack<Value> stack = new Stack<>();
 
 		for (String s : rpn.getArray()) {
 			String r = RpnUtil.getRepresent(s);
 
 			if (r.equals(":loop")) {
-				return null;
+				return new HashSet<String>();
 			}
 			else if (r.equals(":index_loop")) {
+				HashSet<String> set = new HashSet<String>();
 				String varName = ((ValueString)(stack.pop())).toString();
-				return varName;
+				set.add(varName);
+				return set;
+			}
+			else if (r.equals(":index_2d_loop")) {
+				HashSet<String> set = new HashSet<String>();
+				String varName1 = ((ValueString)(stack.pop())).toString();
+				set.add(varName1);
+				String varName2 = ((ValueString)(stack.pop())).toString();
+				set.add(varName2);
+				String varName3 = ((ValueString)(stack.pop())).toString();
+				set.add(varName3);
+				return set;
 			}
 			else if (r.startsWith("<")) {
 				// 何もしない
@@ -190,7 +208,29 @@ public class P030____ControlElement extends P020___AbstractElement {
 						from, to, step);
 				break;
 			}
-			else if (r.startsWith("<")) {
+			else if (r.equals(":index_2d_loop")) {
+				/*
+				 * 移動変換を作成すればよい。
+				 * 
+				 */
+				String varName_Yn = ((ValueString)(stack.pop())).toString();
+				String varName_Xn = ((ValueString)(stack.pop())).toString();
+				String varName_pos = ((ValueString)(stack.pop())).toString();
+				String s_y_N = ((ValueString)(stack.pop())).toString();
+				String s_x_N = ((ValueString)(stack.pop())).toString();
+
+				int x_N = Integer.parseInt(s_x_N);
+				int y_N = Integer.parseInt(s_y_N);
+				
+				ret = new Looper2D(this.editPanel.networkDataModel.variables,
+						varName_pos,
+						varName_Xn,
+						varName_Yn,
+						x_N,
+						y_N);
+				
+				break;
+			}			else if (r.startsWith("<")) {
 				r.replaceAll("[<>]", "");
 				Value v = this.editPanel.networkDataModel.variables.get(r);
 				stack.push(v);
@@ -225,7 +265,6 @@ public class P030____ControlElement extends P020___AbstractElement {
 				String s_to = stack.pop().toString();
 				String s_from = stack.pop().toString();
 
-
 				return "  × " + s_to;
 			}
 			else if (r.equals(":index_loop")) {
@@ -235,6 +274,20 @@ public class P030____ControlElement extends P020___AbstractElement {
 				String s_from = stack.pop().toString();
 
 				return "  " + varName + ": " + s_from + " → " + s_to + "  (刻み幅: " + s_step +" )";
+			}
+			else if (r.equals(":index_2d_loop")) {
+				String varName_Yn =    stack.pop().toString();
+				String varName_Xn =    stack.pop().toString();
+				String varName_pos =   stack.pop().toString();
+				String s_y_N =         stack.pop().toString();
+				String s_x_N =         stack.pop().toString();
+
+				return "  " + String.format("変換 %s = %s, %s (%s, %s)",
+						varName_pos,
+						varName_Xn,
+						varName_Yn,
+						s_x_N,
+						s_y_N);
 			}
 			else if (r.startsWith("<")) {
 				// Value v = this.editPanel.networkDataModel.variables.get();

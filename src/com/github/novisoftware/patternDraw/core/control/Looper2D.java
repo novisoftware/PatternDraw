@@ -57,10 +57,11 @@ public class Looper2D implements ControllBase {
 		this.variables.put(varName_Xn, new ValueNumeric("" + xLoopCounter));
 		this.variables.put(varName_Yn, new ValueNumeric("" + yLoopCounter));
 
-		ValueTransform.createMove(
-				(double)this.xLoopCounter,
-				(double)this.yLoopCounter);
-		
+		this.variables.put(varName_pos,
+				ValueTransform.createMove(
+						(double) this.xLoopCounter,
+						(double) this.yLoopCounter));
+
 		return true;
 	}
 
@@ -71,6 +72,7 @@ public class Looper2D implements ControllBase {
 	public void nextState() {
 		this.xLoopCounter ++;
 		if (this.xLoopCounter >= this.xN) {
+			this.xLoopCounter = 0;
 			this.yLoopCounter ++;
 		}
 	}

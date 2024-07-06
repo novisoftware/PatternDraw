@@ -6,8 +6,10 @@ import java.util.HashMap;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
 
+/**
+ * 単純なループ(パラーメーターなし固定回数ループ)
+ */
 public class Looper implements ControllBase {
-	// 単純なループ(添え字なし固定回数ループ)
 	public BigDecimal loopCounter;
 	BigDecimal loopFrom;
 	BigDecimal loopTo;
@@ -43,23 +45,23 @@ public class Looper implements ControllBase {
 
 	/**
 	 * 今回ループ実行があるか?
-	 *
 	 */
 	public boolean hasNext() {
 		// 注:
 		// C や Java では 「 ループインデックス < 最大 」でループ処理が行われることが多い。
 		// ループカウンタの最大値を INT_MAX にできないため。
 		// 特に気にする必要がないため、「 ループインデックス ≦ 最大値 」の条件でループする。
-		if (loopCounter.compareTo(this.loopTo) <= 0) {
-			if (this.variables != null) {
-				// インデックスループの場合は、変数名を設定する
-				this.variables.put(varName, new ValueNumeric(loopCounter));
-			}
-			
-			return true;
+		if (loopCounter.compareTo(this.loopTo) > 0) {
+			// ループ終了している場合。
+			// (loopCounter > loopTo の場合)
+			return false;
 		}
 
-		return false;
+		if (this.variables != null) {
+			// インデックスループの場合は、変数名を設定する
+			this.variables.put(varName, new ValueNumeric(loopCounter));
+		}
+		return true;
 	}
 
 	/**

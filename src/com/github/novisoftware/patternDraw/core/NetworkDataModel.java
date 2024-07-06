@@ -222,9 +222,12 @@ public class NetworkDataModel {
 				}
 			}
 			if (elementIcon instanceof P030____ControlElement) {
-				String rep = ((P030____ControlElement)elementIcon).getVariableName();
-				if (! refVariableNameList.contains(rep)) {
-					refVariableNameList.add(rep);
+				HashSet<String> reps = ((P030____ControlElement)elementIcon).getVariableNames();
+				
+				for (String rep : reps) {
+					if (! refVariableNameList.contains(rep)) {
+						refVariableNameList.add(rep);
+					}
 				}
 			}
 		}
