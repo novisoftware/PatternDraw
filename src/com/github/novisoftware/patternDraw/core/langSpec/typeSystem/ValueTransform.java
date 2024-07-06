@@ -119,8 +119,10 @@ public class ValueTransform extends Value {
 	static public ValueTransform createMove(double x, double y) {
 		ValueTransform transform = new ValueTransform();
 		double[][] m = transform.getInternal();
-		m[0][2] = x;
-		m[1][2] = y;
+		m[0][0] = 1;
+		m[1][1] = 1;
+		m[2][0] = x;
+		m[2][1] = y;
 		m[2][2] = 1;
 
 		return transform;
