@@ -186,8 +186,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 		});
 
 		this.runMenu = new JMenu("実行");
-		final JMenuItem run = new JMenuItem("実行");
-		final JMenuItem stopRequest = new JMenuItem("実行を止める");
+		final JMenuItem run = new JMenuItem("実行する");
+		final JMenuItem stopRequest = new JMenuItem("実行を打ち切る");
 
 		this.runMenu.add(run);
 		run.addActionListener(new ActionListener() {
