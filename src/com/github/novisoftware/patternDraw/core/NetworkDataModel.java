@@ -1006,6 +1006,7 @@ public class NetworkDataModel {
 						} catch(Exception e) {
 							// しばらくはリビジョンチェックを捨てる。
 						}
+						continue;
 					}
 					if( line==null ) {
 						break;
