@@ -640,6 +640,56 @@ DESCRIPTION: 論理演算子XNORです。
 ---->DEFINE
 
 KIND: 演算子
+TYPE: STRING
+DISPNAME: 文字列の演算子/文字列を連結/2入力
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力を連結した文字列を作成します。
+<input1:ANY>
+<input2:ANY> :join
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: STRING
+DISPNAME: 文字列の演算子/文字列を連結/3入力
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力を連結した文字列を作成します。
+<input1:ANY>
+<input2:ANY> :join
+<input3:ANY> :join
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: STRING
+DISPNAME: 文字列の演算子/文字列を連結/4入力
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力を連結した文字列を作成します。
+<input1:ANY>
+<input2:ANY> :join
+<input3:ANY> :join
+<input4:ANY> :join
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: STRING
+DISPNAME: 文字列の演算子/文字列を連結/5入力
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: 入力を連結した文字列を作成します。
+<input1:ANY>
+<input2:ANY> :join
+<input3:ANY> :join
+<input4:ANY> :join
+<input5:ANY> :join
+-->RPN
+---->DEFINE
+
+KIND: 演算子
 TYPE: SCALAR
 DISPNAME: 条件演算子/数値のIF式
 WIDTH: 50

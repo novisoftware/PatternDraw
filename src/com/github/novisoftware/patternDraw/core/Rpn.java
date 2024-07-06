@@ -350,6 +350,14 @@ public class Rpn {
 				stack.pop();
 				stack.push(ValueType.BOOLEAN);
 			}
+			else if (s.equals(":join")) {
+				/*
+				stack.pop();
+				stack.pop();
+				stack.push(ValueType.STRING);
+				*/
+				return ValueType.STRING;
+			}
 			else if (s.startsWith("'")) {
 				stringStack.push( RpnUtil.getRepresent(s.substring(1)) );
 			}
@@ -416,6 +424,12 @@ public class Rpn {
 			if (s.equals(":print")) {
 				OutputTextInterface outputTextInterface = OutputTextWindow.getInstance();
 				outputTextInterface.println(stack.pop().toString());
+			}
+			else if (s.equals(":join")) {
+				String s2 = stack.pop().toString();
+				String s1 = stack.pop().toString();
+
+				stack.push(new ValueString(s1 + s2));
 			}
 			else if (s.equals(":input:integer")) {
 				// インタラクティブな入力（試作レベル）
