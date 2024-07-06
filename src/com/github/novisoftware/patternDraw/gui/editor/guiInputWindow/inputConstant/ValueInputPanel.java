@@ -20,15 +20,6 @@ class ValueInputPanel extends JPanel {
 	AbstractInputChecker checker;
 	final String  fixedHeader;
 
-	/*
-	public ValueInputPanel(InputOtherTypeWindow inputOtherTypeWindow,
-			int index,
-			String comment, String value,
-			InputChecker inputChecker) {
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
-	*/
-
 	public ValueInputPanel(
 			AbstractInputConstantWindow frame,
 			int param_index,
@@ -65,7 +56,8 @@ class ValueInputPanel extends JPanel {
 				// 再度 RPN オブジェクトを作成する
 				String text = textField.getText();
 				frame.rpnArray.set(param_index, fixedHeader + text + (comment.length() > 0 ? ";" + comment : ""));
-				System.out.println("Set element from textField:" + text);
+				
+				// Debug.println("Set element from textField:" + text);
 
 				thisObj.updateMessage();
 			}

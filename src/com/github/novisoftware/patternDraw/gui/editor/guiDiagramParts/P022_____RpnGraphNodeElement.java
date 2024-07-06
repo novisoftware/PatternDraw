@@ -133,8 +133,33 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 			}
 		}
 
+		/*
+		if (element.paramMapInfo == null) {
+			element.paramMapInfo = new HashMap<String,String>();
+			element.paramMapObj = new HashMap<String, P021____AbstractGraphNodeElement>();
+		}
+		*/
+
+		// RPNを書き換えた場合も呼び出される。
+		// RPNの解析によって得られるパラメーターの一覧が、前と同じであることは仮定せずに、
+		// 内容の引き継ぎを行う。
+		HashMap<String, String> old_paramMapInfo = element.paramMapInfo;
+		HashMap<String, P021____AbstractGraphNodeElement> old_paramMapObj = element.paramMapObj;
+
 		element.paramMapInfo = new HashMap<String,String>();
 		element.paramMapObj = new HashMap<String, P021____AbstractGraphNodeElement>();
+
+		if (old_paramMapInfo != null && old_paramMapObj != null) {
+			for (P010___ConnectTerminal c : element.connectors) {
+				String k = c.getParaName();
+				if (old_paramMapInfo.containsKey(k)) {
+					element.paramMapInfo.put(k, old_paramMapInfo.get(k));
+				}
+				if (old_paramMapObj.containsKey(k)) {
+					element.paramMapObj.put(k, old_paramMapObj.get(k));
+				}
+			}
+		}
 	}
 
 	@Override

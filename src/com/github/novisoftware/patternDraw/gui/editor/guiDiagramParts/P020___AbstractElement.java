@@ -15,12 +15,53 @@ import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public abstract class P020___AbstractElement extends P002__AbstractIcon {
-	public abstract String str();
-	public abstract P020___AbstractElement getCopy();
-	public abstract boolean isComment();
-	public abstract void paintWithPhase(Graphics2D g, int phase);
+	/** 親オブジェクトへの参照 */
 	protected final EditDiagramPanel editPanel;
-	
+
+	/** 表示・識別に使用する名前 */
+	public String id;
+
+	/**
+	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)。
+	 * 
+	 * キー: コネクタ名。
+	 * 値: 参照先オブジェクトの ID 文字列
+	 */
+	public HashMap<String, String> paramMapInfo;
+
+	/**
+	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
+	 * 
+	 * キー: コネクタ名。
+	 * 値: 参照先オブジェクト。
+	 */
+	public HashMap<String, P021____AbstractGraphNodeElement> paramMapObj;
+
+	/**
+	 * コネクタ(端子)のオブジェクト
+	 */
+	public ArrayList<P010___ConnectTerminal> connectors;
+
+	/**
+	 * 入力によって結果が変わる場合がある。
+	 * この変数は入力に応じた型を記録する。
+	 *
+	 */
+	public ValueType actualValueTypeResult;
+
+	/** 画面上のX位置 */
+	public int x;
+	/** 画面上のY位置 */
+	public int y;
+	/** 画面上の横幅 */
+	public int w;
+	/** 画面上の高さ */
+	public int h;
+	/** 表示・識別に使用する要素の種類(種類を識別するID) */
+	private KindId kindId;
+	/** 表示・識別に使用する要素の種類(種類を識別するIDの表示用文言) */
+	private String kindString;
+
 	P020___AbstractElement(EditDiagramPanel editPanel) {
 		this.editPanel = editPanel;
 
@@ -45,34 +86,16 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 		this.debugId = P020___AbstractElement.getDebugId();
 	}
 
+	public abstract String str();
+	public abstract P020___AbstractElement getCopy();
+	public abstract boolean isComment();
+	public abstract void paintWithPhase(Graphics2D g, int phase);
+
 	// コネクタ表示用
 	abstract public int getXc();
 	abstract public int getYc();
 	abstract public int getWc();
 	abstract public int getHc();
-
-	
-	/**
-	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
-	 */
-	public HashMap<String, String> paramMapInfo;
-
-	/**
-	 * 外部パラメタ関連 (コネクタと他の箱を結ぶ線で表現される)
-	 */
-	public HashMap<String, P021____AbstractGraphNodeElement> paramMapObj;
-
-	/**
-	 * コネクタ(端子)のオブジェクト
-	 */
-	public ArrayList<P010___ConnectTerminal> connectors;
-
-	/**
-	 * 入力によって結果が変わる場合がある。
-	 * この変数は入力に応じた型を記録する。
-	 *
-	 */
-	public ValueType actualValueTypeResult;
 
 	public void typeCheck() {
 		P020___AbstractElement e = this;
@@ -198,22 +221,6 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 		// return kindString + "(" + debugId + ")";
 		return id;
 	}
-
-	/** 画面上のX位置 */
-	public int x;
-	/** 画面上のY位置 */
-	public int y;
-	/** 画面上の横幅 */
-	public int w;
-	/** 画面上の高さ */
-	public int h;
-	/** 表示・識別に使用する要素の種類 */
-	private String kindString;
-	/** 表示・識別に使用する要素の種類 */
-	private KindId kindId;
-
-	/** 表示・識別に使用する名前 */
-	public String id;
 
 	/**
 	 * 要素が値を持つ場合の、値の型(文字列表現)。
