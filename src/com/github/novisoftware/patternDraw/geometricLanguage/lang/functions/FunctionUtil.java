@@ -111,6 +111,9 @@ public class FunctionUtil {
 		if (name.equals(HtmlColor.NAME)) {
 			return new HtmlColor();
 		}
+		if (name.equals(SetAlpha.NAME)) {
+			return new SetAlpha();
+		}
 		if (name.equals(SetColorPNG.NAME)) {
 			return new SetColorPNG();
 		}

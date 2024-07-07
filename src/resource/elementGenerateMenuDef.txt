@@ -183,6 +183,13 @@ DESCRIPTION: #000000から#FFFFFFの文字列により色情報を生成しま�
 FUNCTION: html_color
 ---->DEFINE
 
+KIND: 処理
+TYPE: COLOR
+DISPNAME: 色/透明度を設定
+DESCRIPTION: 色情報に透明度を設定します。
+FUNCTION: set_alpha
+---->DEFINE
+
 KIND: 表示
 TYPE: NONE
 DISPNAME: 色/色を設定(PNG)

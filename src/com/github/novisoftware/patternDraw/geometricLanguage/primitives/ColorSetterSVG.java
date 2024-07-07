@@ -11,10 +11,12 @@ import com.github.novisoftware.patternDraw.utils.Debug;
 public class ColorSetterSVG implements Renderer {
 	private Color color;
 	private String colorString;
+	private double alphaValue;
 
 	public ColorSetterSVG(Color color) {
 		this.color = color;
 		this.colorString = String.format("#%06x", (this.color.getRGB() & 0xFFFFFF));
+		this.alphaValue = this.color.getAlpha() / (double)0xFF;
 		// Debug.println("SET SVG STROKE COLOR " + colorString);
 	}
 
@@ -22,6 +24,7 @@ public class ColorSetterSVG implements Renderer {
 	public void render(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
 		if (s != null) {
 			s.setStrokeColor(colorString);
+			s.setStrokeAlpha(this.alphaValue);
 		}
 	}
 }

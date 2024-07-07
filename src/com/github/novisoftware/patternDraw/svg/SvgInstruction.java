@@ -9,6 +9,8 @@ public class SvgInstruction {
 	private final double ZOOM_SVG = 300;
 	private String strokeColor;
 	private double strokeWidth;
+	/** デフォルト値は不透明 */
+	private double strokeAlpha = 1;
 
 	public SvgInstruction(String svg_stroke_color, double svg_stroke_width) {
 		this.setStrokeColor(svg_stroke_color);
@@ -49,14 +51,34 @@ public class SvgInstruction {
 		} else {
 			fillColor = "none";
 		}
+
+		String opacity;
+		if (this.hasAlpha()) {
+			if (isFilled) {
+				opacity = String.format("fill-opacity=\"%s\"", this.getAlphaString());
+			} else {
+				opacity = String.format("stroke-opacity=\"%s\"", this.getAlphaString());
+			}
+		} else {
+			opacity = "";
+		}
 		
-		//  style=\"stroke-width:%g\"
-		return String.format("<polyline points=\"%s\"  fill=\"%s\" stroke=\"%s\"  stroke-width=\"%g\"   />",
-				sbPointList,
-				fillColor,
-				getStrokeColor(),
-				getStrokeWidth()
-				);
+		if (isFilled) {
+			return String.format("<polyline points=\"%s\" fill=\"%s\" %s />",
+					sbPointList,
+					fillColor,
+					opacity
+					);
+			
+		} else {
+			return String.format("<polyline points=\"%s\" fill=\"none\" stroke=\"%s\" stroke-width=\"%g\" %s />",
+					sbPointList,
+					getStrokeColor(),
+					getStrokeWidth(),
+					opacity
+					);
+		}
+		
 	}
 
 	/**
@@ -85,5 +107,17 @@ public class SvgInstruction {
 	 */
 	public void setStrokeWidth(double strokeWidth) {
 		this.strokeWidth = strokeWidth;
+	}
+	
+	public boolean hasAlpha() {
+		return this.strokeAlpha != 1.0;
+	}
+	
+	public String getAlphaString() {
+		return String.format("%.5f", this.strokeAlpha);
+	}
+
+	public void setStrokeAlpha(double alphaValue) {
+		this.strokeAlpha = alphaValue;
 	}
 }
