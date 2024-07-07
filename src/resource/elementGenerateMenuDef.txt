@@ -810,7 +810,7 @@ index;v,代入先の変数名
 KIND: 制御
 TYPE: NONE
 CONTROL_TYPE: REPEAT
-DISPNAME: 制御/繰り返し(2次元ループ)
+DISPNAME: 制御/2次元ループ(格子状に平面を充填)
 WIDTH: 600
 HEIGHT: 300
 DESCRIPTION: 格子状に繰り返します。
@@ -820,6 +820,23 @@ transform;v,移動変換の代入先変数名
 x;v,X方向の添字の代入先変数名
 y;v,Y方向の添字の代入先変数名
 :index_2d_loop
+-->RPN
+---->DEFINE
+
+
+KIND: 制御
+TYPE: NONE
+CONTROL_TYPE: REPEAT
+DISPNAME: 制御/2次元ループ(ハニカム(はちのす)状に平面を充填)
+WIDTH: 600
+HEIGHT: 300
+DESCRIPTION: 格子状に繰り返します。
+5;n,X方向の個数
+8;n,Y方向の個数
+transform;v,移動変換の代入先変数名
+x;v,X方向の添字の代入先変数名
+y;v,Y方向の添字の代入先変数名
+:index_2d_loop_honeycomb
 -->RPN
 ---->DEFINE
 

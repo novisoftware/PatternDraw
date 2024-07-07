@@ -21,25 +21,39 @@ public class Looper2D implements ControllBase {
 	final String varName_Xn;
 	final String varName_Yn;
 
+	final boolean isHoneyComb;
+	final boolean isFill = true;
+	
 	public Looper2D(HashMap<String, Value> variables,
 			String varName_pos,
 			String varName_Xn, 
 			String varName_Yn,
-			int xN, int yN) {
+			int xN,
+			int yN,
+			boolean isHoneyComb) {
 		this.variables = variables;
 		this.varName_pos = varName_pos;
 		this.varName_Xn = varName_Xn;
 		this.varName_Yn = varName_Yn;
 		this.xN = xN;
 		this.yN = yN;
+		this.isHoneyComb = isHoneyComb;
 
 		init();
 	}
 
 	private void init() {
-		this.xLoopCounter = 0;
-		this.yLoopCounter = 0;
+		if (this.isFill) {
+			this.xLoopCounter = - this.xN;
+			this.yLoopCounter = - this.yN;
+		}
+		else {
+			this.xLoopCounter = 0;
+			this.yLoopCounter = 0;
+		}
 	}
+
+	private final double SQRT3 = Math.sqrt(3);
 	
 	/**
 	 * 今回ループ実行があるか?
@@ -57,10 +71,29 @@ public class Looper2D implements ControllBase {
 		this.variables.put(varName_Xn, new ValueNumeric("" + xLoopCounter));
 		this.variables.put(varName_Yn, new ValueNumeric("" + yLoopCounter));
 
+		double x;
+		double y;
+		if (this.isHoneyComb) {
+			System.out.println("6");
+			// 六角形の平面充填
+			if (this.yLoopCounter % 2 == 0) {
+				x = (double) this.xLoopCounter;
+			} else {
+				x = 0.5 + (double) this.xLoopCounter;
+			}
+			y = SQRT3 / 2.0 * this.yLoopCounter;
+		}
+		else {
+			System.out.println("4");
+			// 四角形の格子状の平面充填
+			x = (double) this.xLoopCounter;
+			y = (double) this.yLoopCounter;
+		}
+		
 		this.variables.put(varName_pos,
 				ValueTransform.createMove(
-						(double) this.xLoopCounter,
-						(double) this.yLoopCounter));
+						(double) x,
+						(double) y));
 
 		return true;
 	}
@@ -70,9 +103,17 @@ public class Looper2D implements ControllBase {
 	 *
 	 */
 	public void nextState() {
+		// 0開始での奇数行目
+		boolean isOddLine = this.yLoopCounter % 2 != 0;
+
 		this.xLoopCounter ++;
-		if (this.xLoopCounter >= this.xN) {
-			this.xLoopCounter = 0;
+		if (this.xLoopCounter >= this.xN + ((this.isHoneyComb && isOddLine) ? -1 : 0) ) {
+			if (this.isFill) {
+				this.xLoopCounter = - this.xN;
+			}
+			else {
+				this.xLoopCounter = 0;
+			}
 			this.yLoopCounter ++;
 		}
 	}

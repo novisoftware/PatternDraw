@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Stack;
 
+import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.core.RpnUtil;
 import com.github.novisoftware.patternDraw.core.control.ControllBase;
@@ -162,6 +163,16 @@ public class P030____ControlElement extends P020___AbstractElement {
 				set.add(varName3);
 				return set;
 			}
+			else if (r.equals(":index_2d_loop_honeycomb")) {
+				HashSet<String> set = new HashSet<String>();
+				String varName1 = ((ValueString)(stack.pop())).toString();
+				set.add(varName1);
+				String varName2 = ((ValueString)(stack.pop())).toString();
+				set.add(varName2);
+				String varName3 = ((ValueString)(stack.pop())).toString();
+				set.add(varName3);
+				return set;
+			}
 			else if (r.startsWith("<")) {
 				// 何もしない
 			}
@@ -175,8 +186,10 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 	/***
 	 * 実行時の初期化
+	 * 
+	 * @throws CaliculateException 
 	 */
-	public ControllBase init() {
+	public ControllBase init() throws CaliculateException {
 		ControllBase ret = null;
 		Stack<Value> stack = new Stack<>();
 
@@ -208,29 +221,34 @@ public class P030____ControlElement extends P020___AbstractElement {
 						from, to, step);
 				break;
 			}
-			else if (r.equals(":index_2d_loop")) {
-				/*
-				 * 移動変換を作成すればよい。
-				 * 
-				 */
+			else if (r.equals(":index_2d_loop")
+					|| r.equals(":index_2d_loop_honeycomb")
+					) {
+				boolean isHoneyComb = r.equals(":index_2d_loop_honeycomb");
+				// X, Y の添字はオマケで生成する
 				String varName_Yn = ((ValueString)(stack.pop())).toString();
 				String varName_Xn = ((ValueString)(stack.pop())).toString();
+				/*
+				 * 移動変換を作成すればよい
+				 */
 				String varName_pos = ((ValueString)(stack.pop())).toString();
 				String s_y_N = ((ValueString)(stack.pop())).toString();
 				String s_x_N = ((ValueString)(stack.pop())).toString();
 
 				int x_N = Integer.parseInt(s_x_N);
 				int y_N = Integer.parseInt(s_y_N);
-				
+
 				ret = new Looper2D(this.editPanel.networkDataModel.variables,
 						varName_pos,
 						varName_Xn,
 						varName_Yn,
 						x_N,
-						y_N);
-				
+						y_N,
+						isHoneyComb
+						);
 				break;
-			}			else if (r.startsWith("<")) {
+			}
+			else if (r.startsWith("<")) {
 				r.replaceAll("[<>]", "");
 				Value v = this.editPanel.networkDataModel.variables.get(r);
 				stack.push(v);
@@ -242,7 +260,9 @@ public class P030____ControlElement extends P020___AbstractElement {
 		}
 
 		if (ret == null) {
+			// コントロールのRPNでこの関数の処理対象外の未知のことが記述されている場合
 			Debug.println("CONTROL", "内部矛盾。 内部RPNで制御子を作成していない。");
+			throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
 		}
 
 		return ret;
@@ -282,7 +302,21 @@ public class P030____ControlElement extends P020___AbstractElement {
 				String s_y_N =         stack.pop().toString();
 				String s_x_N =         stack.pop().toString();
 
-				return "  " + String.format("変換 %s = %s, %s (%s, %s)",
+				return "  " + String.format("格子状に配列 %s = %s, %s (%s, %s)",
+						varName_pos,
+						varName_Xn,
+						varName_Yn,
+						s_x_N,
+						s_y_N);
+			}
+			else if (r.equals(":index_2d_loop_honeycomb")) {
+				String varName_Yn =    stack.pop().toString();
+				String varName_Xn =    stack.pop().toString();
+				String varName_pos =   stack.pop().toString();
+				String s_y_N =         stack.pop().toString();
+				String s_x_N =         stack.pop().toString();
+
+				return "  " + String.format("ハニカム(はちのす)状に配列 %s = %s, %s (%s, %s)",
 						varName_pos,
 						varName_Xn,
 						varName_Yn,
