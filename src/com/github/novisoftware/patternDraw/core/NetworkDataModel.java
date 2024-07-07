@@ -91,6 +91,9 @@ public class NetworkDataModel {
 	 * (コントロールの中に入っていないもの)
 	 */
 	ArrayList<P020___AbstractElement> rootElement;
+	// ルート要素以外も含む。
+	// 型チェック用。
+	ArrayList<P020___AbstractElement> allElement;
 
 	// elementに表示用の「単連結グループID」(連番)をつける
 	public HashMap<Integer,ArrayList<P021____AbstractGraphNodeElement>> graphGroup;
@@ -200,14 +203,21 @@ public class NetworkDataModel {
 			}
 		}
 
-
 		// 変数名の一覧(設定された変数のみを対象にする)
 		// 参照可能な
 		refVariableNameList = new ArrayList<>();
 		// 上書き可能な
 		overWriteVariableNameList = new ArrayList<>();
+	
+		// パラメーター一覧から、変数名の一覧に追加する
+		for (ParameterDefine d : paramDefList) {
+			refVariableNameList.add(d.name);
+			overWriteVariableNameList.add(d.name);
+		}
+
 		
 		// 変数名の一覧を作成する
+		// 変数の参照、上書きメニューの作成に使用する
 		for (P020___AbstractElement elementIcon : positionSortedElements) {
 			if (elementIcon instanceof P022_____RpnGraphNodeElement) {
 				if (((P022_____RpnGraphNodeElement)elementIcon).getKindId().equals(KindId.VARIABLE_SET)) {
@@ -633,10 +643,13 @@ public class NetworkDataModel {
 
 		// 実行順情報: 地べたに置かれた要素
 		this.rootElement = new ArrayList<P020___AbstractElement>();
+		// 地べた以外
+		this.allElement = new ArrayList<P020___AbstractElement>();
 		for (P020___AbstractElement ei0 : workList) {
 			if (controlElementIn.get(ei0) == null) {
 				rootElement.add(ei0);
 			}
+			allElement.add(ei0);
 		}
 
 		// 実行順情報: 制御用エレメントの配下のエレメント
@@ -949,7 +962,7 @@ public class NetworkDataModel {
 	public void typeCheck() {
 		Debug.println("静的な型チェック");
 
-		for (P020___AbstractElement elementIcon : this.rootElement) {
+		for (P020___AbstractElement elementIcon : this.allElement) {
 			if (elementIcon instanceof P021____AbstractGraphNodeElement) {
 				typeCheckForOneGraph((P021____AbstractGraphNodeElement)elementIcon);
 			}

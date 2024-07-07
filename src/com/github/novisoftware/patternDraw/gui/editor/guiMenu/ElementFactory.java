@@ -111,9 +111,11 @@ public class ElementFactory {
 				ArrayList<String> variableNames = new ArrayList<String>();
 				variableNames.addAll(editPanel.networkDataModel.refVariableNameList);
 
+				/*
 				for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
 					variableNames.add(param.name);
 				}
+				*/
 
 				for (String varName : variableNames) {
 					ElementFactory add = nParts.getCopy();
