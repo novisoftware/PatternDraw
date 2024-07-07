@@ -29,14 +29,31 @@ public class SvgInstruction {
 	}
 
 	public String polyLine(ArrayList<Pos> posList, boolean isFilled) {
+		/*
+		 * SVGの属性の指定例:
+		 * fill="purple"
+		 * fill-opacity="0.5"
+	 	 * stroke-opacity="0.8"
+		 */
+		
+		
 		StringBuilder sbPointList = new StringBuilder();
 
 		for (Pos p: posList) {
 			sbPointList.append(String.format("%g,%g ", x2double(p.getX()), y2double(p.getY())));
 		}
+		
+		String fillColor;
+		if (isFilled) {
+			fillColor = getStrokeColor();
+		} else {
+			fillColor = "none";
+		}
+		
 		//  style=\"stroke-width:%g\"
-		return String.format("<polyline points=\"%s\"  fill=\"none\" stroke=\"%s\"  stroke-width=\"%g\"   />",
+		return String.format("<polyline points=\"%s\"  fill=\"%s\" stroke=\"%s\"  stroke-width=\"%g\"   />",
 				sbPointList,
+				fillColor,
 				getStrokeColor(),
 				getStrokeWidth()
 				);

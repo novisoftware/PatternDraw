@@ -74,8 +74,15 @@ public class Looper2D implements ControllBase {
 		double x;
 		double y;
 		if (this.isHoneyComb) {
-			System.out.println("6");
 			// 六角形の平面充填
+			/**
+			 * yが偶数の場合:
+			 *   x座標 = 添字x * 1
+			 *
+			 * yが奇数の場合:
+			 *   x座標 = 添字x * 1 + 0.5
+			 *   y座標 = 添え字y * (√3 / 2)
+			 */
 			if (this.yLoopCounter % 2 == 0) {
 				x = (double) this.xLoopCounter;
 			} else {
@@ -84,7 +91,6 @@ public class Looper2D implements ControllBase {
 			y = SQRT3 / 2.0 * this.yLoopCounter;
 		}
 		else {
-			System.out.println("4");
 			// 四角形の格子状の平面充填
 			x = (double) this.xLoopCounter;
 			y = (double) this.yLoopCounter;

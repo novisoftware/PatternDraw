@@ -9,7 +9,6 @@ import java.util.HashMap;
 import com.github.novisoftware.patternDraw.Main;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
-import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 
@@ -155,11 +154,16 @@ public class Path implements Renderer {
 				yPoints[i] = y2int(pos.getY());
 			}
 
-			g.drawPolyline(xPoints, yPoints, nPoints);
+			if (this.isFill) {
+				g.fillPolygon(xPoints, yPoints, nPoints);
+			} else {
+				g.drawPolyline(xPoints, yPoints, nPoints);
+				
+			}
 		}
 		if (svgBuff != null) {
 			s.setStrokeWidth(this.strokeWidth_SVG);
-			String svgStr = s.polyLine(posList, false);
+			String svgStr = s.polyLine(posList, this.isFill);
 			svgBuff.add(svgStr);
 		}
 	}

@@ -35,6 +35,9 @@ public class FunctionUtil {
 		if (name.equals(LineFrom2Series.NAME)) {
 			return new LineFrom2Series();
 		}
+		if (name.equals(PosToFill.NAME)) {
+			return new PosToFill();
+		}
 		if (name.equals(PosToWalk.NAME)) {
 			return new PosToWalk();
 		}

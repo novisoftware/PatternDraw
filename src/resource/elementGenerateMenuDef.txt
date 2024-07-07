@@ -767,6 +767,13 @@ FUNCTION: draw_polyline_close_ow
 
 KIND: 表示
 TYPE: NONE
+DISPNAME: 出力/多角形を塗りつぶし
+DESCRIPTION: 点の集まりで多角形(ポリゴン)を塗りつぶします
+FUNCTION: pos_to_fill
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
 DISPNAME: 出力/線の太さを指定(SVG)
 DESCRIPTION: 線分の太さを指定します。
 FUNCTION: set_stroke_width_svg
