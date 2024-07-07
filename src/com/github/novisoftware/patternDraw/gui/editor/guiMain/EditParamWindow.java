@@ -53,6 +53,7 @@ import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel4_title;
 import com.github.novisoftware.patternDraw.gui.misc.JRadioButton2;
+import com.github.novisoftware.patternDraw.gui.misc.JScrollPane2;
 import com.github.novisoftware.patternDraw.gui.misc.JTextField2;
 import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
@@ -121,7 +122,7 @@ public class EditParamWindow extends JFrame2 {
 
 		EditParamPanel editParamPanel = new EditParamPanel();
 		// editParamPanel.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-		JScrollPane sp = new JScrollPane(editParamPanel);
+		JScrollPane2 sp = new JScrollPane2(editParamPanel);
 
 		/**
 		 * このコンストラクタが呼ばれたときは callback はまだ設定されていないので、

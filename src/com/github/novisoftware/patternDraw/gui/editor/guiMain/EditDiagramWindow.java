@@ -38,7 +38,9 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConsta
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
+import com.github.novisoftware.patternDraw.gui.misc.JScrollPane2;
 import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class EditDiagramWindow extends JFrame2 {
 	EditDiagramMenuBar editMenuBar;
@@ -55,7 +57,7 @@ public class EditDiagramWindow extends JFrame2 {
 		this.updateTitle();
 		this.editPanel.setPreferredSize(new Dimension(1500,2000));
 		this.editPanel.setSize(1500,2000);
-		JScrollPane sp = new JScrollPane(this.editPanel);
+		JScrollPane2 sp = new JScrollPane2(this.editPanel);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED  );
 		sp.setPreferredSize(this.editPanel.getPreferredSize());

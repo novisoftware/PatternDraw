@@ -262,4 +262,6 @@ public class GuiPreference {
 	public final static BasicStroke STROKE_PLAIN = new BasicStroke(1);
 
 	public final static BasicStroke STROKE_BOLD = new BasicStroke(2);
+	
+	public final static int MOUSE_WHEEL_SCROLL_AMOUNT = 30;
 }
