@@ -49,12 +49,14 @@ public class EditDiagramDropTargetListener implements DropTargetListener {
 					return;
 				}
 				for (File file : files) {
-					if (!editDiagramPanel.editDiagramWindow.dataLostConfirm()) {
-						return;
+					if (editDiagramPanel.checkAndShowDialogIsValidFile(file)) {
+						if (!editDiagramPanel.editDiagramWindow.dataLostConfirm()) {
+							return;
+						}
+						editDiagramPanel.loadFile(file);
+						editDiagramPanel.editDiagramWindow.updateTitle();
+						editDiagramPanel.editDiagramWindow.editMenuBar.setEnableOverWriteMenuItem(true);
 					}
-					editDiagramPanel.loadFile(file);
-					editDiagramPanel.editDiagramWindow.updateTitle();
-					editDiagramPanel.editDiagramWindow.editMenuBar.setEnableOverWriteMenuItem(true);
 					/*
 					SwingUtilities.invokeLater(new Runnable() {
 						@Override

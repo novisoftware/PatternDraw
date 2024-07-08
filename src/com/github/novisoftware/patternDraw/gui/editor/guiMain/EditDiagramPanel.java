@@ -109,6 +109,17 @@ public class EditDiagramPanel extends JPanel {
 		}
 	}
 
+	public boolean checkAndShowDialogIsValidFile(File file) {
+		try {
+			NetworkDataModel.checkFile(file.getAbsolutePath());
+		} catch(Exception e) {
+			// 変なファイルなのでダイアログを見せる必要もない。
+			// showFileReadErrorDialog(e);
+			return false;
+		}
+		return true;
+	}
+
 	public P020___AbstractElement getElementIcon(String name) {
 		for (P020___AbstractElement t : networkDataModel.getElements()) {
 			if (t.id.equals(name)) {

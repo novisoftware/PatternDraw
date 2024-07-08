@@ -1009,10 +1009,10 @@ public class NetworkDataModel {
 		}
 	}
 
-	String FORMAT_STR = "PD_FORMAT_REV: ";
-	String FORMAT_REV = "1.1";
+	static final String FORMAT_STR = "PD_FORMAT_REV: ";
+	static final String FORMAT_REV = "1.1";
 
-	private void checkFileRevision(String firstLine) throws LangSpecException {
+	private static void checkFileRevision(String firstLine) throws LangSpecException {
 		boolean formatSettingCheckError = false;
 		
 		if (firstLine == null) {
@@ -1037,7 +1037,26 @@ public class NetworkDataModel {
 			throw new LangSpecException("ファイルフォーマットのエラー。");
 		}
 	}
-	
+
+	public static void checkFile(String filename) throws LangSpecException, IOException {
+		// ファイルから読み込む
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(
+							new InputStreamReader(
+							new FileInputStream(new File(filename)), FileWriteUtil.UTF8));
+			String line = reader.readLine();
+			if (line == null) {
+				line = "";
+			}
+			NetworkDataModel.checkFileRevision(line);
+		} finally {
+			if (reader != null) {
+				reader.close();
+			}
+		}
+	}
+
 	public void load() throws LangSpecException, IOException {
 		// ファイルから読み込む
 		BufferedReader reader;
