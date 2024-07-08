@@ -260,7 +260,6 @@ public class Rpn {
 
 				
 				// コントロールで定義している変数かを調べる
-				// (スコープとすこし違うが)
 				HashMap<String, ValueType> wkControl = networkDataModel2.checkVariableType(ele);
 				ValueType valueType = wkControl.get(name);
 				if (valueType == null) {
