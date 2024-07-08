@@ -74,7 +74,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 		return 50;
 	}
 
-	HashSet<String> variableNames = new HashSet<String>();
+	HashMap<String, ValueType> variableNamesAndTypes = new HashMap<String, ValueType>();
 
 	/**
 	 * 添字ループの場合の変数名
@@ -82,8 +82,8 @@ public class P030____ControlElement extends P020___AbstractElement {
 	 *
 	 * @return
 	 */
-	public HashSet<String> getVariableNames() {
-		return this.variableNames;
+	public HashMap<String, ValueType> getVariableNamesAndTypes() {
+		return this.variableNamesAndTypes;
 	}
 
 	public String getControlType() {
@@ -114,7 +114,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 		P022_____RpnGraphNodeElement.buildParameterList2(this, this.getRpnString());
 
-		this.variableNames = P030____ControlElement.analyzeGetVariableNames(this.rpn);
+		this.variableNamesAndTypes = P030____ControlElement.analyzeGetVariableNames(this.rpn);
 	}
 
 	public Rpn getRpn() {
@@ -138,39 +138,41 @@ public class P030____ControlElement extends P020___AbstractElement {
 	 * @param rpn
 	 * @return
 	 */
-	static public HashSet<String> analyzeGetVariableNames(Rpn rpn) {
+	static public HashMap<String, ValueType> analyzeGetVariableNames(Rpn rpn) {
 		Stack<Value> stack = new Stack<>();
 
 		for (String s : rpn.getArray()) {
 			String r = RpnUtil.getRepresent(s);
 
 			if (r.equals(":loop")) {
-				return new HashSet<String>();
+				return new HashMap<String, ValueType>();
 			}
 			else if (r.equals(":index_loop")) {
-				HashSet<String> set = new HashSet<String>();
+				HashMap<String, ValueType> set = new HashMap<String, ValueType>();
 				String varName = ((ValueString)(stack.pop())).toString();
-				set.add(varName);
+				set.put(varName, ValueType.FLOAT);
 				return set;
 			}
 			else if (r.equals(":index_2d_loop")) {
-				HashSet<String> set = new HashSet<String>();
+				HashMap<String, ValueType> set = new HashMap<String, ValueType>();
 				String varName1 = ((ValueString)(stack.pop())).toString();
-				set.add(varName1);
+				set.put(varName1, ValueType.FLOAT);
 				String varName2 = ((ValueString)(stack.pop())).toString();
-				set.add(varName2);
+				set.put(varName2, ValueType.FLOAT);
 				String varName3 = ((ValueString)(stack.pop())).toString();
-				set.add(varName3);
+				set.put(varName3, ValueType.TRANSFORM);
 				return set;
 			}
 			else if (r.equals(":index_2d_loop_honeycomb")) {
-				HashSet<String> set = new HashSet<String>();
+				HashMap<String, ValueType> set = new HashMap<String, ValueType>();
 				String varName1 = ((ValueString)(stack.pop())).toString();
-				set.add(varName1);
+				set.put(varName1, ValueType.FLOAT);
 				String varName2 = ((ValueString)(stack.pop())).toString();
-				set.add(varName2);
+				set.put(varName2, ValueType.FLOAT);
 				String varName3 = ((ValueString)(stack.pop())).toString();
-				set.add(varName3);
+				set.put(varName3, ValueType.TRANSFORM);
+				
+				System.out.printf("var def ... %s %s %s\n", varName1, varName2, varName3);
 				return set;
 			}
 			else if (r.startsWith("<")) {

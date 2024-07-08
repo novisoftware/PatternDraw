@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
@@ -14,7 +13,6 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueT
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
-import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringRectUtil;

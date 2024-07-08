@@ -143,6 +143,7 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		// RPNを書き換えた場合も呼び出される。
 		// RPNの解析によって得られるパラメーターの一覧が、前と同じであることは仮定せずに、
 		// 内容の引き継ぎを行う。
+		// (端子の数が変更する(減る)場合等でゴミが残らないようにという想定)
 		HashMap<String, String> old_paramMapInfo = element.paramMapInfo;
 		HashMap<String, P021____AbstractGraphNodeElement> old_paramMapObj = element.paramMapObj;
 
@@ -171,7 +172,6 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		} catch (OutOfMemoryError e) {
 			throw new CaliculateException(CaliculateException.MESSAGE_OUT_OF_MEMORY);
 		}
-
 	}
 
 	/**
@@ -183,7 +183,8 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 		return this.getRpn().evaluateValueType(this,
 				this.editPanel.networkDataModel.variables,
 				this.editPanel.networkDataModel.paramDefList,
-				this.editPanel.networkDataModel.workCheckTypeVariables
+				this.editPanel.networkDataModel.workCheckTypeVariables,
+				this.editPanel.networkDataModel
 				);
 	}
 

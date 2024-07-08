@@ -19,8 +19,10 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.Value
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -193,10 +195,14 @@ public class Rpn {
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
 
+
 	public ValueType evaluateValueType(P022_____RpnGraphNodeElement ele,
 			HashMap<String, Value> variables,
 			ArrayList<ParameterDefine> paramDefList,
-			HashMap<String, ValueType> workCheckTypeVariables) {
+			HashMap<String, ValueType> workCheckTypeVariables,
+			NetworkDataModel networkDataModel2
+			
+			) {
 		Stack<ValueType> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
@@ -252,7 +258,15 @@ public class Rpn {
 				String name = stringStack.pop();
 				Debug.println(":recall-variable " + name + "");
 
-				ValueType valueType = workCheckTypeVariables.get(name);
+				
+				// コントロールで定義している変数かを調べる
+				// (スコープとすこし違うが)
+				HashMap<String, ValueType> wkControl = networkDataModel2.checkVariableType(ele);
+				ValueType valueType = wkControl.get(name);
+				if (valueType == null) {
+					// 見つからなければ継続してグローバルな定義を検索
+					valueType = workCheckTypeVariables.get(name);
+				}
 				if (valueType != null) {
 					Debug.println("    変数名 - ValueType のハッシュ表の中に存在: " + valueType);
 					stack.push(valueType);

@@ -97,6 +97,7 @@ public class NetworkDataModel {
 
 	// elementに表示用の「単連結グループID」(連番)をつける
 	public HashMap<Integer,ArrayList<P021____AbstractGraphNodeElement>> graphGroup;
+	public HashMap<P021____AbstractGraphNodeElement, P021____AbstractGraphNodeElement> node2groupHead;
 	public HashMap<P030____ControlElement, ArrayList<P020___AbstractElement>> controlled_head;
 	public HashMap<P030____ControlElement, ArrayList<P020___AbstractElement>> controlled_all;
 
@@ -189,6 +190,31 @@ public class NetworkDataModel {
 		}
 	}
 
+	
+	/**
+	 * Control 配下で見れるようになる変数(および変数の型)の一覧を取得する
+	 * (analyze を行った後に呼び出し可能)
+	 * 
+	 * @param ele
+	 * @param control_contains
+	 * @return
+	 */
+	public HashMap<String, ValueType> checkVariableType(
+			P021____AbstractGraphNodeElement ele) {
+		HashMap<String, ValueType> variableTypeList = new HashMap<String, ValueType>();
+		
+		P021____AbstractGraphNodeElement head = this.node2groupHead.get(ele);
+		
+		
+		for (P030____ControlElement c : control_contains.keySet()) {
+			if (control_contains.get(c).contains(head)) {
+				variableTypeList.putAll(c.getVariableNamesAndTypes());
+			}
+		}
+		
+		return variableTypeList;
+	}
+
 	/**
 	 * 実行順をきめる等を行う。
 	 * @throws CaliculateException 
@@ -231,9 +257,10 @@ public class NetworkDataModel {
 					}
 				}
 			}
+			// TODO
+			// 厳密には、対応する Control の中だけで見せたい。
 			if (elementIcon instanceof P030____ControlElement) {
-				HashSet<String> reps = ((P030____ControlElement)elementIcon).getVariableNames();
-				
+				Set<String> reps = ((P030____ControlElement)elementIcon).getVariableNamesAndTypes().keySet();
 				for (String rep : reps) {
 					if (! refVariableNameList.contains(rep)) {
 						refVariableNameList.add(rep);
@@ -453,6 +480,16 @@ public class NetworkDataModel {
 			else {
 				element.groupHead = null;
 				graphGroup.get(id).add(element);
+			}
+		}
+
+		// 調べやすいように、メンバーオブジェクトからHeadオブジェクトへのマップを作成する
+		node2groupHead = new HashMap<>();
+		for (int groupId : graphGroup.keySet()) {
+			P021____AbstractGraphNodeElement headElement = graphGroup.get(groupId).get(0);
+			node2groupHead.put(headElement, headElement);
+			for (P021____AbstractGraphNodeElement members : graphGroup.get(groupId)) {
+				node2groupHead.put(members, headElement);
 			}
 		}
 
