@@ -113,8 +113,9 @@ public class EditDiagramPanel extends JPanel {
 		try {
 			NetworkDataModel.checkFile(file.getAbsolutePath());
 		} catch(Exception e) {
-			// 変なファイルなのでダイアログを見せる必要もない。
-			// showFileReadErrorDialog(e);
+			// 変なファイルなのでダイアログを見せる必要もない？
+			// (DnDでダイアログを出すとしたらこのタイミングだけ)
+			showFileReadErrorDialog(e);
 			return false;
 		}
 		return true;
