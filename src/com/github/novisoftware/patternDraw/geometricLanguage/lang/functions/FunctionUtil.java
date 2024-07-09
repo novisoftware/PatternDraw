@@ -4,6 +4,26 @@ import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefIn
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.color.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1Series;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1SeriesClose;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1SeriesCloseOverWrap;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom2Series;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.RotateLineList;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.lineToDraw.LineToDraw;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.Add2PosintSeries;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.ClosePosList;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.LinesToCrossPoints;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosSortByAngle;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToPosSkip;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToWalk;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.RotatePointList;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SeriesOnCircle;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SeriesOnCircle2;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SinglePosition;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToDrawPolyLine;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToDrawPolyLineClose;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToDrawPolyLineCloseOverWrap;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToFill;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.transform.*;
 
 public class FunctionUtil {

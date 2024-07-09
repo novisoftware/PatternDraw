@@ -1,7 +1,6 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
@@ -10,10 +9,11 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueLineList;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class RotateLineList  implements FunctionDefInterface {
-	public static final String NAME = "rotate_line_list";
+public class LineFrom1SeriesCloseOverWrap implements FunctionDefInterface {
+	public static final String NAME = "line_from_1_series_close_ow";
 
 	@Override
 	public String getName() {
@@ -22,29 +22,29 @@ public class RotateLineList  implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "並び順ローテート(線分)";
+		return "線でなぞる(オーバーラップ)";
 	}
 
 	@Override
 	public String getDescription() {
-		return "線分の系列の並び順をローテートします。";
+		return "点を線で結び、閉じます。\\n(オーバーラップします)";
 	}
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.INTEGER, ValueType.POS_LIST};
+		ValueType[] ret = {ValueType.POS_LIST};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"n", "positions"};
+		String[] ret = {"positions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"ローテートさせる数", "線分の系列"};
+		String[] ret = {"点の並び"};
 		return ret;
 	}
 
@@ -53,17 +53,16 @@ public class RotateLineList  implements FunctionDefInterface {
 		return ValueType.LINE_LIST;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		int n = Value.getInteger(param.get(0)).intValue();
-		ArrayList<Line> a = Value.getLineList(param.get(1));
-		/*
-		 * 系列をローテートさせる
-		 */
-		Collections.rotate((ArrayList<Line>)a.clone(), n);
+		ArrayList<Pos> posList = Value.getPosList(param.get(0));
 
-		return new ValueLineList(a);
+		ArrayList<Line> ret = new ArrayList<Line>();
+		int n = posList.size();
+		for (int i = 1; i < n + 2; i++) {
+			ret.add(new Line(posList.get((i - 1) % n), posList.get(i % n)));
+		}
+
+		return new ValueLineList(ret);
 	}
-
 }

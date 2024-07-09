@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,13 @@ import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueLineList;
-import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class LineFrom1SeriesClose implements FunctionDefInterface {
-	public static final String NAME = "line_from_1_series_close";
+// line_to_draw
+public class ClosePosList implements FunctionDefInterface {
+	public static final String NAME = "close_pos_list";
 
 	@Override
 	public String getName() {
@@ -22,12 +22,12 @@ public class LineFrom1SeriesClose implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "線でなぞる(閉じ)";
+		return "座標の系列を閉じる";
 	}
 
 	@Override
 	public String getDescription() {
-		return "点を線で結び、閉じます。";
+		return "座標の系列を操作し、最初の点=最後の点にします。";
 	}
 
 	@Override
@@ -38,31 +38,31 @@ public class LineFrom1SeriesClose implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"positions"};
+		String[] ret = {"pos_list"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"点の並び"};
+		String[] ret = {"座標の系列"};
 		return ret;
 	}
 
 	@Override
 	public ValueType getReturnType() {
-		return ValueType.LINE_LIST;
+		return ValueType.POS_LIST;
 	}
 
 	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
+	public Value exec(List<Value> param, InstructionRenderer _t) throws CaliculateException {
 		ArrayList<Pos> posList = Value.getPosList(param.get(0));
 
-		ArrayList<Line> ret = new ArrayList<Line>();
-		int n = posList.size();
-		for (int i = 1; i < n + 1; i++) {
-			ret.add(new Line(posList.get((i - 1) % n), posList.get(i % n)));
+		ArrayList<Pos> posList2 = new ArrayList<Pos>();
+		posList2.addAll(posList);
+		if (posList.size() > 0) {
+			posList2.add(posList.get(0));
 		}
 
-		return new ValueLineList(ret);
+		return new ValuePosList(posList2);
 	}
 }

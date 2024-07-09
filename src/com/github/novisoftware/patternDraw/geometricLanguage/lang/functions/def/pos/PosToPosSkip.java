@@ -1,8 +1,6 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
@@ -13,8 +11,8 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class PosSortByAngle implements FunctionDefInterface {
-	public static final String NAME = "pos_sort";
+public class PosToPosSkip implements FunctionDefInterface {
+	public static final String NAME = "pos_to_pos_skip";
 
 	@Override
 	public String getName() {
@@ -23,29 +21,29 @@ public class PosSortByAngle implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "角度でソート";
+		return "Nスキップ";
 	}
 
 	@Override
 	public String getDescription() {
-		return "点の並びを角度でソートします。";
+		return "座標の列をN飛ばしで辿ります。";
 	}
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.POS_LIST};
+		ValueType[] ret = {ValueType.INTEGER, ValueType.INTEGER, ValueType.POS_LIST};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"positions"};
+		String[] ret = {"n", "m", "positions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"点の並び"};
+		String[] ret = {"スキップ数", "新しい点の数", "点の並び"};
 		return ret;
 	}
 
@@ -54,41 +52,28 @@ public class PosSortByAngle implements FunctionDefInterface {
 		return ValueType.POS_LIST;
 	}
 
-	/**
-	 * Posの並びを角度でソートするためのもの
-	 */
-	public static class AngleComparator implements Comparator<Pos> {
-		@Override
-		public int compare(Pos p1, Pos p2) {
-			// 中心点 0, 0 は最小値として扱う
-			if (p1.getX() == p2.getX() && p1.getY() == p2.getY()) {
-				return 0;
-			}
-			if (p1.getX() == 0 && p1.getY() == 0) {
-				return -1;
-			}
-			if (p2.getX() == 0 && p2.getY() == 0) {
-				return 1;
-			}
-
-			double t1 = Math.atan2(-p1.getY(), p1.getX());
-			double t2 = Math.atan2(-p2.getY(), p2.getX());
-			
-			if (t1 == t2) {
-				return 0;
-			}
-			
-			return t1 < t2 ? -1 : 1;
-		}
-	}
-
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		ArrayList<Pos> posList = Value.getPosList(param.get(0));
+		int skip = Value.getInteger(param.get(0)).intValue();
+		int total = Value.getInteger(param.get(1)).intValue();
+		ArrayList<Pos> posList = Value.getPosList(param.get(2));
 
+		if (skip <= 0) {
+			throw new CaliculateException(
+					CaliculateException.MESSAGE_INVALID_VALUE
+					+ "(Nは1以上にする必要があります。)");
+		}
+
+		int size = posList.size();
 		ArrayList<Pos> newPosList = new ArrayList<Pos>();
-		newPosList.addAll(posList);
-		newPosList.sort(new AngleComparator());
+
+		int index = 0;
+		for (int i=0;i<total;i++) {
+			Pos pos = posList.get(index % size);
+			newPosList.add(pos);
+
+			index += skip;
+		}
 
 		return new ValuePosList(newPosList);
 	}

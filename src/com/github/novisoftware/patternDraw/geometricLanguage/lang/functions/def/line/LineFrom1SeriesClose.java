@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,16 +6,14 @@ import java.util.List;
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueLineList;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 
-// line_to_draw
-public class LinesToCrossPoints implements FunctionDefInterface {
-	public static final String NAME = "lines_to_cross_points";
+public class LineFrom1SeriesClose implements FunctionDefInterface {
+	public static final String NAME = "line_from_1_series_close";
 
 	@Override
 	public String getName() {
@@ -24,53 +22,47 @@ public class LinesToCrossPoints implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "線分の交点";
+		return "線でなぞる(閉じ)";
 	}
 
 	@Override
 	public String getDescription() {
-		return "2系列の線分が交わる点のあつまりを抽出します。";
+		return "点を線で結び、閉じます。";
 	}
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.LINE_LIST, ValueType.LINE_LIST};
+		ValueType[] ret = {ValueType.POS_LIST};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"lines1", "lines2"};
+		String[] ret = {"positions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"線分のリスト1", "線分のリスト2"};
+		String[] ret = {"点の並び"};
 		return ret;
 	}
 
 	@Override
 	public ValueType getReturnType() {
-		return ValueType.POS_LIST;
+		return ValueType.LINE_LIST;
 	}
 
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		ArrayList<Line> lineList1 = Value.getLineList(param.get(0));
-		ArrayList<Line> lineList2 = Value.getLineList(param.get(1));
+		ArrayList<Pos> posList = Value.getPosList(param.get(0));
 
-		ArrayList<Pos> posList = new ArrayList<Pos>();
-
-		for (Line line1 : lineList1) {
-			for (Line line2 : lineList2) {
-				Pos p = line1.crossPoint(line2);
-				if (p != null) {
-					posList.add(p);
-				}
-			}
+		ArrayList<Line> ret = new ArrayList<Line>();
+		int n = posList.size();
+		for (int i = 1; i < n + 1; i++) {
+			ret.add(new Line(posList.get((i - 1) % n), posList.get(i % n)));
 		}
 
-		return new ValuePosList(posList);
+		return new ValueLineList(ret);
 	}
 }

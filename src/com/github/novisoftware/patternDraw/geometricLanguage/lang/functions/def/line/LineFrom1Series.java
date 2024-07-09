@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def;
+package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,14 +7,13 @@ import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueLineList;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 
-
-// pos_to_fill
-public class PosToFill implements FunctionDefInterface {
-	public static final String NAME = "pos_to_fill";
+public class LineFrom1Series implements FunctionDefInterface {
+	public static final String NAME = "line_from_1_series";
 
 	@Override
 	public String getName() {
@@ -23,12 +22,12 @@ public class PosToFill implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "ポリゴンを塗りつぶす";
+		return "線でなぞる";
 	}
 
 	@Override
 	public String getDescription() {
-		return "点の集まりを辿ってポリゴンを塗りつぶします。";
+		return "点を線で結びます。";
 	}
 
 	@Override
@@ -39,38 +38,31 @@ public class PosToFill implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"points"};
+		String[] ret = {"positions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"点のリスト"};
+		String[] ret = {"点の並び"};
 		return ret;
 	}
 
 	@Override
 	public ValueType getReturnType() {
-		return null;
+		return ValueType.LINE_LIST;
 	}
 
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		ArrayList<Pos> src = Value.getPosList(param.get(0));
-		ArrayList<Pos> posList = new ArrayList<Pos>();
-		posList.addAll(src);
+		ArrayList<Pos> posList = Value.getPosList(param.get(0));
 
-		String strokeColor = t.currentStrokeColor;
-		double strokeWidth = Double.parseDouble(t.currentStrokeWidth);
-		boolean isFill = true;
-		String fillColor = strokeColor;
-
-		Path path = new Path(posList, strokeColor, strokeWidth, isFill, fillColor);
-
-		if (t != null) {
-			t.primitiveList.add(path);
+		ArrayList<Line> ret = new ArrayList<Line>();
+		int n = posList.size();
+		for (int i = 1; i < n; i++) {
+			ret.add(new Line(posList.get(i - 1), posList.get(i)));
 		}
 
-		return null;
+		return new ValueLineList(ret);
 	}
 }
