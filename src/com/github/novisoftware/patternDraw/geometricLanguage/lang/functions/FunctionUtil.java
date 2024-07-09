@@ -13,6 +13,7 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.Add2PosintSeries;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.ClosePosList;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.LinesToCrossPoints;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosClipping;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosSortByAngle;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToPosSkip;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToWalk;
@@ -54,6 +55,9 @@ public class FunctionUtil {
 		}
 		if (name.equals(LineFrom2Series.NAME)) {
 			return new LineFrom2Series();
+		}
+		if (name.equals(PosClipping.NAME)) {
+			return new PosClipping();
 		}
 		if (name.equals(PosToFill.NAME)) {
 			return new PosToFill();
