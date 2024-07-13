@@ -215,6 +215,47 @@ public class NetworkDataModel {
 		return variableTypeList;
 	}
 
+	public static class MyDim {
+		public final int x;
+		public final int y;
+
+		MyDim(int x, int y) {
+			this.x = x;
+			this.y = y;
+		}
+	}
+	
+	public static final int X_DIM_INIT = 1500;
+	public static final int Y_DIM_INIT = 2000;
+	
+	/**
+	 * 描画上に必要な長方形領域を計算する。
+	 * 
+	 * @return
+	 */
+	public MyDim getRenderDim() {
+		int X_MARGIN = 50;
+		int Y_MARGIN = 800;
+		int X_MIN = X_DIM_INIT - X_MARGIN;
+		int Y_MIN = Y_DIM_INIT - Y_MARGIN;
+
+		int workX = X_MIN;
+		int workY = Y_MIN;
+		
+		for (P020___AbstractElement e : elements) {
+			int x = e.x + e.w;
+			int y = e.y + e.h;
+			if (workX < x) {
+				workX = x;
+			}
+			if (workY < y) {
+				workY = y;
+			}
+		}
+		
+		return new MyDim(workX + X_MARGIN, workY + Y_MARGIN);
+	}
+
 	/**
 	 * 実行順をきめる等を行う。
 	 * @throws CaliculateException 

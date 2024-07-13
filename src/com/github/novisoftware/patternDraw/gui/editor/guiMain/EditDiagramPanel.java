@@ -2,6 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
+import com.github.novisoftware.patternDraw.core.NetworkDataModel.MyDim;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
@@ -140,6 +142,17 @@ public class EditDiagramPanel extends JPanel {
 		return s;
 	}
 
+	public void repaint() {
+		if (this.networkDataModel != null) {
+			MyDim dim = this.networkDataModel.getRenderDim();
+			Dimension d = new Dimension(dim.x, dim.y);
+			this.setPreferredSize(d);
+			this.setSize(d);
+		}
+
+		super.repaint();
+	}
+	
 	static Color workLineColor = new Color(0x70, 0x70, 0xFF);
 
 	public void paint(Graphics g) {

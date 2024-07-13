@@ -20,6 +20,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P102___NumberPicker;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
@@ -55,8 +56,10 @@ public class EditDiagramWindow extends JFrame2 {
 
 		this.setJMenuBar(this.editMenuBar);
 		this.updateTitle();
-		this.editPanel.setPreferredSize(new Dimension(1500,2000));
-		this.editPanel.setSize(1500,2000);
+		Dimension d = new Dimension(NetworkDataModel.X_DIM_INIT, NetworkDataModel.Y_DIM_INIT);
+		
+		this.editPanel.setPreferredSize(d);
+		this.editPanel.setSize(d);
 		JScrollPane2 sp = new JScrollPane2(this.editPanel);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED  );
