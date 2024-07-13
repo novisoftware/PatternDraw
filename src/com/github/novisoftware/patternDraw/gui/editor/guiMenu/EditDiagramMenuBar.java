@@ -157,6 +157,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 
 					// この動作は要らない?
 					JOptionPane.showMessageDialog(editDiagramWindow, "保存しました。");
+					editDiagramWindow.updateTitle();
 				}
 			}
 		});
