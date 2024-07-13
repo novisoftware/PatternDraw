@@ -1,6 +1,7 @@
 package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.core.CaliculateException;
@@ -24,12 +25,12 @@ public class PosClipping implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "線分の交点";
+		return "点のクリッピング";
 	}
 
 	@Override
 	public String getDescription() {
-		return "2系列の線分が交わる点のあつまりを抽出します。";
+		return "点の並びをクリッピングします。";
 	}
 
 	@Override
@@ -55,6 +56,46 @@ public class PosClipping implements FunctionDefInterface {
 		return ValueType.POS_LIST;
 	}
 
+	public static class Dim2distanceComparator implements Comparator<Pos> {
+		Pos zeroPoint;
+		
+		Dim2distanceComparator(Pos zeroPoint) {
+			this.zeroPoint = zeroPoint;
+		}
+
+		@Override
+		public int compare(Pos p1, Pos p2) {
+			double d1 = p1.distance(this.zeroPoint);
+			double d2 = p2.distance(this.zeroPoint);
+
+			if (d1 == d2) {
+				return 0;
+			}
+
+			return d1 < d2 ? -1 : 1;
+		}
+	}
+
+	public static class CrossInfoComparator implements Comparator<CrossInfo> {
+		Dim2distanceComparator dim2distanceComparator;
+		
+		CrossInfoComparator(Pos zeroPoint) {
+			this.dim2distanceComparator = new Dim2distanceComparator(zeroPoint);
+		}
+
+		@Override
+		public int compare(CrossInfo c1, CrossInfo c2) {
+			return this.dim2distanceComparator.compare(c1.pos, c2.pos);
+		}
+	
+	}
+	
+	
+	public static class CrossInfo {
+		Pos pos;
+		Line line;
+	}
+
 	private List<Pos> crossPoints(Line line1, List<Line> lineList2) {
 		ArrayList<Pos> crossPointList = new ArrayList<Pos>();
 		for (Line line2 : lineList2) {
@@ -63,11 +104,13 @@ public class PosClipping implements FunctionDefInterface {
 				crossPointList.add(p);
 			}
 		}
-		
+
 		// TODO:
 		// 出発点からの距離によるソート。
 		
 		// 出発点を持つ Comparator を new して、与えられた座標を比較する。
+		Dim2distanceComparator c = new Dim2distanceComparator(new Pos(line1.x0, line1.y0)) ;
+		crossPointList.sort(c);
 
 		return crossPointList;
 	}
@@ -98,7 +141,8 @@ public class PosClipping implements FunctionDefInterface {
 		// <li> 奇数偶数判定をする
 		// </ul>
 
-		// 一番左の位置の初期値( 適当で良い )
+		// 一番左の位置の初期値
+		// 確実に両方の外側であるような位置を、適当で良いので探す
 		double min = 0;
 		// 一番左の位置を探す。
 		for (Pos p : posList1) {
@@ -118,7 +162,7 @@ public class PosClipping implements FunctionDefInterface {
 		ArrayList<Line> lineList2 = new ArrayList<Line>();
 		int m = posList2.size();
 		for (int i = 0 ; i < m ; i++) {
-			lineList2.add(new Line(posList1.get(i), posList1.get((i + 1) % m)));
+			lineList2.add(new Line(posList2.get(i), posList2.get((i + 1) % m)));
 		}
 
 		// 内側にいるか?
@@ -136,6 +180,8 @@ public class PosClipping implements FunctionDefInterface {
 
 		ArrayList<Pos> workPosList = new ArrayList<Pos>();
 
+
+		System.out.println("##############################");
 		// クリッピング判定
 		int n = posList1.size();
 		for (int i = 0 ; i < n ; i++) {
@@ -143,13 +189,23 @@ public class PosClipping implements FunctionDefInterface {
 				newPosList.add(posList1.get(i));
 			}
 			Line line1 = new Line(posList1.get(i), posList1.get((i + 1) % n));
-			for (Pos p : crossPoints(line1, lineList2)) {
-				isIn = !isIn;
+			List<Pos> cpList = crossPoints(line1, lineList2);
+			System.out.println("line from pos#" + i + "  cp num = " + cpList.size());
+			for (Pos p : cpList) {
+				if (isIn) {
+					isIn = !isIn;
+				}
 				newPosList.add(p);
-				// 注: 内側にめり込む場合の考慮が必要。
+				// TODO: 内側にめり込む場合の考慮が必要。
 			}
 		}
 
+		// 最後まで交点がなかった場合:
+		if (newPosList.isEmpty()) {
+			// クリッピング用の領域として与えられた領域そのものを返す
+			return param.get(1);
+		}
+		
 		return new ValuePosList(newPosList);
 	}
 }

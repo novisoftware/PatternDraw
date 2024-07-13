@@ -140,6 +140,19 @@ public class Line {
 		}
 
 		// 片方が垂直の線
+		if (this.x0 == this.x1 || other.x0 == other.x1) {
+			// x と y を入れ替えて計算を呼び出す。
+			
+			Line wkLine1 = new Line(this.y0, this.x0, this.y1, this.x1);
+			Line wkLine2 = new Line(other.y0, other.x0, other.y1, other.x1);
+			Pos wkPos = wkLine1.crossPoint(wkLine2);
+			if (wkPos == null) {
+				return null;
+			}
+			return new Pos(wkPos.getY(), wkPos.getX());
+		}
+		
+		/*
 		if (this.x0 == this.x1) {
 			double x = this.x0;
 			double y = other.a() * x + other.b();
@@ -160,8 +173,10 @@ public class Line {
 				return null;
 			}
 		}
-
-		else {
+		else
+		*/
+		
+		{
 			// y=ax+bと,y=cx+dの交点
 			// x=-(b-d)/(a-c)
 			// y=(ad-bc)/(a-c)
@@ -196,10 +211,10 @@ public class Line {
 			double x = -(b-d)/(a-c);
 			double y = (a*d-b*c)/(a-c);
 
-			if (min(this.x0, this.x1) <= x && x <= max(this.x0, this.x1)
-				&& min(this.y0, this.y1) <= y && y <= max(this.y0, this.y1)
-				&& min(other.x0, other.x1) <= x && x <= max(other.x0, other.x1)
-				&& min(other.y0, other.y1) <= y && y <= max(other.y0, other.y1)) {
+			if (min(this.x0, this.x1) - MY_EPSILON <= x && x <= max(this.x0, this.x1) + MY_EPSILON
+				&& min(this.y0, this.y1) - MY_EPSILON <= y && y <= max(this.y0, this.y1) + MY_EPSILON
+				&& min(other.x0, other.x1) - MY_EPSILON <= x && x <= max(other.x0, other.x1) + MY_EPSILON
+				&& min(other.y0, other.y1) - MY_EPSILON <= y && y <= max(other.y0, other.y1) + MY_EPSILON) {
 				return new Pos(x, y);
 			} else {
 				return null;

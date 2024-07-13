@@ -45,6 +45,11 @@ public class Pos {
 		return new Pos(this.x*r0 + pos2.x*ratio,
 				this.y*r0 + pos2.y*ratio);
 	}
+	
+	public Pos sub(Pos pos2) {
+		return new Pos(this.x - pos2.x,
+				this.y - pos2.y);
+	}
 
 	public double atan(Pos other) {
 		return Math.atan2(other.getX() - this.getX(),
