@@ -96,7 +96,7 @@ public class PosClipping implements FunctionDefInterface {
 		Line line;
 	}
 
-	private List<Pos> crossPoints(Line line1, List<Line> lineList2) {
+	private static List<Pos> crossPoints(Line line1, List<Line> lineList2) {
 		ArrayList<Pos> crossPointList = new ArrayList<Pos>();
 		for (Line line2 : lineList2) {
 			Pos p = line1.crossPoint(line2);
@@ -105,7 +105,6 @@ public class PosClipping implements FunctionDefInterface {
 			}
 		}
 
-		// TODO:
 		// 出発点からの距離によるソート。
 		
 		// 出発点を持つ Comparator を new して、与えられた座標を比較する。
@@ -115,22 +114,11 @@ public class PosClipping implements FunctionDefInterface {
 		return crossPointList;
 	}
 	
-	@Override
-	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		Value p0 = param.get(0);
-		Value p1 = param.get(1);
-		if (p0 == null || p1 == null) {
-			throw new CaliculateException("入力が設定されていません。");
-		}
-
-		ArrayList<Pos> newPosList = new ArrayList<Pos>();
-		ArrayList<Pos> posList1 = Value.getPosList(param.get(0));
-		ArrayList<Pos> posList2 = Value.getPosList(param.get(1));
-
+	public static ArrayList<Pos> clip(ArrayList<Pos> posList1, ArrayList<Pos> posList2) {
 		// クリッピング対象が 要素数 0 だった場合
 		// クリッピング領域が 3角形に満たなかった場合
 		if (posList1.size() == 0 || posList2.size() < 3) {
-			return param.get(0);
+			return posList1;
 		}
 
 		
@@ -178,6 +166,7 @@ public class PosClipping implements FunctionDefInterface {
 			isIn = false;
 		}
 
+		ArrayList<Pos> newPosList = new ArrayList<Pos>();
 		ArrayList<Pos> workPosList = new ArrayList<Pos>();
 
 
@@ -203,9 +192,26 @@ public class PosClipping implements FunctionDefInterface {
 		// 最後まで交点がなかった場合:
 		if (newPosList.isEmpty()) {
 			// クリッピング用の領域として与えられた領域そのものを返す
-			return param.get(1);
+			return posList2;
 		}
 		
+		return newPosList;
+	}
+	
+	
+	@Override
+	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
+		Value p0 = param.get(0);
+		Value p1 = param.get(1);
+		if (p0 == null || p1 == null) {
+			throw new CaliculateException("入力が設定されていません。");
+		}
+
+		ArrayList<Pos> posList1 = Value.getPosList(param.get(0));
+		ArrayList<Pos> posList2 = Value.getPosList(param.get(1));
+		ArrayList<Pos> newPosList = clip(posList1, posList2);
+
 		return new ValuePosList(newPosList);
+		
 	}
 }
