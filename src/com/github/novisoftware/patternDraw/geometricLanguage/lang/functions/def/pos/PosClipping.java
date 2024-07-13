@@ -1,16 +1,12 @@
 package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.PosClipUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;

@@ -12,6 +12,8 @@ public class PosClipUtil {
 	private PosClipUtil() {
 	}
 	
+	static private final double MY_EPSILON = 1e-08;
+	
 	public static class Dim2distanceComparator implements Comparator<Pos> {
 		Pos zeroPoint;
 		
@@ -74,6 +76,15 @@ public class PosClipUtil {
 		CrossInfoComparator c = new CrossInfoComparator(line1.from) ;
 		crossInfoList.sort(c);
 
+		int n = crossInfoList.size();
+		for (int i = n - 1; i > 0; i--) {
+			// 線に対して1回交わるが、つなぎ目の部分で2回カウントされてしまった場合、1回にする。
+			// ( 系列を辿り、連続しているかを見たほうが良いのかもしれない)
+			if (crossInfoList.get(i).pos.distance(crossInfoList.get(i - 1).pos) < MY_EPSILON) {
+				crossInfoList.remove(i);
+			}
+		}
+		
 		return crossInfoList;
 	}
 

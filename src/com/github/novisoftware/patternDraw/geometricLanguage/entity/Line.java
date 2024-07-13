@@ -148,6 +148,11 @@ public class Line {
 
 		// 片方が垂直の線
 		if (this.x0 == this.x1 || other.x0 == other.x1) {
+			if ((this.x0 == this.x1 && this.y0 == this.y1) ||
+					 (other.x0 == other.x1 && other.y0 == other.y1 )) {
+				// 片方が点の場合、とりあえず 0 を返す。
+				return null;
+			}
 			// x と y を入れ替えて計算を呼び出す。
 			
 			Line wkLine1 = new Line(this.y0, this.x0, this.y1, this.x1);
