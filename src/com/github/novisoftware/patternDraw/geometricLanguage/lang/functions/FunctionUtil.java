@@ -4,6 +4,8 @@ import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefIn
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.color.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineClipping;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineClipping_masking;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1Series;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1SeriesClose;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1SeriesCloseOverWrap;
@@ -55,6 +57,12 @@ public class FunctionUtil {
 		}
 		if (name.equals(LineFrom2Series.NAME)) {
 			return new LineFrom2Series();
+		}
+		if (name.equals(LineClipping.NAME)) {
+			return new LineClipping();
+		}
+		if (name.equals(LineClipping_masking.NAME)) {
+			return new LineClipping_masking();
 		}
 		if (name.equals(PosClipping.NAME)) {
 			return new PosClipping();

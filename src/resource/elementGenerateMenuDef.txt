@@ -130,6 +130,20 @@ FUNCTION: line_from_2_series
 
 KIND: 処理
 TYPE: LINE_LIST
+DISPNAME: 線の集まり/線をクリッピング
+DESCRIPTION: 線の集まりをクリッピングします。
+FUNCTION: line_clipping
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
+DISPNAME: 線の集まり/線をマスキング
+DESCRIPTION: 線の集まりをマスキングします。
+FUNCTION: line_masking
+---->DEFINE
+
+KIND: 処理
+TYPE: LINE_LIST
 DISPNAME: 座標の変換/回転変換を生成
 DESCRIPTION: 回転します。
 FUNCTION: create_rot_transform

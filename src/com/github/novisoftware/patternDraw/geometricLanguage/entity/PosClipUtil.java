@@ -335,4 +335,69 @@ public class PosClipUtil {
 		
 		return newPosList;
 	}
+
+
+	/**
+	 * 線分のリストを、点のリストで与えられるポリゴンでクリッピングする
+	 * 
+	 * @param lineList1
+	 * @param posList2
+	 * @param isMask false: クリッピング。 true: マスキング
+	 * @return
+	 */
+	public static ArrayList<Line> lineClip(ArrayList<Line> lineList1, ArrayList<Pos> posList2, boolean isMask) {
+		// クリッピング領域が 3角形に満たなかった場合
+		if (posList2.size() < 3) {
+			return new ArrayList<Line>();
+		}
+
+		
+		// 内側の点が、「外側の点をつないで作られた多角形に含まれるか」を検査する。
+		// スキャンは
+		// <ul>
+		// <li> 水平に行う
+		// <li> 奇数偶数判定をする
+		// </ul>
+		int m = posList2.size();
+
+		// クリッピング領域の線分
+		ArrayList<Line> lineList2 = new ArrayList<Line>();
+		for (int i = 0 ; i < m ; i++) {
+			lineList2.add(new Line(posList2.get(i), posList2.get((i + 1) % m)));
+		}
+
+		ArrayList<Line> newLineList = new ArrayList<Line>();
+		double outerX = calcOuterX(posList2, posList2);
+
+		for (Line line: lineList1) {
+			boolean isIn = isIn(outerX, line.from, lineList2);
+			List<CrossInfo> cpList = crossPoints(line, lineList2);
+			if (cpList.size() == 0) {
+				// 交点がなかった場合、元々の線分そのものか、線分なしになる
+				if (isIn ^ isMask) {
+					newLineList.add(line);
+				}
+			}
+			else {
+				// 交点ごとに線分を作成していく
+				List<Pos> posList = new ArrayList<Pos>();
+				if (isIn ^ isMask) {
+					posList.add(line.from);
+				}
+				for (CrossInfo c : cpList) {
+					posList.add(c.pos);
+				}
+				if (posList.size() % 2 != 0) {
+					posList.add(line.to);
+				}
+				int n = posList.size();
+				for (int i = 0; i < n; i+=2) {
+					newLineList.add(new Line(posList.get(i), posList.get(i+1)));
+				}
+			}
+		}
+		
+		return newLineList;
+	}
+
 }
