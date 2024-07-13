@@ -3,16 +3,21 @@ package com.github.novisoftware.patternDraw.geometricLanguage.entity;
 import java.util.ArrayList;
 
 public class Line {
-	public double x0;
-	public double y0;
-	public double x1;
-	public double y1;
+	public final double x0;
+	public final double y0;
+	public final double x1;
+	public final double y1;
 
+	public final Pos from;
+	public final Pos to;
+	
 	public Line(double x0, double y0, double x1, double y1) {
 		this.x0 = x0;
 		this.y0 = y0;
 		this.x1 = x1;
 		this.y1 = y1;
+		this.from = new Pos(x0, y0);
+		this.to = new Pos(x0, y0);
 	}
 
 	public Line(Pos a, Pos b) {
@@ -20,6 +25,8 @@ public class Line {
 		this.y0 = a.getY();
 		this.x1 = b.getX();
 		this.y1 = b.getY();
+		this.from = a;
+		this.to = b;
 	}
 
 	public Line translateLine(double x, double y) {
