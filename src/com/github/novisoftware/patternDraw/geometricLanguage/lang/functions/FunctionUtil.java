@@ -132,6 +132,9 @@ public class FunctionUtil {
 		if (name.equals(DoTransformPos.NAME)) {
 			return new DoTransformPos();
 		}
+		if (name.equals(DoTransformLine.NAME)) {
+			return new DoTransformLine();
+		}
 
 		// 以降、色関連
 		if (name.equals(HsvToColor.NAME)) {
