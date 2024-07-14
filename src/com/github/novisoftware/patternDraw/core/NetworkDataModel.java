@@ -68,7 +68,7 @@ public class NetworkDataModel {
 	/**
 	 * 編集用パネル(JPanel)
 	 */
-	protected EditDiagramPanel editPanel;
+	public final EditDiagramPanel editPanel;
 
 	/**
 	 * パラメーター定義のリスト。
@@ -217,6 +217,18 @@ public class NetworkDataModel {
 		}
 		
 		return variableTypeList;
+	}
+
+	/**
+	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
+	 * 
+	 * @param before 変更前
+	 * @param after 変更後
+	 */
+	public void notifyVarNameChange(String before, String after) {
+		for (P020___AbstractElement e : elements) {
+			e.notifyVarNameChange(before, after);
+		}
 	}
 
 	public static class MyDim {

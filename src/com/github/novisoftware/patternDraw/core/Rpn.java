@@ -808,4 +808,39 @@ public class Rpn {
 
 		return null;
 	}
+
+	/**
+	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
+	 * 
+	 * @param before 変更前
+	 * @param after 変更後
+	 */
+	public void notifyVarNameChange(String before, String after) {
+		ArrayList<String> newArray = new ArrayList<String>();
+		boolean isChanged = false;
+		
+		for (String s : array) {
+			if (s.startsWith("'")) {
+				String r = RpnUtil.getRepresent(s.substring(1));
+				if (r.equals(before)) {
+					isChanged = true;
+					newArray.add("'" + after + ";" + RpnUtil.getComment(s));
+				}else {
+					newArray.add(s);
+				}
+			}
+			else {
+				newArray.add(s);
+			}
+		}
+		
+		if (isChanged) {
+			// System.out.println("before: " + RpnUtil.a2s(this.array));
+			// System.out.println("after: " + RpnUtil.a2s(newArray));
+			
+			this.array = newArray;
+			this.formula = RpnUtil.a2s(newArray);
+			this.makeDisplayString();
+		}
+	}
 }

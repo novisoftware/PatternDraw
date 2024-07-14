@@ -84,6 +84,17 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	/**
+	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
+	 * 
+	 * @param before 変更前
+	 * @param after 変更後
+	 */
+	@Override
+	public void notifyVarNameChange(String before, String after) {
+		rpn.notifyVarNameChange(before, after);
+	}
+
+	/**
 	 * 要素が値を持つ場合の、値の型。
 	 */
 	protected Value.ValueType valueType;

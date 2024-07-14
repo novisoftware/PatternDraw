@@ -318,6 +318,16 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 		return editPanel.getHandledObject() == this;
 	}
 
+	/**
+	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
+	 * 
+	 * @param before 変更前
+	 * @param after 変更後
+	 */
+	public void notifyVarNameChange(String before, String after) {
+		// 何もしないのをデフォルト動作にする
+	}
+	
 	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {
 		if (1.0f * (this.x + this.w / 2 - x) * (this.x + this.w / 2 - x) * this.h * this.h
 				+ 1.0f * (this.y + this.h / 2 - y) * (this.y + this.h / 2 - y) * this.w * this.w < 1.0f * this.h

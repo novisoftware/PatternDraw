@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
@@ -47,6 +48,7 @@ public class EditParamDefListWindow extends JFrame2 {
 	static final Color ON_MOUSE_BACKGROUND_COLOR2 = new Color(0x80E0E0E0, true);
 
 	final JPanel jp;
+	final NetworkDataModel networkDataModel;
 
 	/**
 	 * パラメーター一覧
@@ -61,6 +63,7 @@ public class EditParamDefListWindow extends JFrame2 {
 	public ParamDefListPanel paramDefListPanel;
 	
 	public EditParamDefListWindow(
+			NetworkDataModel networkDataModel,
 			final ArrayList<ParameterDefine> params,
 			Runnable closeCallback) {
 		super();
@@ -68,6 +71,7 @@ public class EditParamDefListWindow extends JFrame2 {
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 
+		this.networkDataModel = networkDataModel;
 		this.params = params;
 
 		// レイアウト
@@ -562,7 +566,12 @@ public class EditParamDefListWindow extends JFrame2 {
 		}
 
     	if (inputParamDefWindow == null) {
-			inputParamDefWindow = new EditParamDefWindow(this, para, params, variableNameSet, isNew);
+			inputParamDefWindow = new EditParamDefWindow(this,
+					this.networkDataModel,
+					para,
+					this.params,
+					variableNameSet,
+					isNew);
     	}
 		inputParamDefWindow.setVisible(true);
 	}

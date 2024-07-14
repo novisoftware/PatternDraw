@@ -355,7 +355,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 					}
 				};
 
-				EditParamDefListWindow frame = new EditParamDefListWindow(params, callback);
+				EditParamDefListWindow frame = new EditParamDefListWindow(
+						editPanel.networkDataModel,
+						params, callback);
 				editDiagramPanel.paramDefEditWindow = frame;
 				frame.setVisible(true);
 				// frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);

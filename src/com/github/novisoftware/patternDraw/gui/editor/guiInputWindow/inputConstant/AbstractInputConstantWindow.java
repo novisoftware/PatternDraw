@@ -49,4 +49,11 @@ public class AbstractInputConstantWindow extends JFrame2 {
 		this.setSize(550, 250);
 	}
 
+	/**
+	 * OKボタンクリック時に呼び出される処理。
+	 * 
+	 */
+	public void notifySubmit() {
+		// 基底クラスでは空の処理を設定
+	}
 }

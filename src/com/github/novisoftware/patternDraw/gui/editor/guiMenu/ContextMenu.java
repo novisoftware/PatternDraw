@@ -201,7 +201,10 @@ public class ContextMenu extends JPopupMenu {
 						}
 					};
 
-					EditParamDefListWindow frame = new EditParamDefListWindow(params, callback);
+					EditParamDefListWindow frame = new EditParamDefListWindow(
+							editPanel.networkDataModel,
+							params,
+							callback);
 					editPanel.paramDefEditWindow = frame;
 					frame.setVisible(true);
 					frame.setLocation(900, 40);

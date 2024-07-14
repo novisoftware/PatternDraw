@@ -606,6 +606,17 @@ public class P030____ControlElement extends P020___AbstractElement {
 		}
 	}
 
+	/**
+	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
+	 * 
+	 * @param before 変更前
+	 * @param after 変更後
+	 */
+	@Override
+	public void notifyVarNameChange(String before, String after) {
+		rpn.notifyVarNameChange(before, after);
+	}
+
 	public String contollerGroup_str() {
 		if (this.controllerGroup == null) {
 			return null;

@@ -56,6 +56,10 @@ class ValueInputPanel extends JPanel {
 				// 再度 RPN オブジェクトを作成する
 				String text = textField.getText();
 				frame.rpnArray.set(param_index, fixedHeader + text + (comment.length() > 0 ? ";" + comment : ""));
+				if (frame instanceof InputVariableSetWindow) {
+					// 変数名の設定ウィンドウの場合は、 テキストをセット
+					((InputVariableSetWindow)frame).newName = text;
+				}
 				
 				// Debug.println("Set element from textField:" + text);
 

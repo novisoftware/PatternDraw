@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
@@ -58,7 +59,9 @@ public class EditParamDefWindow extends JFrame2 {
 	final ParameterDefine backupParam;
 	// final Parameter param;
 	private final JButton buttonOk;
-	final HashSet<String> variableNameSet;
+	private final HashSet<String> variableNameSet;
+	private final NetworkDataModel networkDataModel;
+	private final ArrayList<ParameterDefine> params;
 
 	// チェック結果
 	final JLabel messageDisp;
@@ -85,16 +88,19 @@ public class EditParamDefWindow extends JFrame2 {
 	final ValueInputPanel field_sliderMax;
 
 	final HashSet<ValueInputPanel> ngInputPanels;
-	final private ArrayList<ParameterDefine> params;
+
 
 	public EditParamDefWindow(// final RpnGraphNodeElement element,
-			final EditParamDefListWindow parent, final ParameterDefine param,
+			final EditParamDefListWindow parent,
+			NetworkDataModel networkDataModel,
+			final ParameterDefine param,
 			ArrayList<ParameterDefine> params, final HashSet<String> variableNameSet, boolean isNew) {
 		super();
 		this.setTitle("パラメーターを設定します。");
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
 
+		this.networkDataModel = networkDataModel;
 		this.params = params;
 		this.isNew = isNew;
 		
@@ -621,6 +627,17 @@ public class EditParamDefWindow extends JFrame2 {
 		public void setEnabled(boolean enabled) {
 			textField.setEnabled(enabled);
 			description.setEnabled(enabled);
+		}
+	}
+
+	public void notifySubmit() {
+		// パラメーター名の変更を各エレメントに通知する
+		if (! this.isNew) {
+			String oldName = this.backupParam.name;
+			String newName = this.param.name;
+
+			this.networkDataModel.notifyVarNameChange(oldName, newName);
+			this.networkDataModel.editPanel.repaint();
 		}
 	}
 }

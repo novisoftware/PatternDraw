@@ -33,6 +33,8 @@ public class Util {
 					P022_____RpnGraphNodeElement e = (P022_____RpnGraphNodeElement) te;
 					e.setRpnString(RpnUtil.a2s(tf.rpnArray));
 				}
+				
+				tf.notifySubmit();
 				tf.dispose();
 				editPanel.repaint();
 			}
@@ -70,6 +72,8 @@ public class Util {
 				caller.paramDefListPanel.updateParamDefDisplays();
 				caller.paramDefListPanel.repaint();
 				caller.repaint();
+				// 編集ウィンドウにOKボタンクリックを通知
+				tf.notifySubmit();
 				// 呼び出し元の参照を削除
 				caller.subWindowDisposeNotify();
 				// 編集ウィンドウは閉じる

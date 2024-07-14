@@ -16,8 +16,14 @@ import com.github.novisoftware.patternDraw.utils.Debug;
  *
  */
 public class InputVariableSetWindow extends AbstractInputConstantWindow {
+	private String oldName = null;
+	String newName = null;
+	private final EditDiagramPanel editPanel;
+	
 	public InputVariableSetWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
 		super(element, editPanel);
+		this.editPanel = editPanel;
+		
 		if (!(element.getKindId() == KindId.VARIABLE_SET)) {
 			System.err.println("呼び出し条件がおかしいので要確認。");
 			try {
@@ -63,6 +69,9 @@ public class InputVariableSetWindow extends AbstractInputConstantWindow {
 							new VariableNameChecker(value, editPanel.networkDataModel.refVariableNameList));
 
 					pane.add(p);
+					
+					this.oldName = value;
+					this.newName = value;
 				}
 			}
 		}
@@ -73,5 +82,15 @@ public class InputVariableSetWindow extends AbstractInputConstantWindow {
 		this.buttonOk = Util.generateSubmitButton(editPanel, this);
 		pane.add(this.buttonOk);
 		pane.add(Util.generateCancelButton(editPanel, this));
+	}
+	
+	@Override
+	public void notifySubmit() {
+		// パラメーター名の変更を各エレメントに通知する
+		String oldName = this.oldName;
+		String newName = this.newName;
+
+		this.editPanel.networkDataModel.notifyVarNameChange(oldName, newName);
+		this.editPanel.repaint();
 	}
 }
