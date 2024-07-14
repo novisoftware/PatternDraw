@@ -3,6 +3,8 @@ package com.github.novisoftware.patternDraw.geometricLanguage.entity;
 import java.util.ArrayList;
 
 public class Line {
+	public static final double MY_EPSILON = 1e-9;
+
 	public final double x0;
 	public final double y0;
 	public final double x1;
@@ -27,6 +29,18 @@ public class Line {
 		this.y1 = b.getY();
 		this.from = a;
 		this.to = b;
+	}
+
+	private static final double sq(double a) {
+		return a*a;
+	}
+	
+	public double length() {
+		return Math.sqrt(sq(this.x0 - this.x1) + sq(this.y0 - this.y1));
+	}
+
+	public double length2() {
+		return Math.abs(sq(this.x0 - this.x1)) + Math.abs(this.y0 - this.y1);
 	}
 
 	public Line translateLine(double x, double y) {
@@ -112,8 +126,6 @@ public class Line {
 		}
 	}
 
-	double MY_EPSILON = 1e-9;
-	
 	private boolean aprox_eq(double a, double b) {
 		if ( Math.abs(a - b) <  MY_EPSILON ) {
 			return true;
@@ -157,13 +169,16 @@ public class Line {
 			
 			Line wkLine1 = new Line(this.y0, this.x0, this.y1, this.x1);
 			Line wkLine2 = new Line(other.y0, other.x0, other.y1, other.x1);
-			Pos wkPos = wkLine1.crossPoint(wkLine2);
+
+			Pos wkPos = wkLine1.crossPoint_internal(wkLine2);
 			if (wkPos == null) {
 				return null;
 			}
 			return new Pos(wkPos.getY(), wkPos.getX());
 		}
-		
+
+		return crossPoint_internal(other);
+
 		/*
 		if (this.x0 == this.x1) {
 			double x = this.x0;
@@ -185,55 +200,55 @@ public class Line {
 				return null;
 			}
 		}
-		else
 		*/
-		
-		{
-			// y=ax+bと,y=cx+dの交点
-			// x=-(b-d)/(a-c)
-			// y=(ad-bc)/(a-c)
-			double a = this.a();
-			double b = this.b();
-			double c = other.a();
-			double d = other.b();
-
-			if (a == c) {
-				// 傾きが同じ。
-
-				Double x = sectionOnLine(this.x0, this.x1, other.x0, other.x1);
-				Double y = sectionOnLine(this.y0, this.y1, other.y0, other.y1);
-				if (x != null && y != null) {
-					// 仮に作成した「交点」の傾きが一致していれば交点を返す。
-
-					double aa0 = new Line(x, y, this.x0, this.y0).a();
-					double aa1 = new Line(x, y, this.x1, this.y1).a();
-					if (this.aprox_eq(aa0, a) || this.aprox_eq(aa1, a)) {
-						return new Pos(x, y);
-					}
-					else {
-						return null;
-					}
-				}
-				
-				// 交点は無いので null を返す。
-				// (直線全体が一致か、交わらない)
-				return null;
-			}
-
-			double x = -(b-d)/(a-c);
-			double y = (a*d-b*c)/(a-c);
-
-			if (min(this.x0, this.x1) - MY_EPSILON <= x && x <= max(this.x0, this.x1) + MY_EPSILON
-				&& min(this.y0, this.y1) - MY_EPSILON <= y && y <= max(this.y0, this.y1) + MY_EPSILON
-				&& min(other.x0, other.x1) - MY_EPSILON <= x && x <= max(other.x0, other.x1) + MY_EPSILON
-				&& min(other.y0, other.y1) - MY_EPSILON <= y && y <= max(other.y0, other.y1) + MY_EPSILON) {
-				return new Pos(x, y);
-			} else {
-				return null;
-			}
-		}
 	}
 
+	public Pos crossPoint_internal(Line other) {
+		// y=ax+bと,y=cx+dの交点
+		// x=-(b-d)/(a-c)
+		// y=(ad-bc)/(a-c)
+		double a = this.a();
+		double b = this.b();
+		double c = other.a();
+		double d = other.b();
+
+		if (a == c) {
+			// 傾きが同じ。
+
+			Double x = sectionOnLine(this.x0, this.x1, other.x0, other.x1);
+			Double y = sectionOnLine(this.y0, this.y1, other.y0, other.y1);
+			if (x != null && y != null) {
+				// 仮に作成した「交点」の傾きが一致していれば交点を返す。
+
+				double aa0 = new Line(x, y, this.x0, this.y0).a();
+				double aa1 = new Line(x, y, this.x1, this.y1).a();
+				if (this.aprox_eq(aa0, a) || this.aprox_eq(aa1, a)) {
+					return new Pos(x, y);
+				}
+				else {
+					return null;
+				}
+			}
+			
+			// 交点は無いので null を返す。
+			// (直線全体が一致か、交わらない)
+			return null;
+		}
+
+		double x = -(b-d)/(a-c);
+		double y = (a*d-b*c)/(a-c);
+
+		if (min(this.x0, this.x1) - MY_EPSILON <= x && x <= max(this.x0, this.x1) + MY_EPSILON
+			&& min(this.y0, this.y1) - MY_EPSILON <= y && y <= max(this.y0, this.y1) + MY_EPSILON
+			&& min(other.x0, other.x1) - MY_EPSILON <= x && x <= max(other.x0, other.x1) + MY_EPSILON
+			&& min(other.y0, other.y1) - MY_EPSILON <= y && y <= max(other.y0, other.y1) + MY_EPSILON) {
+			return new Pos(x, y);
+		} else {
+			return null;
+		}
+		
+	}
+	
 	/**
 	 * 2本の直線の交叉点を取得する。
 	 * (与えられた線分を含む直線が交叉する点を返す)

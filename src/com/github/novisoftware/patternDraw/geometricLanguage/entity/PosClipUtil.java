@@ -12,7 +12,7 @@ public class PosClipUtil {
 	private PosClipUtil() {
 	}
 	
-	static private final double MY_EPSILON = 1e-08;
+	private static final double MY_EPSILON = 1e-08;
 	
 	public static class Dim2distanceComparator implements Comparator<Pos> {
 		Pos zeroPoint;
@@ -50,9 +50,9 @@ public class PosClipUtil {
 	
 	
 	public static class CrossInfo {
-		Pos pos;
-		Line line1;
-		Line line2;
+		final Pos pos;
+		final Line line1;
+		final Line line2;
 		
 		CrossInfo(Pos pos, Line line1, Line line2) {
 			this.pos = pos;
@@ -60,6 +60,7 @@ public class PosClipUtil {
 			this.line2 = line2;
 		}
 	}
+
 
 	private static List<CrossInfo> crossPoints(Line line1, List<Line> lineList2) {
 		ArrayList<CrossInfo> crossInfoList = new ArrayList<CrossInfo>();
@@ -87,6 +88,7 @@ public class PosClipUtil {
 		
 		return crossInfoList;
 	}
+
 
 	/**
 	 * 与えられた座標リストの外側になるような X 位置を計算する。
@@ -190,6 +192,14 @@ public class PosClipUtil {
 		}
 	}
 	
+	
+	/**
+	 * 点のリストで与えられたポリゴンを、点のリストで与えられるポリゴンでクリッピングする
+	 * 
+	 * @param posList1
+	 * @param posList2
+	 * @return
+	 */
 	public static ArrayList<Pos> clip(ArrayList<Pos> posList1, ArrayList<Pos> posList2) {
 		// クリッピング対象が 要素数 0 だった場合
 		// クリッピング領域が 3角形に満たなかった場合
@@ -370,8 +380,34 @@ public class PosClipUtil {
 		double outerX = calcOuterX(posList2, posList2);
 
 		for (Line line: lineList1) {
+			// 判定対象の線分の開始点がクリッピング領域に含まれるか
 			boolean isIn = isIn(outerX, line.from, lineList2);
+			// 判定対象の線分の終了点がクリッピング領域に含まれるか
+			boolean isIn2 = isIn(outerX, line.to, lineList2);
+
 			List<CrossInfo> cpList = crossPoints(line, lineList2);
+			if ((cpList.size() % 2 == 0 ) != (isIn == isIn2)) {
+				// 矛盾あり
+				// 点を微小に移動させ再判定する。
+				// 判定結果が異なるなら線分を作成しても良いかもしれないが、
+				// 微小であるため、もし線分のデータを作っても描画に反映されない。
+				// (見えない線分は作っても仕方がないので作らない)
+				if (line.length2() != 0) {
+					boolean a = isIn(outerX, line.from.mix(line.to, 0.001), lineList2);
+					if (a != isIn) {
+						// TODO: 結局たんなる代入と同じだが。
+						isIn = a;
+					}
+					boolean b = isIn(outerX, line.to.mix(line.from, 0.001), lineList2);
+					if (b != isIn2) {
+						isIn = b;
+					}
+					// さらに矛盾が残る可能性があるが追求しない。
+				}
+			} else {
+				// 矛盾なし
+			}
+			
 			if (cpList.size() == 0) {
 				// 交点がなかった場合、元々の線分そのものか、線分なしになる
 				if (isIn ^ isMask) {
