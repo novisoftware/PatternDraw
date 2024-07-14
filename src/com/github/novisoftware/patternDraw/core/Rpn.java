@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Stack;
 
+import com.github.novisoftware.patternDraw.core.exception.BreakSignal;
+import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.ContinueSignal;
+import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
@@ -195,7 +199,16 @@ public class Rpn {
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
 
-
+	/**
+	 * 結果の型を求める
+	 * 
+	 * @param ele
+	 * @param variables
+	 * @param paramDefList
+	 * @param workCheckTypeVariables
+	 * @param networkDataModel2
+	 * @return
+	 */
 	public ValueType evaluateValueType(P022_____RpnGraphNodeElement ele,
 			HashMap<String, Value> variables,
 			ArrayList<ParameterDefine> paramDefList,
@@ -353,6 +366,9 @@ public class Rpn {
 				stack.pop();
 				stack.push(ValueType.BOOLEAN);
 			}
+			else if (s.equals(":continue") || s.equals(":break")) {
+				return ValueType.NONE;
+			}
 			else if (s.equals(":and") || s.equals(":or") || s.equals(":xor")
 					|| s.equals(":nand") || s.equals(":nor") || s.equals(":xnor")) {
 				stack.pop();
@@ -393,8 +409,17 @@ public class Rpn {
 		return null;
 	}
 
+	/**
+	 * 計算して値を求める
+	 * 
+	 * @param ele
+	 * @param variables
+	 * @return
+	 * @throws EvaluateException
+	 * @throws InterruptedException
+	 */
 	public Value doCaliculate(P022_____RpnGraphNodeElement ele, HashMap<String, Value> variables)
-		throws CaliculateException, InterruptedException {
+		throws EvaluateException, InterruptedException {
 		Stack<Value> stack = new Stack<>();
 		Stack<String> stringStack = new Stack<>();
 
@@ -523,6 +548,30 @@ public class Rpn {
 				} else {
 					stack.push(b0);
 				}
+			}
+			else if (s.equals(":continue")) {
+				Value cond = stack.pop();
+				if (!(cond instanceof ValueBoolean)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				if (((ValueBoolean)cond).getInternal()) {
+					throw new ContinueSignal("条件成立によるcontinue", ele);
+				}
+
+				return null;
+			}
+			else if (s.equals(":break")) {
+				Value cond = stack.pop();
+				if (!(cond instanceof ValueBoolean)) {
+					// キャストできない型。
+					throw new CaliculateException(CaliculateException.MESSAGE_INVALID_CLASS);
+				}
+				if (((ValueBoolean)cond).getInternal()) {
+					throw new BreakSignal("条件成立によるcontinue", ele);
+				}
+				
+				return null;
 			}
 			else if (s.equals(":P")) {
 				// 順列組合せ

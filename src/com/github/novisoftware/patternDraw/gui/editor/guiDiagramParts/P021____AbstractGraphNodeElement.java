@@ -7,7 +7,8 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import com.github.novisoftware.patternDraw.core.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.RenderingUtil.WidthCache;
@@ -67,7 +68,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 * 計算する(workValueに計算結果が格納された状態にする)。
 	 * @throws CaliculateException
 	 */
-	public void evaluate() throws CaliculateException {
+	public void evaluate() throws EvaluateException {
 		try {
 			evaluateValue();
 			this.isError = false;
@@ -93,7 +94,7 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 		return h;
 	}
 
-	public abstract void evaluateValue() throws CaliculateException;
+	public abstract void evaluateValue() throws EvaluateException;
 
 	static StringRectUtil str2rect = new StringRectUtil();
 	static StringRectUtil str2rect_forComment = new StringRectUtil();

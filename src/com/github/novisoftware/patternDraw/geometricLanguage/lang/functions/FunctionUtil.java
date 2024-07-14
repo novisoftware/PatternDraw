@@ -16,9 +16,11 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.ClosePosList;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.LinesToCrossPoints;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosClipping;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosConcat;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosSortByAngle;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToPosSkip;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToWalk;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosZip;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.RotatePointList;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SeriesOnCircle;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SeriesOnCircle2;
@@ -72,6 +74,12 @@ public class FunctionUtil {
 		}
 		if (name.equals(PosToWalk.NAME)) {
 			return new PosToWalk();
+		}
+		if (name.equals(PosConcat.NAME)) {
+			return new PosConcat();
+		}
+		if (name.equals(PosZip.NAME)) {
+			return new PosZip();
 		}
 		if (name.equals(RotateLineList.NAME)) {
 			return new RotateLineList();

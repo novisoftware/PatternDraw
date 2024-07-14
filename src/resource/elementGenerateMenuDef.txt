@@ -71,6 +71,22 @@ FUNCTION: pos_to_pos_skip
 
 KIND: 処理
 TYPE: POS_LIST
+DISPNAME: 点の集まり/2つの点の集まりをつなぐ
+DESCRIPTION: 2つの点の集まりをつなぎます。
+FUNCTION: pos_concat
+---->DEFINE
+
+
+KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/2つの点の集まりを組み合わせる
+DESCRIPTION: 2つの点の集まりを組み合わせます。
+FUNCTION: pos_zip
+---->DEFINE
+
+
+KIND: 処理
+TYPE: POS_LIST
 DISPNAME: 点の集まり/点の集まりをクリッピング
 DESCRIPTION: 点の集まりをクリッピングします。
 FUNCTION: pos_clipping
@@ -850,6 +866,21 @@ index;v,代入先の変数名
 -->RPN
 ---->DEFINE
 
+
+KIND: 制御
+TYPE: NONE
+CONTROL_TYPE: REPEAT
+DISPNAME: 制御/1回実行ブロック
+WIDTH: 600
+HEIGHT: 300
+DESCRIPTION: 繰り返さないループです。
+1
+1
+:loop
+-->RPN
+---->DEFINE
+
+
 KIND: 制御
 TYPE: NONE
 CONTROL_TYPE: REPEAT
@@ -866,7 +897,6 @@ y;v,Y方向の添字の代入先変数名
 -->RPN
 ---->DEFINE
 
-
 KIND: 制御
 TYPE: NONE
 CONTROL_TYPE: REPEAT
@@ -882,6 +912,28 @@ y;v,Y方向の添字の代入先変数名
 :index_2d_loop_honeycomb
 -->RPN
 ---->DEFINE
+
+KIND: 処理
+TYPE: NONE
+WIDTH: 80
+HEIGHT: 35
+DISPNAME: 制御/continue
+DESCRIPTION: 次の繰り返しを始めます
+<if:BOOLEAN> :continue
+-->RPN
+---->DEFINE
+
+
+KIND: 処理
+TYPE: NONE
+WIDTH: 80
+HEIGHT: 35
+DISPNAME: 制御/break
+DESCRIPTION: 繰り返しを打ち切ります
+<if:BOOLEAN> :break
+-->RPN
+---->DEFINE
+
 
 KIND: 制御
 TYPE: NONE

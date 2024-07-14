@@ -3,7 +3,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def
 import java.util.ArrayList;
 import java.util.List;
 
-import com.github.novisoftware.patternDraw.core.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
@@ -29,7 +29,7 @@ public class SinglePosition implements FunctionDefInterface {
 
 	@Override
 	public String getDescription() {
-		return "長さと角度を元に座標を生成します。";
+		return "距離と角度を元に座標を生成します。";
 	}
 
 	@Override

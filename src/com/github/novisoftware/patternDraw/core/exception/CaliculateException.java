@@ -1,9 +1,11 @@
-package com.github.novisoftware.patternDraw.core;
+package com.github.novisoftware.patternDraw.core.exception;
+
+import com.github.novisoftware.patternDraw.utils.Debug;
 
 /**
  * Rpnの計算エラー情報を保持する。
  */
-public class CaliculateException extends Exception {
+public class CaliculateException extends EvaluateException {
 	static public final String MESSAGE_INVALID_CLASS = "入力の種類に誤りがあります。";
 	static public final String MESSAGE_INVALID_VALUE = "入力の値に誤りがあります。";
 	static public final String MESSAGE_NOT_ENOUGH_INPUT = "入力が設定されていません。";
@@ -15,7 +17,10 @@ public class CaliculateException extends Exception {
 	public CaliculateException(String message) {
 		super(message);
 
-		// デバッグ時
-		this.printStackTrace();
+		if (Debug.enable) {
+			// デバッグ時
+			System.out.println("CaliculateExceptionをnewしました。 情報:");
+			this.printStackTrace();
+		}
 	}
 }

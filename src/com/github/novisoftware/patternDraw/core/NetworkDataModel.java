@@ -15,6 +15,10 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import com.github.novisoftware.patternDraw.core.control.ControllBase;
+import com.github.novisoftware.patternDraw.core.exception.BreakSignal;
+import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.ContinueSignal;
+import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
@@ -258,7 +262,6 @@ public class NetworkDataModel {
 
 	/**
 	 * 実行順をきめる等を行う。
-	 * @throws CaliculateException 
 	 *
 	 */
 	public void analyze() {
@@ -754,13 +757,13 @@ public class NetworkDataModel {
 		this.typeCheck();
 	}
 
-	Value evaluateOneGraph(P021____AbstractGraphNodeElement headElement) throws CaliculateException {
+	Value evaluateOneGraph(P021____AbstractGraphNodeElement headElement) throws EvaluateException {
 		ArrayList<P021____AbstractGraphNodeElement> eList = graphGroup.get(headElement.groupHead);
 		Debug.println("evaluate", "GRPAH GROUP ---  " + headElement.groupHead + "   items: " + eList.size());
 		for(P021____AbstractGraphNodeElement element : eList) {
-			Debug.println("evaluate", "begin: " + element.id);
+			// Debug.println("evaluate", "begin: " + element.id);
 			element.evaluate();
-			Debug.println("evaluate", "end: " + element.id);
+			// Debug.println("evaluate", "end: " + element.id);
 		}
 
 		P021____AbstractGraphNodeElement e = eList.get(eList.size() - 1);
@@ -773,14 +776,28 @@ public class NetworkDataModel {
 			ControllBase c = control.init();
 			Debug.println("evaluate", "------------------------ REPEAT"  + "  " + c.getDebugString());
 			while( c.hasNext() ) {
-				ArrayList<P020___AbstractElement> eList = control_contains.get(control);
-				for(P020___AbstractElement e0 : eList) {
-					if (e0 instanceof P022_____RpnGraphNodeElement) {
-						P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-						evaluateOneGraph(element);
+				// boolean getContinueSignal = false;
+				
+				try {
+					ArrayList<P020___AbstractElement> eList = control_contains.get(control);
+					for(P020___AbstractElement e0 : eList) {
+						if (e0 instanceof P022_____RpnGraphNodeElement) {
+							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
+							evaluateOneGraph(element);
+						}
+						else if (e0 instanceof P030____ControlElement) {
+							evaluateControl((P030____ControlElement)e0);
+						}
 					}
-					else if (e0 instanceof P030____ControlElement) {
-						evaluateControl((P030____ControlElement)e0);
+				} catch (EvaluateException e) {
+					if (e instanceof CaliculateException) {
+						throw (CaliculateException)e;
+					}
+					if (e instanceof BreakSignal) {
+						return;
+					}
+					if (e instanceof ContinueSignal) {
+						// getContinueSignal = true;
 					}
 				}
 
@@ -799,7 +816,16 @@ public class NetworkDataModel {
 				for(P020___AbstractElement e0 : eList) {
 					if (e0 instanceof P022_____RpnGraphNodeElement) {
 						P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-						lastValue = evaluateOneGraph(element);
+						try {
+							lastValue = evaluateOneGraph(element);
+						} catch (EvaluateException e) {
+							if (e instanceof CaliculateException) {
+								throw (CaliculateException)e;
+							} else {
+								// 何もしない
+								// そもそも if 節の中で break等を想定していない
+							}
+						}
 					}
 					else if (e0 instanceof P030____ControlElement) {
 						Debug.println("RUN", "INVALID STRUCTURE. 妥当でない構造。");
@@ -832,7 +858,16 @@ public class NetworkDataModel {
 					for(P020___AbstractElement e0 : eList) {
 						if (e0 instanceof P022_____RpnGraphNodeElement) {
 							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-							evaluateOneGraph(element);
+							try {
+								evaluateOneGraph(element);
+							} catch (EvaluateException e) {
+								if (e instanceof CaliculateException) {
+									throw (CaliculateException)e;
+								} else {
+									// 何もしない
+									// そもそも then/else 節の中で break等を想定していない
+								}
+							}
 						}
 						else if (e0 instanceof P030____ControlElement) {
 							evaluateControl((P030____ControlElement)e0);
@@ -852,7 +887,16 @@ public class NetworkDataModel {
 					for(P020___AbstractElement e0 : eList) {
 						if (e0 instanceof P022_____RpnGraphNodeElement) {
 							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-							evaluateOneGraph(element);
+							try {
+								evaluateOneGraph(element);
+							} catch (EvaluateException e) {
+								if (e instanceof CaliculateException) {
+									throw (CaliculateException)e;
+								} else {
+									// 何もしない
+									// そもそも then/else 節の中で break等を想定していない
+								}
+							}
 						}
 						else if (e0 instanceof P030____ControlElement) {
 							evaluateControl((P030____ControlElement)e0);
@@ -975,7 +1019,34 @@ public class NetworkDataModel {
 				Debug.println("evaluate", "--------------------------------------------- 「実行」★");
 				for (P020___AbstractElement elementIcon : this.rootElement) {
 					if (elementIcon instanceof P021____AbstractGraphNodeElement) {
-						evaluateOneGraph((P021____AbstractGraphNodeElement)elementIcon);
+						P021____AbstractGraphNodeElement ele = ((P021____AbstractGraphNodeElement)elementIcon);
+						try {
+							evaluateOneGraph(ele);
+						} catch (EvaluateException e) {
+
+							if (e instanceof CaliculateException) {
+								throw (CaliculateException)e;
+							} else {
+								if (e instanceof BreakSignal) {
+									P022_____RpnGraphNodeElement causeNode = ((BreakSignal)e).causeNode;
+									
+									causeNode.isError = true;
+									causeNode.errorMessage = "想定していない場所での break です。";
+									throw new CaliculateException(ele.errorMessage);
+								}
+								else if (e instanceof ContinueSignal) {
+									P022_____RpnGraphNodeElement causeNode = ((ContinueSignal)e).causeNode;
+
+									causeNode.isError = true;
+									causeNode.errorMessage = "想定していない場所での continue です。";
+									throw new CaliculateException(ele.errorMessage);
+								}
+								// 何もしない
+								// そもそも、ここで break等を想定していない
+								// TODO.
+								// breakに対してエラーメッセージを表示すべきかも。
+							}
+						}
 						/*
 						ArrayList<GraphNodeElement> eList = graphGroup.get(((GraphNodeElement)elementIcon).groupHead);
 						for(GraphNodeElement element : eList) {

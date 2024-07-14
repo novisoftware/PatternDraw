@@ -5,8 +5,9 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.core.CaliculateException;
 import com.github.novisoftware.patternDraw.core.Rpn;
+import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
@@ -164,7 +165,7 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	@Override
-	public void evaluateValue() throws CaliculateException {
+	public void evaluateValue() throws EvaluateException {
 		try {
 			this.workValue = this.getRpn().doCaliculate(this, this.editPanel.networkDataModel.variables);
 		} catch (InterruptedException e) {

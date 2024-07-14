@@ -5,7 +5,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.core.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueFloat;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueInteger;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
