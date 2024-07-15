@@ -175,17 +175,13 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 				}
 
 				// 線分描画
-				// 直線
-				// g2.drawLine(connector.getCenterX(), connector.getCenterY(), src.getCenterX(), src.getCenterY());
-
-				// double x0 = src.getCenterX() ;
 				double x0 = src.getConnectOutputX();
 				double y0 = src.getCenterY();
 				double x2 = connector.getCenterX();
 				double y2 = connector.getCenterY();
-
 				RenderingUtil.drawConnectorStroke(g2, x0, y0, x2, y2);
 
+				// エラーがある場合
 				if (! connector.isTypeChekResultValid) {
 					double x1 = (x0 + x2) / 2;
 					double y1 = (y0 + y2) / 2;

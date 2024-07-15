@@ -207,11 +207,14 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 			else if (e.getKindId() == KindId.COMMENT) {
 				// コメント
-				// コメントの場合は width / height は無視する
+				// コメントの場合は width は無視する
 				String s = e.getRepresentExpression();
 				g2.setFont(GuiPreference.COMMENT_FONT);
 				Rectangle r = str2rect_forComment.str2rect(s, g2);
 				int sWidth = r.width < 16 ? 16 : r.width;
+				
+				// コメントの幅は、表示タイミングで上書きする。
+				e.w = sWidth + 38 + 12;
 
 				if (this.isOnMouse()) {
 					g2.setColor(GuiPreference.ICON_BACKGROUND_COLOR);
