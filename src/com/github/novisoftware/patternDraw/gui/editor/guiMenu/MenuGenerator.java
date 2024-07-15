@@ -107,6 +107,7 @@ public class MenuGenerator {
 						parts.valueType = Value.str2valueType.get(workTypeName);
 						if (parts.valueType == null) {
 							System.err.println("設定誤り: " + parts.dispName);
+							System.exit(1);
 						}
 						parts.rpn = workRPN;
 						parts.width = workWidth;

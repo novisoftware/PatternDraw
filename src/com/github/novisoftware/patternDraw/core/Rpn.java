@@ -16,17 +16,15 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
+import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueAbstractScalar;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueFloat;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueInteger;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueBoolean;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueString;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
-import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
@@ -62,7 +60,6 @@ public class Rpn {
 		this.makeDisplayString();
 	}
 
-
 	public Rpn convSetToRecallVariable() {
 		ArrayList<String> newArray = new ArrayList<String>();
 		for (String s : this.array) {
@@ -87,7 +84,7 @@ public class Rpn {
 	private void makeDisplayString() {
 		Stack<String> stack = new Stack<>();
 
-		for(String op : this.array) {
+		for(String op : this.getExpandedArray()) {
 			if (op.startsWith("'")) {
 				stack.push( op.substring(1));
 			}
@@ -141,6 +138,23 @@ public class Rpn {
 	 */
 	public ArrayList<String> getArray() {
 		return array;
+	}
+
+	public ArrayList<String> getExpandedArray() {
+		return RpnMacroUtil.expandMacro(this.array);
+	}
+
+	public boolean hasMacro() {
+		return RpnMacroUtil.hasMacro(this.array);
+	}
+
+	public void setRepeatN(int n) {
+		this.array = RpnMacroUtil.setRepeatN(this.array, n);
+		this.formula = RpnUtil.a2s(array);
+	}
+
+	public int getRepeatN() {
+		return RpnMacroUtil.getRepeatN(this.array);
 	}
 
 	/**
@@ -198,6 +212,51 @@ public class Rpn {
 	static InputStreamReader isr = new InputStreamReader(System.in);
 	static BufferedReader bufferedReader = new BufferedReader(isr);
 
+	private ValueType lastOpToValueType(String op) {
+		if (op.equals(":print")) {
+			return ValueType.NONE;
+		} else if (op.equals(":input:integer")) {
+			return ValueType.INTEGER;
+		} else if (op.equals(":set-variable")) {
+			return ValueType.NONE;
+		} else if (op.equals(":recall-variable")) {
+			return ValueType.UNDEF;
+		} else if (op.equals(":as-display-string")) {
+			return ValueType.STRING;
+		} else if (op.equals(":as-numeric")) {
+			return ValueType.SCALAR;
+		} else if (op.equals(":pi")) {
+			return ValueType.FLOAT;
+		} else if (op.equals(":e")) {
+			return ValueType.FLOAT;
+		} else if (op.equals(":as-boolean")) {
+			return ValueType.BOOLEAN;
+		} else if (op.equals(":if")) {
+			return ValueType.NONE;
+		} else if (op.equals("-") || op.equals("/") || op.equals("%") || op.equals("+") || op.equals("*")) {
+			return ValueType.SCALAR;
+		} else if (op.equals("^")) {
+			return ValueType.SCALAR;
+		} else if (op.equals(":C") || op.equals(":P")) {
+			return ValueType.INTEGER;
+		} else if (op.equals("!")) {
+			return ValueType.INTEGER;
+		} else if (op.equals(">") || op.equals(">=") || op.equals("<") || op.equals("<=") || op.equals("==")
+				|| op.equals("!=")) {
+			return ValueType.BOOLEAN;
+		} else if (op.equals(":continue") || op.equals(":break")) {
+			return ValueType.NONE;
+		} else if (op.equals(":and") || op.equals(":or") || op.equals(":xor")
+				|| op.equals(":nand") || op.equals(":nor") || op.equals(":xnor")) {
+			return ValueType.BOOLEAN;
+		} else if (op.equals(":not")) {
+			return ValueType.BOOLEAN;
+		} else if (op.equals(":join")) {
+			return ValueType.STRING;
+		}
+
+		return null;
+	}
 
 	/**
 	 * 結果の型を求める
@@ -220,11 +279,12 @@ public class Rpn {
 		Stack<String> stringStack = new Stack<>();
 
 		Debug.println("");
-		Debug.println("::CHECK RPN::   " + this.formula);
+		Debug.println("::CHECK RPN::   " + this.getExpandedArray());
 
+		ArrayList<String> inputArray = this.getExpandedArray();
+		
 		// ArrayList<String> array = Rpn.s2a(this.getRpnString());
-		for (String s : array) {
-
+		for (String s : inputArray) {
 			/**
 			 * 端子についているパラメーターを取得
 			 */
@@ -232,22 +292,18 @@ public class Rpn {
 			if (paraName != null) {
 				// ワードにパラメーター名がある。
 				// 端子を作ったりするときに使う。
-				Debug.println("IN LOOP paraName = " + paraName);
+				// Debug.println("IN LOOP paraName = " + paraName);
 
 				P021____AbstractGraphNodeElement src = ele.paramMapObj.get(paraName);
 				if (src == null) {
 					// 端子にパラメーターが設定されていない。
 					// (該当ノードを計算エラーにして、計算を打ち切らせるような場合)
-
-					// TODO: 端子がないとしても、ある程度は限定できるはずなので、それを考慮する。
-					// BOOL → SCALAR は、全然ダメとか。
-					return ValueType.UNDEF;
+					// 端子がないとしても、ある程度は限定できるはずなので、それを考慮する。
+					String lastOp = inputArray.get(inputArray.size() - 1);
+					return lastOpToValueType(lastOp);
 				}
-				// if (src instanceof P022_____RpnGraphNodeElement) {
-				//	stack.push(((P022_____RpnGraphNodeElement)src));
-				// }
 
-				Debug.println("para valueType = " + src.actualValueTypeResult );
+				// Debug.println("para valueType = " + src.actualValueTypeResult );
 
 				stack.push(src.actualValueTypeResult);
 				continue;
@@ -424,7 +480,7 @@ public class Rpn {
 		Stack<String> stringStack = new Stack<>();
 
 		// ArrayList<String> array = Rpn.s2a(this.getRpnString());
-		for (String s : array) {
+		for (String s : RpnMacroUtil.expandMacro(this.array)) {
 			// Thread に interrupt が入ったら終了させる作りにする
 			if (Thread.currentThread().isInterrupted()) {
 				throw new CaliculateException(CaliculateException.MESSAGE_INTERRUPTED);

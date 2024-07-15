@@ -10,6 +10,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
@@ -66,20 +67,33 @@ public class ContextMenu extends JPopupMenu {
 					this.addSeparator();
 				}
 			}
-		}
-
-		/*
-		if (icon != null) {
 			if (icon instanceof P022_____RpnGraphNodeElement) {
-				menuItem = new JMenuItem("テスト");
-				menuItem.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
+				final P022_____RpnGraphNodeElement rpnE = (P022_____RpnGraphNodeElement)icon;
+				final Rpn rpn = rpnE.getRpn();
+				if (rpn.hasMacro()) {
+					final Integer nowRepeatN = rpn.getRepeatN();
+					
+					JMenu menu = new JMenu("入力の数を変更");
+					
+					for (int i = 2; i <= 8; i++) {
+						final int i_ = i;
+						boolean mark = nowRepeatN != null && (nowRepeatN == i);
+						menuItem = GuiUtil.createMenuItem("" + i, mark);
+						menuItem.addActionListener(new ActionListener() {
+							public void actionPerformed(ActionEvent ev) {
+								rpn.setRepeatN(i_);
+								rpnE.setRpn(rpn);
+								editPanel.networkDataModel.analyze();
+								editPanel.repaint();
+							}
+						});
+						menu.add(menuItem);
 					}
-				});
-				this.add(menuItem);
+					this.add(menu);
+					this.addSeparator();
+				}
 			}
 		}
-		*/
 
 		if (icon != null) {
 			if (icon instanceof P022_____RpnGraphNodeElement) {

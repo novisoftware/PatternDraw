@@ -141,7 +141,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 	static public HashMap<String, ValueType> analyzeGetVariableNames(Rpn rpn) {
 		Stack<Value> stack = new Stack<>();
 
-		for (String s : rpn.getArray()) {
+		for (String s : rpn.getExpandedArray()) {
 			String r = RpnUtil.getRepresent(s);
 
 			if (r.equals(":loop")) {
@@ -279,7 +279,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 		Stack<String> commentStack = new Stack<>();
 
 		Rpn rpn = this.getRpn();
-		for (String s : rpn.getArray()) {
+		for (String s : rpn.getExpandedArray()) {
 			String r = RpnUtil.getRepresent(s);
 			String c = RpnUtil.getComment(s);
 

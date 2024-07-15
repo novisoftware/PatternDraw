@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.Rpn;
+import com.github.novisoftware.patternDraw.core.RpnMacroUtil;
 import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
@@ -118,7 +119,7 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	static public void buildParameterList2(P020___AbstractElement element, String s0) {
-		ArrayList<String> a = Rpn.s2a(s0);
+		ArrayList<String> a = RpnMacroUtil.expandMacro(Rpn.s2a(s0));
 		element.connectors = new ArrayList<>();
 
 		ArrayList<String> workParameters = new ArrayList<String>();
