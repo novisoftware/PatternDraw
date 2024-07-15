@@ -8,7 +8,7 @@
  * <li> 《ControlSignal抽象クラス》
  * <ul>
  * <li> BreakSignal ループのbreakで発生させる
- * <li> ContinueSignal ループので発生させる
+ * <li> ContinueSignal ループのcontinueで発生させる
  * </ul>
  * </ul>
  * </ul>
