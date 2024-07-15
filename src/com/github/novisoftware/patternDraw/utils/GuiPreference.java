@@ -11,6 +11,18 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 public class GuiPreference {
+	public static class NodeElementLimit {
+		public static final int SIZE_MIN_WIDTH = 40;
+		public static final int SIZE_MAX_WIDTH = 500;
+	}
+
+	public static class ControlElementLimit {
+		public static final int SIZE_MIN_WIDTH = 100;
+		public static final int SIZE_MIN_HEIGHT = 20;
+		public static final int SIZE_MAX_WIDTH = 1500;
+		public static final int SIZE_MAX_HEIGHT = 5000;
+	}
+
 	/**
 	 * GUIの文字表示で使いたいフォントのリスト。
 	 * 見つかったものがあればそれを使用する。

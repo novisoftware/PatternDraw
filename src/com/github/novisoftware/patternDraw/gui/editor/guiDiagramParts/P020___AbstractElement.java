@@ -300,21 +300,6 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 	}
 
 	/**
-	 * ドラッグされた時の動作
-	 *
-	 * @param moveX
-	 * @param moveY
-	 */
-	public void dragged(int moveX, int moveY) {
-		x += moveX;
-		y += moveY;
-	}
-
-	public boolean isHandled() {
-		return editPanel.getHandledObject() == this;
-	}
-
-	/**
 	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
 	 * 
 	 * @param before 変更前
@@ -340,5 +325,85 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 
 	public static String unescape(String s) {
 		return s;
+	}
+
+	// ドラッグ動作関連のユーティリティメソッド
+
+	protected DragMode dragMode = DragMode.MOVE;
+	static private final int EDGE_HIT_WIDTH = 5;
+	
+	/**
+	 * 管理上のx, y と 描画上での視覚的な x, y が一致すると限らないため、
+	 * オフセットを設定することができるようにする。
+	 */
+	protected int boxOffsetX = 0;
+	protected int boxOffsetY = 0;
+	
+	enum DragMode {
+		MOVE,
+		RESIZE_XY,
+		RESIZE_X,
+		RESIZE_Y
+	};
+	
+	/**
+	 * リサイズ開始判定用 右端判定
+	 * 
+	 * @param x 判定対象X座標
+	 * @return true: 含まれる false: 含まれない
+	 */
+	protected boolean isOnRightEdge(int x) {
+		int myX = this.x + boxOffsetX;
+		return (myX + this.w - EDGE_HIT_WIDTH <= x)
+				&& (x <= myX + this.w + EDGE_HIT_WIDTH);
+	}
+
+	/**
+	 * リサイズ開始判定用 下辺判定
+	 * 
+	 * @param y 判定対象Y座標
+	 * @return true: 含まれる false: 含まれない
+	 */
+	protected boolean isOnBottomEdge(int y) {
+		int myY = this.y + boxOffsetY;
+		return (myY + this.h - EDGE_HIT_WIDTH  <= y)
+				&& (y <= myY + this.h + EDGE_HIT_WIDTH);
+	}
+
+	/**
+	 * リサイズ開始判定用 左右範囲判定
+	 * 
+	 * @param x 判定対象X座標
+	 * @return true: 含まれる false: 含まれない
+	 */
+	protected boolean isOnWidth(int x) {
+		int myX = this.x + boxOffsetX;
+		return myX <= x && x <= myX + this.w;
+	}
+
+	/**
+	 * リサイズ開始判定用 上下範囲判定
+	 * 
+	 * @param y 判定対象Y座標
+	 * @return true: 含まれる false: 含まれない
+	 */
+	protected boolean isOnHeight(int y) {
+		int myY = this.y + boxOffsetY;
+		return myY <= y && y <= myY + this.h;
+	}
+	
+	/**
+	 * ドラッグされた時の動作
+	 *
+	 * @param moveX
+	 * @param moveY
+	 */
+	public void dragged(int moveX, int moveY) {
+		x += moveX;
+		y += moveY;
+	}
+
+	public boolean isHandled() {
+		return editPanel.getHandledObject() == this;
 	}
 }

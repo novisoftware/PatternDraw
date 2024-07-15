@@ -11,10 +11,12 @@ import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.DragMode;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
+import com.github.novisoftware.patternDraw.utils.GuiPreference.ControlElementLimit;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringRectUtil;
 
@@ -56,6 +58,8 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	public P021____AbstractGraphNodeElement(EditDiagramPanel editPanel) {
 		super(editPanel);
+		
+		this.boxOffsetX = 12;
 	}
 
 	/**
@@ -417,17 +421,44 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 			}
 		}
 
-		if (
-				1.0f * (this.x + this.w/2 - x)*(this.x + this.w/2 - x) * this.h*this.h
-				+ 1.0f * (this.y + this.h/2  -y)*(this.y + this.h/2 - y) * this.w*this.w
-				<
-				1.0f * this.h*this.h*this.w*this.w/4
+		if (this.getKindId() == KindId.CONSTANT
+				|| this.getKindId() == KindId.VARIABLE_REFER
+				|| this.getKindId() == KindId.VARIABLE_SET
 				) {
+			if (this.isOnRightEdge(x) && this.isOnHeight(y)) {
+				editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+				this.dragMode = DragMode.RESIZE_X;
+				return this;
+			}
+		}
+
+		if (this.isOnWidth(x) && this.isOnHeight(y)) {
 			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
+			this.dragMode = DragMode.MOVE;
 			return this;
 		}
 
-
 		return null;
+	}
+	
+	@Override
+	public void dragged(int moveX, int moveY) {
+		if (this.dragMode == DragMode.MOVE) {
+			this.x += moveX;
+			this.y += moveY;
+		}
+		else if (this.dragMode == DragMode.RESIZE_X) {
+			if (this.dragMode == DragMode.RESIZE_X) {
+				this.w += moveX;
+			}
+
+			// サイズを制限する
+			if (this.w < GuiPreference.NodeElementLimit.SIZE_MIN_WIDTH) {
+				this.w = GuiPreference.NodeElementLimit.SIZE_MIN_WIDTH;
+			}
+			if (this.w > GuiPreference.NodeElementLimit.SIZE_MAX_WIDTH) {
+				this.w = GuiPreference.NodeElementLimit.SIZE_MAX_WIDTH;
+			}
+		}
 	}
 }

@@ -356,6 +356,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 
 	/**
+	 * 描画。
 	 * 描画用メソッドは段階に分けて呼び出されます(引数: phase)。
 	 */
 	@Override
@@ -426,13 +427,6 @@ public class P030____ControlElement extends P020___AbstractElement {
 		}
 	}
 
-	enum DragMode {
-		MOVE,
-		RESIZE
-	};
-
-	DragMode dragMode = DragMode.MOVE;
-
 	/**
 	 * ドラッグ開始時
 	 */
@@ -447,20 +441,23 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 		if ( this.x < x && x < this.x + this.MARK_WIDTH
 				&& this.y < y && y < this.y + this.w) {
-			this.dragMode = DragMode.MOVE;
-
-			Debug.println("controller", "移動開始");
+			// Debug.println("controller", "移動開始");
 			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR));
-
+			this.dragMode = DragMode.MOVE;
 			return this;
 		}
-		if ( this.x + this.w - 5 < x && x < this.x + this.w + 5
-				&& this.y < y && y < this.y + this.w) {
-			this.dragMode = DragMode.RESIZE;
-
+		if (this.isOnRightEdge(x) && this.isOnBottomEdge(y)) {
+			// Debug.println("controller", "リサイズ開始");
 			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR));
-			Debug.println("controller", "リサイズ開始");
-
+			this.dragMode = DragMode.RESIZE_XY;
+			return this;
+		} else if (this.isOnRightEdge(x) && this.isOnHeight(y)) {
+			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR));
+			this.dragMode = DragMode.RESIZE_X;
+			return this;
+		} else if (this.isOnWidth(x) && this.isOnBottomEdge(y)) {
+			editDiagramPanel.setCursor(Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR));
+			this.dragMode = DragMode.RESIZE_Y;
 			return this;
 		}
 
@@ -554,55 +551,58 @@ public class P030____ControlElement extends P020___AbstractElement {
 //							Debug.println("controller", "recursive drag.");
 							c.dragMode = this.dragMode;
 							c.dragged(x, y, false);
-
-							/*
-							c.x += x;
-							c.y += y;
-							*/
-
 						}
 					}
 				}
 			}
 
-			// HashMap<Controller, ArrayList<ElementIcon>> map = this.editPanel.networkDataModel.controlled_head;
-
-
 		}
-		else if (this.dragMode == DragMode.RESIZE) {
+		else if (this.dragMode == DragMode.RESIZE_XY
+				|| this.dragMode == DragMode.RESIZE_X
+				|| this.dragMode == DragMode.RESIZE_Y
+				) {
 			int w_old = this.w;
 //			int h_old = this.h;
 
-
-			this.w += x;
-			this.h += y;
+			if (this.dragMode == DragMode.RESIZE_XY
+					|| this.dragMode == DragMode.RESIZE_X) {
+				this.w += x;
+			}
+			if (this.dragMode == DragMode.RESIZE_XY
+					|| this.dragMode == DragMode.RESIZE_Y) {
+				this.h += y;
+			}
 
 			// サイズを制限する
-			if (this.w < 100) {
-				this.w = 100;
+			if (this.w < GuiPreference.ControlElementLimit.SIZE_MIN_WIDTH) {
+				this.w = GuiPreference.ControlElementLimit.SIZE_MIN_WIDTH;
 			}
-			if (this.h < 20) {
-				this.h = 20;
+			if (this.h < GuiPreference.ControlElementLimit.SIZE_MIN_HEIGHT) {
+				this.h = GuiPreference.ControlElementLimit.SIZE_MIN_HEIGHT;
 			}
-			if (this.w > 1500) {
-				this.w = 1500;
+			if (this.w > GuiPreference.ControlElementLimit.SIZE_MAX_WIDTH) {
+				this.w = GuiPreference.ControlElementLimit.SIZE_MAX_WIDTH;
 			}
-			if (this.h > 5000) {
-				this.h = 5000;
+			if (this.h > GuiPreference.ControlElementLimit.SIZE_MAX_HEIGHT) {
+				this.h = GuiPreference.ControlElementLimit.SIZE_MAX_HEIGHT;
 			}
 
 			if (controllerGroup != null) {
 				for (P030____ControlElement c : controllerGroup) {
 					if (c != this) {
-						if (c.y == this.y && c.x > this.x) {
-							c.x += this.w - w_old;
+						if (this.dragMode == DragMode.RESIZE_XY
+								|| this.dragMode == DragMode.RESIZE_X) {
+							if (c.y == this.y && c.x > this.x) {
+								c.x += this.w - w_old;
+							}
 						}
-						c.h = this.h;
+						if (this.dragMode == DragMode.RESIZE_XY
+							|| this.dragMode == DragMode.RESIZE_Y) {
+							c.h = this.h;
+						}
 					}
 				}
 			}
-
-
 		}
 	}
 
