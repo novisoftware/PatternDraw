@@ -418,25 +418,7 @@ DESCRIPTION: 2つの数値を足します。
 <input1:SCALAR>
 <input2:SCALAR>
 +
--->RPN
----->DEFINE
-
-
-KIND: 演算子
-TYPE: SCALAR
-DISPNAME: 算術演算子/加算(5入力・実験的)
-WIDTH: 50
-HEIGHT: 50
-DESCRIPTION: 入力された数値を足します。
-<input1:SCALAR>
-<input2:SCALAR>
-+
-<input3:SCALAR>
-+
-<input4:SCALAR>
-+
-<input5:SCALAR>
-+
+:MACRO_REPEAT=2,2
 -->RPN
 ---->DEFINE
 
@@ -462,6 +444,7 @@ DESCRIPTION: 2つの数値を乗算します。
 <input1:SCALAR>
 <input2:SCALAR>
 *
+:MACRO_REPEAT=2,2
 -->RPN
 ---->DEFINE
 
@@ -617,6 +600,7 @@ DESCRIPTION: aとbの両方が真の場合、真になります。
 <input1:BOOLEAN>
 <input2:BOOLEAN>
 :and
+:MACRO_REPEAT=2,2
 -->RPN
 ---->DEFINE
 
@@ -629,6 +613,7 @@ DESCRIPTION: aとbのどちらかが真の場合、真になります。
 <input1:BOOLEAN>
 <input2:BOOLEAN>
 :or
+:MACRO_REPEAT=2,2
 -->RPN
 ---->DEFINE
 
@@ -693,53 +678,16 @@ DESCRIPTION: 論理演算子XNORです。
 
 KIND: 演算子
 TYPE: STRING
-DISPNAME: 文字列の演算子/文字列を連結/2入力
+DISPNAME: 文字列の演算子/文字列を連結
 WIDTH: 50
 HEIGHT: 50
 DESCRIPTION: 入力を連結した文字列を作成します。
 <input1:ANY>
 <input2:ANY> :join
+:MACRO_REPEAT=2,2
 -->RPN
 ---->DEFINE
 
-KIND: 演算子
-TYPE: STRING
-DISPNAME: 文字列の演算子/文字列を連結/3入力
-WIDTH: 50
-HEIGHT: 50
-DESCRIPTION: 入力を連結した文字列を作成します。
-<input1:ANY>
-<input2:ANY> :join
-<input3:ANY> :join
--->RPN
----->DEFINE
-
-KIND: 演算子
-TYPE: STRING
-DISPNAME: 文字列の演算子/文字列を連結/4入力
-WIDTH: 50
-HEIGHT: 50
-DESCRIPTION: 入力を連結した文字列を作成します。
-<input1:ANY>
-<input2:ANY> :join
-<input3:ANY> :join
-<input4:ANY> :join
--->RPN
----->DEFINE
-
-KIND: 演算子
-TYPE: STRING
-DISPNAME: 文字列の演算子/文字列を連結/5入力
-WIDTH: 50
-HEIGHT: 50
-DESCRIPTION: 入力を連結した文字列を作成します。
-<input1:ANY>
-<input2:ANY> :join
-<input3:ANY> :join
-<input4:ANY> :join
-<input5:ANY> :join
--->RPN
----->DEFINE
 
 KIND: 演算子
 TYPE: SCALAR
@@ -753,6 +701,7 @@ DESCRIPTION: IF式です。
 :if
 -->RPN
 ---->DEFINE
+
 
 KIND: 演算子
 TYPE: STRING
