@@ -13,11 +13,6 @@ public class ValueTransform extends Value {
 		internal = new double[3][3];
 	}
 
-	@Override
-	public String toString() {
-		return internal.toString();
-	}
-
 	/**
 	 * 行列と以下のように対応します。
 	 * <pre>
@@ -32,6 +27,33 @@ public class ValueTransform extends Value {
 		return internal;
 	}
 
+	/**
+	 * アフィン変換のテキスト出力は行列を表示します。
+	 * 
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append('[');
+		for (int i = 0; i < 3; i++) {
+			if (i != 0) {
+				sb.append(",\n");
+			}
+			sb.append('[');
+			for (int j = 0; j < 3; j++) {
+				if (j != 0) {
+					sb.append(", ");
+				}
+				sb.append(String.format("%6.4f", internal[i][j]));
+			}
+			sb.append(']');
+		}
+		sb.append(']');
+
+		return sb.toString();
+	}
+	
 	/**
 	 *
 	 * @param other this × other の other を指定する
