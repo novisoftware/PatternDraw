@@ -731,8 +731,8 @@ DESCRIPTION: IF式です。
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 出力/表示
-DESCRIPTION: コンソールウィンドウに表示します
+DISPNAME: 出力/テキスト出力
+DESCRIPTION: テキストを出力します
 <input:ANY>
 :print
 -->RPN

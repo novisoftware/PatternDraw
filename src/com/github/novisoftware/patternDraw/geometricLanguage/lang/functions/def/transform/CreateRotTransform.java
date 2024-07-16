@@ -42,7 +42,7 @@ public class CreateRotTransform implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"点の並び"};
+		String[] ret = {"角度"};
 		return ret;
 	}
 
