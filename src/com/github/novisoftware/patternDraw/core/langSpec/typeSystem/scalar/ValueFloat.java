@@ -48,7 +48,12 @@ public class ValueFloat extends ValueAbstractScalar {
 
 	@Override
 	public ValueAbstractScalar mod(ValueAbstractScalar a) {
-		return new ValueFloat(this.internal % ((ValueFloat)a).internal);
+		double remainder = this.internal % ((ValueFloat)a).internal;
+		if (remainder < 0) {
+			remainder += ((ValueFloat)a).internal;
+		}
+
+		return new ValueFloat(remainder);
 	}
 
 	@Override

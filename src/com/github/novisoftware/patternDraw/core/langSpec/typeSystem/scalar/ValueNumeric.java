@@ -62,7 +62,12 @@ public class ValueNumeric extends ValueAbstractScalar {
 	@Override
 	public ValueAbstractScalar mod(ValueAbstractScalar a) {
 		BigDecimal a2 = ((ValueNumeric)a).internal;
-		return new ValueNumeric(this.internal.remainder(a2));
+		BigDecimal remainder = this.internal.remainder(a2);
+		if (remainder.compareTo(BigDecimal.ZERO) < 0) {
+			remainder = remainder.add(a2);
+		}
+		
+		return new ValueNumeric(remainder);
 	}
 
 	/**

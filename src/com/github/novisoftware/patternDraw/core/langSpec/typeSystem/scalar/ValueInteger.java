@@ -75,7 +75,13 @@ public class ValueInteger extends ValueAbstractScalar {
 	@Override
 	public ValueAbstractScalar mod(ValueAbstractScalar a) {
 		BigInteger a2 = ((ValueInteger)a).internal;
-		return new ValueInteger(this.internal.mod(a2));
+		
+		BigInteger remainder = this.internal.remainder(a2);
+		if (remainder.compareTo(BigInteger.ZERO) < 0) {
+			remainder = remainder.add(a2);
+		}
+
+		return new ValueInteger(remainder);
 	}
 
 	@Override
