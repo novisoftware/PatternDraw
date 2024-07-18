@@ -792,13 +792,15 @@ public class NetworkDataModel {
 				
 				try {
 					ArrayList<P020___AbstractElement> eList = control_contains.get(control);
-					for(P020___AbstractElement e0 : eList) {
-						if (e0 instanceof P022_____RpnGraphNodeElement) {
-							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-							evaluateOneGraph(element);
-						}
-						else if (e0 instanceof P030____ControlElement) {
-							evaluateControl((P030____ControlElement)e0);
+					if (eList != null) {
+						for(P020___AbstractElement e0 : eList) {
+							if (e0 instanceof P022_____RpnGraphNodeElement) {
+								P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
+								evaluateOneGraph(element);
+							}
+							else if (e0 instanceof P030____ControlElement) {
+								evaluateControl((P030____ControlElement)e0);
+							}
 						}
 					}
 				} catch (EvaluateException e) {
@@ -825,28 +827,30 @@ public class NetworkDataModel {
 			Value lastValue = null;
 			{
 				ArrayList<P020___AbstractElement> eList = control_contains.get(control);
-				for(P020___AbstractElement e0 : eList) {
-					if (e0 instanceof P022_____RpnGraphNodeElement) {
-						P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-						try {
-							lastValue = evaluateOneGraph(element);
-						} catch (EvaluateException e) {
-							if (e instanceof CaliculateException) {
-								throw (CaliculateException)e;
-							} else {
-								// 何もしない
-								// そもそも if 節の中で break等を想定していない
+				if (eList != null) {
+					for(P020___AbstractElement e0 : eList) {
+						if (e0 instanceof P022_____RpnGraphNodeElement) {
+							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
+							try {
+								lastValue = evaluateOneGraph(element);
+							} catch (EvaluateException e) {
+								if (e instanceof CaliculateException) {
+									throw (CaliculateException)e;
+								} else {
+									// 何もしない
+									// そもそも if 節の中で break等を想定していない
+								}
 							}
 						}
+						else if (e0 instanceof P030____ControlElement) {
+							Debug.println("RUN", "INVALID STRUCTURE. 妥当でない構造。");
+						}
+	
+						if (this.hasStopRequest) {
+							return;
+						}
+						Thread.sleep(0);
 					}
-					else if (e0 instanceof P030____ControlElement) {
-						Debug.println("RUN", "INVALID STRUCTURE. 妥当でない構造。");
-					}
-
-					if (this.hasStopRequest) {
-						return;
-					}
-					Thread.sleep(0);
 				}
 			}
 			Debug.println("RUN", "last value is " + lastValue + (lastValue != null ? ("  " + lastValue.toDebugString()):""));
@@ -867,27 +871,29 @@ public class NetworkDataModel {
 				if (lastValue != null && lastValue.valueType == Value.ValueType.BOOLEAN  && lastValue.sameTo(true)) {
 					Debug.println("RUN", "THEN節");
 					ArrayList<P020___AbstractElement> eList = control_contains.get(thenBlock);
-					for(P020___AbstractElement e0 : eList) {
-						if (e0 instanceof P022_____RpnGraphNodeElement) {
-							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-							try {
-								evaluateOneGraph(element);
-							} catch (EvaluateException e) {
-								if (e instanceof CaliculateException) {
-									throw (CaliculateException)e;
-								} else {
-									// 何もしない
-									// そもそも then/else 節の中で break等を想定していない
+					if (eList != null) {
+						for(P020___AbstractElement e0 : eList) {
+							if (e0 instanceof P022_____RpnGraphNodeElement) {
+								P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
+								try {
+									evaluateOneGraph(element);
+								} catch (EvaluateException e) {
+									if (e instanceof CaliculateException) {
+										throw (CaliculateException)e;
+									} else {
+										// 何もしない
+										// そもそも then/else 節の中で break等を想定していない
+									}
 								}
 							}
+							else if (e0 instanceof P030____ControlElement) {
+								evaluateControl((P030____ControlElement)e0);
+							}
+							if (this.hasStopRequest) {
+								return;
+							}
+							Thread.sleep(0);
 						}
-						else if (e0 instanceof P030____ControlElement) {
-							evaluateControl((P030____ControlElement)e0);
-						}
-						if (this.hasStopRequest) {
-							return;
-						}
-						Thread.sleep(0);
 					}
 				}
 			}
@@ -896,28 +902,30 @@ public class NetworkDataModel {
 					Debug.println("RUN", "ELSE節");
 
 					ArrayList<P020___AbstractElement> eList = control_contains.get(elseBlock);
-					for(P020___AbstractElement e0 : eList) {
-						if (e0 instanceof P022_____RpnGraphNodeElement) {
-							P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
-							try {
-								evaluateOneGraph(element);
-							} catch (EvaluateException e) {
-								if (e instanceof CaliculateException) {
-									throw (CaliculateException)e;
-								} else {
-									// 何もしない
-									// そもそも then/else 節の中で break等を想定していない
+					if (eList != null) {
+						for(P020___AbstractElement e0 : eList) {
+							if (e0 instanceof P022_____RpnGraphNodeElement) {
+								P022_____RpnGraphNodeElement element = ((P022_____RpnGraphNodeElement) e0);
+								try {
+									evaluateOneGraph(element);
+								} catch (EvaluateException e) {
+									if (e instanceof CaliculateException) {
+										throw (CaliculateException)e;
+									} else {
+										// 何もしない
+										// そもそも then/else 節の中で break等を想定していない
+									}
 								}
 							}
+							else if (e0 instanceof P030____ControlElement) {
+								evaluateControl((P030____ControlElement)e0);
+							}
+							
+							if (this.hasStopRequest) {
+								return;
+							}
+							Thread.sleep(0);
 						}
-						else if (e0 instanceof P030____ControlElement) {
-							evaluateControl((P030____ControlElement)e0);
-						}
-						
-						if (this.hasStopRequest) {
-							return;
-						}
-						Thread.sleep(0);
 					}
 				}
 			}
