@@ -533,21 +533,21 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 										thisObj.getVariables().put(f_keyName, value);
 										thisObj.callback.setJoin(true);
 										Thread t = new Thread(thisObj.callback);
-										System.out.println("個別処理(1枚)の開始中 ... " + i + "/" + N_SPLIT);
+										Debug.println("個別処理(1枚)の開始中 ... " + i + "/" + N_SPLIT);
 										t.start();
-										System.out.println("個別処理(1枚)の開始(起動済)");
+										Debug.println("個別処理(1枚)の開始(起動済)");
 										try {
 											t.join();
 										} catch (InterruptedException e) {
-											System.out.println("個別処理(1枚)の打ち切り");
+											Debug.println("個別処理(1枚)の打ち切り");
 											// 中断の場合、後続するファイル出力等はしない。
 											return;
 										}
-										System.out.println("個別処理(1枚)の終了");
+										Debug.println("個別処理(1枚)の終了");
 										// thisObj.callback.run();
 
-										System.out.println("====================================");
-										System.out.println("" + doubleValue);
+										Debug.println("====================================");
+										Debug.println("" + doubleValue);
 
 
 										File outputFile = new File(file, String.format(filename, i));
@@ -587,10 +587,10 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 								});
 							}
 						};
-						System.out.println("starting worker thread.");
+						Debug.println("starting worker thread.");
 						Thread t = new Thread(r);
 						t.start();
-						System.out.println("worker thread started.");
+						Debug.println("worker thread started.");
 					}
 				}
 			});

@@ -342,7 +342,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 					editDiagramPanel.paramDefEditWindow.setVisible(true);
 					return;
 				}
-				System.out.println("パラメーター編集画面のオブジェクトを作成");
+				Debug.println("パラメーター編集画面のオブジェクトを作成");
 
 
 				ArrayList<ParameterDefine> params = editDiagramPanel.networkDataModel.paramDefList;
@@ -350,7 +350,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 				Runnable callback = new Runnable() {
 					@Override
 					public void run() {
-						System.out.println("パラメーター編集画面のオブジェクトを 破棄");
+						Debug.println("パラメーター編集画面のオブジェクトを 破棄");
 						editDiagramPanel.paramDefEditWindow = null;
 					}
 				};

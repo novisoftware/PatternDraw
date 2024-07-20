@@ -197,12 +197,12 @@ public class ContextMenu extends JPopupMenu {
 			menuItem.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (editPanel.paramDefEditWindow != null) {
-						System.out.println("パラメーター編集画面のオブジェクトがあったので 再表示 するだけ");
+						Debug.println("パラメーター編集画面のオブジェクトがあったので 再表示 するだけ");
 
 						editPanel.paramDefEditWindow.setVisible(true);
 						return;
 					}
-					System.out.println("パラメーター編集画面のオブジェクトを作成");
+					Debug.println("パラメーター編集画面のオブジェクトを作成");
 
 
 					ArrayList<ParameterDefine> params = editPanel.networkDataModel.paramDefList;
@@ -210,7 +210,7 @@ public class ContextMenu extends JPopupMenu {
 					Runnable callback = new Runnable() {
 						@Override
 						public void run() {
-							System.out.println("パラメーター編集画面のオブジェクトを 破棄");
+							Debug.println("パラメーター編集画面のオブジェクトを 破棄");
 							editPanel.paramDefEditWindow = null;
 						}
 					};
@@ -260,11 +260,6 @@ public class ContextMenu extends JPopupMenu {
 			MenuGenerator g = new MenuGenerator();
 			partsList = g.generateMenuList(editPanel);
 		}
-
-		/*
-		 * for (Parts a : partsList) { System.out.println(a.description);
-		 * System.out.println(a.rpn); System.out.println(); }
-		 */
 
 		// メニュー要素を展開する
 		// (定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する)

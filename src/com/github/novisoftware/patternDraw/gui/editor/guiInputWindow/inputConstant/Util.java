@@ -12,6 +12,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____Co
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.EditParamDefWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class Util {
@@ -24,7 +25,7 @@ public class Util {
 		buttonOk.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ev) {
-				System.out.println("Set RPN:" + RpnUtil.a2s(tf.rpnArray));
+				Debug.println("Set RPN:" + RpnUtil.a2s(tf.rpnArray));
 				P020___AbstractElement te = tf.targetElement;
 				if (te instanceof P030____ControlElement) {
 					P030____ControlElement e = (P030____ControlElement) te;
