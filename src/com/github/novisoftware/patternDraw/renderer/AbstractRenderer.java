@@ -3,31 +3,32 @@ package com.github.novisoftware.patternDraw.renderer;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 
-import com.github.novisoftware.patternDraw.Main;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 
 public abstract class AbstractRenderer implements Renderer {
+	public static int IMAGE_WIDTH = 800;
+	public static int IMAGE_HEIGHT = 800;
 	private final double ZOOM = 300;
 
 	protected int x2int(double x) {
-		return (int) Math.round(x * ZOOM + Main.IMAGE_WIDTH / 2);
+		return (int) Math.round(x * ZOOM + AbstractRenderer.IMAGE_WIDTH / 2);
 	}
 
 	protected int y2int(double y) {
-		return (int) Math.round(y * ZOOM + Main.IMAGE_HEIGHT / 2);
+		return (int) Math.round(y * ZOOM + AbstractRenderer.IMAGE_HEIGHT / 2);
 	}
 
 	static final double SCALING = 200.0;
 	static double SCALE2 = 1;
 
 	public double int2x(int x) {
-		return (x - Main.IMAGE_WIDTH / 2) / SCALING / SCALE2;
+		return (x - AbstractRenderer.IMAGE_WIDTH / 2) / SCALING / SCALE2;
 	}
 
 	public double int2y(int y) {
-		return (y - Main.IMAGE_HEIGHT / 2) / SCALING / SCALE2;
+		return (y - AbstractRenderer.IMAGE_HEIGHT / 2) / SCALING / SCALE2;
 	}
 
 	ArrayList<String> context = new ArrayList<String>();

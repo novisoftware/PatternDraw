@@ -6,9 +6,9 @@ import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import com.github.novisoftware.patternDraw.Main;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
+import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
 
@@ -19,6 +19,8 @@ public class Path implements Renderer {
 	private double strokeWidth_SVG;
 	private String fillColor;
 	boolean isFill;
+	private final double ZOOM = 300;
+
 
 	public Path(Pos a, Pos b, String strokeColor) {
 		this.positions = new ArrayList<Pos>();
@@ -55,25 +57,23 @@ public class Path implements Renderer {
 		this.strokeWidth_SVG = width;
 	}
 
-	private final double ZOOM = 300;
-
 	private int x2int(double x) {
-		return (int) Math.round(x * ZOOM + Main.IMAGE_WIDTH / 2);
+		return (int) Math.round(x * ZOOM + AbstractRenderer.IMAGE_WIDTH / 2);
 	}
 
 	private int y2int(double y) {
-		return (int) Math.round(y * ZOOM + Main.IMAGE_HEIGHT / 2);
+		return (int) Math.round(y * ZOOM + AbstractRenderer.IMAGE_HEIGHT / 2);
 	}
 
 	static final double SCALING = 200.0;
 	static double SCALE2 = 1;
 
 	public double int2x(int x) {
-		return (x - Main.IMAGE_WIDTH / 2) / SCALING / SCALE2;
+		return (x - AbstractRenderer.IMAGE_WIDTH / 2) / SCALING / SCALE2;
 	}
 
 	public double int2y(int y) {
-		return (y - Main.IMAGE_HEIGHT / 2) / SCALING / SCALE2;
+		return (y - AbstractRenderer.IMAGE_HEIGHT / 2) / SCALING / SCALE2;
 	}
 
 	HashMap<String, Color> colorCache = new HashMap<String, Color>();

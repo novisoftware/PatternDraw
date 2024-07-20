@@ -2,8 +2,8 @@ package com.github.novisoftware.patternDraw.svg;
 
 import java.util.ArrayList;
 
-import com.github.novisoftware.patternDraw.Main;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
+import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 
 public class SvgInstruction {
 	private final double ZOOM_SVG = 300;
@@ -18,11 +18,11 @@ public class SvgInstruction {
 	}
 
 	private double x2double(double x) {
-		return (x * ZOOM_SVG + Main.IMAGE_WIDTH / 2);
+		return (x * ZOOM_SVG + AbstractRenderer.IMAGE_WIDTH / 2);
 	}
 
 	private double y2double(double y) {
-		return (y * ZOOM_SVG + Main.IMAGE_HEIGHT / 2);
+		return (y * ZOOM_SVG + AbstractRenderer.IMAGE_HEIGHT / 2);
 	}
 
 	public String line(double dx0, double dy0, double dx1, double dy1) {
