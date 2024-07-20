@@ -1,7 +1,6 @@
 package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.core.exception.CaliculateException;

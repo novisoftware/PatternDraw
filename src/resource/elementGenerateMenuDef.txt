@@ -20,15 +20,14 @@ FUNCTION: series_on_circle
 KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/円周上に並んだ点(周回)
-DESCRIPTION: 円周上に点を並べて配置します(周回)。
+DESCRIPTION: 円周上に点を並べて配置します(周回します)。
 FUNCTION: series_on_circle2
 ---->DEFINE
 
-
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の座標を加算
-DESCRIPTION: 円周上の点の座標を加算します。
+DISPNAME: 点の集まり/点の座標を加算合成
+DESCRIPTION: 点の座標を加算合成します。
 FUNCTION: add_2_point_series
 ---->DEFINE
 
@@ -41,22 +40,29 @@ FUNCTION: single_position
 
 KIND: 処理
 TYPE: POS_LIST
+DISPNAME: 点の集まり/並び順を反転
+DESCRIPTION: 点の並びの順を逆順に並べ替えます。
+FUNCTION: pos_reverse
+---->DEFINE
+
+KIND: 処理
+TYPE: POS_LIST
 DISPNAME: 点の集まり/並び順をローテート
-DESCRIPTION: 座標の系列の並び順をローテートします。
+DESCRIPTION: 点の並び順をローテートします。
 FUNCTION: rotate_point_list
 ---->DEFINE
 
 KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/点の並びを閉じる
-DESCRIPTION: 座標の系列を操作し、最初の点=最後の点にします。
+DESCRIPTION: 点の並びを操作し、最初の点=最後の点にします。
 FUNCTION: close_pos_list
 ---->DEFINE
 
 KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/点の集まりを辿る
-DESCRIPTION: 複数の座標の系列を辿ります。
+DESCRIPTION: 複数の点の並びの系列を辿り、1系列の点の並びにします。
 FUNCTION: pos_to_walk
 ---->DEFINE
 
@@ -72,7 +78,7 @@ FUNCTION: pos_to_pos_skip
 KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/2つの点の集まりをつなぐ
-DESCRIPTION: 2つの点の集まりをつなぎます。
+DESCRIPTION: 2つの点の集まりを、1つめ→2つめとなるようつなぎます。
 FUNCTION: pos_concat
 ---->DEFINE
 
@@ -87,15 +93,21 @@ FUNCTION: pos_zip
 
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりをクリッピング
-DESCRIPTION: 点の集まりをクリッピングします。
-FUNCTION: pos_clipping
+DISPNAME: 点の集まり/系列のあてはめを繰り返す
+DESCRIPTION: 点の並びの系列に、別の系列の点の並びをあてはめます。
+FUNCTION: pos_apply_as_texture
 ---->DEFINE
-
 
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりを角度でソート
+DISPNAME: 点の集まり/一部分を取り出す
+DESCRIPTION: 点の並びから一部分を取り出します。
+FUNCTION: pos_to_sub_pos_list
+---->DEFINE
+
+KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりを角度で並べ替え
 DESCRIPTION: 点の集まりを角度順に並べ替えます。
 FUNCTION: pos_sort
 ---->DEFINE
@@ -112,6 +124,14 @@ TYPE: LINE_LIST
 DISPNAME: 線の集まり/点を線で結ぶ
 DESCRIPTION: 点を線で結びます。
 FUNCTION: line_from_1_series
+---->DEFINE
+
+
+KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりをクリッピング
+DESCRIPTION: 点の集まりをクリッピングします。
+FUNCTION: pos_clipping
 ---->DEFINE
 
 

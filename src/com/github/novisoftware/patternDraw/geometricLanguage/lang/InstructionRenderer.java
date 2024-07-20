@@ -22,7 +22,6 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.SliderPar
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.Path;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
 import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
-import com.github.novisoftware.patternDraw.gui.SettingWindow;
 import com.github.novisoftware.patternDraw.renderer.AbstractRenderer;
 import com.github.novisoftware.patternDraw.renderer.Renderer;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
@@ -275,6 +274,7 @@ public class InstructionRenderer extends AbstractRenderer {
 					isFullyDefined = false;
 				}
 			}
+			/*
 			if (! isFullyDefined) {
 				// Debug("wait to set variable.");
 				final SettingWindow setting = new SettingWindow(this.params, this.variables, resetWait, true);
@@ -283,6 +283,7 @@ public class InstructionRenderer extends AbstractRenderer {
 				setting.setVisible(true);
 				setting.repaint();
 			}
+			*/
 			// 一旦仮にNOP。
 			// 入力欄を表示する箇所にしたい。
 

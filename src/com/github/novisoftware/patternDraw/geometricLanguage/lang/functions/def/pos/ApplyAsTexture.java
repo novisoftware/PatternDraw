@@ -9,10 +9,11 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.PosUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class Add2PointSeries implements FunctionDefInterface {
-	public static final String NAME = "add_2_point_series";
+public class ApplyAsTexture implements FunctionDefInterface {
+	public static final String NAME = "pos_apply_as_texture";
 
 	@Override
 	public String getName() {
@@ -21,12 +22,12 @@ public class Add2PointSeries implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "2系列の点を加算";
+		return "系列の当てはめ";
 	}
 
 	@Override
 	public String getDescription() {
-		return "2系列の点の座標を加算します。";
+		return "点の系列を別の系列に当てはめ、繰り返します。";
 	}
 
 	@Override
@@ -37,13 +38,13 @@ public class Add2PointSeries implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"positions1", "positions2"};
+		String[] ret = {"base", "patternPosisions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"系列1", "系列2"};
+		String[] ret = {"系列1(ベースの系列)", "系列2(あてはめる系列)"};
 		return ret;
 	}
 
@@ -54,20 +55,9 @@ public class Add2PointSeries implements FunctionDefInterface {
 
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		ArrayList<Pos> posList1 = Value.getPosList(param.get(0));
-		ArrayList<Pos> posList2 = Value.getPosList(param.get(1));
+		ArrayList<Pos> basePosList = Value.getPosList(param.get(0));
+		ArrayList<Pos> patternPosList = Value.getPosList(param.get(1));
 
-		ArrayList<Pos> ret = new ArrayList<Pos>();
-		int n = posList1.size();
-		int m = posList2.size();
-		int loopLen = n > m ? n : m;
-		for (int i = 0; i < loopLen; i++) {
-			Pos a = posList1.get(i % n);
-			Pos b = posList2.get(i % n);
-
-			ret.add(new Pos(a.getX()+b.getX(), a.getY() + b.getY()));
-		}
-
-		return new ValuePosList(ret);
+		return new ValuePosList(PosUtil.applyAsTexture(basePosList, patternPosList));
 	}
 }

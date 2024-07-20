@@ -9,10 +9,11 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
+import com.github.novisoftware.patternDraw.geometricLanguage.entity.PosUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
-public class Add2PointSeries implements FunctionDefInterface {
-	public static final String NAME = "add_2_point_series";
+public class PosToReverse implements FunctionDefInterface {
+	public static final String NAME = "pos_reverse";
 
 	@Override
 	public String getName() {
@@ -21,29 +22,29 @@ public class Add2PointSeries implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "2系列の点を加算";
+		return "並びを逆順にする";
 	}
 
 	@Override
 	public String getDescription() {
-		return "2系列の点の座標を加算します。";
+		return "点の並び順を逆順にします。";
 	}
 
 	@Override
 	public ValueType[] getParameterTypes() {
-		ValueType[] ret = {ValueType.POS_LIST, ValueType.POS_LIST};
+		ValueType[] ret = {ValueType.POS_LIST};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"positions1", "positions2"};
+		String[] ret = {"positions"};
 		return ret;
 	}
 
 	@Override
 	public String[] getParameterDescs() {
-		String[] ret = {"系列1", "系列2"};
+		String[] ret = {"点の並び"};
 		return ret;
 	}
 
@@ -54,20 +55,7 @@ public class Add2PointSeries implements FunctionDefInterface {
 
 	@Override
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
-		ArrayList<Pos> posList1 = Value.getPosList(param.get(0));
-		ArrayList<Pos> posList2 = Value.getPosList(param.get(1));
-
-		ArrayList<Pos> ret = new ArrayList<Pos>();
-		int n = posList1.size();
-		int m = posList2.size();
-		int loopLen = n > m ? n : m;
-		for (int i = 0; i < loopLen; i++) {
-			Pos a = posList1.get(i % n);
-			Pos b = posList2.get(i % n);
-
-			ret.add(new Pos(a.getX()+b.getX(), a.getY() + b.getY()));
-		}
-
-		return new ValuePosList(ret);
+		ArrayList<Pos> posList = Value.getPosList(param.get(0));
+		return new ValuePosList(PosUtil.reverse(posList));
 	}
 }

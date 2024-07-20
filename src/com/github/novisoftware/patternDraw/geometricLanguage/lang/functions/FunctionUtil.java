@@ -4,31 +4,10 @@ import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefIn
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.color.*;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineClipping;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineClipping_masking;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1Series;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1SeriesClose;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom1SeriesCloseOverWrap;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.LineFrom2Series;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.RotateLineList;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.lineToDraw.LineToDraw;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.Add2PosintSeries;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.ClosePosList;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.LinesToCrossPoints;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosClipping;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosConcat;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosSortByAngle;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToPosSkip;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosToWalk;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.PosZip;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.RotatePointList;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SeriesOnCircle;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SeriesOnCircle2;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.SinglePosition;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToDrawPolyLine;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToDrawPolyLineClose;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToDrawPolyLineCloseOverWrap;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.PosToFill;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.lineToDraw.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.pos.*;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.posToDraw.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.transform.*;
 
 public class FunctionUtil {
@@ -36,8 +15,8 @@ public class FunctionUtil {
 		// 注:
 		// return しているので else if にする必要なし。
 		// (幅を揃えて誤記があったら分かるようにしている)
-		if (name.equals(Add2PosintSeries.NAME)) {
-			return new Add2PosintSeries();
+		if (name.equals(Add2PointSeries.NAME)) {
+			return new Add2PointSeries();
 		}
 		if (name.equals(ClosePosList.NAME)) {
 			return new ClosePosList();
@@ -74,6 +53,18 @@ public class FunctionUtil {
 		}
 		if (name.equals(PosToWalk.NAME)) {
 			return new PosToWalk();
+		}
+		if (name.equals(ApplyAsTexture.NAME)) {
+			return new ApplyAsTexture();
+		}
+		if (name.equals(PosToSubPosList.NAME)) {
+			return new PosToSubPosList();
+		}
+		if (name.equals(PosToSubPosList.NAME)) {
+			return new PosToSubPosList();
+		}
+		if (name.equals(PosToReverse.NAME)) {
+			return new PosToReverse();
 		}
 		if (name.equals(PosConcat.NAME)) {
 			return new PosConcat();

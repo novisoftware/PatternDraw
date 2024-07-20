@@ -114,4 +114,13 @@ public class Pos {
 		return ret;
 	}
 
+	/**
+	 * 
+	 * 
+	 * @param other
+	 * @return x, y の値が厳密に一致していたら true 。 それ以外は false。
+	 */
+	public boolean isSamePosStrict(Pos other) {
+		return this.x == other.x && this.y == other.y;
+	}
 }

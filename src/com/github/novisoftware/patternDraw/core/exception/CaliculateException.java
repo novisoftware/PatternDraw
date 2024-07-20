@@ -23,4 +23,15 @@ public class CaliculateException extends EvaluateException {
 			this.printStackTrace();
 		}
 	}
+
+	public CaliculateException(String message, String detail) {
+		super(message + "(詳細: " + detail + ")");
+
+		if (Debug.enable) {
+			// デバッグ時
+			System.out.println("CaliculateExceptionをnewしました。 情報:");
+			this.printStackTrace();
+		}
+	}
+
 }
