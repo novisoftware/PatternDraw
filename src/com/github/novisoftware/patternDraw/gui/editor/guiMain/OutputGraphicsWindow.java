@@ -11,15 +11,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.typeSystem.ObjectHolder;
-import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
-import com.github.novisoftware.patternDraw.geometricLanguage.token.TokenList;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.OutputGraphicsMenuBar;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.svg.SvgInstruction;
@@ -47,7 +43,7 @@ public class OutputGraphicsWindow extends JFrame2 {
 		OutputGraphicsMenuBar menubar = new OutputGraphicsMenuBar(this);
 		this.setJMenuBar(menubar);
 
-		final InstructionRenderer renderer = new InstructionRenderer(new TokenList(new ArrayList<Token>()), new HashMap<String, ObjectHolder>());
+		final InstructionRenderer renderer = new InstructionRenderer();
 		BufferedImage buffer = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_RGB);
 
 		panel = new MyJPanel(renderer, buffer);

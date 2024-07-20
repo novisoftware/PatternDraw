@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import com.github.novisoftware.patternDraw.geometricLanguage.token.Token;
+import com.github.novisoftware.patternDraw.utils.token.Token;
 
 /**
  * ファイルからテキストを読み込みトークン化する。 記載ルールは以下です。

@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
+import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
@@ -47,8 +47,7 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	public String str() {
-		System.out.println("this.valueType: " + this.getValueType());
-
+		// System.out.println("this.valueType: " + this.getValueType());
 		return String.format(
 				"FNC_ELEMENT: %d %d %d %d %s %s %s",
 				x,

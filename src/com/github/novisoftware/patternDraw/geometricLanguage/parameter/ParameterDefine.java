@@ -2,7 +2,7 @@ package com.github.novisoftware.patternDraw.geometricLanguage.parameter;
 
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 
 public class ParameterDefine {
@@ -130,11 +130,13 @@ public class ParameterDefine {
 
 	public static ParameterDefine getParameterDefineToEdit(String s) {
 		String a[] = FileReadUtil.tokenizeToArray(s);
-		System.out.println("parameters (line) = " + s);
-		System.out.println("parameters.len = " + a.length);
-		System.out.println("parameters:");
-		for (int i = 0 ; i < a.length; i++) {
-			System.out.printf("[param def] %d \"%s\"\n", i, a[i]);
+		if (Debug.enable) {
+			Debug.println("parameters (line) = " + s);
+			Debug.println("parameters.len = " + a.length);
+			Debug.println("parameters:");
+			for (int i = 0 ; i < a.length; i++) {
+				Debug.println(String.format("[param def] %d \"%s\"", i, a[i]));
+			}
 		}
 
 		String name = a[1];

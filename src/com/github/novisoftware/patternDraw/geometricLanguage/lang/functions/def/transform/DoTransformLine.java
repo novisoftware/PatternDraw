@@ -8,10 +8,8 @@ import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefIn
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueLineList;
-import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValuePosList;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueTransform;
 import com.github.novisoftware.patternDraw.geometricLanguage.entity.Line;
-import com.github.novisoftware.patternDraw.geometricLanguage.entity.Pos;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 
 public class DoTransformLine implements FunctionDefInterface {

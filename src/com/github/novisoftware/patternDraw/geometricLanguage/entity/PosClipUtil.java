@@ -282,7 +282,7 @@ public class PosClipUtil {
 		
 		
 		
-		System.out.println("##############################");
+		// System.out.println("##############################");
 		
 		Pos firstCrossPos = null;
 		Pos lastCrossPos = null;

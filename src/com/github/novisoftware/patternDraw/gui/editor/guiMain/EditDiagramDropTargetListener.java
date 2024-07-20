@@ -10,8 +10,6 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.List;
 
-import javax.swing.SwingUtilities;
-
 public class EditDiagramDropTargetListener implements DropTargetListener {
 	final EditDiagramPanel editDiagramPanel;
 	

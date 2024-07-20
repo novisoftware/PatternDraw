@@ -15,21 +15,20 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P102___NumberPicker;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____ControlElement;
-import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P102___NumberPicker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.AbstractInputConstantWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantBooleanWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantScalarWindow;
@@ -41,7 +40,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JScrollPane2;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public class EditDiagramWindow extends JFrame2 {
 	EditDiagramMenuBar editMenuBar;

@@ -1,5 +1,6 @@
 /**
  * クラス階層は以下。
+ * (LangSpecExceptionはこれらとは別に、単発で定義している例外)
  * 
  * <ul>
  * <li> 《EvaluateException抽象クラス》

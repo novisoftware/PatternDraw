@@ -38,7 +38,7 @@ public class ApplyAsTexture implements FunctionDefInterface {
 
 	@Override
 	public String[] getParameterNames() {
-		String[] ret = {"base", "patternPosisions"};
+		String[] ret = {"initiator", "generator"};
 		return ret;
 	}
 

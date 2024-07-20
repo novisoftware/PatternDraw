@@ -19,8 +19,10 @@ public class CaliculateException extends EvaluateException {
 
 		if (Debug.enable) {
 			// デバッグ時
-			System.out.println("CaliculateExceptionをnewしました。 情報:");
-			this.printStackTrace();
+			Debug.println("CaliculateExceptionをnewしました。 情報:");
+			if (Debug.enable) {
+				this.printStackTrace();
+			}
 		}
 	}
 
@@ -29,8 +31,10 @@ public class CaliculateException extends EvaluateException {
 
 		if (Debug.enable) {
 			// デバッグ時
-			System.out.println("CaliculateExceptionをnewしました。 情報:");
-			this.printStackTrace();
+			Debug.println("CaliculateExceptionをnewしました。 情報:");
+			if (Debug.enable) {
+				this.printStackTrace();
+			}
 		}
 	}
 

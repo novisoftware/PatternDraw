@@ -6,9 +6,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.PartsType;

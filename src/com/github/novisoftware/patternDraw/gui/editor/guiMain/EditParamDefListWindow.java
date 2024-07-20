@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import javax.swing.BoxLayout;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 

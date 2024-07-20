@@ -1,4 +1,4 @@
-package com.github.novisoftware.patternDraw.geometricLanguage.token;
+package com.github.novisoftware.patternDraw.utils.token;
 
 import java.io.IOException;
 import java.util.ArrayList;

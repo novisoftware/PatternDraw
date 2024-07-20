@@ -9,9 +9,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueColor;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
-import com.github.novisoftware.patternDraw.geometricLanguage.primitives.ColorSetterPNG;
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.ColorSetterSVG;
-import com.github.novisoftware.patternDraw.geometricLanguage.primitives.LineWidthSetterSVG;
 
 // set_stroke_width_png
 public class SetColorSVG implements FunctionDefInterface {

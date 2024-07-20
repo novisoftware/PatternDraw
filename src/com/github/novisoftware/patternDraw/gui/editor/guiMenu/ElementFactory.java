@@ -3,9 +3,9 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMenu;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;

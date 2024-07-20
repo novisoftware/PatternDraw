@@ -64,7 +64,7 @@ public class GuiUtil {
 			return r;
 		}
 
-		System.err.println("icon resource = " + s);
+		Debug.println("icon resource = " + s);
 
 		try {
 			r = ImageIO.read(frame.getClass().getResource(s));

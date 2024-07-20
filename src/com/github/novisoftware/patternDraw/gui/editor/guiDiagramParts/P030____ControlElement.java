@@ -172,7 +172,9 @@ public class P030____ControlElement extends P020___AbstractElement {
 				String varName3 = ((ValueString)(stack.pop())).toString();
 				set.put(varName3, ValueType.TRANSFORM);
 				
-				System.out.printf("var def ... %s %s %s\n", varName1, varName2, varName3);
+				Debug.println(
+						String.format("var def ... %s %s %s\n", varName1, varName2, varName3)
+						);
 				return set;
 			}
 			else if (r.startsWith("<")) {

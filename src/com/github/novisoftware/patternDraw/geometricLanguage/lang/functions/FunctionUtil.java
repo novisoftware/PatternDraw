@@ -1,7 +1,7 @@
 package com.github.novisoftware.patternDraw.geometricLanguage.lang.functions;
 
+import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.color.*;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.line.*;

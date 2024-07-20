@@ -19,9 +19,9 @@ import com.github.novisoftware.patternDraw.core.exception.BreakSignal;
 import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.exception.ContinueSignal;
 import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
+import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.geometricLanguage.lang.LangSpecException;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
@@ -1257,13 +1257,13 @@ public class NetworkDataModel {
 				reader.close();
 			}
 
-			System.out.println("make s2t. getElements size = " + getElements().size());
+			// System.out.println("make s2t. getElements size = " + getElements().size());
 			HashMap<String, P020___AbstractElement> s2t = new HashMap<>();
 			for( P020___AbstractElement t : getElements()) {
 				s2t.put(t.id, t);
 				//System.out.println("  name = " + t.id);
 			}
-			System.out.println();
+			// System.out.println();
 			for(String line : refInfo) {
 				String[] a = line.split(" ");
 				String name = a[1];
