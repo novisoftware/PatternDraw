@@ -1146,14 +1146,15 @@ public class NetworkDataModel {
 
 	private static void checkFileRevision(String firstLine) throws LangSpecException {
 		boolean formatSettingCheckError = false;
-		
 		if (firstLine == null) {
-			formatSettingCheckError = true;
+			// 空のファイルは素通しする
+			return;
+			// throw new LangSpecException("空のファイルです。");
 		}
 		else if (! firstLine.startsWith(FORMAT_STR)) {
-			formatSettingCheckError = true;
+			throw new LangSpecException("フォーマット文字列が含まれていません。");
 		} else {
-			String revStr = firstLine.substring(firstLine.length());
+			String revStr = firstLine.substring(FORMAT_STR.length());
 			double verInFile = 0;
 			double nowVer = Double.parseDouble(FORMAT_REV);
 			try {
@@ -1162,7 +1163,11 @@ public class NetworkDataModel {
 					throw new LangSpecException("ファイル側のフォーマット版数の方が新しいです。");
 				}
 			} catch (Exception e) {
+				// リビジョン識別の parseDouble に失敗した場合
 				formatSettingCheckError = true;
+				if (Debug.enable) {
+					e.printStackTrace();
+				}
 			}
 		}
 		if (formatSettingCheckError) {
@@ -1178,9 +1183,6 @@ public class NetworkDataModel {
 							new InputStreamReader(
 							new FileInputStream(new File(filename)), FileWriteUtil.UTF8));
 			String line = reader.readLine();
-			if (line == null) {
-				line = "";
-			}
 			NetworkDataModel.checkFileRevision(line);
 		} finally {
 			if (reader != null) {
