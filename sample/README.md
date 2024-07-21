@@ -40,11 +40,11 @@
 
 ##### 生成される画像
 
-以下は 01_draw_regular_polygon.txt により生成した線分での多角形の描画です。
+以下は 01_draw_regular_polygon.txt により生成した線分での多角形の描画の出力例です。
 
 <img width="300px" src="image_sample/01_draw_regular_polygon_inkscape.svg" />
 
-以下は 02_fill_regular_polygon.txt により生成した多角形の塗りつぶしです。
+以下は 02_fill_regular_polygon.txt により生成した多角形の塗りつぶしの出力例です。
 
 <img width="300px" src="image_sample/02_fill_regular_polygon_inkscape.svg" />
 
@@ -61,10 +61,17 @@
 
 ##### 生成される画像
 
-03_star_example1.txt による作図例を 1 枚 、および、04_star_example2.txt による作図例を 2 枚示します。
+以下は 03_star_example1.txt による出力例です。
 
 <img width="300px" src="image_sample/03_star_example1_inkscape.svg" />
+
+以下は 04_star_example2.txt による出力例(1枚目)です。
+
 <img width="300px" src="image_sample/04_star_example2_inkscape.svg" />
+
+以下は 04_star_example2.txt による出力例(2枚目)です。
+角度に少し数字を足すことで、いびつな星形を描画することができます。
+
 <img width="300px" src="image_sample/04_star_example2_b_inkscape.svg" />
 
 
