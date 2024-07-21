@@ -258,7 +258,7 @@ public class P030____ControlElement extends P020___AbstractElement {
 				stack.push(v);
 			}
 			else {
-				System.out.println("r = " + r);
+				// System.out.println("r = " + r);
 				stack.push(new ValueString(r));
 			}
 		}
