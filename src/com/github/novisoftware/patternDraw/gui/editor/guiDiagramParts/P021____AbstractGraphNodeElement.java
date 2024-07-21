@@ -175,7 +175,8 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 					// どのような動作か書く。
 					// 「表示」という文言はわざわざ出さない
 					// boxTitle += " - " + this.getDescription();
-					boxTitle = this.getDescription();
+					// boxTitle = this.getDescription();
+					boxTitle = this.getRepresentExpression();
 				}
 				g2.drawString(boxTitle, e.x + 30, e.y - 9);
 			}
