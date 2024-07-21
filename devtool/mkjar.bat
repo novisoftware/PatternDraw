@@ -1,1 +1,1 @@
-jar cfm jar/PatternDraw.jar ./manifest.txt -C ./bin .
+jar cfm jar/lalala.jar ./manifest.txt -C ./bin .

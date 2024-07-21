@@ -67,10 +67,10 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 
 ### 起動
 
-Windows の場合はエクスプローラーから PatternDraw.jar をダブルクリック、または以下のコマンドラインで起動します。
+Windows の場合はエクスプローラーから lalala.jar をダブルクリック、または以下のコマンドラインで起動します。
 
 ```
-java -jar PatternDraw.jar
+java -jar lalala.jar
 ```
 
 ### サンプルを動かしてみる
