@@ -7,9 +7,7 @@
 
 ##### プログラム
 
-<kbd>
-![プログラム例](doc_image/diagram_hello-world.png)
-</kbd>
+<kbd><img src="doc_image/diagram_hello-world.png" /></kbd>
 
 ##### 出力
 ```
@@ -22,9 +20,7 @@ Hello, World!
 
 ##### プログラム
 
-<kbd>
-![プログラム例](doc_image/diagram_sequence.png)
-</kbd>
+<kbd><img src="doc_image/diagram_sequence.png" /></kbd>
 
 ##### 出力
 ```
