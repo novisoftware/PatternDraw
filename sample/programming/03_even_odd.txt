@@ -12,13 +12,13 @@ RPN_ELEMENT: 347 289 51 35 定数2 定数 INTEGER "0;定数 :as-numeric" 定数�
 RPN_ELEMENT: 482 224 50 50 演算子3 演算子 BOOLEAN "<input1:SCALAR> <input2:SCALAR> ==" aとbが等しい場合、真になります。
 RPN_ELEMENT: 434 383 120 35 定数3 定数 STRING 偶数;定数 文字列の定数値です。
 RPN_ELEMENT: 435 454 120 35 定数4 定数 STRING 奇数;定数 文字列の定数値です。
-RPN_ELEMENT: 512 615 120 60 表示1 表示 NONE "<input:ANY> :print" テキストを出力します
-RPN_ELEMENT: 336 620 50 50 演算子4 演算子 STRING "<input1:ANY> <input2:ANY> :join :MACRO_REPEAT=2,4" 入力を連結した文字列を作成します。
-RPN_ELEMENT: 126 513 78 35 変数を参照2 変数を参照 NONE "'n :recall-variable" 変数を参照します。
+RPN_ELEMENT: 513 655 120 60 表示1 表示 NONE "<input:ANY> :print" テキストを出力します
+RPN_ELEMENT: 337 660 50 50 演算子4 演算子 STRING "<input1:ANY> <input2:ANY> :join :MACRO_REPEAT=2,4" 入力を連結した文字列を作成します。
+RPN_ELEMENT: 127 553 78 35 変数を参照2 変数を参照 NONE "'n :recall-variable" 変数を参照します。
 RPN_ELEMENT: 821 352 120 35 変数を設定1 変数を設定 NONE "<value:ANY> '判定結果;変数名 :set-variable" 新しい変数
-RPN_ELEMENT: 97 660 120 35 変数を設定2 変数を参照 NONE "'判定結果 :recall-variable" 新しい変数
-RPN_ELEMENT: 144 583 40 35 定数5 定数 STRING は;定数 文字列の定数値です。
-RPN_ELEMENT: 133 733 71 35 定数6 定数 STRING です。;定数 文字列の定数値です。
+RPN_ELEMENT: 98 700 120 35 変数を設定2 変数を参照 NONE "'判定結果 :recall-variable" 新しい変数
+RPN_ELEMENT: 145 623 40 35 定数5 定数 STRING は;定数 文字列の定数値です。
+RPN_ELEMENT: 134 773 71 35 定数6 定数 STRING です。;定数 文字列の定数値です。
 REF: 演算子1 input2 定数1
 REF: 演算子1 input1 変数を参照1
 REF: 演算子2 if-true 定数3
