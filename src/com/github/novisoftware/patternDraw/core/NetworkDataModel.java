@@ -1001,7 +1001,7 @@ public class NetworkDataModel {
 			HashMap<String, Value> hashMap, Runnable callback, boolean isJoin) {
 		boolean isRun = false;
 		try {
-			System.out.println("runProgram ... starting");
+			Debug.println("runProgram ... starting");
 			if (!isJoin) {
 				// すでに実行中の場合に、実行しないモード：
 				if (setRunning(Thread.currentThread())) {
@@ -1021,7 +1021,7 @@ public class NetworkDataModel {
 				}
 			}
 
-			System.out.println("runProgram ... started.");
+			Debug.println("runProgram ... started.");
 
 			// 更新用のパラメーターが指定されていたら、パラメーターの更新を行う。
 			if (hashMap != null) {
