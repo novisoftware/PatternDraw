@@ -1,0 +1,31 @@
+PD_FORMAT_REV: 1.1
+TITLE:フィボナッチの数列
+
+
+RPN_ELEMENT: 471 138 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'a;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 167 141 120 35 定数2 定数 INTEGER "1;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 173 330 120 35 定数3 定数 INTEGER "1;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 482 339 120 35 変数を設定2 変数を設定 NONE "<value:ANY> 'b;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 633 605 120 35 変数を設定3 変数を設定 NONE "<value:ANY> 'c;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 484 613 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> +" 2つの数値を足します。
+RPN_ELEMENT: 267 571 120 35 変数を設定4 変数を参照 NONE "'a :recall-variable" 新しい変数
+RPN_ELEMENT: 272 653 120 35 変数を設定5 変数を参照 NONE "'b :recall-variable" 新しい変数
+RPN_ELEMENT: 289 942 120 35 変数を設定6 変数を参照 NONE "'c :recall-variable" 新しい変数
+RPN_ELEMENT: 631 833 120 35 変数を設定8 変数を設定 NONE "<value:ANY> 'a;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 631 962 120 35 変数を設定9 変数を設定 NONE "<value:ANY> 'b;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 299 811 120 35 変数を設定10 変数を参照 NONE "'b :recall-variable" 新しい変数
+RPN_ELEMENT: 36 18 290 35 コメント1 コメント NONE "フィボナッチの数列を出力します;コメント :comment" コメントです。
+CONTROL: 183 514 1170 534 制御1 制御 REPEAT "1;開始 200;終了 :loop"
+RPN_ELEMENT: 679 219 120 60 表示4 表示 NONE "<input:ANY> :print" テキストを出力します
+RPN_ELEMENT: 675 390 120 60 表示5 表示 NONE "<input:ANY> :print" テキストを出力します
+RPN_ELEMENT: 821 699 120 60 表示6 表示 NONE "<input:ANY> :print" テキストを出力します
+REF: 変数を設定1 value 定数2
+REF: 変数を設定2 value 定数3
+REF: 変数を設定3 value 演算子1
+REF: 演算子1 input2 変数を設定5
+REF: 演算子1 input1 変数を設定4
+REF: 変数を設定8 value 変数を設定10
+REF: 変数を設定9 value 変数を設定6
+REF: 表示4 input 定数2
+REF: 表示5 input 定数3
+REF: 表示6 input 演算子1

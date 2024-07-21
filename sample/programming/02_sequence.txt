@@ -1,0 +1,12 @@
+PD_FORMAT_REV: 1.1
+TITLE:順番に増えていく整数
+
+
+RPN_ELEMENT: 44 35 258 35 コメント1 コメント NONE "順番に増えていく整数を出力;コメント :comment" コメントです。
+RPN_ELEMENT: 151 147 380 35 定数1 定数 STRING 順番に増えていく整数を出力します。;定数 文字列の定数値です。
+RPN_ELEMENT: 703 151 120 60 表示1 表示 NONE "<input:ANY> :print" テキストを出力します
+CONTROL: 203 267 637 254 制御1 制御 REPEAT "1;n,開始 10;n,終了 1;n,刻み幅 index;v,代入先の変数名 :index_loop"
+RPN_ELEMENT: 272 337 120 35 変数を参照1 変数を参照 NONE "'index :recall-variable" 変数を参照します。
+RPN_ELEMENT: 544 347 120 60 表示2 表示 NONE "<input:ANY> :print" テキストを出力します
+REF: 表示1 input 定数1
+REF: 表示2 input 変数を参照1

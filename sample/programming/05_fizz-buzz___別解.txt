@@ -1,0 +1,55 @@
+PD_FORMAT_REV: 1.1
+TITLE:FizzBuzz
+
+
+RPN_ELEMENT: 34 41 146 35 コメント1 コメント NONE "FizzBuzz別解;コメント :comment" コメントです。
+CONTROL: 123 118 1500 888 制御1 制御 REPEAT "1;n,開始 100;n,終了 1;n,刻み幅 num;v,代入先の変数名 :index_loop"
+RPN_ELEMENT: 209 170 120 35 変数を参照1 変数を参照 NONE "'num :recall-variable" 変数を参照します。
+RPN_ELEMENT: 407 169 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> %" 数値1を数値2で割った余りです。
+RPN_ELEMENT: 214 243 120 35 定数1 定数 INTEGER "3;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 490 701 105 35 定数2 定数 STRING ;定数 文字列の定数値です。
+RPN_ELEMENT: 721 239 116 35 定数4 定数 STRING Fizz;定数 文字列の定数値です。
+RPN_ELEMENT: 948 223 50 50 演算子2 演算子 STRING "<cond:BOOLEAN> <if-true:STRING> <if-false:STRING> :if" IF式です。
+RPN_ELEMENT: 404 251 116 35 定数3 定数 INTEGER "0;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 728 710 50 50 演算子4 演算子 STRING "<input1:ANY> <input2:ANY> :join :MACRO_REPEAT=2,2" 入力を連結した文字列を作成します。
+RPN_ELEMENT: 485 759 120 35 変数を参照2 変数を参照 NONE "'num :recall-variable" 変数を参照します。
+RPN_ELEMENT: 736 310 98 35 定数5 定数 STRING ;定数 文字列の定数値です。
+RPN_ELEMENT: 198 376 120 35 変数を参照3 変数を参照 NONE "'num :recall-variable" 変数を参照します。
+RPN_ELEMENT: 446 381 50 50 演算子3 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> %" 数値1を数値2で割った余りです。
+RPN_ELEMENT: 280 453 120 35 定数6 定数 INTEGER "5;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 419 478 116 35 定数7 定数 INTEGER "0;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 967 408 50 50 演算子7 演算子 STRING "<cond:BOOLEAN> <if-true:STRING> <if-false:STRING> :if" IF式です。
+RPN_ELEMENT: 762 504 105 35 定数8 定数 STRING ;定数 文字列の定数値です。
+RPN_ELEMENT: 759 445 116 35 定数9 定数 STRING Buzz;定数 文字列の定数値です。
+RPN_ELEMENT: 1403 626 120 60 表示2 表示 NONE "<input:ANY> :print" テキストを出力します
+RPN_ELEMENT: 667 935 105 35 定数10 定数 STRING ;定数 文字列の定数値です。
+RPN_ELEMENT: 850 712 50 50 演算子8 演算子 STRING "<cond:BOOLEAN> <if-true:STRING> <if-false:STRING> :if" IF式です。
+RPN_ELEMENT: 1244 628 50 50 演算子10 演算子 STRING "<input1:ANY> <input2:ANY> :join :MACRO_REPEAT=2,3" 入力を連結した文字列を作成します。
+RPN_ELEMENT: 604 170 50 50 演算子9 演算子 BOOLEAN "<input1:SCALAR> <input2:SCALAR> ==" aとbが等しい場合、真になります。
+RPN_ELEMENT: 598 391 50 50 演算子11 演算子 BOOLEAN "<input1:SCALAR> <input2:SCALAR> ==" aとbが等しい場合、真になります。
+RPN_ELEMENT: 730 633 50 50 演算子5 演算子 BOOLEAN "<input1:BOOLEAN> <input2:BOOLEAN> :nor" 論理演算子NORです。
+REF: 演算子1 input2 定数1
+REF: 演算子1 input1 変数を参照1
+REF: 演算子2 if-true 定数4
+REF: 演算子2 cond 演算子9
+REF: 演算子2 if-false 定数5
+REF: 演算子4 input2 変数を参照2
+REF: 演算子4 input1 定数2
+REF: 演算子3 input2 定数6
+REF: 演算子3 input1 変数を参照3
+REF: 演算子7 if-true 定数9
+REF: 演算子7 cond 演算子11
+REF: 演算子7 if-false 定数8
+REF: 表示2 input 演算子10
+REF: 演算子8 if-true 演算子4
+REF: 演算子8 cond 演算子5
+REF: 演算子8 if-false 定数10
+REF: 演算子10 input3 演算子8
+REF: 演算子10 input2 演算子7
+REF: 演算子10 input1 演算子2
+REF: 演算子9 input2 定数3
+REF: 演算子9 input1 演算子1
+REF: 演算子11 input2 定数7
+REF: 演算子11 input1 演算子3
+REF: 演算子5 input2 演算子11
+REF: 演算子5 input1 演算子9

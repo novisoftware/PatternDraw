@@ -1,0 +1,8 @@
+PD_FORMAT_REV: 1.1
+TITLE:Hello, World! のサンプル
+
+
+RPN_ELEMENT: 66 60 242 35 コメント1 コメント NONE """Hello, World! のサンプル;コメント"" :comment" コメントです。
+RPN_ELEMENT: 239 198 120 35 定数1 定数 STRING """Hello, World!;定数""" 文字列の定数値です。
+RPN_ELEMENT: 508 216 120 60 表示1 表示 NONE "<input:ANY> :print" テキストを出力します
+REF: 表示1 input 定数1
