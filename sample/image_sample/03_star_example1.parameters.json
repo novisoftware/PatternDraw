@@ -1,0 +1,13 @@
+{
+"script": "C:\\git\\PatternDraw\\sample\\03_star_example1.txt",
+"title": "星形を描画 例1",
+"image": "03_star_example1.svg",
+"timestamp": "2024\/07\/21 19:38:54",
+"parameters": {
+"N": "5",
+"M": "2",
+"r": "1.0",
+"angle": "0.0",
+"linewidth": "7.74742"
+}
+}

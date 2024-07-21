@@ -43,3 +43,32 @@
 <img width="300px" src="image_sample/01_draw_regular_polygon_inkscape.svg" />
 <img width="300px" src="image_sample/02_fill_regular_polygon_inkscape.svg" />
 
+## 星形を描画する
+
+以下の2通りを作例として格納しています。
+- 03_star_example1.txt
+- 04_star_example2.txt
+
+多角形の系列の順番を入れ替えることで、  03_star_example1.txt では星形を描画しています。
+
+04_star_example2.txt では、外側の頂点の系列と内側の頂点の系列をそれぞれ作成し、混ぜ合わせてひとつの系列にすることで星形を描画しています。
+
+
+##### 生成される画像
+
+03_star_example1.txt による作図例を 1 枚 、および、04_star_example2.txt による作図例を 2 枚示します。
+
+<img width="300px" src="image_sample/03_star_example1_inkscape.svg" />
+<img width="300px" src="image_sample/04_star_example2_inkscape.svg" />
+<img width="300px" src="image_sample/04_star_example2_b_inkscape.svg" />
+
+
+## コッホ曲線(コッホ雪片)
+
+イニシエーターとジェネレーターの組み合わせによりフラクタル図形を生成する例です。
+
+
+
+
+
+

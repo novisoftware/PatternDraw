@@ -1,5 +1,5 @@
 PD_FORMAT_REV: 1.1
-TITLE:正多角形を描画
+TITLE:星形を描画(例2)
 
 PARAMETER: N N角形のNを指定します 5 INTEGER true 3,4,5,6,7,8,9,10,11 false "" ""
 PARAMETER: r1 半径1 0.388 FLOAT false "" true 0.001 2
@@ -8,27 +8,27 @@ PARAMETER: d 星形のいびつさ 0 FLOAT false "" true -180 180
 PARAMETER: angle 角度 0 FLOAT false "" true 0 360
 PARAMETER: linewidth 線の太さ 2 FLOAT false "" true 0.01 30
 
-RPN_ELEMENT: 206 402 120 35 変数を参照1 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 201 483 120 35 変数を参照2 変数を参照 NONE "'r1; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 199 555 120 35 変数を参照3 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
-FNC_ELEMENT: 759 554 120 60 処理2 処理 series_on_circle
-RPN_ELEMENT: 202 185 120 35 変数を参照4 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。
-FNC_ELEMENT: 612 220 120 60 表示2 表示 set_stroke_width
+RPN_ELEMENT: 200 297 120 35 変数を参照1 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 195 378 120 35 変数を参照2 変数を参照 NONE "'r1; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 193 450 120 35 変数を参照3 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
+FNC_ELEMENT: 753 449 120 60 処理2 処理 series_on_circle
+RPN_ELEMENT: 196 135 120 35 変数を参照4 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。
+FNC_ELEMENT: 606 170 120 60 表示2 表示 set_stroke_width
 RPN_ELEMENT: 75 40 218 35 コメント1 コメント NONE "星形を描画します(例2);コメント :comment" コメントです。
-RPN_ELEMENT: 157 659 130 35 コメント2 コメント NONE "外側の頂点;コメント :comment" コメントです。
-FNC_ELEMENT: 763 774 120 60 処理3 処理 series_on_circle
-RPN_ELEMENT: 201 740 120 35 変数を参照5 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 194 888 120 35 変数を参照6 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
-RPN_ELEMENT: 201 808 120 35 変数を参照7 変数を参照 NONE "'r2; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 151 326 130 35 コメント3 コメント NONE "内側の頂点;コメント :comment" コメントです。
-RPN_ELEMENT: 323 1081 120 35 変数を参照8 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 323 1010 120 35 定数1 定数 FLOAT "180;定数 :as-numeric" 定数値です。
-RPN_ELEMENT: 501 1025 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> /" 数値1を数値2で割ります。
-RPN_ELEMENT: 635 895 50 50 演算子2 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,3" 2つの数値を足します。
-FNC_ELEMENT: 1007 661 120 60 処理1 処理 pos_zip
-RPN_ELEMENT: 989 588 130 35 コメント4 コメント NONE "星形に合成;コメント :comment" コメントです。
-FNC_ELEMENT: 1268 666 120 60 表示1 表示 draw_polyline_close
-RPN_ELEMENT: 319 941 120 35 変数を参照9 変数を参照 NONE "'d; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 708 583 130 35 コメント2 コメント NONE "外側の頂点;コメント :comment" コメントです。
+FNC_ELEMENT: 757 669 120 60 処理3 処理 series_on_circle
+RPN_ELEMENT: 195 635 120 35 変数を参照5 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 188 783 120 35 変数を参照6 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
+RPN_ELEMENT: 195 703 120 35 変数を参照7 変数を参照 NONE "'r2; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 700 363 130 35 コメント3 コメント NONE "内側の頂点;コメント :comment" コメントです。
+RPN_ELEMENT: 317 976 120 35 変数を参照8 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 317 905 120 35 定数1 定数 FLOAT "180;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 495 920 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> /" 数値1を数値2で割ります。
+RPN_ELEMENT: 629 790 50 50 演算子2 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,3" 2つの数値を足します。
+FNC_ELEMENT: 1001 556 120 60 処理1 処理 pos_zip
+RPN_ELEMENT: 1002 485 130 35 コメント4 コメント NONE "星形に合成;コメント :comment" コメントです。
+FNC_ELEMENT: 1262 561 120 60 表示1 表示 draw_polyline_close
+RPN_ELEMENT: 313 836 120 35 変数を参照9 変数を参照 NONE "'d; :recall-variable" 変数を参照します。
 REF: 処理2 r 変数を参照2
 REF: 処理2 angle 変数を参照3
 REF: 処理2 n 変数を参照1

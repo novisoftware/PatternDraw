@@ -1,0 +1,14 @@
+{
+"script": "C:\\git\\PatternDraw\\sample\\04_star_example2.txt",
+"title": "正多角形を描画",
+"image": "04_star_example2.svg",
+"timestamp": "2024\/07\/21 19:43:22",
+"parameters": {
+"N": "5",
+"r1": "0.388",
+"r2": "1.0",
+"d": "0.0",
+"angle": "36.0",
+"linewidth": "6.18794"
+}
+}
