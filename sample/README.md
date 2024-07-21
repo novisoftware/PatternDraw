@@ -1,6 +1,6 @@
 # サンプルプログラム(図形描画編)
 
-図形描画用のサンプルプログラムです。
+ここでは図形描画用のサンプルプログラムについて説明をしていきます。
 
 ## 正多角形を描画する
 
@@ -40,7 +40,12 @@
 
 ##### 生成される画像
 
+以下は 01_draw_regular_polygon.txt により生成した線分での多角形の描画です。
+
 <img width="300px" src="image_sample/01_draw_regular_polygon_inkscape.svg" />
+
+以下は 02_fill_regular_polygon.txt により生成した多角形の塗りつぶしです。
+
 <img width="300px" src="image_sample/02_fill_regular_polygon_inkscape.svg" />
 
 ## 星形を描画する
@@ -49,7 +54,7 @@
 - 03_star_example1.txt
 - 04_star_example2.txt
 
-多角形の系列の順番を入れ替えることで、  03_star_example1.txt では星形を描画しています。
+03_star_example1.txt では、多角形の系列の順番を入れ替えることで星形を描画しています。
 
 04_star_example2.txt では、外側の頂点の系列と内側の頂点の系列をそれぞれ作成し、混ぜ合わせてひとつの系列にすることで星形を描画しています。
 

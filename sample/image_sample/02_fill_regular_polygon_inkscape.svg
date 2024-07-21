@@ -2,14 +2,12 @@
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 
 <svg
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="150.98022mm"
+   height="143.5907mm"
+   viewBox="0 0 150.98022 143.5907"
    version="1.1"
    id="svg1"
    xml:space="preserve"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   sodipodi:docname="02_fill_regular_polygon_inkscape.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -22,21 +20,12 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:document-units="mm"
-     inkscape:export-bgcolor="#ffffff00"
-     inkscape:zoom="0.92352183"
-     inkscape:cx="396.85039"
-     inkscape:cy="561.43773"
-     inkscape:window-width="1412"
-     inkscape:window-height="1237"
-     inkscape:window-x="415"
-     inkscape:window-y="89"
-     inkscape:window-maximized="0"
-     inkscape:current-layer="layer1" /><defs
+     inkscape:document-units="mm" /><defs
      id="defs1" /><g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1"><path
+     id="layer1"
+     transform="translate(-29.509875,-76.751722)"><path
        d="m 105,76.751718 75.49012,54.846802 -28.83456,88.7439 H 58.344432 l -28.834557,-88.7439 z"
        fill="#cc7a29"
        id="path1"
