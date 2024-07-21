@@ -102,6 +102,9 @@ public class FunctionUtil {
 		if (name.equals(PosToPosSkip.NAME)) {
 			return new PosToPosSkip();
 		}
+		if (name.equals(SetLineWidth.NAME)) {
+			return new SetLineWidth();
+		}
 		if (name.equals(SetLineWidthSVG.NAME)) {
 			return new SetLineWidthSVG();
 		}

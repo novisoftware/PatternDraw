@@ -20,12 +20,12 @@ public class SetLineWidthSVG implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "太さを設定(SVG)";
+		return "太さを設定(SVGのみ)";
 	}
 
 	@Override
 	public String getDescription() {
-		return "線分の太さを設定します(SVG)。";
+		return "線分の太さを設定します(SVGのみ)。";
 	}
 
 	@Override
@@ -55,10 +55,12 @@ public class SetLineWidthSVG implements FunctionDefInterface {
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
 		double width = Value.getDouble(param.get(0));
 
+		/*
 		t.currentStrokeWidth = "" + width;
 		if (t.s != null) {
 			t.s.setStrokeWidth(width);
 		}
+		*/
 
 		LineWidthSetterSVG s = new LineWidthSetterSVG(width);
 		t.primitiveList.add(s);

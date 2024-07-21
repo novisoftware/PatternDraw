@@ -7,6 +7,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefIn
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
+import com.github.novisoftware.patternDraw.geometricLanguage.primitives.LineWidthSetterPNG;
 
 // set_stroke_width_png
 public class SetLineWidthPNG implements FunctionDefInterface {
@@ -19,12 +20,12 @@ public class SetLineWidthPNG implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "太さを設定(PNG)";
+		return "太さを設定(PNGのみ)";
 	}
 
 	@Override
 	public String getDescription() {
-		return "線分の太さを設定します(PNG)。";
+		return "線分の太さを設定します(PNGのみ)。";
 	}
 
 	@Override
@@ -54,7 +55,11 @@ public class SetLineWidthPNG implements FunctionDefInterface {
 	public Value exec(List<Value> param, InstructionRenderer t) throws CaliculateException {
 		double width = Value.getDouble(param.get(0));
 
+		LineWidthSetterPNG p = new LineWidthSetterPNG(width);
+		t.primitiveList.add(p);
+		/*
 		t.currentStrokeWidth = "" + width;
+		*/
 		return null;
 	}
 }

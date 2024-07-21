@@ -795,15 +795,22 @@ FUNCTION: pos_to_fill
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 出力/線の太さを指定(SVG)
+DISPNAME: 出力/線の太さを指定
 DESCRIPTION: 線分の太さを指定します。
+FUNCTION: set_stroke_width
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 出力/線の太さを指定(SVGのみ)
+DESCRIPTION: SVGの描画を対象に線分の太さを指定します。
 FUNCTION: set_stroke_width_svg
 ---->DEFINE
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 出力/線の太さを指定(PNG)
-DESCRIPTION: 線分の太さを指定します。
+DISPNAME: 出力/線の太さを指定(PNGのみ)
+DESCRIPTION: PNGの描画を対象に線分の太さを指定します。
 FUNCTION: set_stroke_width_png
 ---->DEFINE
 
