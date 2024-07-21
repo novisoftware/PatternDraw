@@ -54,9 +54,11 @@ public class PosToDrawPolyLine implements FunctionDefInterface {
 		return null;
 	}
 
-	protected void overWrap(ArrayList<Pos> posList, ArrayList<Pos> src) {
-		// オーバーラップする場合、ここに処理を記載。
-		// (差分プログラミング用の場所)
+	protected boolean isClosed;
+
+	public PosToDrawPolyLine() {
+		super();
+		this.isClosed = false;
 	}
 
 	@Override
@@ -64,14 +66,13 @@ public class PosToDrawPolyLine implements FunctionDefInterface {
 		ArrayList<Pos> src = Value.getPosList(param.get(0));
 		ArrayList<Pos> posList = new ArrayList<Pos>();
 		posList.addAll(src);
-		this.overWrap(posList, src);
 
 		String strokeColor = t.currentStrokeColor;
 		double strokeWidth = Double.parseDouble(t.currentStrokeWidth);
 		boolean isFill = false;
 		String fillColor = null;
 
-		Path path = new Path(posList, strokeColor, strokeWidth, isFill, fillColor);
+		Path path = new Path(posList, strokeColor, strokeWidth, isClosed, isFill, fillColor);
 
 		if (t != null) {
 			t.primitiveList.add(path);

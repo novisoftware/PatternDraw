@@ -62,10 +62,11 @@ public class PosToFill implements FunctionDefInterface {
 
 		String strokeColor = t.currentStrokeColor;
 		double strokeWidth = Double.parseDouble(t.currentStrokeWidth);
+		boolean isClosed = true;
 		boolean isFill = true;
 		String fillColor = strokeColor;
 
-		Path path = new Path(posList, strokeColor, strokeWidth, isFill, fillColor);
+		Path path = new Path(posList, strokeColor, strokeWidth, isClosed, isFill, fillColor);
 
 		if (t != null) {
 			t.primitiveList.add(path);

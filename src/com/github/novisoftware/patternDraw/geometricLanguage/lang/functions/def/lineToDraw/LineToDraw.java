@@ -63,13 +63,14 @@ public class LineToDraw implements FunctionDefInterface {
 
 			String strokeColor = t.currentStrokeColor;
 			String strokeWidth = t.currentStrokeWidth;
+			boolean isClosed = false;
 			boolean isFill = false;
 			String fillColor = null;
 
 			// String strokeColor, String strokeWidth, boolean isFill,
 			// String fillColor
 
-			Path path = new Path(line, strokeColor, strokeWidth, isFill, fillColor);
+			Path path = new Path(line, strokeColor, strokeWidth, isClosed, isFill, fillColor);
 
 			if (t != null) {
 				t.primitiveList.add(path);

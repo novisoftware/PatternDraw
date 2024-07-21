@@ -33,9 +33,6 @@ public class FunctionUtil {
 		if (name.equals(LineFrom1SeriesClose.NAME)) {
 			return new LineFrom1SeriesClose();
 		}
-		if (name.equals(LineFrom1SeriesCloseOverWrap.NAME)) {
-			return new LineFrom1SeriesCloseOverWrap();
-		}
 		if (name.equals(LineFrom2Series.NAME)) {
 			return new LineFrom2Series();
 		}
@@ -92,9 +89,6 @@ public class FunctionUtil {
 		}
 		if (name.equals(PosToDrawPolyLine.NAME)) {
 			return new PosToDrawPolyLine();
-		}
-		if (name.equals(PosToDrawPolyLineCloseOverWrap.NAME)) {
-			return new PosToDrawPolyLineCloseOverWrap();
 		}
 		if (name.equals(PosToDrawPolyLineClose.NAME)) {
 			return new PosToDrawPolyLineClose();

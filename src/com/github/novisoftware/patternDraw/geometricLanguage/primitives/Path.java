@@ -18,15 +18,12 @@ public class Path implements Renderer {
 	private double strokeWidth_PNG;
 	private double strokeWidth_SVG;
 	private String fillColor;
+	private final boolean isClosed;
 	boolean isFill;
 	private final double ZOOM = 300;
 
 
-	public Path(Pos a, Pos b, String strokeColor) {
-		this.positions = new ArrayList<Pos>();
-	}
-
-	public Path(Line line, String strokeColor, String strokeWidth, boolean isFill, String fillColor) {
+	public Path(Line line, String strokeColor, String strokeWidth, boolean isClosed, boolean isFill, String fillColor) {
 		this.positions = new ArrayList<Pos>();
 		this.positions.add(new Pos(line.x0, line.y0));
 		this.positions.add(new Pos(line.x1, line.y1));
@@ -34,16 +31,18 @@ public class Path implements Renderer {
 		this.strokeColor = strokeColor;
 		this.strokeWidth_PNG = Double.parseDouble(strokeWidth);
 		this.strokeWidth_SVG = Double.parseDouble(strokeWidth);
+		this.isClosed = isClosed;
 		this.isFill = isFill;
 		this.fillColor = fillColor;
 	}
 
-	public Path(ArrayList<Pos> positions, String strokeColor, double strokeWidth, boolean isFill, String fillColor) {
+	public Path(ArrayList<Pos> positions, String strokeColor, double strokeWidth, boolean isClosed, boolean isFill, String fillColor) {
 		this.positions = positions;
 
 		this.strokeColor = strokeColor;
 		this.strokeWidth_PNG = strokeWidth;
 		this.strokeWidth_SVG = strokeWidth;
+		this.isClosed = isClosed;
 		this.isFill = isFill;
 		this.fillColor = fillColor;
 	}
@@ -134,7 +133,7 @@ public class Path implements Renderer {
 	}
 
 
-	public void localPolyLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, ArrayList<Pos> posList, boolean isFilled) {
+	public void localPolyLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, ArrayList<Pos> posList, boolean isClosed, boolean isFilled) {
 		if (g != null) {
 			Color color = this.getColor(this.strokeColor);
 			if (color != null) {
@@ -145,11 +144,11 @@ public class Path implements Renderer {
 			BasicStroke stroke = new BasicStroke(w, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_MITER);
 			g.setStroke(stroke);
 
-			int nPoints = posList.size();
+			int nPoints = posList.size() + (isClosed ? 1: 0);
 			int[] xPoints = new int[nPoints];
 			int[] yPoints = new int[nPoints];
 			for (int i = 0 ; i < nPoints ; i++ ) {
-				Pos pos = posList.get(i);
+				Pos pos = posList.get(i % posList.size());
 				xPoints[i] = x2int(pos.getX());
 				yPoints[i] = y2int(pos.getY());
 			}
@@ -161,16 +160,20 @@ public class Path implements Renderer {
 				
 			}
 		}
+
 		if (svgBuff != null) {
 			s.setStrokeWidth(this.strokeWidth_SVG);
+			/*
 			String svgStr = s.polyLine(posList, this.isFill);
+			*/
+			String svgStr = s.path(posList, isClosed, this.isFill);
 			svgBuff.add(svgStr);
 		}
 	}
 
 	@Override
 	public void render(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s) {
-		this.localPolyLine(g, svgBuff, s, positions, true);
+		this.localPolyLine(g, svgBuff, s, positions, this.isClosed, true);
 	}
 
 	/**

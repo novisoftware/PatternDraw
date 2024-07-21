@@ -82,7 +82,10 @@ public abstract class AbstractRenderer implements Renderer {
 			}
 		}
 		if (svgBuff != null) {
+			/*
 			String svgStr = s.polyLine(posList, false);
+			*/
+			String svgStr = s.path(posList, false, false);
 			svgBuff.add(svgStr);
 		}
 	}

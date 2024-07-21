@@ -30,6 +30,13 @@ public class SvgInstruction {
 				x2double(dx0), y2double(dy0), x2double(dx1), y2double(dy1), getStrokeColor(), getStrokeWidth());
 	}
 
+	/**
+	 * SVG <polyline/> による多角形描画
+	 * 
+	 * @param posList
+	 * @param isFilled
+	 * @return
+	 */
 	public String polyLine(ArrayList<Pos> posList, boolean isFilled) {
 		/*
 		 * SVGの属性の指定例:
@@ -72,6 +79,76 @@ public class SvgInstruction {
 			
 		} else {
 			return String.format("<polyline points=\"%s\" fill=\"none\" stroke=\"%s\" stroke-width=\"%g\" %s />",
+					sbPointList,
+					getStrokeColor(),
+					getStrokeWidth(),
+					opacity
+					);
+		}
+		
+	}
+
+	/**
+	 * SVG <path/> による多角形描画
+	 * 
+	 * @param posList 点の系列
+	 * @param isClosed true の場合は閉じる
+	 * @param isFilled true の場合は塗りつぶす
+	 * @return
+	 */
+	public String path(ArrayList<Pos> posList, boolean isClosed, boolean isFilled) {
+		/*
+		 * SVGの属性の指定例:
+		 * fill="purple"
+		 * fill-opacity="0.5"
+	 	 * stroke-opacity="0.8"
+		 */
+		
+		
+		StringBuilder sbPointList = new StringBuilder();
+
+		boolean isFirst = true;
+		for (Pos p: posList) {
+			String command = isFirst ? "M" : "L";
+			if (isFirst) {
+					isFirst = false;
+			} else {
+				sbPointList.append(" ");
+		}
+			
+			sbPointList.append(String.format("%s %g %g", command, x2double(p.getX()), y2double(p.getY())));
+		}
+		if (isClosed) {
+			sbPointList.append(" Z");
+		}
+
+		String fillColor;
+		if (isFilled) {
+			fillColor = getStrokeColor();
+		} else {
+			fillColor = "none";
+		}
+
+		String opacity;
+		if (this.hasAlpha()) {
+			if (isFilled) {
+				opacity = String.format("fill-opacity=\"%s\"", this.getAlphaString());
+			} else {
+				opacity = String.format("stroke-opacity=\"%s\"", this.getAlphaString());
+			}
+		} else {
+			opacity = "";
+		}
+		
+		if (isFilled) {
+			return String.format("<path d=\"%s\" fill=\"%s\" %s />",
+					sbPointList,
+					fillColor,
+					opacity
+					);
+			
+		} else {
+			return String.format("<path d=\"%s\" fill=\"none\" stroke=\"%s\" stroke-width=\"%g\" %s />",
 					sbPointList,
 					getStrokeColor(),
 					getStrokeWidth(),
