@@ -1,0 +1,15 @@
+{
+"script": "C:\\git\\PatternDraw\\sample\\02_fill_regular_polygon.txt",
+"title": "正多角形を描画(塗りつぶし)",
+"image": "02_fill_regular_polygon.svg",
+"timestamp": "2024\/07\/21 18:48:50",
+"parameters": {
+"Hue": "30.0",
+"Saturation": "0.8",
+"Value": "0.8",
+"N": "5",
+"r": "1.0",
+"angle": "0.0",
+"linewidth": "8.64136"
+}
+}
