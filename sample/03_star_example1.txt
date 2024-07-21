@@ -1,0 +1,28 @@
+PD_FORMAT_REV: 1.1
+TITLE:星形を描画 例1
+
+PARAMETER: N N角形のNを指定します 5 INTEGER true 3,4,5,6,7,8,9,10,11 false "" ""
+PARAMETER: M スキップ数 2 INTEGER true 2,3,4,5,6,7,8 false "" ""
+PARAMETER: r 半径 1 FLOAT false "" true 0.001 2
+PARAMETER: angle 角度 0 FLOAT false "" true 0 360
+PARAMETER: linewidth 線の太さ 2 FLOAT false "" true 0.01 30
+
+RPN_ELEMENT: 224 450 120 35 変数を参照1 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 220 546 120 35 変数を参照2 変数を参照 NONE "'r; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 218 618 120 35 変数を参照3 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
+FNC_ELEMENT: 651 589 120 60 処理2 処理 series_on_circle
+RPN_ELEMENT: 205 257 120 35 変数を参照4 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。
+FNC_ELEMENT: 615 292 120 60 表示2 表示 set_stroke_width
+RPN_ELEMENT: 75 40 218 35 コメント1 コメント NONE "星形を描画します(例2);コメント :comment" コメントです。
+RPN_ELEMENT: 149 367 130 35 コメント3 コメント NONE "内側の頂点;コメント :comment" コメントです。
+FNC_ELEMENT: 1141 551 120 60 表示1 表示 draw_polyline_close
+FNC_ELEMENT: 863 537 120 60 処理3 処理 pos_to_pos_skip
+RPN_ELEMENT: 644 482 120 35 変数を参照5 変数を参照 NONE "'M :recall-variable" 変数を参照します。
+REF: 処理2 r 変数を参照2
+REF: 処理2 angle 変数を参照3
+REF: 処理2 n 変数を参照1
+REF: 表示2 strokeWidth 変数を参照4
+REF: 表示1 points 処理3
+REF: 処理3 positions 処理2
+REF: 処理3 m 変数を参照1
+REF: 処理3 n 変数を参照5

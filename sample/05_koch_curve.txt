@@ -1,0 +1,60 @@
+PD_FORMAT_REV: 1.1
+TITLE:コッホ曲線
+
+PARAMETER: ratio コッホ曲線内側の比率 0.29 FLOAT false "" true 0 1
+PARAMETER: size 大きさ 1 FLOAT false "" true 0.3 1.5
+PARAMETER: θ 回転 0 FLOAT false "" true 0 360
+PARAMETER: N N角形 3 INTEGER true 3,4,5,6,7,8,9,10 false "" ""
+
+RPN_ELEMENT: 18 24 130 35 コメント1 コメント NONE "コッホ曲線;コメント :comment" コメントです。
+FNC_ELEMENT: 354 198 120 60 処理1 処理 series_on_circle
+RPN_ELEMENT: 174 145 55 35 定数1 定数 INTEGER "6;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 175 202 53 35 定数2 定数 FLOAT "0.5;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 171 267 44 35 定数3 定数 FLOAT "0;定数 :as-numeric" 定数値です。
+FNC_ELEMENT: 368 407 120 60 処理2 処理 series_on_circle
+RPN_ELEMENT: 133 417 120 35 変数を参照1 変数を参照 NONE "'ratio; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 166 349 55 35 定数4 定数 INTEGER "6;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 163 486 55 35 定数5 定数 FLOAT "30;定数 :as-numeric" 定数値です。
+FNC_ELEMENT: 609 283 120 60 処理3 処理 pos_zip
+FNC_ELEMENT: 907 335 120 60 処理4 処理 pos_to_sub_pos_list
+RPN_ELEMENT: 646 379 120 35 定数6 定数 INTEGER "1;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 648 447 120 35 定数7 定数 INTEGER "5;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 72 73 402 35 コメント2 コメント NONE "あてはめるパターン(ジェネレーター)を作成する;コメント :comment" コメントです。
+RPN_ELEMENT: 1138 361 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'pattern;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 69 567 354 35 コメント3 コメント NONE "ベースの図形(イニシエーター)を作成する;コメント :comment" コメントです。
+FNC_ELEMENT: 387 679 120 60 処理5 処理 series_on_circle
+RPN_ELEMENT: 154 646 120 35 変数を参照2 変数を参照 NONE "'N :recall-variable" 変数を参照します。
+RPN_ELEMENT: 153 712 120 35 変数を参照3 変数を参照 NONE "'size :recall-variable" 変数を参照します。
+RPN_ELEMENT: 160 793 120 35 変数を参照4 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
+RPN_ELEMENT: 590 687 120 35 変数を設定2 変数を設定 NONE "<value:ANY> 'basement;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 74 883 274 35 コメント4 コメント NONE "パターンのあてはめを繰り返す;コメント :comment" コメントです。
+RPN_ELEMENT: 237 1018 120 35 変数を設定3 変数を参照 NONE "'basement :recall-variable" 新しい変数
+RPN_ELEMENT: 236 1107 120 35 変数を設定4 変数を参照 NONE "'pattern :recall-variable" 新しい変数
+FNC_ELEMENT: 480 1045 120 60 処理6 処理 pos_apply_as_texture
+RPN_ELEMENT: 745 1073 120 35 変数を設定5 変数を設定 NONE "<value:ANY> 'basement;変数名 :set-variable" 新しい変数
+CONTROL: 166 968 816 206 制御1 制御 REPEAT "1 5;繰り返す回数 :loop"
+RPN_ELEMENT: 68 1211 114 35 コメント5 コメント NONE "描画する;コメント :comment" コメントです。
+FNC_ELEMENT: 403 1345 120 60 表示1 表示 draw_polyline_close
+RPN_ELEMENT: 107 1287 120 35 変数を設定6 変数を参照 NONE "'basement :recall-variable" 新しい変数
+REF: 処理1 r 定数2
+REF: 処理1 angle 定数3
+REF: 処理1 n 定数1
+REF: 処理2 r 変数を参照1
+REF: 処理2 angle 定数5
+REF: 処理2 n 定数4
+REF: 処理3 positions1 処理1
+REF: 処理3 positions2 処理2
+REF: 処理4 num 定数7
+REF: 処理4 start 定数6
+REF: 処理4 positions 処理3
+REF: 変数を設定1 value 処理4
+REF: 処理5 r 変数を参照3
+REF: 処理5 angle 変数を参照4
+REF: 処理5 n 変数を参照2
+REF: 変数を設定2 value 処理5
+REF: 処理6 initiator 変数を設定3
+REF: 処理6 generator 変数を設定4
+REF: 処理6 patternPosisions 変数を設定4
+REF: 処理6 base 変数を設定3
+REF: 変数を設定5 value 処理6
+REF: 表示1 points 変数を設定6

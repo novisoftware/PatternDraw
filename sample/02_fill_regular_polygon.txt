@@ -1,0 +1,33 @@
+PD_FORMAT_REV: 1.1
+TITLE:正多角形を描画(塗りつぶし)
+
+PARAMETER: Hue 塗りつぶし色の色相 30 FLOAT false "" true 0 360
+PARAMETER: Saturation 塗りつぶし色の彩度 0.8 FLOAT false "" true 0 1
+PARAMETER: Value 塗りつぶし色の明るさ 0.8 FLOAT false "" true 0 1
+PARAMETER: N N角形のNを指定します。 5 INTEGER true 3,4,5,6,7,8,9,10,11 false "" ""
+PARAMETER: r 半径 1 FLOAT false "" false "" ""
+PARAMETER: angle 角度 0 FLOAT false "" true 0 360
+PARAMETER: linewidth 線の太さ 1 FLOAT false "" true 0.01 10
+
+RPN_ELEMENT: 193 439 120 35 変数を参照1 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 183 554 120 35 変数を参照2 変数を参照 NONE "'r :recall-variable" 変数を参照します。
+RPN_ELEMENT: 205 652 120 35 変数を参照3 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
+FNC_ELEMENT: 506 531 120 60 処理2 処理 series_on_circle
+RPN_ELEMENT: 68 39 322 35 コメント1 コメント NONE "正多角形を描画します(塗りつぶし)。;コメント :comment" コメントです。
+RPN_ELEMENT: 800 457 130 35 コメント2 コメント NONE "塗りつぶす;コメント :comment" コメントです。
+FNC_ELEMENT: 801 537 120 60 表示3 表示 pos_to_fill
+RPN_ELEMENT: 198 147 120 35 変数を参照4 変数を参照 NONE "'Hue; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 200 217 120 35 変数を参照5 変数を参照 NONE "'Saturation; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 198 297 120 35 変数を参照6 変数を参照 NONE "'Value; :recall-variable" 変数を参照します。
+FNC_ELEMENT: 424 205 120 60 処理1 処理 hsv_to_color
+FNC_ELEMENT: 699 198 120 60 表示1 表示 set_color_png
+FNC_ELEMENT: 702 294 120 60 表示2 表示 set_color_svg
+REF: 処理2 r 変数を参照2
+REF: 処理2 angle 変数を参照3
+REF: 処理2 n 変数を参照1
+REF: 表示3 points 処理2
+REF: 処理1 saturation 変数を参照5
+REF: 処理1 hue 変数を参照4
+REF: 処理1 value 変数を参照6
+REF: 表示1 color 処理1
+REF: 表示2 color 処理1
