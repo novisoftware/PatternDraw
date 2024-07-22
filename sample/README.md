@@ -78,9 +78,14 @@
 ## コッホ曲線(コッホ雪片)
 
 イニシエーターとジェネレーターの組み合わせによりフラクタル図形を生成する例です。
+フラクタル図形として知られる [コッホ曲線](https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%83%E3%83%9B%E6%9B%B2%E7%B7%9A) の作図例です。
 
+- 05_koch_curve.txt
 
+<img width="300px" src="image_sample/05_koch_curve_inkscape.svg" />
 
+回転をさせたり、ジェネレーターの形を変えてみることで歪ませることもできます。
 
+<img width="300px" src="image_sample/05_koch_curve_B_inkscape.svg" />
 
 

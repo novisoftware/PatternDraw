@@ -1,0 +1,13 @@
+{
+"script": "C:\\git\\PatternDraw\\sample\\05_koch_curve.txt",
+"title": "コッホ曲線",
+"image": "05_koch_curve.svg",
+"timestamp": "2024\/07\/22 18:58:58",
+"parameters": {
+"linewidth": "0.5",
+"ratio": "0.29",
+"size": "1.0",
+"θ": "0.0",
+"N": "3"
+}
+}
