@@ -88,7 +88,10 @@ public class OutputGraphicsWindow extends JFrame2 {
 		ArrayList<String> buff = new ArrayList<String>();
 		buff.add("{");
 		if (scriptFilename != null) {
-			buff.add(EditParamWindow.jsonItem("script", scriptFilename, false));
+			buff.add(EditParamWindow.jsonItem("script",
+					// 注: フルパスにはユーザー名が含まれるかもしれないので、ファイル名のみ出力する
+					new File(scriptFilename).getName()
+					, false));
 		}
 		buff.add(EditParamWindow.jsonItem("title", title, false));
 		buff.add(EditParamWindow.jsonItem("image", orgFile.getName(), false));
