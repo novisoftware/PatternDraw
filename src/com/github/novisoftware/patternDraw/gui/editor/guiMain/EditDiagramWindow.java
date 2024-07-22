@@ -44,6 +44,8 @@ import com.github.novisoftware.patternDraw.utils.Debug;
 public class EditDiagramWindow extends JFrame2 {
 	EditDiagramMenuBar editMenuBar;
 	EditDiagramPanel editPanel;
+	// 子
+	public final EditParamWindow editParamWindow;
 
 	public EditDiagramWindow(String filename) {
 		super();
@@ -63,6 +65,8 @@ public class EditDiagramWindow extends JFrame2 {
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED  );
 		sp.setPreferredSize(this.editPanel.getPreferredSize());
 		this.add(sp);
+
+		this.editParamWindow = new EditParamWindow();
 	}
 
 	public boolean dataLostConfirm() {

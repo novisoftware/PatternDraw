@@ -106,6 +106,15 @@ public class EditParamWindow extends JFrame2 {
 	}
 
 	/**
+	 * パラーメーター更新時に、前のパラメーター値を引き継ぐが、
+	 * ファイルの再読み込みの場合などは不要なのでリセットするインタフェースを設ける。
+	 * 
+	 */
+	public void clearVariables() {
+		this.variables = new HashMap<String, Value>();
+	}
+	
+	/**
 	 *
 	 * @param paramDefList パラメーターを設定するために必要な、型や名称の定義情報
 	 * @param variables 設定したパラメーターの値

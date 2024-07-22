@@ -31,8 +31,6 @@ public class EditDiagramMenuBar extends JMenuBar {
 	// 親
 	final EditDiagramPanel editPanel;
 	final EditDiagramWindow editDiagramWindow;
-	// 子
-	final EditParamWindow editParamWindow;
 
 	final JMenu fileMenu;
 	final JMenu runMenu;
@@ -42,10 +40,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 	final JMenuItem overWrite;
 	
 	public EditDiagramMenuBar(final EditDiagramWindow editDiagramWindow, final EditDiagramPanel editDiagramPanel) {
-		final EditDiagramMenuBar thisObj = this;
 		this.editPanel = editDiagramPanel;
 		this.editDiagramWindow = editDiagramWindow;
-		this.editParamWindow = new EditParamWindow();
 		this.fileMenu = new JMenu("ファイル");
 		// ファイルを開く( nop )
 		JMenuItem open = new JMenuItem("開く");
@@ -203,10 +199,10 @@ public class EditDiagramMenuBar extends JMenuBar {
 					
 					Debug.println("START");
 					
-					thisObj.editParamWindow.update(
+					editDiagramWindow.editParamWindow.update(
 							editDiagramPanel.networkDataModel.title,
 							editDiagramPanel.networkDataModel.paramDefList);
-					outputGraphicsWindow.editParamWindow = editParamWindow;
+					outputGraphicsWindow.editParamWindow = editDiagramWindow.editParamWindow;
 					outputGraphicsWindow.editDiagramWindow = editDiagramWindow;
 
 					// パラメーター値が設定されたときのコールバック
@@ -249,7 +245,7 @@ public class EditDiagramMenuBar extends JMenuBar {
 	
 								// editDiagramPanel.networkDataModel.analyze();
 								editDiagramPanel.networkDataModel.runProgram(
-										editParamWindow.getVariables(),
+										editDiagramWindow.editParamWindow.getVariables(),
 										caliculationDoneCb,
 										isJoin);
 							} catch (InterruptedException e) {
@@ -257,10 +253,10 @@ public class EditDiagramMenuBar extends JMenuBar {
 							}
 						}
 					};
-					editParamWindow.setCallback(callback);
-					editParamWindow.setVisible(true);
+					editDiagramWindow.editParamWindow.setCallback(callback);
+					editDiagramWindow.editParamWindow.setVisible(true);
 					
-					if (editParamWindow.isOk()) {
+					if (editDiagramWindow.editParamWindow.isOk()) {
 						new Thread(callback).start();
 						// callback.run();
 					}

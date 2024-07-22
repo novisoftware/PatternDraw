@@ -48,9 +48,22 @@ public class EditDiagramDropTargetListener implements DropTargetListener {
 				}
 				for (File file : files) {
 					if (editDiagramPanel.checkAndShowDialogIsValidFile(file)) {
+						// ドラッグドロップ操作があった時点で、
+						// 関連ウィンドウは閉じる
+						// (読み込めないものがドラッグされた場合以外)
+						OutputTextWindow outputTextWindow = OutputTextWindow.getInstance();
+						OutputGraphicsWindow outputGraphicsWindow = OutputGraphicsWindow.getInstance();
+						outputTextWindow.setVisible(false);
+						outputGraphicsWindow.setVisible(false);
+						editDiagramPanel.editDiagramWindow.editParamWindow.setVisible(false);
+						editDiagramPanel.editDiagramWindow.editParamWindow.clearVariables();
+
+						// editParamWindow.setVisible(true);
+						
 						if (!editDiagramPanel.editDiagramWindow.dataLostConfirm()) {
 							return;
 						}
+
 						editDiagramPanel.loadFile(file);
 						editDiagramPanel.editDiagramWindow.updateTitle();
 						editDiagramPanel.editDiagramWindow.editMenuBar.setEnableOverWriteMenuItem(true);
