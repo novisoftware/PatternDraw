@@ -1,0 +1,19 @@
+{
+"script": "C:\\git\\PatternDraw\\sample\\06_Lissajous_figure.txt",
+"title": "",
+"image": "06_Lissajous_figure_B.svg",
+"timestamp": "2024\/07\/22 19:55:51",
+"parameters": {
+"n": "7",
+"m": "3",
+"d": "10000",
+"θ": "358.8",
+"ph1": "0.0",
+"ph2": "0.0",
+"r1": "0.77416",
+"r2": "0.96122",
+"θd": "120.96",
+"ratio": "0.594",
+"linewidth": "1.9216"
+}
+}
