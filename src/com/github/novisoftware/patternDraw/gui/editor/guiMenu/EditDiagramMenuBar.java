@@ -139,6 +139,8 @@ public class EditDiagramMenuBar extends JMenuBar {
 					try {
 						editPanel.networkDataModel.setFilename(file.getAbsolutePath());
 						editPanel.networkDataModel.save();
+						// メニュー「上書き保存」をenable化する
+						overWrite.setEnabled(true);
 					} catch (Exception ex) {
 						String message = String.format("保存に失敗しました。\n%s",
 								ex.getMessage());
