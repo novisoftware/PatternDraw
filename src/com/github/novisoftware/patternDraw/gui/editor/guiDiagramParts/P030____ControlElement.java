@@ -499,7 +499,11 @@ public class P030____ControlElement extends P020___AbstractElement {
 						Integer groupId = ((P022_____RpnGraphNodeElement)ei).groupHead;
 						if (groupId != null) {
 							for (P020___AbstractElement ei2 : this.editPanel.networkDataModel.graphGroup.get(groupId)) {
-								ei2.dragged(x, y);
+								// ドラッグ通知の場合リサイズの可能性もある。
+								// ei2.dragged(x, y);
+
+								ei2.x += x;
+								ei2.y += y;
 							}
 						}
 					}
