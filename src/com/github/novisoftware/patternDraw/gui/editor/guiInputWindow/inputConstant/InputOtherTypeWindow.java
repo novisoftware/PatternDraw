@@ -4,6 +4,7 @@ import java.awt.Container;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JComboBox;
@@ -35,18 +36,29 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 	 */
 	final int LINES = 14;
 
+	/**
+	 * 変数名チェッカーのリスト
+	 */
+	final ArrayList<VariableNameChecker> vcList;
+
+	final private EditDiagramPanel editPanel;
+	
 	ArrayList<String> rpnArray;
 	final P020___AbstractElement targetElement;
 
 	public InputOtherTypeWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
 		super(element, editPanel);
+		this.vcList = new ArrayList<VariableNameChecker>();
 		this.targetElement = element;
+		this.editPanel = editPanel;
 		c2(element, editPanel);
 	}
 
 	public InputOtherTypeWindow(final P030____ControlElement element, final EditDiagramPanel editPanel) {
 		super(element, editPanel);
+		this.vcList = new ArrayList<VariableNameChecker>();
 		this.targetElement = element;
+		this.editPanel = editPanel;
 		c2(element, editPanel);
 	}
 
@@ -54,7 +66,7 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 	public boolean hasInputArea() {
 		return hasInputArea;
 	}
-	
+
 	public void c2(final P020___AbstractElement element, final EditDiagramPanel editPanel) {
 		this.setTitle(element.getKindString() + " を編集");
 
@@ -114,7 +126,10 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 							inputChecker = new NumericChecker();
 						}
 						else if (checkType.equals("v")) {
-							inputChecker = new VariableNameChecker(value, editPanel.networkDataModel.refVariableNameList);
+							// 設定先変数名
+							VariableNameChecker vc =new VariableNameChecker(value, editPanel.networkDataModel.refVariableNameList);
+							vcList.add(vc);
+							inputChecker = vc;
 						}
 						else if (checkType.equals("i")) {
 							inputChecker = new IntegerChecker();
@@ -169,9 +184,34 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 		pane.add(this.buttonOk);
 		pane.add(Util.generateCancelButton(editPanel, this));
 
+		
 		// this.setSize(500, 200);
 	}
 
+	@Override
+	public void notifySubmit() {
+		HashMap<String, String> nameChangeInfo = new HashMap<String, String>();
+		if (targetElement instanceof P030____ControlElement) {
+			for (VariableNameChecker vc : this.vcList) {
+				if (vc.isChanged()) {
+					nameChangeInfo.put(vc.getOldName(), vc.getNewName());
+				}
+			}
+
+			((P030____ControlElement)targetElement).notifyVarNameChange(nameChangeInfo);
+			this.editPanel.repaint();
+
+		}
+		/*
+		// パラメーター名の変更を各エレメントに通知する
+		String oldName = this.oldName;
+		String newName = this.newName;
+
+		this.editPanel.networkDataModel.notifyVarNameChange(oldName, newName);
+		*/
+		this.editPanel.repaint();
+	}
+	
 	static class ValueSelectPanel extends JPanel {
 		final InputOtherTypeWindow frame;
 		final JComboBox<String> selecter;

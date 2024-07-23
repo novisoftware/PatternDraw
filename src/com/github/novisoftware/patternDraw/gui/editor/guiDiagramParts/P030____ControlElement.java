@@ -614,6 +614,9 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 	/**
 	 * 変数名やパラメタ名が変更になったことを通知するインタフェース
+	 *
+	 * (他のダイヤグラム部品は既に通知済の場合のインタフェース)
+	 *
 	 * 
 	 * @param before 変更前
 	 * @param after 変更後
@@ -621,6 +624,58 @@ public class P030____ControlElement extends P020___AbstractElement {
 	@Override
 	public void notifyVarNameChange(String before, String after) {
 		rpn.notifyVarNameChange(before, after);
+	}
+
+	/**
+	 * 変数名変更通知
+	 * 
+	 * この コントロール部品 の中にある部品に対して変更通知する必要がある。
+	 * 
+	 */
+	public void notifyVarNameChange(HashMap<String, String> nameChangeInfo) {
+		Debug.println("notifyVarNameChange():");
+		for (String orgName : nameChangeInfo.keySet()) {
+			String newName = nameChangeInfo.get(orgName);
+			Debug.println("var name change: " + orgName + " -> " + newName);
+		}
+		
+		
+		HashMap<P030____ControlElement, ArrayList<P020___AbstractElement>> map = this.editPanel.networkDataModel.controlled_head;
+
+		if (map.containsKey(this)) {
+			for (P020___AbstractElement ei : map.get(this)) {
+				if (ei instanceof P022_____RpnGraphNodeElement) {
+					Integer groupId = ((P022_____RpnGraphNodeElement)ei).groupHead;
+					if (groupId != null) {
+						for (P020___AbstractElement ei2 : this.editPanel.networkDataModel.graphGroup.get(groupId)) {
+							// TODO:
+							// P020___AbstractElement に HashMap で受信するIFを追加したほうが効率が良い
+							for (String orgName : nameChangeInfo.keySet()) {
+								String newName = nameChangeInfo.get(orgName);
+								ei2.notifyVarNameChange(orgName, newName);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		ArrayList<P020___AbstractElement> cList = this.editPanel.networkDataModel.control_contains.get(this);
+		if (cList != null) {
+			for (P020___AbstractElement ei : cList) {
+				if (ei instanceof P030____ControlElement) {
+					P030____ControlElement other = (P030____ControlElement)ei;
+
+					
+					// TODO:
+					// P020___AbstractElement に HashMap で受信するIFを追加したほうが効率が良い
+					for (String orgName : nameChangeInfo.keySet()) {
+						String newName = nameChangeInfo.get(orgName);
+						other.notifyVarNameChange(orgName, newName);
+					}
+				}
+			}
+		}
 	}
 
 	public String contollerGroup_str() {
@@ -649,4 +704,6 @@ public class P030____ControlElement extends P020___AbstractElement {
 	public boolean isComment() {
 		return false;
 	}
+
+
 }

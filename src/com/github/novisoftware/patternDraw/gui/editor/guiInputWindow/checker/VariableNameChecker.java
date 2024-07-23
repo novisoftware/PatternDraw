@@ -7,13 +7,32 @@ import com.github.novisoftware.patternDraw.core.langSpec.VariableName;
 
 public class VariableNameChecker extends AbstractInputChecker {
 	private String oldName;
+	private String newName;
 	private HashSet<String> variables;
 
 	public VariableNameChecker(String oldName, List<String> variables) {
 		this.oldName = oldName;
+		this.newName = oldName;
 		this.variables = new HashSet<String>();
 		this.variables.addAll(variables);
 		this.message = "変更する変数名を入力してください (元の変数名: " + this.oldName + ")";
+	}
+
+	public boolean isChanged() {
+		if (oldName == null) {
+			// 元の変数名が設定されていない場合、参照している箇所もなく、変更通知を発生させる必要がないため。
+			// ( なお、oldName == null となる状況が実際にはない可能性もあり )
+			return false;
+		}
+		return ! oldName.equals(newName);
+	}
+	
+	public String getOldName() {
+		return oldName;
+	}
+
+	public String getNewName() {
+		return newName;
 	}
 
 	public VariableNameChecker(HashSet<String> variables) {
@@ -45,6 +64,10 @@ public class VariableNameChecker extends AbstractInputChecker {
 			}
 			else {
 			}
+		}
+		
+		if (isValid) {
+			this.newName = s;
 		}
 	}
 }
