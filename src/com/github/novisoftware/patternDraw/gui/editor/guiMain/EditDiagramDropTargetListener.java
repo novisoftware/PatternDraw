@@ -10,6 +10,8 @@ import java.awt.dnd.DropTargetListener;
 import java.io.File;
 import java.util.List;
 
+import com.github.novisoftware.patternDraw.utils.Debug;
+
 public class EditDiagramDropTargetListener implements DropTargetListener {
 	final EditDiagramPanel editDiagramPanel;
 	
@@ -82,7 +84,9 @@ public class EditDiagramDropTargetListener implements DropTargetListener {
 				}
 			}
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			if (Debug.enable) {
+				ex.printStackTrace();
+			}
 		} finally {
 			e.dropComplete(gotData);
 		}
