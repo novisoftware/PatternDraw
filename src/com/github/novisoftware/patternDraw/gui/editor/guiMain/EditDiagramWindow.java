@@ -7,6 +7,7 @@ import java.awt.PointerInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -50,6 +51,22 @@ public class EditDiagramWindow extends JFrame2 {
 	public EditDiagramWindow(String filename) {
 		super();
 
+		final JFrame2 thisObj = this;
+		
+		// 閉じるボタンで終了する
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				// TODO:
+				// 未保存の編集があるかどうかは現状管理していないため、終了するかどうかの確認のみ行う。
+				
+				int ret = JOptionPane.showConfirmDialog(thisObj, "終了しますか?", "プログラムの終了確認", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if(ret == JOptionPane.YES_OPTION) {
+					System.exit(0);
+				}
+			}
+		});
+		
 		this.setSize(1500, 700);
 		this.editPanel = new EditDiagramPanel(this, filename);
 		this.editMenuBar = new EditDiagramMenuBar(this, this.editPanel);
