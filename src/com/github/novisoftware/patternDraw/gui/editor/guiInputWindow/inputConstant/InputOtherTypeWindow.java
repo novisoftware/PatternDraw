@@ -69,6 +69,9 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 		messageDisp = new JLabel2(" ");
 		pane.add(messageDisp);
 
+		// 不可視の水平線を作成する (レイアウトの調整)
+		addHorizontalRule__test(pane, 5);
+
 		if (element instanceof P030____ControlElement) {
 			P030____ControlElement e = (P030____ControlElement) element;
 			Debug.println("ElementEdit", "RPN to Edit is " + e.getRpnString());
