@@ -122,6 +122,9 @@ public class FunctionUtil {
 		if (name.equals(CreateScaleTransform.NAME)) {
 			return new CreateScaleTransform();
 		}
+		if (name.equals(CreateSimpleScaleTransform.NAME)) {
+			return new CreateSimpleScaleTransform();
+		}
 		if (name.equals(CreateSkewTransform.NAME)) {
 			return new CreateSkewTransform();
 		}

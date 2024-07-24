@@ -188,6 +188,13 @@ KIND: 処理
 TYPE: TRANSFORM
 DISPNAME: 座標の変換/拡大縮小変換を生成
 DESCRIPTION: 拡大縮小します。
+FUNCTION: create_simple_scale_transform
+---->DEFINE
+
+KIND: 処理
+TYPE: TRANSFORM
+DISPNAME: 座標の変換/拡大縮小変換を生成(縦横別々に倍率指定)
+DESCRIPTION: 拡大縮小します。
 FUNCTION: create_scale_transform
 ---->DEFINE
 

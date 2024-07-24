@@ -56,6 +56,7 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 
 	public InputOtherTypeWindow(final P030____ControlElement element, final EditDiagramPanel editPanel) {
 		super(element, editPanel);
+		this.setSize(550, 550);
 		this.vcList = new ArrayList<VariableNameChecker>();
 		this.targetElement = element;
 		this.editPanel = editPanel;
