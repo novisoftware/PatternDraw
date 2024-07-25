@@ -8,7 +8,7 @@ public class ValueColor extends Value {
 
 	@Override
 	public String toString() {
-		return internal.toString();
+		return ValueColor.colorToString(internal);
 	}
 
 	private java.awt.Color internal;
@@ -22,5 +22,17 @@ public class ValueColor extends Value {
 			return false;
 		}
 		return this.internal.equals((java.awt.Color)o);
+	}
+	
+	/**
+	 * @param color
+	 * @return HTMLカラー形式の文字列に変換
+	 */
+	public static String colorToString(java.awt.Color color) {
+		if ((color.getAlpha() & 0xFF) == 0xFF) {
+			return String.format("#%06X", (color.getRGB() & 0xFFFFFF));
+		} else {
+			return String.format("#%02X%06X", (color.getAlpha() & 0xFF), (color.getRGB() & 0xFFFFFF));
+		}
 	}
 }
