@@ -131,7 +131,12 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 
 		P021____AbstractGraphNodeElement e = this;
 		// 「演算子」の場合は、引数名を表示しない。
-		boolean isDisplayConnectName = (e.getKindId() != KindId.OPERATOR);
+		boolean isDisplayConnectName = 
+				// 「演算子」以外の場合は、引数名を表示する。
+				(e.getKindId() != KindId.OPERATOR)
+				||
+				(e.getKindId() == KindId.OPERATOR && e.getRepresentExpression().equals("if"))
+				;
 
 		// 結線
 		if (phase == 0) {

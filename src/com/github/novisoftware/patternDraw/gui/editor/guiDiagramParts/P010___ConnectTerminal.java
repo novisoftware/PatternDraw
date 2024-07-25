@@ -134,7 +134,8 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 				String[] desc;
 				if (isDisplayConnectName) {
 					String[] _d= {
-							paraName + " (" + paraDescription + ")",
+							// 注釈情報があれば注釈情報をつける
+							paraDescription.length() == 0 ? paraName : paraName + " (" + paraDescription + ")",
 							aceptableType,
 							actualType
 					};
