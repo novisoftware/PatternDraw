@@ -250,7 +250,7 @@ public class NetworkDataModel {
 	 * @return
 	 */
 	public MyDim getRenderDim() {
-		int X_MARGIN = 50;
+		int X_MARGIN = 800;
 		int Y_MARGIN = 800;
 		int X_MIN = X_DIM_INIT - X_MARGIN;
 		int Y_MIN = Y_DIM_INIT - Y_MARGIN;
