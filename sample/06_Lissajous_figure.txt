@@ -13,40 +13,44 @@ PARAMETER: θd xとyの角度(90度/270度で完全に分離) 90 FLOAT false "" 
 PARAMETER: ratio XとYの分離度合い(1が完全に分離) 1 FLOAT false "" true 0 1
 PARAMETER: linewidth 線の太さ 1 FLOAT false "" true 0.1 10
 
-FNC_ELEMENT: 710 421 120 60 処理1 処理 create_scale_transform
-RPN_ELEMENT: 471 375 120 35 変数を参照1 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
-FNC_ELEMENT: 455 255 120 60 処理2 処理 series_on_circle2
-RPN_ELEMENT: 102 143 120 35 変数を参照3 変数を参照 NONE "'d :recall-variable" 変数を参照します。
-RPN_ELEMENT: 104 214 120 35 変数を参照4 変数を参照 NONE "'n :recall-variable" 変数を参照します。
-RPN_ELEMENT: 94 273 120 35 変数を参照5 変数を参照 NONE "'r1 :recall-variable" 変数を参照します。
-RPN_ELEMENT: 88 330 120 35 変数を参照6 変数を参照 NONE "'ph1 :recall-variable" 変数を参照します。
-FNC_ELEMENT: 881 335 120 60 処理3 処理 do_transform_pos
-RPN_ELEMENT: 1134 347 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'xSeries;変数名 :set-variable" 新しい変数
-FNC_ELEMENT: 441 716 120 60 処理4 処理 series_on_circle2
-RPN_ELEMENT: 78 604 120 35 変数を参照7 変数を参照 NONE "'d :recall-variable" 変数を参照します。
-RPN_ELEMENT: 75 671 120 35 変数を参照2 変数を参照 NONE "'m :recall-variable" 変数を参照します。
-RPN_ELEMENT: 85 738 120 35 変数を参照8 変数を参照 NONE "'r2; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 89 818 120 35 変数を参照9 変数を参照 NONE "'ph2 :recall-variable" 変数を参照します。
-FNC_ELEMENT: 667 947 120 60 処理5 処理 create_scale_transform
-RPN_ELEMENT: 308 898 120 35 変数を参照10 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
-RPN_ELEMENT: 323 961 120 35 変数を参照11 変数を参照 NONE "'θd; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 482 919 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,2" 2つの数値を足します。
-RPN_ELEMENT: 347 442 120 35 定数5 定数 FLOAT "1;定数 :as-numeric" 定数値です。
-RPN_ELEMENT: 366 503 120 35 変数を参照12 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
-RPN_ELEMENT: 549 447 50 50 演算子2 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> -" 数値1から数値2を引きます。
-RPN_ELEMENT: 509 555 120 35 変数を参照13 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
-RPN_ELEMENT: 508 1150 120 35 変数を参照14 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
-RPN_ELEMENT: 353 1041 120 35 定数6 定数 FLOAT "1;定数 :as-numeric" 定数値です。
-RPN_ELEMENT: 525 1037 50 50 演算子3 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> -" 数値1から数値2を引きます。
-RPN_ELEMENT: 343 1112 120 35 変数を参照15 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
-FNC_ELEMENT: 904 806 120 60 処理6 処理 do_transform_pos
-RPN_ELEMENT: 1169 822 120 35 変数を設定2 変数を設定 NONE "<value:ANY> 'ySeries;変数名 :set-variable" 新しい変数
-RPN_ELEMENT: 76 1486 120 35 変数を設定3 変数を参照 NONE "'xSeries :recall-variable" 新しい変数
-RPN_ELEMENT: 79 1588 120 35 変数を設定4 変数を参照 NONE "'ySeries :recall-variable" 新しい変数
-FNC_ELEMENT: 315 1520 120 60 処理7 処理 add_2_point_series
-FNC_ELEMENT: 560 1542 120 60 表示1 表示 draw_polyline_close
-RPN_ELEMENT: 70 1320 120 35 変数を参照16 変数を参照 NONE "'linewidth :recall-variable" 変数を参照します。
-FNC_ELEMENT: 320 1330 120 60 表示2 表示 set_stroke_width
+FNC_ELEMENT: 706 442 120 60 処理1 処理 create_scale_transform
+RPN_ELEMENT: 467 396 120 35 変数を参照1 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
+FNC_ELEMENT: 451 276 120 60 処理2 処理 series_on_circle2
+RPN_ELEMENT: 98 164 120 35 変数を参照3 変数を参照 NONE "'d :recall-variable" 変数を参照します。
+RPN_ELEMENT: 100 235 120 35 変数を参照4 変数を参照 NONE "'n :recall-variable" 変数を参照します。
+RPN_ELEMENT: 90 294 120 35 変数を参照5 変数を参照 NONE "'r1 :recall-variable" 変数を参照します。
+RPN_ELEMENT: 84 351 120 35 変数を参照6 変数を参照 NONE "'ph1 :recall-variable" 変数を参照します。
+FNC_ELEMENT: 877 356 120 60 処理3 処理 do_transform_pos
+RPN_ELEMENT: 1130 368 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'xSeries;変数名 :set-variable" 新しい変数
+FNC_ELEMENT: 445 765 120 60 処理4 処理 series_on_circle2
+RPN_ELEMENT: 82 653 120 35 変数を参照7 変数を参照 NONE "'d :recall-variable" 変数を参照します。
+RPN_ELEMENT: 79 720 120 35 変数を参照2 変数を参照 NONE "'m :recall-variable" 変数を参照します。
+RPN_ELEMENT: 89 787 120 35 変数を参照8 変数を参照 NONE "'r2; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 93 867 120 35 変数を参照9 変数を参照 NONE "'ph2 :recall-variable" 変数を参照します。
+FNC_ELEMENT: 671 996 120 60 処理5 処理 create_scale_transform
+RPN_ELEMENT: 312 947 120 35 変数を参照10 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
+RPN_ELEMENT: 327 1010 120 35 変数を参照11 変数を参照 NONE "'θd; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 486 968 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,2" 2つの数値を足します。
+RPN_ELEMENT: 343 463 120 35 定数5 定数 FLOAT "1;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 362 524 120 35 変数を参照12 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
+RPN_ELEMENT: 545 468 50 50 演算子2 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> -" 数値1から数値2を引きます。
+RPN_ELEMENT: 505 576 120 35 変数を参照13 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
+RPN_ELEMENT: 512 1199 120 35 変数を参照14 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
+RPN_ELEMENT: 357 1090 120 35 定数6 定数 FLOAT "1;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 529 1086 50 50 演算子3 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> -" 数値1から数値2を引きます。
+RPN_ELEMENT: 347 1161 120 35 変数を参照15 変数を参照 NONE "'ratio :recall-variable" 変数を参照します。
+FNC_ELEMENT: 908 855 120 60 処理6 処理 do_transform_pos
+RPN_ELEMENT: 1173 871 120 35 変数を設定2 変数を設定 NONE "<value:ANY> 'ySeries;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 92 1516 120 35 変数を設定3 変数を参照 NONE "'xSeries :recall-variable" 新しい変数
+RPN_ELEMENT: 95 1618 120 35 変数を設定4 変数を参照 NONE "'ySeries :recall-variable" 新しい変数
+FNC_ELEMENT: 331 1550 120 60 処理7 処理 add_2_point_series
+FNC_ELEMENT: 576 1572 120 60 表示1 表示 draw_polyline_close
+RPN_ELEMENT: 91 1394 120 35 変数を参照16 変数を参照 NONE "'linewidth :recall-variable" 変数を参照します。
+FNC_ELEMENT: 341 1404 120 60 表示2 表示 set_stroke_width
+RPN_ELEMENT: 29 40 162 35 コメント1 コメント NONE "リサージュ図形;コメント :comment" コメントです。
+RPN_ELEMENT: 77 95 154 35 コメント2 コメント NONE "系列を作成(1);コメント :comment" コメントです。
+RPN_ELEMENT: 64 574 154 35 コメント3 コメント NONE "系列を作成(2);コメント :comment" コメントです。
+RPN_ELEMENT: 23 1293 194 35 コメント4 コメント NONE "系列を合成して表示;コメント :comment" コメントです。
 REF: 処理1 scale2 変数を参照13
 REF: 処理1 angle 変数を参照1
 REF: 処理1 scale1 演算子2

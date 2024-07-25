@@ -20,7 +20,7 @@ public class CreateScaleTransform implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "拡大縮小変換を生成(縦横別)";
+		return "拡大縮小変換を生成";
 	}
 
 	@Override

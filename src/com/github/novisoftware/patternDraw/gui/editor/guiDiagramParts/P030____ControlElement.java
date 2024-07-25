@@ -29,6 +29,12 @@ import com.github.novisoftware.patternDraw.utils.GuiPreference;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class P030____ControlElement extends P020___AbstractElement {
+	private static final Color colorText = new Color( 0.2f, 0.2f, 0.2f );
+	private static final Color colorBorder = new Color( 0.5f, 0.5f, 0.5f );
+	private static final Color colorLine = new Color( 0.9f, 0.9f, 1.0f );
+	private static final int MARK_WIDTH = 20;
+	HashMap<String, ValueType> variableNamesAndTypes = new HashMap<String, ValueType>();
+
 	/**
 	 * 制御用の箱の集まり・かたまり
 	 */
@@ -73,8 +79,6 @@ public class P030____ControlElement extends P020___AbstractElement {
 	public int getHc() {
 		return 50;
 	}
-
-	HashMap<String, ValueType> variableNamesAndTypes = new HashMap<String, ValueType>();
 
 	/**
 	 * 添字ループの場合の変数名
@@ -348,14 +352,10 @@ public class P030____ControlElement extends P020___AbstractElement {
 		return ret;
 	}
 
-
-//	final Color colorBorder = new Color( 0.5f, 0.5f, 0.5f );
-	private final Color colorBorder = new Color( 0.5f, 0.5f, 0.5f );
-	private final Color colorLine = new Color( 0.9f, 0.9f, 1.0f );
-	private int MARK_WIDTH = 20;
-
-	private Font font = new Font("Meiryo UI", Font.BOLD, 13);
-
+	/**
+	 * フォントはコメントと同じものを使う
+	 */
+	private static final Font font = GuiPreference.COMMENT_FONT;
 
 	/**
 	 * 描画。
@@ -381,13 +381,13 @@ public class P030____ControlElement extends P020___AbstractElement {
 
 			String typeDisplay = "";
 			if (t.controlType.equals("REPEAT")) {
-					typeDisplay = "LOOP" + this.getDisplayString();
+					typeDisplay = "くりかえし" + this.getDisplayString();
 			}
 			else {
 				typeDisplay = t.getKindString() + ": " + t.controlType;
 			}
 
-			g2.setColor(Color.GRAY);
+			g2.setColor(colorText);
 			g2.drawString(typeDisplay, t.x + 30, t.y - 9);
 
 			/*

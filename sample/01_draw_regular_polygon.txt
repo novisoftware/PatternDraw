@@ -2,12 +2,12 @@ PD_FORMAT_REV: 1.1
 TITLE:正多角形を描画
 
 PARAMETER: N N角形のNを指定します。 5 INTEGER true 3,4,5,6,7,8,9,10,11 false "" ""
-PARAMETER: r 半径 1 FLOAT false "" false "" ""
+PARAMETER: r 半径 1 FLOAT false "" true 0.1 2
 PARAMETER: angle 角度 0 FLOAT false "" true 0 360
 PARAMETER: linewidth 線の太さ 1 FLOAT false "" true 0.01 10
 
 RPN_ELEMENT: 200 348 120 35 変数を参照1 変数を参照 NONE "'N; :recall-variable" 変数を参照します。
-RPN_ELEMENT: 190 463 120 35 変数を参照2 変数を参照 NONE "'r :recall-variable" 変数を参照します。
+RPN_ELEMENT: 190 463 120 35 変数を参照2 変数を参照 NONE "'r; :recall-variable" 変数を参照します。
 RPN_ELEMENT: 212 561 120 35 変数を参照3 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
 FNC_ELEMENT: 513 440 120 60 処理2 処理 series_on_circle
 RPN_ELEMENT: 202 185 120 35 変数を参照4 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。
