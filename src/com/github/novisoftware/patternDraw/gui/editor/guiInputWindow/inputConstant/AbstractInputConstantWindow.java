@@ -21,10 +21,11 @@ public class AbstractInputConstantWindow extends JFrame2 {
 	final P020___AbstractElement targetElement;
 	JLabel messageDisp;
 	JButton buttonOk;
-
+	protected final EditDiagramPanel editPanel;
 
 	public 	AbstractInputConstantWindow(final P022_____RpnGraphNodeElement element, final EditDiagramPanel editPanel) {
 		super();
+		this.editPanel = editPanel;
 		Debug.println("ElementEdit", "RPN to Edit is " + element.getRpnString());
 		rpnArray = element.getRpn().getArrayCopy();
 
@@ -38,6 +39,7 @@ public class AbstractInputConstantWindow extends JFrame2 {
 
 	public 	AbstractInputConstantWindow(final P030____ControlElement element, final EditDiagramPanel editPanel) {
 		super();
+		this.editPanel = editPanel;
 		Debug.println("ElementEdit", "RPN to Edit is " + element.getRpnString());
 		rpnArray = element.getRpn().getArrayCopy();
 

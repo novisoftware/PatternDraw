@@ -161,4 +161,12 @@ public class InputConstantScalarWindow extends AbstractInputConstantWindow {
 		pane.add(this.buttonOk);
 		pane.add(Util.generateCancelButton(editPanel, this));
 	}
+	
+	
+	@Override
+	public void notifySubmit() {
+		// 型が変更になるとエラーチェック結果が変化するので
+		this.editPanel.networkDataModel.analyze();
+		this.editPanel.repaint();
+	}
 }

@@ -245,18 +245,22 @@ public class EditDiagramWindow extends JFrame2 {
 								f.setVisible(true);
 								this.inputWindow = f;
 						} else {
-							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-							Point p = pointerInfo.getLocation();
+							if (InputOtherTypeWindow.isRequiredPreCheck(element)) {
+								PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+								Point p = pointerInfo.getLocation();
 
-							InputOtherTypeWindow f = new InputOtherTypeWindow(element, editPanel__);
-							if (f.hasInputArea()) {
-								f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-								f.addWindowListener(inputWindowCloseListener);
-								f.setLocation(p);
-								f.setVisible(true);
-								this.inputWindow = f;
-							} else {
-								f.dispose();
+								InputOtherTypeWindow f = new InputOtherTypeWindow(element, editPanel__);
+								if (f.hasInputArea()) {
+									f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+									f.addWindowListener(inputWindowCloseListener);
+									f.setLocation(p);
+									f.setVisible(true);
+									this.inputWindow = f;
+								} else {
+									// TODO
+									// f.hasInputArea() による判定は冗長かもしれない。
+									f.dispose();
+								}
 							}
 						}
 					}

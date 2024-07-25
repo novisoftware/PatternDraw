@@ -68,6 +68,26 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 		return hasInputArea;
 	}
 
+	/**
+	 * 設定ウィンドウを表示する必要があるかどうか?
+	 * 
+	 * @param e
+	 * @return
+	 */
+	static public boolean isRequiredPreCheck(P022_____RpnGraphNodeElement e) {
+		ArrayList<String> rpnArray = e.getRpn().getArray();
+	
+		for (int index = 0; index < rpnArray.size(); index++) {
+			String s0 = rpnArray.get(index);
+			// 「;」の右側がコメント
+			if (RpnUtil.hasComment(s0)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+
 	public void c2(final P020___AbstractElement element, final EditDiagramPanel editPanel) {
 		this.setTitle(element.getKindString() + " を編集");
 
