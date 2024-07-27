@@ -6,7 +6,11 @@ import javax.swing.JMenu;
 
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
+import com.github.novisoftware.patternDraw.utils.Debug;
 
+/**
+ * メニューに区切り線を追加する
+ */
 public class SeparatorAdder extends AbstractElementFactory {
 	final String menuName;
 	
@@ -22,13 +26,19 @@ public class SeparatorAdder extends AbstractElementFactory {
 	public void addMenuList(JMenu menu, HashMap<String, JMenu> workHm2, EditDiagramPanel editPanel,
 			MListener mListener, int x, int y) {
 		
-		System.out.println("-----A  menuName = " + menuName );
-		
 		if (this.menuName == null) {
 			menu.addSeparator();
 		}
 		else {
-			workHm2.get(menuName).addSeparator();
+			JMenu subMenu = workHm2.get(menuName);
+			if (subMenu != null) {
+				subMenu.addSeparator();
+			}
+			else {
+				// 開発時のエラーなので、即終了させる。
+				System.out.println("内部定義エラー。　メニュー名 " + menuName + " に対応するメニューがありません。");
+				System.exit(1);
+			}
 		}
 	}
 }
