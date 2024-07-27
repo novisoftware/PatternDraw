@@ -253,7 +253,7 @@ public class ContextMenu extends JPopupMenu {
 		}
 	}
 
-	static ArrayList<ElementFactory> partsList = null;
+	static ArrayList<AbstractElementFactory> partsList = null;
 
 	static public JMenu elementGenerateMenu(final EditDiagramPanel editPanel, final MListener mListener, int x, int y) {
 		if (partsList == null) {
@@ -263,54 +263,14 @@ public class ContextMenu extends JPopupMenu {
 
 		// メニュー要素を展開する
 		// (定義ファイルに記載された要素の中で、特殊表記があった場合、要素を複数に展開する)
-		ArrayList<ElementFactory> expandedParts = ElementFactory.partsListExtend(editPanel, partsList);
+		ArrayList<AbstractElementFactory> expandedParts = ElementFactory.partsListExtend(editPanel, partsList);
 
 		JMenu menu = new JMenu("部品を追加");
 		HashMap<String, JMenu> workHm2 = new HashMap<>();
 
 		// メニュー組み立て
-		for (final ElementFactory nParts : expandedParts) {
-			String n = nParts.dispName;
-			JMenuItem menuItem;
-			if (n.indexOf('/') == -1) {
-				menuItem = new JMenuItem(nParts.dispName);
-				menu.add(menuItem);
-			} else {
-				String[] splited = n.split("/");
-
-				String name = splited[splited.length - 1];
-				String folder = n.substring(0, n.length() - 1 - name.length());
-
-				if (!workHm2.containsKey(folder)) {
-					JMenu addMenu = new JMenu(folder);
-					menu.add(addMenu);
-					workHm2.put(folder, addMenu);
-				}
-				JMenu parentMenu = workHm2.get(folder);
-
-				menuItem = new JMenuItem(name);
-				parentMenu.add(menuItem);
-			}
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent ev) {
-					nParts.createNewElement(editPanel, x, y);
-					editPanel.networkDataModel.analyze();
-					editPanel.repaint();
-
-					// 閉じるので。
-					mListener.isPopupExists = false;
-
-					/*
-					 * ElementIcon t =
-					 * nParts.getNewElement(editPanel.networkDataModel.
-					 * generateUniqueName(nParts.getKindName() + "0"), x, y);
-					 * editPanel.networkDataModel.getElements().add(t);
-					 * editPanel.networkDataModel.evaluate();
-					 * editPanel.repaint();
-					 */
-
-				}
-			});
+		for (final AbstractElementFactory nParts : expandedParts) {
+			nParts.addMenuList(menu, workHm2, editPanel, mListener, x, y);
 		}
 
 		return menu;

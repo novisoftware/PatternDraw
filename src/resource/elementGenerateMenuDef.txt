@@ -10,6 +10,8 @@ DESCRIPTION: コメントです。
 -->RPN
 ---->DEFINE
 
+------------------------------------------------------------
+
 KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/円周上に並んだ点
@@ -26,17 +28,12 @@ FUNCTION: series_on_circle2
 
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の座標を加算合成
-DESCRIPTION: 点の座標を加算合成します。
-FUNCTION: add_2_point_series
----->DEFINE
-
-KIND: 処理
-TYPE: POS_LIST
 DISPNAME: 点の集まり/長さと角度を元に座標を生成
 DESCRIPTION: 長さと角度を元に座標をひとつ生成します。
 FUNCTION: single_position
 ---->DEFINE
+
+DISPNAME: 点の集まり/----------------------------------------
 
 KIND: 処理
 TYPE: POS_LIST
@@ -61,19 +58,10 @@ FUNCTION: close_pos_list
 
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりを辿る
-DESCRIPTION: 複数の点の並びの系列を辿り、1系列の点の並びにします。
-FUNCTION: pos_to_walk
+DISPNAME: 点の集まり/点の座標を加算合成
+DESCRIPTION: 点の座標を加算合成します。
+FUNCTION: add_2_point_series
 ---->DEFINE
-
-
-KIND: 処理
-TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりをNスキップで辿る
-DESCRIPTION: 点の集まりをスキップしながら辿ります。
-FUNCTION: pos_to_pos_skip
----->DEFINE
-
 
 KIND: 処理
 TYPE: POS_LIST
@@ -90,6 +78,19 @@ DESCRIPTION: 2つの点の集まりを組み合わせます。
 FUNCTION: pos_zip
 ---->DEFINE
 
+KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりを辿る
+DESCRIPTION: 複数の点の並びの系列を辿り、1系列の点の並びにします。
+FUNCTION: pos_to_walk
+---->DEFINE
+
+KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりをNスキップで辿る
+DESCRIPTION: 点の集まりをスキップしながら辿ります。
+FUNCTION: pos_to_pos_skip
+---->DEFINE
 
 KIND: 処理
 TYPE: POS_LIST
@@ -205,12 +206,16 @@ DESCRIPTION: 傾けます。
 FUNCTION: create_skew_transform
 ---->DEFINE
 
+DISPNAME: 座標の変換/-----------------------------------------------
+
 KIND: 処理
 TYPE: TRANSFORM
 DISPNAME: 座標の変換/変換を結合
 DESCRIPTION: 2つの変換を結合します
 FUNCTION: combine_transforms
 ---->DEFINE
+
+DISPNAME: 座標の変換/-----------------------------------------------
 
 KIND: 処理
 TYPE: POS_LIST
@@ -247,12 +252,17 @@ DESCRIPTION: #000000から#FFFFFFの文字列により色情報を生成しま�
 FUNCTION: html_color
 ---->DEFINE
 
+
+DISPNAME: 色/--------------------------
+
 KIND: 処理
 TYPE: COLOR
 DISPNAME: 色/透明度を設定
 DESCRIPTION: 色情報に透明度を設定します。
 FUNCTION: set_alpha
 ---->DEFINE
+
+DISPNAME: 色/--------------------------
 
 KIND: 表示
 TYPE: NONE
@@ -267,6 +277,8 @@ DISPNAME: 色/色を設定(SVG)
 DESCRIPTION: 色を設定します(SVG)。
 FUNCTION: set_color_svg
 ---->DEFINE
+
+------------------------------------------------------------
 
 # TODO
 #
@@ -303,6 +315,8 @@ DESCRIPTION: 定数値です。
 2;定数 :as-numeric
 -->RPN
 ---->DEFINE
+
+DISPNAME: 定数/---------------------------------------------
 
 KIND: 定数
 TYPE: FLOAT
@@ -364,6 +378,8 @@ DESCRIPTION: 定数2πです。
 -->RPN
 ---->DEFINE
 
+DISPNAME: 定数/---------------------------------------------
+
 KIND: 定数
 TYPE: STRING
 HEIGHT: 35
@@ -372,6 +388,8 @@ DESCRIPTION: 文字列の定数値です。
 文字列の定数;定数
 -->RPN
 ---->DEFINE
+
+DISPNAME: 定数/---------------------------------------------
 
 KIND: 定数
 TYPE: BOOLEAN
@@ -419,6 +437,8 @@ DESCRIPTION: 新しい変数
 -->RPN
 ---->DEFINE
 
+------------------------------------------------------------
+
 KIND: 入力
 TYPE: INTEGER
 DISPNAME: 入力/整数値
@@ -427,6 +447,7 @@ DESCRIPTION: 整数値を入力します。
 -->RPN
 ---->DEFINE
 
+------------------------------------------------------------
 
 KIND: 演算子
 TYPE: SCALAR
@@ -756,6 +777,8 @@ DESCRIPTION: テキストを出力します
 :print
 -->RPN
 ---->DEFINE
+
+DISPNAME: 出力/---------------------------------------------
 
 KIND: 表示
 TYPE: NONE

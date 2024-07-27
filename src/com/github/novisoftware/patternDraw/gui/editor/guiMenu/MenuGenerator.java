@@ -52,8 +52,8 @@ public class MenuGenerator {
 	 * @param filename
 	 * @return
 	 */
-	public ArrayList<ElementFactory> generateMenuList(EditDiagramPanel editPanel) {
-		ArrayList<ElementFactory> list = new ArrayList<>();
+	public ArrayList<AbstractElementFactory> generateMenuList(EditDiagramPanel editPanel) {
+		ArrayList<AbstractElementFactory> list = new ArrayList<>();
 
 		try {
 			// リソースからファイルから読み込む
@@ -75,6 +75,12 @@ public class MenuGenerator {
 				if (line.startsWith("#")) {
 					continue;
 				}
+				if (line.startsWith("----------")) {
+					// (ルートメニュー)
+					// 10文字以上の - で開始する場合は 区切り線 だけ追加する
+					list.add(new SeparatorAdder());
+					continue;
+				}
 
 				if (line.startsWith("DESCRIPTION:")) {
 					workDescription = GuiUtil.trim(line.substring("DESCRIPTION:".length()));
@@ -86,6 +92,16 @@ public class MenuGenerator {
 					workControlTypeName = GuiUtil.trim(line.substring("CONTROL_TYPE:".length()));
 				} else if (line.startsWith("DISPNAME:")) {
 					workDispName = GuiUtil.trim(line.substring("DISPNAME:".length()));
+					if (workDispName.endsWith("----------")) {
+						// (サブメニュー)
+						// 10文字以上の - で終了する場合は 区切り線 だけ追加する
+						String[] splited = workDispName.split("/");
+						list.add(new SeparatorAdder(splited[0]));
+						
+						workDispName = null;
+						continue;
+						
+					}
 				} else if (line.startsWith("WIDTH:")) {
 					workWidth = Integer.parseInt(GuiUtil.trim(line.substring("WIDTH:".length())));
 				} else if (line.startsWith("HEIGHT:")) {
