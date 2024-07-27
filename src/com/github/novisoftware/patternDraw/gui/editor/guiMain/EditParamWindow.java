@@ -2,6 +2,7 @@ package com.github.novisoftware.patternDraw.gui.editor.guiMain;
 
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -48,6 +49,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Int
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar.CB2;
+import com.github.novisoftware.patternDraw.gui.misc.JCheckBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JComboBox2;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
@@ -113,6 +115,19 @@ public class EditParamWindow extends JFrame2 {
 	public void clearVariables() {
 		this.variables = new HashMap<String, Value>();
 	}
+
+	/**
+	 * 実行ボタンを押したときだけ実行する
+	 */
+	public JCheckBox2 execButtonEnableCheckBox;
+	boolean lastOkNg;
+	JButton execButton;
+
+	static abstract class OkNgReceiver {
+		public boolean notifyOkNg(boolean b) {
+			return false;
+		}
+	}
 	
 	/**
 	 *
@@ -124,6 +139,29 @@ public class EditParamWindow extends JFrame2 {
 			final ArrayList<ParameterDefine> paramDefList
 			) {
 		final EditParamWindow thisObj = this;
+		final JButton execButton = new JButton(GuiPreference.RUN_BUTTON_STRING);
+		this.execButton = execButton;
+		boolean initValueOfexecButtonEnableCheckBox = false;
+		final JCheckBox2 wk = this.execButtonEnableCheckBox;
+		if (wk != null) {
+			if (wk.isSelected()) {
+				initValueOfexecButtonEnableCheckBox = true;
+			}
+		}
+
+		final JCheckBox2 execButtonEnableCheckBox = new JCheckBox2("ボタンを押したときだけ実行する");
+		OkNgReceiver okNgReceiver = new OkNgReceiver() {
+			@Override
+			public boolean notifyOkNg(boolean b) {
+				if (execButtonEnableCheckBox.isSelected()) {
+					execButton.setEnabled(b);
+				}
+				thisObj.lastOkNg = b;
+				
+				return !execButtonEnableCheckBox.isSelected();
+			}
+		};
+		execButtonEnableCheckBox.setSelected(initValueOfexecButtonEnableCheckBox);
 
 		HashMap<String, Value> oldVariables = this.variables;
 		this.paramDefList = paramDefList;
@@ -181,7 +219,7 @@ public class EditParamWindow extends JFrame2 {
 			}
 
 			OnChangeActionListener listner1 = null;
-			listner1 = new OnChangeActionListener(this, param, callbackWraped);
+			listner1 = new OnChangeActionListener(this, param, callbackWraped, okNgReceiver);
 
 			SubPanel subPanel1 = new SubPanel();
 			pane.add(subPanel1);
@@ -253,7 +291,7 @@ public class EditParamWindow extends JFrame2 {
 					c.check(initParaStr);
 					CheckMessageLabel check = null;
 					check = setupCheckerToTextField(field, c,
-							this.ngInputs, let, callbackWraped);
+							this.ngInputs, let, callbackWraped, okNgReceiver);
 					subPanel1.add(spacer(20));
 					subPanel1.add(check);
 
@@ -284,9 +322,14 @@ public class EditParamWindow extends JFrame2 {
 					SliderParameter p = new SliderParameter(param.name, param.description, initParaStr,
 							min, max);
 
-					int SLIDER_SCALE = 500;
+					int SLIDER_SCALE = 360;
 					
 					JSlider slider = new JSlider(0, SLIDER_SCALE);
+					Dimension d = slider.getSize();
+					d.width = SLIDER_SCALE;
+					d.height = 20;
+					slider.setSize(d);
+					slider.setPreferredSize(d);
 
 					// スライダー・タブの初期位置を設定する
 					if (min != max) {
@@ -364,18 +407,64 @@ public class EditParamWindow extends JFrame2 {
 		}
 
 		// 「実行」ボタン
-		// TODO
-		// ・現状、たんにガワだけ。
 		// ・「実行ボタンがある場合」は、ボタンを押してはじめて処理を行う。
-		// ・必要かどうかは場面によりけりだと思う。
+		// ・必要かどうかは場面によりけりのため、チェックボックス。
 		//   テキストエディタの「インクリメンタル検索」が苦手な人もいるので。
+
+		SubPanel subPanel8pre = new SubPanel();
+		pane.add(subPanel8pre);
+		subPanel8pre.add(boxSpacer(20, 20));
 
 		SubPanel subPanel8 = new SubPanel();
 		pane.add(subPanel8);
-		JButton buttonOk = new JButton(GuiPreference.RUN_BUTTON_STRING);
-		buttonOk.setFont(GuiPreference.OK_BUTTON_FONT);
-		subPanel8.add(buttonOk);
+		execButton.setFont(GuiPreference.OK_BUTTON_FONT);
+		execButton.setEnabled(initValueOfexecButtonEnableCheckBox && this.isOk());
+		execButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Runnable r = new Runnable() {
+					@Override
+					public void run() {
+						if (thisWindow.callback != null) {
+							thisWindow.callback.setJoin(false);
+							new Thread(thisWindow.callback).start();
+						}
+					}
+				};
+				SwingUtilities.invokeLater(r);
+			}
+		});
+		subPanel8.add(execButton);
+		this.execButtonEnableCheckBox = execButtonEnableCheckBox;
+		execButtonEnableCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				boolean isOk = thisObj.ngInputs.isEmpty();
 
+				if (execButtonEnableCheckBox.isSelected() && isOk) {
+					if (!execButton.isEnabled()) {
+						execButton.setEnabled(isOk);
+					}
+				}
+				else {
+					if (execButton.isEnabled()) {
+						execButton.setEnabled(false);
+						
+						// チェックボックスが ON -> OFF に切り替わり
+						// かつ、(入力エラーがなく)実行可能な場合
+						if (isOk) {
+							if (thisWindow.callback != null) {
+								thisWindow.callback.setJoin(false);
+								new Thread(thisWindow.callback).start();
+							}
+						}
+					}
+				}
+			}
+			
+		});
+		subPanel8.add(execButtonEnableCheckBox);
+		
 		// ★ アニメGIF用の連番PNGを生成する機能。
 		// TODO
 		// 見え方をもう少し控えめにしたほうが良い気もする。
@@ -385,6 +474,10 @@ public class EditParamWindow extends JFrame2 {
 ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"  -f gif output.gif
 
 		 */
+
+		SubPanel subPanel9pre = new SubPanel();
+		pane.add(subPanel9pre);
+		subPanel9pre.add(boxSpacer(20, 20));
 
 		final Vector<String> comboBoxLabels = new Vector<String>();
 		final Vector<String> varNames = new Vector<String>();
@@ -623,7 +716,9 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 	}
 	
 	public boolean isOk() {
-		return this.ngInputs.isEmpty();
+		boolean isOk = this.ngInputs.isEmpty();
+
+		return isOk;
 	}
 
 	static class CheckMessageLabel extends JLabel2 {
@@ -647,18 +742,21 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 		 * パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途
 		 */
 		private final Runnable callback;
+		private final OkNgReceiver okNgReceiver;
 
 		public CheckMessageLabel(
 				AbstractInputChecker checker,
 				Set<AbstractInputChecker> ngInputs,
 				Let let,
-				Runnable callback) {
+				Runnable callback,
+				OkNgReceiver okNgReceiver) {
 			super(checker.message);
 			this.setFont(MESSAGE_DISP_FONT);
 			this.checker = checker;
 			this.ngInputs = ngInputs;
 			this.let = let;
 			this.callback = callback;
+			this.okNgReceiver = okNgReceiver;
 		}
 
 		void updateMessage(String text) {
@@ -678,8 +776,13 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 			}
 
 			if (ngInputs.isEmpty()) {
-				callback.run();
+				if (okNgReceiver.notifyOkNg(true) == true) {
+					callback.run();
+				}
+			} else {
+				okNgReceiver.notifyOkNg(false);
 			}
+			
 		}
 	}
 
@@ -694,15 +797,16 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 	 * @param ngInputs
 	 * @param let チェック処理でOKだった場合(validだった場合)の代入動作
 	 * @param callback (パラメーターの変更をトリガーにしてダイヤグラム実行する等の用途)
+	 * @param okNgReceiver 
 	 * @return
 	 */
 	static CheckMessageLabel setupCheckerToTextField(JTextField textField,
 			AbstractInputChecker checker,
 			Set<AbstractInputChecker> ngInputs,
 			final Let let,
-			Runnable callback
+			Runnable callback, OkNgReceiver okNgReceiver
 			) {
-		final CheckMessageLabel check = new CheckMessageLabel(checker, ngInputs, let, callback);
+		final CheckMessageLabel check = new CheckMessageLabel(checker, ngInputs, let, callback, okNgReceiver);
 		textField.getDocument().addDocumentListener(new DocumentListener() {
 			void update() {
 				String text = textField.getText();
@@ -853,11 +957,14 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 	static class OnChangeActionListener implements ActionListener {
 		final EditParamWindow settingWindow;
 		final Runnable callback;
+		final OkNgReceiver okNgReceiver;
 		OnChangeActionListener(EditParamWindow settingWindow,
-				ParameterDefine param, final Runnable callback
+				ParameterDefine param, final Runnable callback,
+				OkNgReceiver okNgReceiver
 				) {
 			this.settingWindow = settingWindow;
 			this.callback = callback;
+			this.okNgReceiver = okNgReceiver;
 		}
 
 		@Override
@@ -875,13 +982,17 @@ ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a
 					settingWindow.getVariables().put(param.name, value);
 
 
-					Debug.println("" + param.name + " に " + text + " を設定。");
+					// Debug.println("" + param.name + " に " + text + " を設定。");
 				} else {
 					isFilled = false;
 				}
 			}
 			if (isFilled) {
-				settingWindow.callback.run();
+				if (okNgReceiver.notifyOkNg(true)) {
+					settingWindow.callback.run();
+				}
+			} else {
+				okNgReceiver.notifyOkNg(false);
 			}
 		}
 	}

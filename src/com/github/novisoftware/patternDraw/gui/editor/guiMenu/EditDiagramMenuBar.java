@@ -258,7 +258,9 @@ public class EditDiagramMenuBar extends JMenuBar {
 					editDiagramWindow.editParamWindow.setCallback(callback);
 					editDiagramWindow.editParamWindow.setVisible(true);
 					
-					if (editDiagramWindow.editParamWindow.isOk()) {
+					if (!editDiagramWindow.editParamWindow.execButtonEnableCheckBox.isSelected()
+							&&
+							editDiagramWindow.editParamWindow.isOk()) {
 						new Thread(callback).start();
 						// callback.run();
 					}
