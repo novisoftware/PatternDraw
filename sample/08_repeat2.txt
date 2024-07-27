@@ -1,0 +1,45 @@
+PD_FORMAT_REV: 1.1
+TITLE:
+
+PARAMETER: N N角形 5 INTEGER true 3,4,5,6,7,8,9,10,11 false "" ""
+PARAMETER: r0 大きさの初期値 1 FLOAT false "" true 0.01 3
+PARAMETER: a0 角度の初期値 0 FLOAT false "" true 0 360
+PARAMETER: rr 大きさの比率 0.9 FLOAT false "" true 0.5 2
+PARAMETER: aa 角度の加算値 11 FLOAT false "" true -360 360
+
+FNC_ELEMENT: 646 434 120 60 処理1 処理 create_rot_transform
+RPN_ELEMENT: 70 182 120 35 変数を参照2 変数を参照 NONE "'r0; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 76 261 120 35 変数を参照3 変数を参照 NONE "'a0 :recall-variable" 変数を参照します。
+RPN_ELEMENT: 68 117 120 35 変数を参照4 変数を参照 NONE "'N :recall-variable" 変数を参照します。
+FNC_ELEMENT: 273 173 120 60 処理2 処理 series_on_circle
+RPN_ELEMENT: 504 201 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'shape;変数名 :set-variable" 新しい変数
+FNC_ELEMENT: 645 537 120 60 処理3 処理 create_simple_scale_transform
+RPN_ELEMENT: 325 535 120 35 変数を参照6 変数を参照 NONE "'rr; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 77 399 120 35 変数を参照7 変数を参照 NONE "'aa; :recall-variable" 変数を参照します。
+FNC_ELEMENT: 866 502 120 60 処理4 処理 combine_transforms
+RPN_ELEMENT: 1075 514 120 35 変数を設定2 変数を設定 NONE "<value:ANY> 't;変数名 :set-variable" 新しい変数
+CONTROL: 105 655 920 355 制御1 制御 REPEAT "1 100;繰り返す回数 :loop"
+RPN_ELEMENT: 172 691 120 35 変数を設定3 変数を参照 NONE "'shape :recall-variable" 新しい変数
+RPN_ELEMENT: 711 876 120 35 変数を設定4 変数を設定 NONE "<value:ANY> 'shape;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 168 789 120 35 変数を設定5 変数を参照 NONE "'shape :recall-variable" 新しい変数
+RPN_ELEMENT: 294 917 120 35 変数を設定6 変数を参照 NONE "'t :recall-variable" 新しい変数
+FNC_ELEMENT: 468 843 120 60 処理5 処理 do_transform_pos
+FNC_ELEMENT: 462 723 120 60 表示2 表示 draw_polyline_close
+RPN_ELEMENT: 46 29 194 35 コメント1 コメント NONE "繰り返しのサンプル;コメント :comment" コメントです。
+RPN_ELEMENT: 238 456 120 35 変数を参照5 変数を参照 NONE "'N :recall-variable" 変数を参照します。
+RPN_ELEMENT: 417 415 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> /" 数値1を数値2で割ります。
+REF: 処理1 angle 演算子1
+REF: 処理2 r 変数を参照2
+REF: 処理2 angle 変数を参照3
+REF: 処理2 n 変数を参照4
+REF: 変数を設定1 value 処理2
+REF: 処理3 scale 変数を参照6
+REF: 処理4 transform2 処理3
+REF: 処理4 transform1 処理1
+REF: 変数を設定2 value 処理4
+REF: 変数を設定4 value 処理5
+REF: 処理5 transform 変数を設定6
+REF: 処理5 points 変数を設定5
+REF: 表示2 points 変数を設定3
+REF: 演算子1 input2 変数を参照5
+REF: 演算子1 input1 変数を参照7

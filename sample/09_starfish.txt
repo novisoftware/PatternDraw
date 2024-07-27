@@ -1,0 +1,95 @@
+PD_FORMAT_REV: 1.1
+TITLE:ひとで
+
+PARAMETER: NN 頂点数 5 INTEGER true 3,4,5,6,7,8 false "" ""
+PARAMETER: N 分割数 20 INTEGER true 10,20,30 false "" ""
+PARAMETER: ANGLE 角度 0 FLOAT false "" true 0 360
+PARAMETER: IN_R 中心の位置(原点からの距離) 0 FLOAT false "" true -2 2
+PARAMETER: IN_ANGLE 中心の位置(角度) 0 FLOAT false "" true -360 360
+PARAMETER: R 大きさ 1 FLOAT false "" true 0.1 3
+PARAMETER: width 線の太さ 1 FLOAT false "" true 1 20
+PARAMETER: hue 色相 0 FLOAT false "" true 0 360
+
+RPN_ELEMENT: 41 11 98 35 コメント1 コメント NONE "ひとで;コメント :comment" コメントです。
+FNC_ELEMENT: 589 219 120 60 処理1 処理 single_position
+RPN_ELEMENT: 184 280 120 35 変数を参照1 変数を参照 NONE "'IN_ANGLE :recall-variable" 変数を参照します。
+RPN_ELEMENT: 191 202 120 35 変数を参照2 変数を参照 NONE "'IN_R :recall-variable" 変数を参照します。
+RPN_ELEMENT: 845 233 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'center;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 98 112 194 35 コメント2 コメント NONE "中心の座標をつくる;コメント :comment" コメントです。
+FNC_ELEMENT: 476 769 120 60 処理2 処理 series_on_circle
+RPN_ELEMENT: 214 848 120 35 変数を参照4 変数を参照 NONE "'ANGLE :recall-variable" 変数を参照します。
+FNC_ELEMENT: 676 773 120 60 処理3 処理 close_pos_list
+RPN_ELEMENT: 918 793 120 35 変数を設定3 変数を設定 NONE "<value:ANY> 'series1;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 221 1041 120 35 変数を設定4 変数を参照 NONE "'series1 :recall-variable" 新しい変数
+RPN_ELEMENT: 230 967 120 35 定数1 定数 INTEGER "1;定数 :as-numeric" 定数値です。
+FNC_ELEMENT: 505 1000 120 60 処理4 処理 rotate_point_list
+RPN_ELEMENT: 779 1014 120 35 変数を設定5 変数を設定 NONE "<value:ANY> 'series2;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 210 1342 120 35 変数を設定6 変数を参照 NONE "'series1 :recall-variable" 新しい変数
+RPN_ELEMENT: 213 1531 120 35 変数を設定7 変数を参照 NONE "'series2 :recall-variable" 新しい変数
+FNC_ELEMENT: 490 1267 120 60 処理5 処理 pos_to_walk
+RPN_ELEMENT: 221 1995 120 35 変数を参照5 変数を参照 NONE "'width :recall-variable" 変数を参照します。
+RPN_ELEMENT: 216 712 120 35 変数を参照7 変数を参照 NONE "'NN :recall-variable" 変数を参照します。
+RPN_ELEMENT: 222 1210 120 35 変数を参照8 変数を参照 NONE "'N :recall-variable" 変数を参照します。
+RPN_ELEMENT: 217 778 120 35 変数を参照3 変数を参照 NONE "'R :recall-variable" 変数を参照します。
+FNC_ELEMENT: 499 1538 120 60 処理6 処理 pos_to_walk
+RPN_ELEMENT: 211 1271 120 35 変数を設定2 変数を参照 NONE "'center :recall-variable" 新しい変数
+RPN_ELEMENT: 218 1617 120 35 変数を設定8 変数を参照 NONE "'center :recall-variable" 新しい変数
+RPN_ELEMENT: 217 1479 120 35 変数を参照9 変数を参照 NONE "'N :recall-variable" 変数を参照します。
+FNC_ELEMENT: 736 1400 120 60 処理7 処理 line_from_2_series
+FNC_ELEMENT: 736 2333 120 60 表示1 表示 line_to_draw
+RPN_ELEMENT: 84 623 162 35 コメント3 コメント NONE "系列を作成する;コメント :comment" コメントです。
+RPN_ELEMENT: 103 1131 194 35 コメント4 コメント NONE "系列を組み合わせる;コメント :comment" コメントです。
+RPN_ELEMENT: 155 417 120 35 変数を参照10 変数を参照 NONE "'ANGLE :recall-variable" 変数を参照します。
+RPN_ELEMENT: 502 297 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> +" 2つの数値を足します。
+RPN_ELEMENT: 184 504 120 35 定数2 定数 FLOAT "-3;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 436 420 50 50 演算子2 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> *" 2つの数値を乗算します。
+FNC_ELEMENT: 501 2153 120 60 処理8 処理 hsv_to_color
+FNC_ELEMENT: 753 2158 120 60 表示4 表示 set_color_png
+RPN_ELEMENT: 236 2214 120 35 定数4 定数 FLOAT "0.9;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 215 1830 120 35 変数を参照12 変数を参照 NONE "'ANGLE :recall-variable" 変数を参照します。
+RPN_ELEMENT: 217 1900 120 35 定数3 定数 FLOAT "60;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 468 1833 50 50 演算子3 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> +" 2つの数値を足します。
+FNC_ELEMENT: 682 1980 120 60 表示5 表示 set_stroke_width
+RPN_ELEMENT: 1001 1410 120 35 変数を設定10 変数を設定 NONE "<value:ANY> 's;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 213 2335 120 35 変数を設定11 変数を参照 NONE "'s :recall-variable" 新しい変数
+RPN_ELEMENT: 210 1753 120 35 変数を設定12 変数を参照 NONE "'hue :recall-variable" 変数を設定します。
+RPN_ELEMENT: 558 1784 50 50 演算子4 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> +" 2つの数値を足します。
+RPN_ELEMENT: 687 1802 99 35 変数を設定13 変数を設定 NONE "<value:ANY> 'h2;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 220 2109 99 35 変数を設定14 変数を参照 NONE "'h2 :recall-variable" 新しい変数
+RPN_ELEMENT: 192 349 194 35 コメント5 コメント NONE "アレンジとして加算;コメント :comment" コメントです。
+RPN_ELEMENT: 117 1672 114 35 コメント6 コメント NONE "描画する;コメント :comment" コメントです。
+REF: 処理1 r 変数を参照2
+REF: 処理1 angle 演算子1
+REF: 変数を設定1 value 処理1
+REF: 処理2 r 変数を参照3
+REF: 処理2 angle 変数を参照4
+REF: 処理2 n 変数を参照7
+REF: 処理3 pos_list 処理2
+REF: 変数を設定3 value 処理3
+REF: 処理4 positions 変数を設定4
+REF: 処理4 n 定数1
+REF: 変数を設定5 value 処理4
+REF: 処理5 positions1 変数を設定2
+REF: 処理5 positions2 変数を設定6
+REF: 処理5 n 変数を参照8
+REF: 処理6 positions1 変数を設定7
+REF: 処理6 positions2 変数を設定8
+REF: 処理6 n 変数を参照9
+REF: 処理7 positions1 処理5
+REF: 処理7 positions2 処理6
+REF: 表示1 lines 変数を設定11
+REF: 演算子1 input2 演算子2
+REF: 演算子1 input1 変数を参照1
+REF: 演算子2 input2 定数2
+REF: 演算子2 input1 変数を参照10
+REF: 処理8 saturation 定数4
+REF: 処理8 hue 変数を設定14
+REF: 処理8 value 定数4
+REF: 表示4 color 処理8
+REF: 演算子3 input2 定数3
+REF: 演算子3 input1 変数を参照12
+REF: 表示5 strokeWidth 変数を参照5
+REF: 変数を設定10 value 処理7
+REF: 演算子4 input2 演算子3
+REF: 演算子4 input1 変数を設定12
+REF: 変数を設定13 value 演算子4
