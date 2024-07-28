@@ -189,12 +189,17 @@ public class ElementFactory extends AbstractElementFactory {
 					// 既存の変数を上書き
 					Debug.println("match " + ElementFactory.CONST_STR__META_EXIST_VARIABLE);
 
+					// 「上書き可能な変数名」は、ループindex 等を含まない。
+					// 「参照可能は変数名」には含まれる。
+
 					HashSet<String> nameList = new HashSet<String>();
 					ArrayList<String> variableNames = new ArrayList<String>();
-					variableNames.addAll(editPanel.networkDataModel.overWriteVariableNameList);
 					for (String name : editPanel.networkDataModel.overWriteVariableNameList) {
-						nameList.add(name);
-						variableNames.add(name);
+						if (!nameList.contains(name)) {
+							nameList.add(name);
+							variableNames.add(name);
+							// System.out.println("***" + name + "***");
+						}
 					}
 
 					for (String varName : variableNames) {
@@ -206,15 +211,19 @@ public class ElementFactory extends AbstractElementFactory {
 						expandedParts.add(add);
 					}
 
+					/*
+					// System.out.println("---");
+					expandedParts.add(new SeparatorAdder());
 					ArrayList<String> variableNames2 = new ArrayList<String>();
 					for (ParameterDefine param : editPanel.networkDataModel.paramDefList) {
 						if (!nameList.contains(param.name)) {
 							nameList.add(param.name);
 							variableNames2.add(param.name);
+							// System.out.println("***" + param.name + "***");
 						}
 					}
 					if (variableNames2.size() > 0) {
-						for (String varName : variableNames) {
+						for (String varName : variableNames2) {
 							ElementFactory add = nParts.getCopy();
 
 							add.dispName = add.dispName.replaceAll(ElementFactory.CONST_REG__META_EXIST_VARIABLE, varName);
@@ -223,6 +232,7 @@ public class ElementFactory extends AbstractElementFactory {
 							expandedParts.add(add);
 						}
 					}
+					*/
 				}
 				else if (nParts.dispName.indexOf(ElementFactory.CONST_STR__META_NEW_VARIABLE) != -1) {
 					// 新しい変数に設定
