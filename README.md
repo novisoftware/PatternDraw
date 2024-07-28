@@ -1,12 +1,14 @@
 # プログラミング環境「らららプログラミング」
 
+<picture>
 <img width="200px" src="sample/image_sample/09_starfish_example_inkscape.svg" />
 <img width="200px" src="sample/image_sample/05_koch_curve_B_inkscape.svg" />
 <img width="200px" src="sample/image_sample/06_Lissajous_figure_inkscape.svg" />
+</picture>
 
 ## 概要
 
-「らららプログラミング」は、2次元の幾何学模様のグラフィックスを生成するために作成したビジュアルプログラミング環境です。
+「らららプログラミング」は、2次元の幾何学模様のグラフィックスを生成することができるビジュアルプログラミング環境です。
 
 作成した模様は以下の形式のファイルとして出力することができます。
 - SVG(Scalable Vector Graphics)形式
@@ -21,7 +23,7 @@ SVG形式のファイルは、Webブラウザにドラッグ&ドロップして�
 
 Windows PC と PCにソフトウェアをインストールできる権限が必要です。
 以下に前提とするソフトウェアを記載します。
-また、「なくても大丈夫だけど、あるとさらに良い」という位置づけのソフトウェアを [ここ](./doc/more.md) に記載しています。
+( また、 [ここ](./doc/more.md) に「なくても大丈夫だけど、あるとさらに良い」という位置づけのソフトウェアを記載します。 )
 
 #### OS
 
