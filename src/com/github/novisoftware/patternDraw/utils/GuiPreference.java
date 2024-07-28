@@ -276,4 +276,8 @@ public class GuiPreference {
 	public final static BasicStroke STROKE_BOLD = new BasicStroke(2);
 	
 	public final static int MOUSE_WHEEL_SCROLL_AMOUNT = 30;
+
+	public final static int CONNECTOR_ERROR_MESSAGE_Y_OFFSET = -20;
+
+
 }

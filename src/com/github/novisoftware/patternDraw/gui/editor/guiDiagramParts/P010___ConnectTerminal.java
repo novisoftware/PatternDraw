@@ -42,7 +42,7 @@ public class P010___ConnectTerminal extends P002__AbstractIcon {
 	 * 初期値はtrue。エラーメッセージの代入と同時にfalseにする。
 	 */
 	public boolean isTypeChekResultValid = true;
-	public String typeChekErrorMessage = null;
+	public String[] typeChekErrorMessage = null;
 
 	public P010___ConnectTerminal(
 			P020___AbstractElement abstractElement,

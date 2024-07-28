@@ -120,11 +120,12 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 			else {
 				// 入力が妥当でないと判定した場合
 				connector.isTypeChekResultValid = false;
-				connector.typeChekErrorMessage = 
-						CaliculateException.MESSAGE_INVALID_CLASS
-						+ "(入力: " +  Value.valueTypeToDescString(src.actualValueTypeResult) +
-						", 受付可能: " + Value.valueTypeToDescString(connector.valueType) + ")";
-				// throw new CaliculateException(connector.typeChekErrorMessage);
+				String[] msg = {
+				   CaliculateException.MESSAGE_INVALID_CLASS,
+				   "入力: " +  Value.valueTypeToDescString(src.actualValueTypeResult),
+				   "受付可能: " + Value.valueTypeToDescString(connector.valueType)
+				};
+				connector.typeChekErrorMessage = msg;
 			}
 		}
 
@@ -186,7 +187,17 @@ public abstract class P020___AbstractElement extends P002__AbstractIcon {
 					double x1 = (x0 + x2) / 2;
 					double y1 = (y0 + y2) / 2;
 					g2.setFont(GuiPreference.ICON_BOX_FONT);
-					g2.drawString(connector.typeChekErrorMessage, (int)x1, (int)y1);
+					float sz = GuiPreference.ICON_BOX_FONT.getSize2D();
+					int h = (int)Math.round(sz * 1.5);
+					
+					int n = connector.typeChekErrorMessage.length;
+					for (int i = 0 ; i < n ; i++) {
+						String msg = connector.typeChekErrorMessage[i];
+						g2.drawString(
+								msg,
+								(int)x1,
+								(int)y1 + h * (i - n) + GuiPreference.CONNECTOR_ERROR_MESSAGE_Y_OFFSET);
+					}
 				}
 
 			}
