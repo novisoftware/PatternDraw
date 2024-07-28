@@ -1,5 +1,11 @@
 # プログラミング環境「らららプログラミング」
 
+<img width="200px" src="sample/image_sample/09_starfish_example_inkscape.svg" />
+
+<img width="200px" src="sample/image_sample/05_koch_curve_B_inkscape.svg" />
+
+<img width="200px" src="sample/image_sample/06_Lissajous_figure_inkscape.svg" />
+
 ## 概要
 
 「らららプログラミング」は、2次元の幾何学模様のグラフィックスを生成するために作成したビジュアルプログラミング環境です。
@@ -11,16 +17,13 @@
 
 SVG形式のファイルは、Webブラウザにドラッグ&ドロップして表示することや、InkScapeに読み込んでPDF(Portable Document Format)形式に変換することができます。
 
-## 開発動機
-
-ごく初期のCGは、レンダリング方法が素朴で、表示装置も低い解像度でした。
-両方が進化した現在でも、素朴な段階のレンダリング方法にも魅力があり、これを今の表示装置で表示したいというのが動機です。
-
 ## 導入方法
 
-Windows PC と PCにソフトウェアをインストールできる権限が必要です。
-
 ### 前提とする環境・ソフトウェア
+
+Windows PC と PCにソフトウェアをインストールできる権限が必要です。
+以下に前提とするソフトウェアを記載します。
+また、「なくても大丈夫だけど、あるとさらに良い」という位置づけのソフトウェアを [ここ](./doc/more.md) に記載しています。
 
 #### OS
 
@@ -50,28 +53,7 @@ https://fonts.google.com/specimen/BIZ+UDGothic
 
 lalala.jar
 
-
-## あると良いソフトウェア
-
-他のソフトウェアを使い、「らららプログラミング」の出力をさらに加工することができます。
-
-### Inkscape
-Inkscapeはオープンソースで開発されているベクター画像編集ソフトウェアです。
-出力したSVGファイルをInkscapeで読み込むことで、さらに編集したり、印刷用のPDFファイルを出力することができます。
-
-https://inkscape.org/ja/
-
-### FFmpeg
-FFmpegは動画を変換することができるフリーソフトウェアです。
-
-https://ffmpeg.org/
-
-FFmpegを使用することにより、出力した連番PNGファイルを元に動画を作成することができます。
-例えば以下のようなコマンドラインでアニメーションGIFを作成することができます。
-
-```
-ffmpeg -f image2 -r 12 -i image%5d.png -r 12 -an -filter_complex "[0:v] split [a][b];[a] palettegen [p];[b][p] paletteuse"  -f gif output.gif
-```
+[ここ](./jar/lalala.jar) からダウンロードできます。
 
 ## 使用方法
 
@@ -129,11 +111,15 @@ java -jar lalala.jar
 ## Java について
 
 [Java](https://ja.wikipedia.org/wiki/Java) は、かつて米国のサン・マイクロシステムズ社によって開発されたプログラミング言語・実行環境です。
+現在は、オラクル社が版権を所有します。
+
 Javaの環境自体のセキュリティは、Java実行環境の配布元によって担保されます。
 
 ## 「らららプログラミング」について
 
 「らららプログラミング」について、セキュリティに関連しそうな事柄を以下にメモします。
+
+( ユーザー操作の延長でのファイルの入出力のみ行い、それ以外のセキュリティリスクに関連するような処理はソフトウェアに含みません)
 
 - インストーラーを持ちません
 - 実行プログラムは、Windowsレジストリへのアクセスを行いません

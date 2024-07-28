@@ -94,7 +94,7 @@
 [リサージュ図形](https://ja.wikipedia.org/wiki/%E3%83%AA%E3%82%B5%E3%82%B8%E3%83%A5%E3%83%BC%E5%9B%B3%E5%BD%A2) を作成する例です。
 この例では、n周する円と、m周する円を90度の角度で交わる軸に沿ってそれぞれ潰し、組み合わせることで作図を行っています。
 
--06_Lissajous_figure.txt
+- 06_Lissajous_figure.txt
 
 <img width="300px" src="image_sample/06_Lissajous_figure_inkscape.svg" />
 
@@ -102,5 +102,15 @@
 
 <img width="300px" src="image_sample/06_Lissajous_figure_B_inkscape.svg" />
 
+## ひとでみたいな形
 
+昔よくあったような形を組み合わせたものです。
+
+- 09_starfish.txt
+
+<img width="300px" src="image_sample/09_starfish_example_inkscape.svg" />
+
+
+---------------------------------------
+[README.mdに戻る](../README.md)
 

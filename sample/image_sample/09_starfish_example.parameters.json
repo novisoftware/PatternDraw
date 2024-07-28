@@ -1,0 +1,16 @@
+{
+"script": "09_starfish.txt",
+"title": "ひとで",
+"image": "09_starfish_example.svg",
+"timestamp": "2024\/07\/28 15:05:46",
+"parameters": {
+"NN": "7",
+"N": "20",
+"ANGLE": "274.0",
+"IN_R": "0.344444",
+"IN_ANGLE": "0.0",
+"R": "1.0",
+"width": "1.0",
+"hue": "313.0"
+}
+}

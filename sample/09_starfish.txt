@@ -44,7 +44,7 @@ RPN_ELEMENT: 502 297 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:
 RPN_ELEMENT: 184 504 120 35 定数2 定数 FLOAT "-3;定数 :as-numeric" 定数値です。
 RPN_ELEMENT: 436 420 50 50 演算子2 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> *" 2つの数値を乗算します。
 FNC_ELEMENT: 501 2153 120 60 処理8 処理 hsv_to_color
-FNC_ELEMENT: 753 2158 120 60 表示4 表示 set_color_png
+FNC_ELEMENT: 743 2094 120 60 表示4 表示 set_color_png
 RPN_ELEMENT: 236 2214 120 35 定数4 定数 FLOAT "0.9;定数 :as-numeric" 定数値です。
 RPN_ELEMENT: 215 1830 120 35 変数を参照12 変数を参照 NONE "'ANGLE :recall-variable" 変数を参照します。
 RPN_ELEMENT: 217 1900 120 35 定数3 定数 FLOAT "60;定数 :as-numeric" 定数値です。
@@ -58,6 +58,7 @@ RPN_ELEMENT: 687 1802 99 35 変数を設定13 変数を設定 NONE "<value:ANY> 
 RPN_ELEMENT: 220 2109 99 35 変数を設定14 変数を参照 NONE "'h2 :recall-variable" 新しい変数
 RPN_ELEMENT: 192 349 194 35 コメント5 コメント NONE "アレンジとして加算;コメント :comment" コメントです。
 RPN_ELEMENT: 117 1672 114 35 コメント6 コメント NONE "描画する;コメント :comment" コメントです。
+FNC_ELEMENT: 746 2203 120 60 表示2 表示 set_color_svg
 REF: 処理1 r 変数を参照2
 REF: 処理1 angle 演算子1
 REF: 変数を設定1 value 処理1
@@ -93,3 +94,4 @@ REF: 変数を設定10 value 処理7
 REF: 演算子4 input2 演算子3
 REF: 演算子4 input1 変数を設定12
 REF: 変数を設定13 value 演算子4
+REF: 表示2 color 処理8
