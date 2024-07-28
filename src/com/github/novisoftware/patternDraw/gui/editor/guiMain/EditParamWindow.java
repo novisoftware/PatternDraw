@@ -101,7 +101,7 @@ public class EditParamWindow extends JFrame2 {
 		this.ngInputs = new HashSet<AbstractInputChecker>();
 		this.textFields = new HashMap<String,JTextField>();
 
-		this.setTitle("条件を指定します");
+		this.setTitle("パラメーターの指定");
 		this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
 		this.setLocation(WINDOW_POS_X, WINDOW_POS_Y);
@@ -202,7 +202,7 @@ public class EditParamWindow extends JFrame2 {
 
 		SubPanel subPanel0 = new SubPanel();
 		pane.add(subPanel0);
-		subPanel0.add(new JLabel2("実行パラメーターを指定します。"));
+		subPanel0.add(new JLabel2("パラメーターを指定します。"));
 		// for (String varName : items.keySet()) {
 		for (ParameterDefine param__ : paramDefList) {
 			final ParameterDefine param = param__;
