@@ -1,10 +1,9 @@
 # プログラミング環境「らららプログラミング」
 
-<picture>
 <img width="200px" src="sample/image_sample/09_starfish_example_inkscape.svg" />
 <img width="200px" src="sample/image_sample/05_koch_curve_B_inkscape.svg" />
 <img width="200px" src="sample/image_sample/06_Lissajous_figure_inkscape.svg" />
-</picture>
+
 
 ## 概要
 
