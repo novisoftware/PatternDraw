@@ -79,8 +79,8 @@ public class OutputGraphicsWindow extends JFrame2 {
 			return;
 		}
 
-		String scriptFilename = this.editDiagramWindow.editPanel.networkDataModel.getFilename();
-		String title = this.editDiagramWindow.editPanel.networkDataModel.title;
+		String scriptFilename = this.editDiagramWindow.editDiagramPanel.networkDataModel.getFilename();
+		String title = this.editDiagramWindow.editDiagramPanel.networkDataModel.title;
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String timestamp = sdf.format(new Date());

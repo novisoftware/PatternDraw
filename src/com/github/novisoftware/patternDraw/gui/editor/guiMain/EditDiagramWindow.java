@@ -22,6 +22,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
+import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
@@ -39,6 +40,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConsta
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantStringWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputOtherTypeWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputVariableSetWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow.ParamDefDisplay;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;
@@ -47,7 +49,7 @@ import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class EditDiagramWindow extends JFrame2 {
 	EditDiagramMenuBar editMenuBar;
-	EditDiagramPanel editPanel;
+	EditDiagramPanel editDiagramPanel;
 	// 子
 	public final EditParamWindow editParamWindow;
 
@@ -71,19 +73,19 @@ public class EditDiagramWindow extends JFrame2 {
 		});
 		
 		this.setSize(1500, 700);
-		this.editPanel = new EditDiagramPanel(this, filename);
-		this.editMenuBar = new EditDiagramMenuBar(this, this.editPanel);
+		this.editDiagramPanel = new EditDiagramPanel(this, filename);
+		this.editMenuBar = new EditDiagramMenuBar(this, this.editDiagramPanel);
 
 		this.setJMenuBar(this.editMenuBar);
 		this.updateTitle();
 		Dimension d = new Dimension(NetworkDataModel.X_DIM_INIT, NetworkDataModel.Y_DIM_INIT);
 		
-		this.editPanel.setPreferredSize(d);
-		this.editPanel.setSize(d);
-		JScrollPane2 sp = new JScrollPane2(this.editPanel);
+		this.editDiagramPanel.setPreferredSize(d);
+		this.editDiagramPanel.setSize(d);
+		JScrollPane2 sp = new JScrollPane2(this.editDiagramPanel);
 		sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED );
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED  );
-		sp.setPreferredSize(this.editPanel.getPreferredSize());
+		sp.setPreferredSize(this.editDiagramPanel.getPreferredSize());
 		this.add(sp);
 
 		this.editParamWindow = new EditParamWindow();
@@ -92,7 +94,7 @@ public class EditDiagramWindow extends JFrame2 {
 	public boolean dataLostConfirm() {
 		// いまはそもそそもアンドゥバッファもないし、保存済かどうか管理していないけれど、
 		// 未保存の編集があったら聞く
-		if (editPanel.networkDataModel.getFilename() == null) {
+		if (editDiagramPanel.networkDataModel.getFilename() == null) {
 			return true;
 		}
 		int confirmResult =
@@ -110,13 +112,13 @@ public class EditDiagramWindow extends JFrame2 {
 	}
 	
 	public void updateTitle() {
-		String filename = this.editPanel.networkDataModel.getFilename();
+		String filename = this.editDiagramPanel.networkDataModel.getFilename();
 		String adder = "";
 		if (filename == null) {
-			adder = this.editPanel.networkDataModel.title;
+			adder = this.editDiagramPanel.networkDataModel.title;
 		}
 		else {
-			adder = new File(filename).getName() + " - " + this.editPanel.networkDataModel.title;
+			adder = new File(filename).getName() + " - " + this.editDiagramPanel.networkDataModel.title;
 		}
 		
 		this.setTitle("ダイヤグラムを編集: " + adder);
@@ -396,11 +398,29 @@ public class EditDiagramWindow extends JFrame2 {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
+			/*
+			 * 調査コード。  
+			
+			System.out.println("  mouseReleased notified. ");
+			*/
 			if (commonCheck()) {
 				return;
 			}
 			if (handled == null) {
 				editPanel__.workLineFrom = null;
+
+				if (editPanel__.paramDefEditWindow != null) {
+					if (editPanel__.paramDefEditWindow.handledObj != null) {
+						ParameterDefine h = editPanel__.paramDefEditWindow.handledObj.para;
+						System.out.println("  para = " + h.name);
+					} else {
+						System.out.println("  does not get para ");
+					}
+				}
+				
+				
+				
+				
 				editPanel__.networkDataModel.analyze();
 				editPanel__.repaint();
 

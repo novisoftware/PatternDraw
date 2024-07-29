@@ -48,6 +48,7 @@ public class EditParamDefListWindow extends JFrame2 {
 
 	final JPanel jp;
 	final NetworkDataModel networkDataModel;
+	ParamDefDisplay handledObj;
 
 	/**
 	 * パラメーター一覧
@@ -119,6 +120,7 @@ public class EditParamDefListWindow extends JFrame2 {
 	}
 
 	public static class ParamDefListPanel extends JPanel  {
+		
 		ArrayList<ParameterDefine> params;
 		ArrayList<ParamDefDisplay> paramDefDisplay;
 		// awt/swingのLayoutとは関係ない
@@ -409,21 +411,27 @@ public class EditParamDefListWindow extends JFrame2 {
 	
 	public static class MListener implements MouseListener, MouseMotionListener {
 		ParamDefListPanel paramDefListPanel;
-		ParamDefDisplay handledObj;
 
 		MListener(ParamDefListPanel paramDefListPanel) {
 			this.paramDefListPanel = paramDefListPanel;
-			this.handledObj = null;
+			this.paramDefListPanel.editParamDefListWindow.handledObj = null;
 		}
 
+		public ParamDefDisplay getHandledObj() {
+			return this.paramDefListPanel.editParamDefListWindow.handledObj;
+		}
+		public void setHandledObj(ParamDefDisplay d) {
+			this.paramDefListPanel.editParamDefListWindow.handledObj = d;
+		}
 
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			if (this.handledObj == null) {
+			ParamDefDisplay handledObj = this.getHandledObj();
+			if (handledObj == null) {
 				return;
 			}
-			this.handledObj.dragX = e.getX();
-			this.handledObj.dragY = e.getY();
+			handledObj.dragX = e.getX();
+			handledObj.dragY = e.getY();
 			paramDefListPanel.repaint();
 		}
 
@@ -478,16 +486,16 @@ public class EditParamDefListWindow extends JFrame2 {
 				
 				int y = e.getY();
 				
-				ParamDefDisplay p = paramDefListPanel.getHandledObj(y);
-				if (p == null) {
+				ParamDefDisplay handledObj = paramDefListPanel.getHandledObj(y);
+				if (handledObj == null) {
 					return;
 				}
-				this.handledObj = p;
-				this.handledObj.isDragging = true;
-				this.handledObj.dragStartX = e.getX();
-				this.handledObj.dragStartY = y;
-				this.handledObj.dragX = this.handledObj.dragStartX;
-				this.handledObj.dragY = this.handledObj.dragStartY;
+				this.setHandledObj(handledObj);
+				handledObj.isDragging = true;
+				handledObj.dragStartX = e.getX();
+				handledObj.dragStartY = y;
+				handledObj.dragX = handledObj.dragStartX;
+				handledObj.dragY = handledObj.dragStartY;
 				paramDefListPanel.repaint();
 			}
 		}
@@ -499,17 +507,18 @@ public class EditParamDefListWindow extends JFrame2 {
 				return;
 			}
 			if (e.getButton() == MouseEvent.BUTTON1) {
-				if (this.handledObj == null) {
+				ParamDefDisplay handledObj = this.getHandledObj();
+				if (handledObj == null) {
 					return;
 				}
 				// if (!this.handledObj.isDragging2 ||
 				//		(this.handledObj.isDragging2 && this.handledObj.index == this.handledObj.indexToUpdate)) {
-				if (!this.handledObj.isDragging2) {
+				if (!handledObj.isDragging2) {
 					// あまり動かなかったドラッグの場合は、クリック扱いにする
 					ParameterDefine para = handledObj.para;
-					this.handledObj.isDragging = false;
-					this.handledObj.isDragging2 = false;
-					this.handledObj = null;
+					handledObj.isDragging = false;
+					handledObj.isDragging2 = false;
+					handledObj = null;
 					paramDefListPanel.repaint();
 					if (para != null) {
 						this.paramDefListPanel.editParamDefListWindow.createInputWindow(para, false);
@@ -522,14 +531,14 @@ public class EditParamDefListWindow extends JFrame2 {
 					return;
 				}
 
-				if (this.handledObj.updateIndex()) {
+				if (handledObj.updateIndex()) {
 					paramDefListPanel.repaint();
 				}
 				else {
-					this.handledObj.isDragging = false;
-					this.handledObj.isDragging2 = false;
+					handledObj.isDragging = false;
+					handledObj.isDragging2 = false;
 				}
-				this.handledObj = null;
+				handledObj = null;
 			}
 		}
 
