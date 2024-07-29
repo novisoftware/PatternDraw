@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
-import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;

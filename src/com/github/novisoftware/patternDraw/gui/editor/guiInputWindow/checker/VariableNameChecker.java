@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.github.novisoftware.patternDraw.core.langSpec.VariableName;
+import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class VariableNameChecker extends AbstractInputChecker {
 	private String oldName;
@@ -48,26 +49,33 @@ public class VariableNameChecker extends AbstractInputChecker {
 			// 長さ 0 の文字列は許可されない
 			isValid = false;
 			message = "変数名を入力してください";
-		} else if (s.equals(oldName)) {
+			return;
+		}
+		
+		else if (s.equals(oldName)) {
 			// 前と名前が変わっていなければ チェック上問題なし
 			isValid = true;
 			message = " ";
-		} else if (variables.contains(s)) {
+			return;
+		}
+
+		if (variables.contains(s)) {
 			// 他の変数と名前が衝突していれば チェック上NG
 			isValid = false;
 			message = "すでに使われている変数名です";
-		} else {
-			String msg = VariableName.validateVariableName(s);
-			if (msg == null) {
-				isValid = true;
-				message = " ";
-			}
-			else {
-			}
+			return;
 		}
-		
-		if (isValid) {
-			this.newName = s;
+		String msg = VariableName.validateVariableName(s);
+		Debug.println("check: \"" + s + "\"");
+		Debug.println("check result = " + msg);
+		if (msg != null) {
+			isValid = false;
+			message = msg;
+			return;
 		}
+
+		isValid = true;
+		message = " ";
+		this.newName = s;
 	}
 }

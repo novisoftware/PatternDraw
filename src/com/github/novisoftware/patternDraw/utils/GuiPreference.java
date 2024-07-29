@@ -33,8 +33,7 @@ public class GuiPreference {
 			"メイリオ",
 			"游ゴシック",
 			"Takako",
-			"Noto Sans CJK JP",
-			"Takako"
+			"Noto Sans CJK JP"
 	};
 
 
@@ -44,8 +43,7 @@ public class GuiPreference {
 			"メイリオ",
 			"游ゴシック",
 			"Takako",
-			"Noto Sans CJK JP",
-			"Takako"
+			"Noto Sans CJK JP"
 	};
 
 
@@ -56,29 +54,26 @@ public class GuiPreference {
 			"メイリオ",
 			"游ゴシック",
 			"Takako",
-			"Noto Sans CJK JP",
-			"Takako"
+			"Noto Sans CJK JP"
 	};
 
 	static String[] preferenceFontName_message = {
 			"BIZ UDゴシック",
-			"BIZ UDPゴシック",
-			"UD デジタル 教科書体 N-R",
+			"UD デジタル 教科書体 N-B",
+			"メイリオ",
 			"游ゴシック",
-			"Noto Sans CJK JP",
-			"Takako"
+			"Takako",
+			"Noto Sans CJK JP"
 	};
 
 
 	static String[] preferenceFontName_input = {
-		//	"Comic Shanns Regular",
-		//	"Comic Sans MS",
-		//	"UD デジタル 教科書体 N-R",
 			"BIZ UDゴシック",
-			"BIZ UDPゴシック",
+			"UD デジタル 教科書体 N-B",
+			"メイリオ",
 			"游ゴシック",
-			"Noto Sans CJK JP",
-			"Takako"
+			"Takako",
+			"Noto Sans CJK JP"
 	};
 
 	/**
@@ -88,8 +83,8 @@ public class GuiPreference {
 	public static int LABEL_FONT_SIZE = 18;
 	public static int TIPS_FONT_SIZE = 16;
 	public static int MESSAGE_DISP_FONT_SIZE = 14;
-	public static int OK_BUTTON_FONT_SIZE = 24;
-	public static int CANCEL_BUTTON_FONT_SIZE = 20;
+	public static int OK_BUTTON_FONT_SIZE = 22;
+	public static int CANCEL_BUTTON_FONT_SIZE = 18;
 	public static int COSOLE_FONT_SIZE = 16;
 
 	/**

@@ -15,7 +15,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.RenderingU
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
-import com.github.novisoftware.patternDraw.utils.GuiPreference.ControlElementLimit;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 import com.github.novisoftware.patternDraw.utils.GuiUtil.StringRectUtil;
 

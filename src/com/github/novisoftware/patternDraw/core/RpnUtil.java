@@ -26,14 +26,14 @@ public class RpnUtil {
 	}
 
 	static public boolean hasComment(String value) {
-		return value.matches("[^;]+;(.*)");
+		return value.matches("[^;]*;(.*)");
 	}
 
 	static public String getComment(String value) {
 		if (value.indexOf(';') == -1) {
 			return "";
 		}
-		return value.replaceAll("[^;]+;(.*)", "$1");
+		return value.replaceAll("[^;]*;(.*)", "$1");
 	}
 
 	static public String getRepresent(String value) {

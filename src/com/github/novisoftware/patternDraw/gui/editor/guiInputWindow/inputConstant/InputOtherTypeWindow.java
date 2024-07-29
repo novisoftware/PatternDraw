@@ -20,7 +20,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.Abs
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.IntegerChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NumericChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.VariableNameChecker;
-import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.checker.NonCheckChecker;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.JLabel2;
 import com.github.novisoftware.patternDraw.utils.Debug;

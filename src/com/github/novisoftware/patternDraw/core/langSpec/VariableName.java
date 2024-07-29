@@ -36,22 +36,35 @@ public class VariableName {
 
 	/**
 	 * 文字がASCII記号文字であるかを検査する。
+	 * UNICODEの記号類はチェックせず素通しさせる。
 	 * 
 	 * @param c 検査対象の文字
 	 * @return
 	 */
 	private static boolean isSymbolChar(char c) {
-		if (c < 0x2F || (0x3a <= c && c <= 0x40) || (0x5b <=c && c <= 0x60) || (0x7b <=c && c <= 0x7F)) {
+		if (	// 制御文字「NUL」から記号「/」まで
+				c <= 0x2F
+				||
+				// 記号「:」から「@」まで
+				(0x3a <= c && c <= 0x40)
+				|| 
+				// 記号「[」から「^」まで
+				(0x5b <= c && c <= 0x5E)
+				||
+				// 記号「_」は許可する
+				// バッククォート記号
+				c == 0x60
+				||
+				// 記号「{」から制御文字「DEL」まで
+				(0x7b <= c && c <= 0x7F)
+				) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
 	private static boolean isInvalidSybomChar(char c) {
-		if (c == '_') {
-			return false;
-		}
 		if (isSymbolChar(c)) {
 			return true;
 		}
@@ -60,12 +73,12 @@ public class VariableName {
 	}
 	
 	private static boolean containsInvalidSymbolChar(String s) {
-		for (int i = 0; i<s.length(); i++) {
+		for (int i = 0; i < s.length(); i++) {
 			if (isInvalidSybomChar(s.charAt(i))) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 }

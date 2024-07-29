@@ -1,7 +1,6 @@
 package com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.utils.Debug;
-import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 import com.github.novisoftware.patternDraw.utils.GuiPreference;
 
 public abstract class P020___AbstractElement extends P015__AbstractIcon2 {
