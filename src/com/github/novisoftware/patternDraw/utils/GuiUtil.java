@@ -227,6 +227,27 @@ public class GuiUtil {
 			rectCache.put(s, rect);
 			return rect;
 		}
+		
+		/**
+		 * 文字の横幅・高さ(ドット数)を求め、キャッシュします。
+		 * 基準にするフォントは引数 g2 に設定してある必要があります。
+		 * 種類(kind)ごとに、キャッシュします。
+		 *
+		 * @param s
+		 * @param g2
+		 * @return
+		 */
+		public Rectangle str2rectWithKind(String kind, String s, Graphics2D g2) {
+			Rectangle w = rectCache.get(s);
+			if (w != null) {
+				return w;
+			}
+
+			FontMetrics fm = g2.getFontMetrics();
+			Rectangle rect = fm.getStringBounds(s, g2).getBounds();
+			rectCache.put(kind + "\n" + s, rect);
+			return rect;
+		}
 	}
 
 	public static String concatStrings(ArrayList<String> list) {

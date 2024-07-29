@@ -9,11 +9,12 @@ import java.util.HashSet;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P017___Comment;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P023_____FncGraphNodeElement;
@@ -65,6 +66,7 @@ public class ElementFactory extends AbstractElementFactory {
 		TYPE_UNDEF,
 		TYPE_RPNDEF,
 		TYPE_FNCDEF,
+		TYPE_COMMENTDEF,
 	}
 
 	/**
@@ -267,9 +269,22 @@ public class ElementFactory extends AbstractElementFactory {
 	 * @param y
 	 */
 	public void createNewElement(EditDiagramPanel editPanel, int x, int y) {
-		ArrayList<P020___AbstractElement> eleList = editPanel.networkDataModel.getElements();
+		NetworkDataModel networkDataModel =  editPanel.networkDataModel;
 
-		if (this.defType.equals(PartsType.TYPE_RPNDEF)) {
+		if (this.defType.equals(PartsType.TYPE_COMMENTDEF)) {
+			P017___Comment comment = new P017___Comment(this.editPanel);
+			String name = editPanel.networkDataModel.generateUniqueName(this.kindName + "0");
+
+
+			
+			comment.setCommentString("コメント");
+			comment.id = name;
+			comment.x = x;
+			comment.y = y;
+			comment.w = this.width;
+			comment.h = this.height;
+			networkDataModel.addElement(comment);
+		} else if (this.defType.equals(PartsType.TYPE_RPNDEF)) {
 			if (this.kindName.equals("制御")) {
 				if (this.controlType.equals("IF")) {
 					P030____ControlElement controlBlock = new P030____ControlElement(this.editPanel);
@@ -285,7 +300,7 @@ public class ElementFactory extends AbstractElementFactory {
 					controlBlock.setRpnString(P020___AbstractElement.unescape(this.rpn));
 					// element.buildParameterList(element.getRpnString());
 
-					eleList.add(controlBlock);
+					networkDataModel.addElement(controlBlock);
 
 
 					P030____ControlElement controlBlock2 = new P030____ControlElement(this.editPanel);
@@ -301,7 +316,7 @@ public class ElementFactory extends AbstractElementFactory {
 					controlBlock2.setRpnString(P020___AbstractElement.unescape(this.rpn));
 					// element2.buildParameterList(element.getRpnString());
 
-					eleList.add(controlBlock2);
+					networkDataModel.addElement(controlBlock2);
 
 					HashSet<P030____ControlElement> controllerGroup = new HashSet<P030____ControlElement>();
 					controllerGroup.add(controlBlock);
@@ -324,7 +339,7 @@ public class ElementFactory extends AbstractElementFactory {
 					controlBlock.setRpnString(P020___AbstractElement.unescape(this.rpn));
 					P022_____RpnGraphNodeElement.buildParameterList2(controlBlock, controlBlock.getRpnString());
 
-					eleList.add(controlBlock);
+					networkDataModel.addElement(controlBlock);
 				}
 			}
 			else {
@@ -343,7 +358,7 @@ public class ElementFactory extends AbstractElementFactory {
 				element.setRpnString(P020___AbstractElement.unescape(this.rpn));
 				P022_____RpnGraphNodeElement.buildParameterList2(element, element.getRpnString());
 
-				eleList.add(element);
+				networkDataModel.addElement(element);
 			}
 		}
 		else {
@@ -359,7 +374,7 @@ public class ElementFactory extends AbstractElementFactory {
 				element.w = this.width;
 				element.h = this.height;
 				element.setKindString(this.kindName);
-				eleList.add(element);
+				networkDataModel.addElement(element);
 			} catch (LangSpecException e) {
 				e.printStackTrace();
 				System.exit(1);

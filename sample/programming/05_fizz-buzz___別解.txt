@@ -2,7 +2,7 @@ PD_FORMAT_REV: 1.1
 TITLE:FizzBuzz
 
 
-RPN_ELEMENT: 34 41 146 35 コメント1 コメント NONE "FizzBuzz別解;コメント :comment" コメントです。
+COMMENT: 34 41 146 35 コメント1 small - FizzBuzz別解
 CONTROL: 123 118 1500 888 制御1 制御 REPEAT "1;n,開始 100;n,終了 1;n,刻み幅 num;v,代入先の変数名 :index_loop"
 RPN_ELEMENT: 209 170 120 35 変数を参照1 変数を参照 NONE "'num :recall-variable" 変数を参照します。
 RPN_ELEMENT: 407 169 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> %" 数値1を数値2で割った余りです。

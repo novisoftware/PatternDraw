@@ -7,7 +7,7 @@ PARAMETER: size 大きさ 1 FLOAT false "" true 0.3 1.5
 PARAMETER: θ 回転 0 FLOAT false "" true 0 360
 PARAMETER: N N角形 3 INTEGER true 3,4,5,6,7,8,9,10 false "" ""
 
-RPN_ELEMENT: 18 24 130 35 コメント1 コメント NONE "コッホ曲線;コメント :comment" コメントです。
+COMMENT: 18 24 130 35 コメント1 small - コッホ曲線
 FNC_ELEMENT: 354 198 120 60 処理1 処理 series_on_circle
 RPN_ELEMENT: 174 145 55 35 定数1 定数 INTEGER "6;定数 :as-numeric" 定数値です。
 RPN_ELEMENT: 175 202 53 35 定数2 定数 FLOAT "0.5;定数 :as-numeric" 定数値です。
@@ -20,21 +20,21 @@ FNC_ELEMENT: 609 283 120 60 処理3 処理 pos_zip
 FNC_ELEMENT: 907 335 120 60 処理4 処理 pos_to_sub_pos_list
 RPN_ELEMENT: 646 379 120 35 定数6 定数 INTEGER "1;定数 :as-numeric" 定数値です。
 RPN_ELEMENT: 648 447 120 35 定数7 定数 INTEGER "5;定数 :as-numeric" 定数値です。
-RPN_ELEMENT: 72 73 402 35 コメント2 コメント NONE "あてはめるパターン(ジェネレーター)を作成する;コメント :comment" コメントです。
+COMMENT: 72 73 402 35 コメント2 small - あてはめるパターン(ジェネレーター)を作成する
 RPN_ELEMENT: 1138 361 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'pattern;変数名 :set-variable" 新しい変数
-RPN_ELEMENT: 69 567 354 35 コメント3 コメント NONE "ベースの図形(イニシエーター)を作成する;コメント :comment" コメントです。
+COMMENT: 69 567 354 35 コメント3 small - ベースの図形(イニシエーター)を作成する
 FNC_ELEMENT: 387 679 120 60 処理5 処理 series_on_circle
 RPN_ELEMENT: 154 646 120 35 変数を参照2 変数を参照 NONE "'N :recall-variable" 変数を参照します。
 RPN_ELEMENT: 153 712 120 35 変数を参照3 変数を参照 NONE "'size :recall-variable" 変数を参照します。
 RPN_ELEMENT: 160 793 120 35 変数を参照4 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
 RPN_ELEMENT: 590 687 120 35 変数を設定2 変数を設定 NONE "<value:ANY> 'basement;変数名 :set-variable" 新しい変数
-RPN_ELEMENT: 74 883 274 35 コメント4 コメント NONE "パターンのあてはめを繰り返す;コメント :comment" コメントです。
+COMMENT: 74 883 274 35 コメント4 small - パターンのあてはめを繰り返す
 RPN_ELEMENT: 237 1018 120 35 変数を設定3 変数を参照 NONE "'basement :recall-variable" 新しい変数
 RPN_ELEMENT: 236 1107 120 35 変数を設定4 変数を参照 NONE "'pattern :recall-variable" 新しい変数
 FNC_ELEMENT: 480 1045 120 60 処理6 処理 pos_apply_as_texture
 RPN_ELEMENT: 745 1073 120 35 変数を設定5 変数を設定 NONE "<value:ANY> 'basement;変数名 :set-variable" 新しい変数
 CONTROL: 166 968 816 206 制御1 制御 REPEAT "1 5;繰り返す回数 :loop"
-RPN_ELEMENT: 68 1211 114 35 コメント5 コメント NONE "描画する;コメント :comment" コメントです。
+COMMENT: 68 1211 114 35 コメント5 small - 描画する
 FNC_ELEMENT: 436 1462 120 60 表示1 表示 draw_polyline_close
 RPN_ELEMENT: 132 1425 120 35 変数を設定6 変数を参照 NONE "'basement :recall-variable" 新しい変数
 RPN_ELEMENT: 131 1316 120 35 変数を参照5 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。

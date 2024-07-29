@@ -13,12 +13,12 @@ RPN_ELEMENT: 218 618 120 35 変数を参照3 変数を参照 NONE "'angle :recal
 FNC_ELEMENT: 651 589 120 60 処理2 処理 series_on_circle
 RPN_ELEMENT: 231 259 120 35 変数を参照4 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。
 FNC_ELEMENT: 641 294 120 60 表示2 表示 set_stroke_width
-RPN_ELEMENT: 75 40 218 35 コメント1 コメント NONE "星形を描画します(例2);コメント :comment" コメントです。
-RPN_ELEMENT: 149 367 130 35 コメント3 コメント NONE "内側の頂点;コメント :comment" コメントです。
+COMMENT: 75 40 218 35 コメント1 small - 星形を描画します(例2)
+COMMENT: 149 367 130 35 コメント3 small - 内側の頂点
 FNC_ELEMENT: 1141 551 120 60 表示1 表示 draw_polyline_close
 FNC_ELEMENT: 863 537 120 60 処理3 処理 pos_to_pos_skip
 RPN_ELEMENT: 644 482 120 35 変数を参照5 変数を参照 NONE "'M :recall-variable" 変数を参照します。
-RPN_ELEMENT: 149 176 114 35 コメント4 コメント NONE "線の太さ;コメント :comment" コメントです。
+COMMENT: 149 176 114 35 コメント4 small - 線の太さ
 REF: 処理2 r 変数を参照2
 REF: 処理2 angle 変数を参照3
 REF: 処理2 n 変数を参照1

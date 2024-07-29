@@ -699,11 +699,4 @@ public class P030____ControlElement extends P020___AbstractElement {
 	public ValueType getValueType() {
 		return ValueType.NONE;
 	}
-
-	@Override
-	public boolean isComment() {
-		return false;
-	}
-
-
 }

@@ -14,7 +14,7 @@ RPN_ELEMENT: 289 942 120 35 変数を設定6 変数を参照 NONE "'c :recall-va
 RPN_ELEMENT: 631 833 120 35 変数を設定8 変数を設定 NONE "<value:ANY> 'a;変数名 :set-variable" 新しい変数
 RPN_ELEMENT: 631 962 120 35 変数を設定9 変数を設定 NONE "<value:ANY> 'b;変数名 :set-variable" 新しい変数
 RPN_ELEMENT: 299 811 120 35 変数を設定10 変数を参照 NONE "'b :recall-variable" 新しい変数
-RPN_ELEMENT: 36 18 290 35 コメント1 コメント NONE "フィボナッチの数列を出力します;コメント :comment" コメントです。
+COMMENT: 36 18 290 35 コメント1 small - フィボナッチの数列を出力します
 CONTROL: 183 514 841 534 制御1 制御 REPEAT "1;開始 200;終了 :loop"
 RPN_ELEMENT: 679 219 120 60 表示4 表示 NONE "<input:ANY> :print" テキストを出力します
 RPN_ELEMENT: 675 390 120 60 表示5 表示 NONE "<input:ANY> :print" テキストを出力します

@@ -12,8 +12,8 @@ RPN_ELEMENT: 193 439 120 35 変数を参照1 変数を参照 NONE "'N; :recall-v
 RPN_ELEMENT: 183 554 120 35 変数を参照2 変数を参照 NONE "'r; :recall-variable" 変数を参照します。
 RPN_ELEMENT: 205 652 120 35 変数を参照3 変数を参照 NONE "'angle :recall-variable" 変数を参照します。
 FNC_ELEMENT: 506 531 120 60 処理2 処理 series_on_circle
-RPN_ELEMENT: 68 39 322 35 コメント1 コメント NONE "正多角形を描画します(塗りつぶし)。;コメント :comment" コメントです。
-RPN_ELEMENT: 800 457 130 35 コメント2 コメント NONE "塗りつぶす;コメント :comment" コメントです。
+COMMENT: 68 39 322 35 コメント1 small - 正多角形を描画します(塗りつぶし)。
+COMMENT: 800 457 130 35 コメント2 small - 塗りつぶす
 FNC_ELEMENT: 801 537 120 60 表示3 表示 pos_to_fill
 RPN_ELEMENT: 198 147 120 35 変数を参照4 変数を参照 NONE "'Hue; :recall-variable" 変数を参照します。
 RPN_ELEMENT: 200 217 120 35 変数を参照5 変数を参照 NONE "'Saturation; :recall-variable" 変数を参照します。

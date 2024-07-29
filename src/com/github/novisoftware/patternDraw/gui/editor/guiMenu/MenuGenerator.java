@@ -113,8 +113,29 @@ public class MenuGenerator {
 					workRPN = GuiUtil.concatStrings(workList);
 
 					defType = PartsType.TYPE_RPNDEF;
+				} else if (line.startsWith("-->COMMENT")) {
+					workRPN = GuiUtil.concatStrings(workList);
+
+					defType = PartsType.TYPE_COMMENTDEF;
 				} else if (line.startsWith("---->DEFINE")) {
-					if (defType.equals(PartsType.TYPE_RPNDEF)) {
+					if (defType.equals(PartsType.TYPE_COMMENTDEF)) {
+						ElementFactory parts = new ElementFactory(editPanel, PartsType.TYPE_COMMENTDEF);
+						parts.dispName = workDispName;
+						parts.description = workDescription;
+						parts.kindName = workKindName;
+						parts.controlType = workControlTypeName;
+						parts.valueType = Value.str2valueType.get(workTypeName);
+						if (parts.valueType == null) {
+							System.err.println("設定誤り: " + parts.dispName);
+							System.exit(1);
+						}
+						parts.rpn = workRPN;
+						parts.width = workWidth;
+						parts.height = workHeight;
+
+						list.add(parts);
+						resetWorkValues();
+					} else if (defType.equals(PartsType.TYPE_RPNDEF)) {
 						ElementFactory parts = new ElementFactory(editPanel, PartsType.TYPE_RPNDEF);
 						parts.dispName = workDispName;
 						parts.description = workDescription;

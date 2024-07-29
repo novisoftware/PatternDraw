@@ -5,9 +5,8 @@ KIND: コメント
 TYPE: NONE
 HEIGHT: 35
 DISPNAME: コメント
-DESCRIPTION: コメントです。
-コメント;コメント :comment
--->RPN
+DESCRIPTION: コメント
+-->COMMENT
 ---->DEFINE
 
 ------------------------------------------------------------

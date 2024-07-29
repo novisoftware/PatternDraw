@@ -60,8 +60,6 @@ public abstract class P015__AbstractIcon2 extends P002__AbstractIcon {
 
 	public abstract void paintWithPhase(Graphics2D g, int phase);
 
-	public abstract boolean isComment();
-
 	// 接触判定のデフォルトメソッド
 	
 	public P001_IconGuiInterface getTouchedObject(EditDiagramPanel editDiagramPanel, int x, int y) {

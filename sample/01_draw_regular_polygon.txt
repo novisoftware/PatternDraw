@@ -12,9 +12,9 @@ RPN_ELEMENT: 212 561 120 35 変数を参照3 変数を参照 NONE "'angle :recal
 FNC_ELEMENT: 513 440 120 60 処理2 処理 series_on_circle
 RPN_ELEMENT: 202 185 120 35 変数を参照4 変数を参照 NONE "'linewidth; :recall-variable" 変数を参照します。
 FNC_ELEMENT: 612 220 120 60 表示2 表示 set_stroke_width
-RPN_ELEMENT: 75 40 226 35 コメント1 コメント NONE "正多角形を描画します。;コメント :comment" コメントです。
+COMMENT: 75 40 226 35 コメント1 small - 正多角形を描画します。
 FNC_ELEMENT: 820 439 120 60 表示1 表示 draw_polyline_close
-RPN_ELEMENT: 792 364 178 35 コメント2 コメント NONE "輪郭を線分で描画;コメント :comment" コメントです。
+COMMENT: 792 364 178 35 コメント2 small - 輪郭を線分で描画
 REF: 処理2 r 変数を参照2
 REF: 処理2 angle 変数を参照3
 REF: 処理2 n 変数を参照1

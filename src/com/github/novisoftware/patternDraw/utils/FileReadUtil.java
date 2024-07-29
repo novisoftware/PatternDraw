@@ -136,6 +136,23 @@ public class FileReadUtil {
 		}
 	}
 
+	/**
+	 * 文字列をアンエスケープする。
+	 * (仮実装。想定する正しい使い方は 1行を tokenizeToArray() で分解する)
+	 *
+	 * @param s 生の文字列
+	 * @return エスケープした文字列
+	 */
+	public static String unescape(String s) {
+		if (s.equals("\"\"")) {
+			return "";
+		}
+		if (s.charAt(0) != '"') {
+			return s;
+		}
+		return s.replaceAll("\"\"", "\"");
+	}
+
 	public static String escape(Boolean b) {
 		if (b != null) {
 			return b ? "true" : "false";

@@ -261,7 +261,9 @@ public class GuiPreference {
 
 	public final static Color COMMENT_BACKGROUND_COLOR = new Color( 0.5f, 0.5f, 0.5f );
 
-	public final static Font COMMENT_FONT = initLabelFont(preferenceFontName_in_icon, Font.BOLD, 16);
+	public final static Font COMMENT_FONT_BIG = initLabelFont(preferenceFontName_in_icon, Font.BOLD, 24);
+	public final static Font COMMENT_FONT = initLabelFont(preferenceFontName_in_icon, Font.BOLD, 20);
+	public final static Font COMMENT_FONT_SMALL = initLabelFont(preferenceFontName_in_icon, Font.BOLD, 16);
 
 
 	public final static Font CONNECTOR_TEXT_FONT = new Font(Font.SANS_SERIF, Font.PLAIN, 10);

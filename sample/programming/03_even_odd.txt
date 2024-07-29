@@ -3,7 +3,7 @@ TITLE:奇数か偶数かを判定
 
 PARAMETER: n 判定対象の数 1 INTEGER false "" false "" ""
 
-RPN_ELEMENT: 45 43 226 35 コメント1 コメント NONE "奇数か偶数かを判定する;コメント :comment" コメントです。
+COMMENT: 45 43 226 35 コメント1 small - 奇数か偶数かを判定する
 RPN_ELEMENT: 127 154 78 35 変数を参照1 変数を参照 NONE "'n :recall-variable" 変数を参照します。
 RPN_ELEMENT: 351 178 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> ^" "(数値1) の (数値2) 乗です。"
 RPN_ELEMENT: 145 227 53 35 定数1 定数 INTEGER "2;定数 :as-numeric" 定数値です。

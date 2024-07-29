@@ -216,9 +216,4 @@ public class P022_____RpnGraphNodeElement extends P021____AbstractGraphNodeEleme
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-	@Override
-	public boolean isComment() {
-		return this.rpn.isComment();
-	}
 }

@@ -39,11 +39,7 @@ public class Rpn {
 	 * このRPNのコメント。
 	 */
 	private String comment;
-	/**
-	 * このRPNが、ダイアグラム上でのコメントの役割をするか。
-	 * comment と isComment は全然別物なので注意。
-	 */
-	private boolean isComment;
+
 	private final NetworkDataModel networkDataModel;
 
 	public Rpn(String formula, NetworkDataModel networkDataModel) {
@@ -100,9 +96,6 @@ public class Rpn {
 				// この ":as-display-string" があったら、スタックトップが表示用文字列で確定
 				break;
 			}
-			else if (op.equals(":comment")) {
-				this.isComment = true;
-			}
 			else {
 				stack.push(op.replaceAll(";.*", ""));
 			}
@@ -112,10 +105,6 @@ public class Rpn {
 		String display = value.replaceAll("^:", "");
 		this.displayString = RpnUtil.getRepresent(display);
 		this.comment = RpnUtil.getComment(value);
-	}
-
-	public boolean isComment() {
-		return isComment;
 	}
 
 	/**
@@ -837,6 +826,9 @@ public class Rpn {
 				} catch (Exception e) {
 					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
 				}
+			}
+			else if (s.endsWith(";コメント")) {
+				stack.push( new ValueString(RpnUtil.getRepresent(s)) );
 			}
 			else if (s.startsWith("'")) {
 				stringStack.push( RpnUtil.getRepresent(s.substring(1)) );

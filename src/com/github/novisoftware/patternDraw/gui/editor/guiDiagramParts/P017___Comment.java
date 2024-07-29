@@ -77,11 +77,6 @@ public class P017___Comment extends P015__AbstractIcon2 {
 	}
 
 	@Override
-	public boolean isComment() {
-		return true;
-	}
-
-	@Override
 	public void paintWithPhase(Graphics2D g2, int phase) {
 		int arcWidth = 10;
 		int arcHeight = 10;

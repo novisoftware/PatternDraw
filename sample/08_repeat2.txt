@@ -25,7 +25,7 @@ RPN_ELEMENT: 168 789 120 35 変数を設定5 変数を参照 NONE "'shape :recal
 RPN_ELEMENT: 294 917 120 35 変数を設定6 変数を参照 NONE "'t :recall-variable" 新しい変数
 FNC_ELEMENT: 468 843 120 60 処理5 処理 do_transform_pos
 FNC_ELEMENT: 462 723 120 60 表示2 表示 draw_polyline_close
-RPN_ELEMENT: 46 29 194 35 コメント1 コメント NONE "繰り返しのサンプル;コメント :comment" コメントです。
+COMMENT: 46 29 194 35 コメント1 small - 繰り返しのサンプル
 RPN_ELEMENT: 238 456 120 35 変数を参照5 変数を参照 NONE "'N :recall-variable" 変数を参照します。
 RPN_ELEMENT: 417 415 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> /" 数値1を数値2で割ります。
 REF: 処理1 angle 演算子1

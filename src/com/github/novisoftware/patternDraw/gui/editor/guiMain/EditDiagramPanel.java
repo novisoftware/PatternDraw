@@ -19,6 +19,7 @@ import javax.swing.JPanel;
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.NetworkDataModel.MyDim;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
 
@@ -39,8 +40,7 @@ public class EditDiagramPanel extends JPanel {
 
 	final public EditDiagramWindow editDiagramWindow;
 	
-	Font font1 = new Font(Font.SANS_SERIF, Font.PLAIN, 10);
-	Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+	private Font font = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 
 	// マウスドラッグ中に関係線を変更する場合、表示する
 	P001_IconGuiInterface workLineFrom = null;
@@ -123,8 +123,8 @@ public class EditDiagramPanel extends JPanel {
 		return true;
 	}
 
-	public P020___AbstractElement getElementIcon(String name) {
-		for (P020___AbstractElement t : networkDataModel.getElements()) {
+	public P015__AbstractIcon2 getElementIcon(String name) {
+		for (P015__AbstractIcon2 t : networkDataModel.getElements()) {
 			if (t.id.equals(name)) {
 				return t;
 			}
@@ -135,7 +135,7 @@ public class EditDiagramPanel extends JPanel {
 	public Set<String> getToneNames() {
 		TreeSet<String> s = new TreeSet<>();
 
-		for (P020___AbstractElement t : networkDataModel.getElements()) {
+		for (P015__AbstractIcon2 t : networkDataModel.getElements()) {
 			s.add(t.id);
 		}
 
@@ -177,24 +177,21 @@ public class EditDiagramPanel extends JPanel {
 		 */
 		g2.setColor(Color.GRAY);
 		for (int phase = 0; phase < 3; phase++) {
-			for (P020___AbstractElement t : networkDataModel.getElements()) {
+			for (P015__AbstractIcon2 t : networkDataModel.getElements()) {
 				t.paintWithPhase(g2, phase);
 			}
 		}
 	}
 
 	P001_IconGuiInterface checkXY(int x, int y) {
+		// 注: 描画順と検索順は同じにしているため、見つけたときに break をしない。
+		// (breakがあると、重なったときに「下側」のアイコンを拾うことになる)
+
 		P001_IconGuiInterface hit = null;
-		for (P020___AbstractElement t : networkDataModel.getElements()) {
+		for (P015__AbstractIcon2 t : networkDataModel.getElements()) {
 			P001_IconGuiInterface check = t.getTouchedObject(this, x, y);
 			if (check != null) {
-				// System.out.println("h mouse(" + x + "," + y +") obj(" + t.x +
-				// "," + t.y +")" );
 				hit = check;
-
-				// 描画順と検索順は同じ。
-				// breakがあると、重なったときに「下側」のを拾うことになる。
-				// break;
 			}
 		}
 

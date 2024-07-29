@@ -14,6 +14,7 @@ import com.github.novisoftware.patternDraw.core.Rpn;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
@@ -46,7 +47,7 @@ public class ContextMenu extends JPopupMenu {
 					menuItem = new JMenuItem("変数の参照を作成");
 					menuItem.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent ev) {
-							P020___AbstractElement c = ti.getCopy();
+							P020___AbstractElement c = (P020___AbstractElement)ti.getCopy();
 							c.x = ti.x + ti.w + 60;
 							// c.y = ti.y + ti.h + 3;
 							c.id = editPanel.networkDataModel.generateUniqueName(c.id);
@@ -128,19 +129,19 @@ public class ContextMenu extends JPopupMenu {
 			}
 		}
 		if (icon != null) {
-			if (icon instanceof P020___AbstractElement) {
-				P020___AbstractElement ti = (P020___AbstractElement) icon;
+			if (icon instanceof P015__AbstractIcon2) {
+				P015__AbstractIcon2 ti = (P015__AbstractIcon2) icon;
 
 				// 複製
 				menuItem = new JMenuItem("複製");
 				menuItem.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent ev) {
-						P020___AbstractElement c = ti.getCopy();
+						P015__AbstractIcon2 c = ti.getCopy();
 						c.x = ti.x + ti.w + 5;
 						c.y = ti.y + ti.h + 3;
 						c.id = editPanel.networkDataModel.generateUniqueName(c.id);
 
-						editPanel.networkDataModel.getElements().add(c);
+						editPanel.networkDataModel.addElement(c);
 						// 注: 複製では単連結グラフが増えるため必要。
 						editPanel.networkDataModel.analyze();
 						editPanel.repaint();
@@ -151,11 +152,11 @@ public class ContextMenu extends JPopupMenu {
 				// 削除
 				menuItem = new JMenuItem("削除");
 				menuItem.addActionListener(new ActionListener() {
-					void removeIcon(P020___AbstractElement icon) {
+					void removeIcon(P015__AbstractIcon2 icon) {
 						// オブジェクト一覧から削除
 						editPanel.networkDataModel.getElements().remove(icon);
 						// 参照を削除
-						for (P020___AbstractElement ei : editPanel.networkDataModel.getElements()) {
+						for (P015__AbstractIcon2 ei : editPanel.networkDataModel.getElements()) {
 							if (ei instanceof P021____AbstractGraphNodeElement) {
 								P021____AbstractGraphNodeElement ele = (P021____AbstractGraphNodeElement) ei;
 

@@ -10,12 +10,12 @@ PARAMETER: R 大きさ 1 FLOAT false "" true 0.1 3
 PARAMETER: width 線の太さ 1 FLOAT false "" true 1 20
 PARAMETER: hue 色相 0 FLOAT false "" true 0 360
 
-RPN_ELEMENT: 41 11 98 35 コメント1 コメント NONE "ひとで;コメント :comment" コメントです。
+COMMENT: 19 36 110 35 コメント1 medium - ひとで
 FNC_ELEMENT: 589 219 120 60 処理1 処理 single_position
 RPN_ELEMENT: 184 280 120 35 変数を参照1 変数を参照 NONE "'IN_ANGLE :recall-variable" 変数を参照します。
 RPN_ELEMENT: 191 202 120 35 変数を参照2 変数を参照 NONE "'IN_R :recall-variable" 変数を参照します。
 RPN_ELEMENT: 845 233 120 35 変数を設定1 変数を設定 NONE "<value:ANY> 'center;変数名 :set-variable" 新しい変数
-RPN_ELEMENT: 98 112 194 35 コメント2 コメント NONE "中心の座標をつくる;コメント :comment" コメントです。
+COMMENT: 98 112 194 35 コメント2 small - 中心の座標をつくる
 FNC_ELEMENT: 476 769 120 60 処理2 処理 series_on_circle
 RPN_ELEMENT: 214 848 120 35 変数を参照4 変数を参照 NONE "'ANGLE :recall-variable" 変数を参照します。
 FNC_ELEMENT: 676 773 120 60 処理3 処理 close_pos_list
@@ -37,8 +37,8 @@ RPN_ELEMENT: 218 1617 120 35 変数を設定8 変数を参照 NONE "'center :rec
 RPN_ELEMENT: 217 1479 120 35 変数を参照9 変数を参照 NONE "'N :recall-variable" 変数を参照します。
 FNC_ELEMENT: 736 1400 120 60 処理7 処理 line_from_2_series
 FNC_ELEMENT: 736 2333 120 60 表示1 表示 line_to_draw
-RPN_ELEMENT: 84 623 162 35 コメント3 コメント NONE "系列を作成する;コメント :comment" コメントです。
-RPN_ELEMENT: 103 1131 194 35 コメント4 コメント NONE "系列を組み合わせる;コメント :comment" コメントです。
+COMMENT: 84 623 162 35 コメント3 small - 系列を作成する
+COMMENT: 103 1131 194 35 コメント4 small - 系列を組み合わせる
 RPN_ELEMENT: 155 417 120 35 変数を参照10 変数を参照 NONE "'ANGLE :recall-variable" 変数を参照します。
 RPN_ELEMENT: 502 297 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> +" 2つの数値を足します。
 RPN_ELEMENT: 184 504 120 35 定数2 定数 FLOAT "-3;定数 :as-numeric" 定数値です。
@@ -56,8 +56,8 @@ RPN_ELEMENT: 210 1753 120 35 変数を設定12 変数を参照 NONE "'hue :recal
 RPN_ELEMENT: 558 1784 50 50 演算子4 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> +" 2つの数値を足します。
 RPN_ELEMENT: 687 1802 99 35 変数を設定13 変数を設定 NONE "<value:ANY> 'h2;変数名 :set-variable" 新しい変数
 RPN_ELEMENT: 220 2109 99 35 変数を設定14 変数を参照 NONE "'h2 :recall-variable" 新しい変数
-RPN_ELEMENT: 192 349 194 35 コメント5 コメント NONE "アレンジとして加算;コメント :comment" コメントです。
-RPN_ELEMENT: 117 1672 114 35 コメント6 コメント NONE "描画する;コメント :comment" コメントです。
+COMMENT: 192 349 194 35 コメント5 small - アレンジとして加算
+COMMENT: 117 1672 114 35 コメント6 small - 描画する
 FNC_ELEMENT: 746 2203 120 60 表示2 表示 set_color_svg
 REF: 処理1 r 変数を参照2
 REF: 処理1 angle 演算子1

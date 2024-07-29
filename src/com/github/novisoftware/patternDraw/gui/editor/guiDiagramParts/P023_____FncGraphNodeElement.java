@@ -117,11 +117,6 @@ public class P023_____FncGraphNodeElement extends P021____AbstractGraphNodeEleme
 	}
 
 	@Override
-	public boolean isComment() {
-		return false;
-	}
-
-	@Override
 	public String getDescription() {
 		return this.function.getDescription();
 	}

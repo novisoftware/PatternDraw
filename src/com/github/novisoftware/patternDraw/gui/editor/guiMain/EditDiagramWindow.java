@@ -24,6 +24,8 @@ import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P017___Comment;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
@@ -31,6 +33,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____R
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P102___NumberPicker;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.AbstractInputConstantWindow;
+import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputCommentWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantBooleanWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantScalarWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantStringWindow;
@@ -195,7 +198,20 @@ public class EditDiagramWindow extends JFrame2 {
 				if (obj != null) {
 					// TODO
 					// オブジェクト側に処理を書く方が素直かも知れない。
-					if (obj instanceof P022_____RpnGraphNodeElement) {
+					if (obj instanceof P017___Comment) {
+						PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+						Point p = pointerInfo.getLocation();
+
+						InputCommentWindow f = null;
+
+						f = new InputCommentWindow((P017___Comment)obj, editPanel__);
+						f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+						f.addWindowListener(inputWindowCloseListener);
+						f.setLocation(p);
+						f.setVisible(true);
+						this.inputWindow = f;
+					}
+					else if (obj instanceof P022_____RpnGraphNodeElement) {
 						P022_____RpnGraphNodeElement element = (P022_____RpnGraphNodeElement)obj;
 						if (element.getKindId() == KindId.CONSTANT) {
 							PointerInfo pointerInfo = MouseInfo.getPointerInfo();
@@ -326,8 +342,8 @@ public class EditDiagramWindow extends JFrame2 {
 				return;
 			}
 
-			if (t__ instanceof P020___AbstractElement) {
-				P020___AbstractElement t = (P020___AbstractElement)t__;
+			if (t__ instanceof P015__AbstractIcon2) {
+				P015__AbstractIcon2 t = (P015__AbstractIcon2)t__;
 
 				if (t != null) {
 					handled = t;
@@ -335,7 +351,7 @@ public class EditDiagramWindow extends JFrame2 {
 					old_y = e.getY();
 					// System.out.println("h " + t.id);
 
-					P020___AbstractElement hd = t;
+					P015__AbstractIcon2 hd = t;
 
 					if (e.getButton() == MouseEvent.BUTTON3) {
 						editPanel__.workLineFrom = hd;
@@ -493,8 +509,8 @@ public class EditDiagramWindow extends JFrame2 {
 					editPanel__.workLineY = e.getY();
 				}
 				else {
-					if (handled instanceof P020___AbstractElement) {
-						P020___AbstractElement h = (P020___AbstractElement)handled;
+					if (handled instanceof P015__AbstractIcon2) {
+						P015__AbstractIcon2 h = (P015__AbstractIcon2)handled;
 
 						// 差分をアイコンオブジェクトに通知する
 						h.dragged(e.getX() - old_x, e.getY() - old_y);

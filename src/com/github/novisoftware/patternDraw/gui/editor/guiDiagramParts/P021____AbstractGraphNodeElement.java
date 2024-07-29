@@ -11,7 +11,6 @@ import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
-import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.DragMode;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.RenderingUtil.WidthCache;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.misc.IconImage;
@@ -47,6 +46,8 @@ public abstract class P021____AbstractGraphNodeElement extends P020___AbstractEl
 	 */
 	abstract public String getDescription();
 
+	
+	
 	static private GuiUtil.StringRectUtil strUtil = new GuiUtil.StringRectUtil();
 
 	WidthCache tipsWidthCache = new WidthCache();

@@ -23,10 +23,12 @@ import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueType;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P023_____FncGraphNodeElement;
+import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P017___Comment;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P030____ControlElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement.KindId;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
@@ -34,6 +36,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWind
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.FileReadUtil;
 import com.github.novisoftware.patternDraw.utils.FileWriteUtil;
 import com.github.novisoftware.patternDraw.utils.OtherUtil;
 
@@ -63,7 +66,13 @@ public class NetworkDataModel {
 	/**
 	 * エレメントのリスト
 	 */
-	private ArrayList<P020___AbstractElement> elements = new ArrayList<P020___AbstractElement>();
+	// private ArrayList<P020___AbstractElement> elements = new ArrayList<P020___AbstractElement>();
+	private ArrayList<P015__AbstractIcon2> elements = new ArrayList<P015__AbstractIcon2>();
+
+	/**
+	 * エレメントのリスト（ 計算に関係しないもの ）
+	 */
+	// private ArrayList<P015__AbstractIcon2> elements2 = new ArrayList<P015__AbstractIcon2>();
 
 	/**
 	 * 編集用パネル(JPanel)
@@ -114,8 +123,19 @@ public class NetworkDataModel {
 		this.workCheckTypeVariables = new HashMap<String, ValueType>();
 	}
 
-	public ArrayList<P020___AbstractElement> getElements() {
+	public ArrayList<P015__AbstractIcon2> getElements() {
 		return elements;
+	}
+
+	public void addElement(P015__AbstractIcon2 e) {
+		elements.add(e);
+		/*
+		if (e instanceof P020___AbstractElement) {
+			elements.add((P020___AbstractElement)e);
+		} else {
+			elements2.add(e);
+		}
+		*/
 	}
 
 	public void setFilename(String filename) {
@@ -150,7 +170,7 @@ public class NetworkDataModel {
 	 */
 	public String generateUniqueName(String inputName) {
 		HashSet<String> nameSet = new HashSet<>();
-		for (P020___AbstractElement to :  elements) {
+		for (P015__AbstractIcon2 to :  elements) {
 			nameSet.add(to.id);
 		}
 		return OtherUtil.generateUniqueName(inputName, nameSet);
@@ -226,8 +246,10 @@ public class NetworkDataModel {
 	 * @param after 変更後
 	 */
 	public void notifyVarNameChange(String before, String after) {
-		for (P020___AbstractElement e : elements) {
-			e.notifyVarNameChange(before, after);
+		for (P015__AbstractIcon2 e : elements) {
+			if (e instanceof P020___AbstractElement) {
+				((P020___AbstractElement)e).notifyVarNameChange(before, after);
+			}
 		}
 	}
 
@@ -258,7 +280,7 @@ public class NetworkDataModel {
 		int workX = X_MIN;
 		int workY = Y_MIN;
 		
-		for (P020___AbstractElement e : elements) {
+		for (P015__AbstractIcon2 e : elements) {
 			int x = e.x + e.w;
 			int y = e.y + e.h;
 			if (workX < x) {
@@ -279,9 +301,9 @@ public class NetworkDataModel {
 	public void analyze() {
 		// 上から下の順にソートした Element
 		TreeSet<P020___AbstractElement> positionSortedElements = new TreeSet<>(new posComparator());
-		for (P020___AbstractElement e : elements) {
-			if (! e.isComment()) {
-				positionSortedElements.add(e);
+		for (P015__AbstractIcon2 e : elements) {
+			if (e instanceof P020___AbstractElement) {
+				positionSortedElements.add((P020___AbstractElement) e);
 			}
 		}
 
@@ -655,7 +677,7 @@ public class NetworkDataModel {
 
 			// elementがどのcontrolにぶら下がるかを調べる:
 			// デバッグ用情報のみ事前出力 0
-			for (P020___AbstractElement ei1 : this.getElements()) {
+			for (P015__AbstractIcon2 ei1 : this.getElements()) {
 	//			ControlBlock c1 = (ControlBlock)ei1;
 
 				if (ei1 != null) {
@@ -1225,12 +1247,31 @@ public class NetworkDataModel {
 					} else if (line.startsWith("PARAMETER:")) {
 						this.paramDefList.add(ParameterDefine.getParameterDefineToEdit(line));
 					} else if (line.startsWith("RPN_ELEMENT:")) {
-						this.getElements().add(new P022_____RpnGraphNodeElement(this.editPanel, line));
+						// 暫定での特別扱い
+						String a[] = FileReadUtil.tokenizeToArray(line);
+						if (a[6].equals("コメント")) {
+							// "コメント;コメント :comment"
+							String tmp0 = a[8].replaceAll(";コメント :comment$", "");
+							String tmp1 = String.format("COMMENT: %s %s %s %s %s  small - %s",
+									a[1],
+									a[2],
+									a[3],
+									a[4],
+									a[5], // ID
+									FileReadUtil.escape(tmp0)
+									);
+							this.addElement(new P017___Comment(this.editPanel, tmp1));
+						}
+						else {
+							this.addElement(new P022_____RpnGraphNodeElement(this.editPanel, line));
+						}
 					} else if (line.startsWith("FNC_ELEMENT:")) {
-						this.getElements().add(new P023_____FncGraphNodeElement(this.editPanel, line));
+						this.addElement(new P023_____FncGraphNodeElement(this.editPanel, line));
+					} else if (line.startsWith("COMMENT:")) {
+						this.addElement(new P017___Comment(this.editPanel, line));
 					} else if (line.startsWith("CONTROL:")) {
 						P030____ControlElement c = new P030____ControlElement(this.editPanel, line);
-						this.getElements().add(c);
+						this.addElement(c);
 	
 						controllerMap.put(c.id, c);
 					} else if (line.startsWith("REF:")) {
@@ -1261,8 +1302,11 @@ public class NetworkDataModel {
 
 			// System.out.println("make s2t. getElements size = " + getElements().size());
 			HashMap<String, P020___AbstractElement> s2t = new HashMap<>();
-			for( P020___AbstractElement t : getElements()) {
-				s2t.put(t.id, t);
+			for( P015__AbstractIcon2 t : getElements()) {
+				if (t instanceof P020___AbstractElement) {
+					P020___AbstractElement t_ = (P020___AbstractElement)t;
+					s2t.put(t_.id, t_);
+				}
 				//System.out.println("  name = " + t.id);
 			}
 			// System.out.println();
@@ -1310,15 +1354,17 @@ public class NetworkDataModel {
 			writer.write( p.str() + '\n' );
 		}
 		writer.write("\n");
-		for (P020___AbstractElement n : getElements()) {
+		for (P015__AbstractIcon2 n : getElements()) {
 			writer.write( n.str() + '\n' );
 		}
-		for (P020___AbstractElement n : getElements()) {
-			for (String s : n.optStr()) {
-				writer.write( s + '\n' );
+		for (P015__AbstractIcon2 n : getElements()) {
+			if (n instanceof P020___AbstractElement) {
+				for (String s : ((P020___AbstractElement)n).optStr()) {
+					writer.write( s + '\n' );
+				}
 			}
 		}
-		for (P020___AbstractElement n : getElements()) {
+		for (P015__AbstractIcon2 n : getElements()) {
 			if (n instanceof P030____ControlElement) {
 				String s = ((P030____ControlElement)n).contollerGroup_str();
 				if (s != null) {

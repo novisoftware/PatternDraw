@@ -47,10 +47,10 @@ FNC_ELEMENT: 331 1550 120 60 処理7 処理 add_2_point_series
 FNC_ELEMENT: 576 1572 120 60 表示1 表示 draw_polyline_close
 RPN_ELEMENT: 91 1394 120 35 変数を参照16 変数を参照 NONE "'linewidth :recall-variable" 変数を参照します。
 FNC_ELEMENT: 341 1404 120 60 表示2 表示 set_stroke_width
-RPN_ELEMENT: 29 40 162 35 コメント1 コメント NONE "リサージュ図形;コメント :comment" コメントです。
-RPN_ELEMENT: 77 95 154 35 コメント2 コメント NONE "系列を作成(1);コメント :comment" コメントです。
-RPN_ELEMENT: 64 574 154 35 コメント3 コメント NONE "系列を作成(2);コメント :comment" コメントです。
-RPN_ELEMENT: 23 1293 194 35 コメント4 コメント NONE "系列を合成して表示;コメント :comment" コメントです。
+COMMENT: 29 40 162 35 コメント1 small - リサージュ図形
+COMMENT: 77 95 154 35 コメント2 small - 系列を作成(1)
+COMMENT: 64 574 154 35 コメント3 small - 系列を作成(2)
+COMMENT: 23 1293 194 35 コメント4 small - 系列を合成して表示
 REF: 処理1 scale2 変数を参照13
 REF: 処理1 angle 変数を参照1
 REF: 処理1 scale1 演算子2
