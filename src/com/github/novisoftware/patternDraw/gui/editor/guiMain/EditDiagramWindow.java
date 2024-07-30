@@ -400,6 +400,7 @@ public class EditDiagramWindow extends JFrame2 {
 		public void mouseReleased(MouseEvent e) {
 			/*
 			 * 調査コード。  
+			 * 受け取れない。
 			
 			System.out.println("  mouseReleased notified. ");
 			*/
