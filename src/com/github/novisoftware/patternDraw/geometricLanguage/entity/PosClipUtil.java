@@ -91,7 +91,7 @@ public class PosClipUtil {
 
 
 	/**
-	 * 与えられた座標リストの外側になるような X 位置を計算する。
+	 * 与えられた座標リストの外側になるような X 位置を計算する(左側)。
 	 * 
 	 * 
 	 * @param posList1
@@ -118,6 +118,37 @@ public class PosClipUtil {
 		
 		return outerX;
 	}
+
+
+	/**
+	 * 与えられた座標リストの外側になるような X 位置を計算する(右側)。
+	 * 
+	 * 
+	 * @param posList1
+	 * @param posList2
+	 * @return
+	 */
+	public static double calcOuterX2(ArrayList<Pos> posList1, ArrayList<Pos> posList2) {
+		// 一番左の位置の初期値
+		// 確実に両方の外側であるような位置を、適当で良いので探す
+		double outerX = 0;
+		// 一番左の位置を探す。
+		for (Pos p : posList1) {
+			if (p.getX() > outerX) {
+				outerX = p.getX();
+			}
+		}
+		for (Pos p : posList2) {
+			if (p.getX() > outerX) {
+				outerX = p.getX();
+			}
+		}
+		// 適当にもう少し左にずらす
+		outerX += 1;
+		
+		return outerX;
+	}
+
 
 	public static boolean isIn(double outerX, Pos pos, ArrayList<Line> lineList) {
 		// 「完全に外側の適当な点」から。
@@ -192,7 +223,30 @@ public class PosClipUtil {
 		}
 	}
 	
-	
+	/**
+	 * 2座標の組み合わせ
+	 */
+	static class TwoPos {
+		Pos pos1;
+		Pos pos2;
+		
+		TwoPos(Pos pos1, Pos pos2) {
+			this.pos1 = pos1;
+			this.pos2 = pos2;
+		}
+		
+		@Override
+		public int hashCode() {
+			return pos1.hashCode() * 3 + pos2.hashCode() * 7;
+		}
+		
+		@Override
+		public boolean equals(Object o) {
+			TwoPos p = (TwoPos)o;
+			return this.pos1 == p.pos1 && this.pos2 == p.pos1;
+		}
+	}
+
 	/**
 	 * 点のリストで与えられたポリゴンを、点のリストで与えられるポリゴンでクリッピングする
 	 * 
@@ -230,10 +284,14 @@ public class PosClipUtil {
 			lineList2.add(new Line(posList2.get(i), posList2.get((i + 1) % m)));
 		}
 
+		// 「どちらの多角形から見ても、必ず外側になるようなX座標」を求めておく(左側)。
 		double outerX = calcOuterX(posList2, posList2);
 
-		ArrayList<Pos> newPosList = new ArrayList<Pos>();
+		// 「どちらの多角形から見ても、必ず外側になるようなX座標」を求めておく(右側)。
+		double outerX2 = calcOuterX2(posList2, posList2);
 
+		
+		// 「クリッピング領域とクリッピング領域の交点」をリストアップする
 		ArrayList<CrossInfo> allCrossInfo = new ArrayList<CrossInfo>();
 		HashMap<Line, List<CrossInfo>> lineToCrossInfo = new HashMap<Line, List<CrossInfo>>();
 		for (int i = 0 ; i < n ; i++) {
@@ -243,9 +301,39 @@ public class PosClipUtil {
 			allCrossInfo.addAll(cpList1);
 		}
 
-		// クリッピング領域の、交点、頂点のリスト
-		ArrayList<PosInfo> posSeries2 = new ArrayList<PosInfo>();
+		// line2 の系列を起点とした交点の情報を作る
+		// (作成済のallCrossInfoから構築する)
+		HashMap<Line, ArrayList<CrossInfo>> work = new HashMap<Line, ArrayList<CrossInfo>>();
+		for (int i = 0 ; i < m ; i++) {
+			work.put(lineList2.get(i), new ArrayList<CrossInfo>());
+		}
+		for (CrossInfo crossInfo : allCrossInfo) {
+			Line line2 = crossInfo.line2;
+			ArrayList<CrossInfo> crossInfoList = work.get(line2);
+			crossInfoList.add(crossInfo);
+		}
+		for (int i = 0 ; i < m ; i++) {
+			Line line2 = lineList2.get(i);
+			ArrayList<CrossInfo> crossInfoList = work.get(line2);
+			
+			// 出発点を持つ Comparator を new して、与えられた座標を比較するコンパレーター
+			CrossInfoComparator c = new CrossInfoComparator(line2.from) ;
+			// 出発点に近い順にソート
+			crossInfoList.sort(c);
+		}
 		
+		for (Line k : work.keySet()) {
+			lineToCrossInfo.put(k, work.get(k));
+		}
+
+		// クリッピング領域の、交点、頂点のリスト
+		// → クリッピング領域とクリッピング領域の交点のリスト
+		// 以下を作成する。
+		// ・クリッピング対象とクリッピング領域の交点
+		// ・クリッピング対象の頂点
+		// ・クリッピング領域の頂点
+		ArrayList<PosInfo> posSeries2 = new ArrayList<PosInfo>();
+
 		HashSet<Pos> allCrossPos = new HashSet<Pos>();
 		HashMap<Pos, Line> posToLine2 = new HashMap<Pos, Line>();
 		HashMap<Line, ArrayList<CrossInfo>> line2ToCrossInfo = new HashMap<Line, ArrayList<CrossInfo>>();
@@ -257,15 +345,18 @@ public class PosClipUtil {
 			posToLine2.put(ci.pos, ci.line2);
 			allCrossPos.add(ci.pos);
 		}
-		
-		int mm = posList2.size();
-		for (int i=0 ; i<mm; i++) {
+
+		// 内側の点なのかを判定する1
+		for (int i=0 ; i<m; i++) {
 			Line line2 = lineList2.get(i);
 			CrossInfoComparator c = new CrossInfoComparator(line2.from) ;
 			ArrayList<CrossInfo> ciList = line2ToCrossInfo.get(line2);
 			ciList.sort(c);
 
-			boolean isIn2 = isIn(outerX, posList2.get(i), lineList1);
+			boolean isIn2 = isIn(outerX, posList2.get(i), lineList1)
+					&& 
+					// 左側からだけだと判定しきれないので、右側からも判定する
+					isIn(outerX2, posList2.get(i), lineList1);
 			if (isIn2) {
 				posSeries2.add(new PosInfo(line2.from, Kind.edge));
 			}
@@ -279,69 +370,193 @@ public class PosClipUtil {
 				*/
 			}
 		}
-		
-		
-		
-		// System.out.println("##############################");
-		
-		Pos firstCrossPos = null;
-		Pos lastCrossPos = null;
-		
-		// クリッピング判定
-		for (int i = 0 ; i < n ; i++) {
-			// 内側にいるか?
-			boolean isIn = isIn(outerX, posList1.get(i), lineList2);
-			if (isIn) {
-				newPosList.add(posList1.get(i));
-			}
-			
+
+		// 内側の点なのかを判定する2
+		for (int i=0 ; i<n; i++) {
 			Line line1 = lineList1.get(i);
 			/*
-			List<CrossInfo> cpList = crossPoints(line1, lineList2);
+			CrossInfoComparator c = new CrossInfoComparator(line1.from) ;
+			ArrayList<CrossInfo> ciList = line2ToCrossInfo.get(line1);
+			ciList.sort(c);
 			*/
+
+			boolean isIn = isIn(outerX, posList1.get(i), lineList2)
+					&& isIn(outerX2, posList1.get(i), lineList2);
+			if (isIn) {
+				posSeries2.add(new PosInfo(line1.from, Kind.edge));
+			}
+		}
+		
+		
+		System.out.println("seize of posSeries2 = " + posSeries2.size());
+
+		// System.out.println("##############################");
+		
+		// 線分の連結情報
+		HashSet<TwoPos> lineInfo = new HashSet<TwoPos>();
+		HashSet<Pos> posSet = new HashSet<Pos>();
+
+		boolean isIn = false;
+		boolean isIn2 = false;
+		for (int i = 0 ; i < n ; i++) {
+			// 始点が領域の内側にいるか?
+			if (i == 0) {
+				isIn = isIn(outerX, posList1.get(i), lineList2);
+			} else {
+				isIn = isIn2;
+			}
+			// 終点が領域の内側にいるか?
+			isIn2 = isIn(outerX, posList1.get((i+1)%n), lineList2);
+
+			boolean flag = isIn;
+			Line line1 = lineList1.get(i);
 			List<CrossInfo> cpList = lineToCrossInfo.get(line1);
-			System.out.println("line from pos#" + i + "  cp num = " + cpList.size());
+			Pos pos0 = posList1.get(i);
 			for (CrossInfo ci : cpList) {
-				/*
-				if (isIn) {
-					isIn = !isIn;
+				Pos pos1 = ci.pos;
+				if (flag) {
+					lineInfo.add(new TwoPos(pos0, pos1));
+					lineInfo.add(new TwoPos(pos1, pos0));
+					posSet.add(pos0);
+					posSet.add(pos1);
 				}
-				*/
-				Pos p = ci.pos;
-				
-				if (lastCrossPos != null) {
-					// 内側にめり込む場合の考慮
-					List<Pos> pList = 
-							retrieve(
-									lastCrossPos,
-									p,
-									posSeries2);
-					newPosList.addAll(pList);
-				}
-				
-				newPosList.add(p);
-				lastCrossPos = p;
-				if (firstCrossPos == null) {
-					firstCrossPos = p;
-				}
+				pos0 = pos1;
+				flag = !flag;
+			}
+
+			if (isIn2) {
+				Pos pos1 = posList1.get((i+1)%n);
+				lineInfo.add(new TwoPos(pos0, pos1));
+				lineInfo.add(new TwoPos(pos1, pos0));
+				posSet.add(pos0);
+				posSet.add(pos1);
 			}
 		}
 
-		List<Pos> pList = 
-				retrieve(
-						lastCrossPos,
-						firstCrossPos,
-						posSeries2);
-		newPosList.addAll(pList);
-		
+		for (int i = 0 ; i < m ; i++) {
+			// 始点が領域の内側にいるか?
+			if (i == 0) {
+				isIn = isIn(outerX, posList2.get(i), lineList1);
+			} else {
+				isIn = isIn2;
+			}
+			// 終点が領域の内側にいるか?
+			isIn2 = isIn(outerX, posList2.get((i+1)%m), lineList1);
+
+			boolean flag = isIn;
+			Line line2 = lineList2.get(i);
+			List<CrossInfo> cpList = lineToCrossInfo.get(line2);
+			Pos pos0 = posList2.get(i);
+			for (CrossInfo ci : cpList) {
+				Pos pos1 = ci.pos;
+				if (flag) {
+					lineInfo.add(new TwoPos(pos0, pos1));
+					lineInfo.add(new TwoPos(pos1, pos0));
+					posSet.add(pos0);
+					posSet.add(pos1);
+				}
+				pos0 = pos1;
+				flag = !flag;
+			}
+
+			if (isIn2) {
+				Pos pos1 = posList2.get((i+1)%m);
+				lineInfo.add(new TwoPos(pos0, pos1));
+				lineInfo.add(new TwoPos(pos1, pos0));
+				posSet.add(pos0);
+				posSet.add(pos1);
+			}
+		}
+
+		HashSet<TwoPos> addedLineSet = new HashSet<TwoPos>();
+		ArrayList<Pos> newPosList = new ArrayList<Pos>();
+		HashSet<Pos> newPosSet = new HashSet<Pos>();
+
+		if (lineInfo.isEmpty()) {
+			return newPosList;
+		}
 
 		
-		
-		// 最後まで交点がなかった場合:
-		if (newPosList.isEmpty()) {
-			// クリッピング用の領域として与えられた領域そのものを返す
-			return posList2;
+		Pos head = null;
+		for (Pos p: posSet) {
+			head = p;
+			break;
 		}
+		newPosList.add(head);
+		newPosSet.add(head);
+
+		System.out.println("lineInfo size = " + lineInfo.size());
+		for (TwoPos twoPos : lineInfo) {
+			Pos p0 = twoPos.pos1;
+			System.out.println("pos1 of two pos ... (" + p0.getX() + " , " + p0.getY() + ")");
+			Pos p2 = twoPos.pos2;
+			System.out.println("pos2 of two pos ... (" + p2.getX() + " , " + p2.getY() + ")");
+		}
+
+		
+		System.out.println("posSeries2 size = " + posSeries2.size());
+		for (PosInfo posInfo: posSeries2) {
+			Pos p = posInfo.pos;
+			System.out.println("pos ... (" + p.getX() + " , " + p.getY() + ")");
+		}
+		
+		while (true) {
+			boolean changed = false;
+			for (PosInfo posInfo: posSeries2) {
+				Pos p = posInfo.pos;
+				if (head == p) {
+					continue;
+				}
+				/*
+				if (addedLineSet.contains(new TwoPos(head, p))) {
+					continue;
+				}
+				*/
+				boolean alreadyAdded = false;
+				for (TwoPos twoPos : addedLineSet) {
+					if (twoPos.pos1.isSamePosStrict(head) && twoPos.pos2.isSamePosStrict(p)) {
+						alreadyAdded = true;
+						break;
+					}
+				}
+				if (alreadyAdded) {
+					continue;
+				}
+
+				boolean find = false;
+				for (TwoPos twoPos : lineInfo) {
+					if (twoPos.pos1.isSamePosStrict(head) && twoPos.pos2.isSamePosStrict(p)) {
+						find = true;
+						break;
+					}
+				}
+				if (find) {
+					newPosList.add(p);
+					newPosSet.add(p);
+					addedLineSet.add(new TwoPos(head, p));
+					addedLineSet.add(new TwoPos(p, head));
+					head = p;
+					changed = true;
+					break;
+				}
+				
+				/*
+				if (lineInfo.contains(new TwoPos(head, p))) {
+					newPosList.add(p);
+					newPosSet.add(p);
+					addedLineSet.add(new TwoPos(head, p));
+					addedLineSet.add(new TwoPos(p, head));
+					head = p;
+					changed = true;
+				}*/
+			}
+
+			if (!changed) {
+				break;
+			}
+		}
+		
+		System.out.println("newPosList size = " + newPosList.size());
 		
 		return newPosList;
 	}

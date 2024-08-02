@@ -134,6 +134,10 @@ public class Path implements Renderer {
 
 
 	public void localPolyLine(Graphics2D g, ArrayList<String> svgBuff, SvgInstruction s, ArrayList<Pos> posList, boolean isClosed, boolean isFilled) {
+		if (posList.size() == 0) {
+			return;
+		}
+		
 		if (g != null) {
 			Color color = this.getColor(this.strokeColor);
 			if (color != null) {
@@ -157,7 +161,6 @@ public class Path implements Renderer {
 				g.fillPolygon(xPoints, yPoints, nPoints);
 			} else {
 				g.drawPolyline(xPoints, yPoints, nPoints);
-				
 			}
 		}
 
