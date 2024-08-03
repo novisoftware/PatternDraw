@@ -12,6 +12,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ElementFactory.PartsType;
+import com.github.novisoftware.patternDraw.utils.Debug;
 import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class MenuGenerator {
@@ -70,11 +71,22 @@ public class MenuGenerator {
 				if (line == null) {
 					break;
 				}
-				line = GuiUtil.trim(line);
 
-				if (line.startsWith("#")) {
+				if (line.startsWith("#* ")) {
+					if (Debug.ENABLE_DEVELOP_FEATURE) {
+						// 開発機能を見えるようにする場合は読み込む
+						line = line.substring(3);
+					} else {
+						// 開発機能を見えるようにしない場合は読み込まない
+						continue;
+					}
+				}
+				else if (line.startsWith("#")) {
 					continue;
 				}
+
+				line = GuiUtil.trim(line);
+
 				if (line.startsWith("----------")) {
 					// (ルートメニュー)
 					// 10文字以上の - で開始する場合は 区切り線 だけ追加する
