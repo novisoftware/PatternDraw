@@ -1229,11 +1229,7 @@ public class NetworkDataModel {
 					String line = reader.readLine();
 					if (isFirstLine) {
 						isFirstLine = false;
-						try {
-							this.checkFileRevision(line);
-						} catch(Exception e) {
-							// しばらくはリビジョンチェックを捨てる。
-						}
+						NetworkDataModel.checkFileRevision(line);
 						continue;
 					}
 					if( line==null ) {
@@ -1241,6 +1237,15 @@ public class NetworkDataModel {
 					}
 					if (line.length() == 0 || line.startsWith("#")) {
 						continue;
+					}
+					if (line.startsWith("* ")) {
+						if (Debug.ENABLE_DEVELOP_FEATURE) {
+							// 開発機能を見えるようにする場合は読み込む
+							line = line.substring(2);
+						} else {
+							// 開発機能を見えるようにしない場合は読み込まない
+							continue;
+						}
 					}
 					if (line.startsWith("TITLE:")) {
 						this.title = line.substring("TITLE:".length());
