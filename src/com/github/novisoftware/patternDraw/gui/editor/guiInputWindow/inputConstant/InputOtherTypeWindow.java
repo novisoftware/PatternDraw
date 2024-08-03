@@ -138,8 +138,8 @@ public class InputOtherTypeWindow  extends AbstractInputConstantWindow {
 						// 表示部
 						String comment2 = comment.replaceAll(".*,", "");
 
-						System.out.println("s0 = " + s0);
-						System.out.println("checkType = " + checkType + "   .... " + comment);
+						Debug.println("s0 = " + s0);
+						Debug.println("checkType = " + checkType + "   .... " + comment);
 						
 						AbstractInputChecker inputChecker;
 						if (checkType.equals("n")) {

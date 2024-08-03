@@ -85,7 +85,7 @@ public class EditDiagramDropTargetListener implements DropTargetListener {
 			}
 		} catch (Exception ex) {
 			if (Debug.enable) {
-				ex.printStackTrace();
+				ex.printStackTrace(); // Debug.enableの場合のみ
 			}
 		} finally {
 			e.dropComplete(gotData);

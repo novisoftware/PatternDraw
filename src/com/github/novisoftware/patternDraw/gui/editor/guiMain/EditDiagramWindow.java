@@ -414,12 +414,12 @@ public class EditDiagramWindow extends JFrame2 {
 					if (editPanel__.paramDefEditWindow.handledObj != null) {
 						ParameterDefine h = editPanel__.paramDefEditWindow.handledObj.para;
 						if (h == null) {
-							System.out.println("h = null");
+							Debug.println("h = null");
 						} else {
-							System.out.println("  para = " + h.name);
+							Debug.println("  para = " + h.name);
 						}
 					} else {
-						System.out.println("  does not get para ");
+						Debug.println("  does not get para ");
 					}
 				}
 				*/

@@ -22,6 +22,7 @@ import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconG
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P020___AbstractElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow.MListener;
+import com.github.novisoftware.patternDraw.utils.Debug;
 
 public class EditDiagramPanel extends JPanel {
 	/**
@@ -80,8 +81,10 @@ public class EditDiagramPanel extends JPanel {
 	 * @param e
 	 */
 	public void showFileReadErrorDialog(Exception e) {
-		e.printStackTrace();
-		
+		if (Debug.enable) {
+			e.printStackTrace();	// Debug.enable の場合のみ
+		}
+
 		String subMessage = e.getMessage();
 		if (e instanceof IOException) {
 			subMessage = "入出力エラー。 " + subMessage;
