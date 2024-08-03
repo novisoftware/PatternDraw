@@ -400,7 +400,8 @@ public class EditDiagramWindow extends JFrame2 {
 		public void mouseReleased(MouseEvent e) {
 			/*
 			 * 調査コード。  
-			 * 受け取れない。
+			 * 別窓でドラッグ開始し、この窓でボタンリリースした場合は、
+			 * この窓ではボタンリリースイベントを受け取れない。
 			
 			System.out.println("  mouseReleased notified. ");
 			*/
@@ -410,16 +411,20 @@ public class EditDiagramWindow extends JFrame2 {
 			if (handled == null) {
 				editPanel__.workLineFrom = null;
 
+				/*
 				if (editPanel__.paramDefEditWindow != null) {
 					if (editPanel__.paramDefEditWindow.handledObj != null) {
 						ParameterDefine h = editPanel__.paramDefEditWindow.handledObj.para;
-						System.out.println("  para = " + h.name);
+						if (h == null) {
+							System.out.println("h = null");
+						} else {
+							System.out.println("  para = " + h.name);
+						}
 					} else {
 						System.out.println("  does not get para ");
 					}
 				}
-				
-				
+				*/
 				
 				
 				editPanel__.networkDataModel.analyze();
