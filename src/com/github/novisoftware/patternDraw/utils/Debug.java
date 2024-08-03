@@ -5,6 +5,7 @@ package com.github.novisoftware.patternDraw.utils;
  *
  */
 public class Debug {
+	public static boolean SHOW_DEBUG_SWITCH = false;
 	public static boolean enable = false;
 
 	static boolean kindFilter( String s ) {
