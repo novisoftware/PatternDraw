@@ -22,7 +22,6 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.github.novisoftware.patternDraw.core.NetworkDataModel;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
-import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P010___ConnectTerminal;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P015__AbstractIcon2;
@@ -40,7 +39,6 @@ import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConsta
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputConstantStringWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputOtherTypeWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiInputWindow.inputConstant.InputVariableSetWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow.ParamDefDisplay;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.ContextMenu;
 import com.github.novisoftware.patternDraw.gui.editor.guiMenu.EditDiagramMenuBar;
 import com.github.novisoftware.patternDraw.gui.misc.JFrame2;

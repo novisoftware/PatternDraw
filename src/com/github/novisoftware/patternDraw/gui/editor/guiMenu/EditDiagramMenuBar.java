@@ -19,10 +19,10 @@ import com.github.novisoftware.patternDraw.geometricLanguage.parameter.Parameter
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramPanel;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditDiagramWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamDefListWindow;
-import com.github.novisoftware.patternDraw.gui.editor.guiMain.EditParamWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputGraphicsWindow;
 import com.github.novisoftware.patternDraw.gui.editor.guiMain.OutputTextWindow;
 import com.github.novisoftware.patternDraw.utils.Debug;
+import com.github.novisoftware.patternDraw.utils.GuiUtil;
 
 public class EditDiagramMenuBar extends JMenuBar {
 	// ファイル選択ダイアログ
@@ -367,6 +367,19 @@ public class EditDiagramMenuBar extends JMenuBar {
 
 		this.helpMenu = new JMenu("ヘルプ");
 		JMenuItem about = new JMenuItem("このソフトウェアについて");
+		about.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.showMessageDialog(editDiagramWindow,
+						GuiUtil.NAME_OF_THIS_SOFTWARE
+						+ "\n"
+						+ "Copyright novisoftware 2024",
+						GuiUtil.FRAME_TITLE_HEADER + "about",
+						JOptionPane.INFORMATION_MESSAGE);
+
+			}
+		});
+		
+		
 		this.helpMenu.add(about);
 
 		this.add(this.fileMenu);

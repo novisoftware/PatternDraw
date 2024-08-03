@@ -19,7 +19,8 @@ import javax.swing.JMenuItem;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P001_IconGuiInterface;
 
 public class GuiUtil {
-	public static final String FRAME_TITLE_BASE = "らららプログラミング: ";
+	public static final String NAME_OF_THIS_SOFTWARE = "らららプログラミング";
+	public static final String FRAME_TITLE_HEADER = NAME_OF_THIS_SOFTWARE + ": ";
 
 	public static final String RESOURCE_FRAME_ICON = "/iconimage/icon2.png";
 //	public static final String RESOURCE_FRAME_ICON = "/iconimage/app_icon.png";

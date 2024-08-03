@@ -38,7 +38,7 @@ public class JFrame2 extends JFrame {
 
 	@Override
 	public void setTitle(String s) {
-		super.setTitle(GuiUtil.FRAME_TITLE_BASE + s);
+		super.setTitle(GuiUtil.FRAME_TITLE_HEADER + s);
 	}
 
 	protected JFrame2() {

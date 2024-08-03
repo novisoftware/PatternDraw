@@ -117,14 +117,14 @@ DESCRIPTION: 点の並びの系列に、別の系列の点の並びをあては�
 FUNCTION: pos_apply_as_texture
 ---->DEFINE
 
-DISPNAME: 点の集まり/-----------------------------------------------
-
-KIND: 処理
-TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりをクリッピング
-DESCRIPTION: 点の集まりをクリッピングします。
-FUNCTION: pos_clipping
----->DEFINE
+# DISPNAME: 点の集まり/-----------------------------------------------
+# 
+# KIND: 処理
+# TYPE: POS_LIST
+# DISPNAME: 点の集まり/点の集まりをクリッピング
+# DESCRIPTION: 点の集まりをクリッピングします。
+# FUNCTION: pos_clipping
+# ---->DEFINE
 
 KIND: 処理
 TYPE: LINE_LIST
@@ -161,19 +161,19 @@ DESCRIPTION: 2系列の点を線で結びます。
 FUNCTION: line_from_2_series
 ---->DEFINE
 
-KIND: 処理
-TYPE: LINE_LIST
-DISPNAME: 線の集まり/線をクリッピング
-DESCRIPTION: 線の集まりをクリッピングします。
-FUNCTION: line_clipping
----->DEFINE
+# KIND: 処理
+# TYPE: LINE_LIST
+# DISPNAME: 線の集まり/線をクリッピング
+# DESCRIPTION: 線の集まりをクリッピングします。
+# FUNCTION: line_clipping
+# ---->DEFINE
 
-KIND: 処理
-TYPE: LINE_LIST
-DISPNAME: 線の集まり/線をマスキング
-DESCRIPTION: 線の集まりをマスキングします。
-FUNCTION: line_masking
----->DEFINE
+# KIND: 処理
+# TYPE: LINE_LIST
+# DISPNAME: 線の集まり/線をマスキング
+# DESCRIPTION: 線の集まりをマスキングします。
+# FUNCTION: line_masking
+# ---->DEFINE
 
 KIND: 処理
 TYPE: TRANSFORM
@@ -441,15 +441,15 @@ DESCRIPTION: 新しい変数
 -->RPN
 ---->DEFINE
 
-------------------------------------------------------------
-
-KIND: 入力
-TYPE: INTEGER
-DISPNAME: 入力/整数値
-DESCRIPTION: 整数値を入力します。
-:input:integer
--->RPN
----->DEFINE
+# ------------------------------------------------------------
+#
+# KIND: 入力
+# TYPE: INTEGER
+# DISPNAME: 入力/整数値
+# DESCRIPTION: 整数値を入力します。
+# :input:integer
+# -->RPN
+# ---->DEFINE
 
 ------------------------------------------------------------
 
@@ -933,41 +933,41 @@ DESCRIPTION: 繰り返しを打ち切ります
 ---->DEFINE
 
 
-KIND: 制御
-TYPE: NONE
-CONTROL_TYPE: REPEAT
-DISPNAME: 制御/繰り返し(添字あり可変回数ループ)_まだ動作なし
-WIDTH: 600
-HEIGHT: 300
-DESCRIPTION: 繰り返します。
-<from:NUMERIC>;開始
-<to:NUMERIC>;終了
-<step:NUMERIC>;刻み幅
-:step_index_loop
--->RPN
----->DEFINE
+# KIND: 制御
+# TYPE: NONE
+# CONTROL_TYPE: REPEAT
+# DISPNAME: 制御/繰り返し(添字あり可変回数ループ)_まだ動作なし
+# WIDTH: 600
+# HEIGHT: 300
+# DESCRIPTION: 繰り返します。
+# <from:NUMERIC>;開始
+# <to:NUMERIC>;終了
+# <step:NUMERIC>;刻み幅
+# :step_index_loop
+# -->RPN
+# ---->DEFINE
 
 
-KIND: 制御
-TYPE: NONE
-CONTROL_TYPE: IF
-DISPNAME: 制御/条件実行(IF文)_まだ動作なし
-WIDTH: 400
-HEIGHT: 300
-DESCRIPTION: 与えられた条件が真の場合実行します。
-:if
--->RPN
----->DEFINE
+# KIND: 制御
+# TYPE: NONE
+# CONTROL_TYPE: IF
+# DISPNAME: 制御/条件実行(IF文)_まだ動作なし
+# WIDTH: 400
+# HEIGHT: 300
+# DESCRIPTION: 与えられた条件が真の場合実行します。
+# :if
+# -->RPN
+# ---->DEFINE
 
-KIND: 制御
-TYPE: NONE
-CONTROL_TYPE: FOREACH
-DISPNAME: 制御/列挙
-WIDTH: 800
-HEIGHT: 400
-DESCRIPTION: 繰り返します。
-1;開始 100;終了 :loop
--->RPN
----->DEFINE
+# KIND: 制御
+# TYPE: NONE
+# CONTROL_TYPE: FOREACH
+# DISPNAME: 制御/列挙
+# WIDTH: 800
+# HEIGHT: 400
+# DESCRIPTION: 繰り返します。
+# 1;開始 100;終了 :loop
+# -->RPN
+# ---->DEFINE
 
 
