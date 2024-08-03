@@ -231,26 +231,27 @@ public class ContextMenu extends JPopupMenu {
 			this.add(menuItem);
 		}
 
-		if (icon == null) {
-			this.addSeparator();
-			menuItem = GuiUtil.createMenuItem("開発者用デバッグ情報を表示", editPanel.isVisibleDebugInfo);
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					editPanel.isVisibleDebugInfo = !editPanel.isVisibleDebugInfo;
-					editPanel.repaint();
-				}
-			});
-			this.add(menuItem);
-
-
-			menuItem = GuiUtil.createMenuItem("printf系のデバッグ情報を出力",  Debug.enable);
-			menuItem.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					Debug.enable = !Debug.enable;
-				}
-			});
-			this.add(menuItem);
-
+		if (Debug.SHOW_DEBUG_SWITCH) {
+			if (icon == null) {
+				this.addSeparator();
+				menuItem = GuiUtil.createMenuItem("開発者用デバッグ情報を表示", editPanel.isVisibleDebugInfo);
+				menuItem.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						editPanel.isVisibleDebugInfo = !editPanel.isVisibleDebugInfo;
+						editPanel.repaint();
+					}
+				});
+				this.add(menuItem);
+	
+	
+				menuItem = GuiUtil.createMenuItem("printf系のデバッグ情報を出力",  Debug.enable);
+				menuItem.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						Debug.enable = !Debug.enable;
+					}
+				});
+				this.add(menuItem);
+			}
 		}
 	}
 
