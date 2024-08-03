@@ -837,7 +837,7 @@ public class Rpn {
 				try {
 					stack.push( new ValueString(RpnUtil.getRepresent(s)) );
 				} catch(Exception e) {
-					System.err.println("Value is " + s);
+					Debug.println("Value is " + s);
 					throw e;
 				}
 			}
