@@ -50,15 +50,32 @@ FUNCTION: rotate_point_list
 
 KIND: 処理
 TYPE: POS_LIST
+DISPNAME: 点の集まり/一部分を取り出す
+DESCRIPTION: 点の並びから一部分を取り出します。
+FUNCTION: pos_to_sub_pos_list
+---->DEFINE
+
+KIND: 処理
+TYPE: POS_LIST
+DISPNAME: 点の集まり/点の集まりを角度で並べ替え
+DESCRIPTION: 点の集まりを角度順に並べ替えます。
+FUNCTION: pos_sort
+---->DEFINE
+
+
+KIND: 処理
+TYPE: POS_LIST
 DISPNAME: 点の集まり/点の並びを閉じる
 DESCRIPTION: 点の並びを操作し、最初の点=最後の点にします。
 FUNCTION: close_pos_list
 ---->DEFINE
 
+DISPNAME: 点の集まり/-----------------------------------------------
+
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の座標を加算合成
-DESCRIPTION: 点の座標を加算合成します。
+DISPNAME: 点の集まり/2つの点の集まりの座標を加算合成
+DESCRIPTION: 2つの点の集まりの座標を加算合成します。
 FUNCTION: add_2_point_series
 ---->DEFINE
 
@@ -84,6 +101,8 @@ DESCRIPTION: 複数の点の並びの系列を辿り、1系列の点の並びに
 FUNCTION: pos_to_walk
 ---->DEFINE
 
+DISPNAME: 点の集まり/-----------------------------------------------
+
 KIND: 処理
 TYPE: POS_LIST
 DISPNAME: 点の集まり/点の集まりをNスキップで辿る
@@ -98,18 +117,13 @@ DESCRIPTION: 点の並びの系列に、別の系列の点の並びをあては�
 FUNCTION: pos_apply_as_texture
 ---->DEFINE
 
-KIND: 処理
-TYPE: POS_LIST
-DISPNAME: 点の集まり/一部分を取り出す
-DESCRIPTION: 点の並びから一部分を取り出します。
-FUNCTION: pos_to_sub_pos_list
----->DEFINE
+DISPNAME: 点の集まり/-----------------------------------------------
 
 KIND: 処理
 TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりを角度で並べ替え
-DESCRIPTION: 点の集まりを角度順に並べ替えます。
-FUNCTION: pos_sort
+DISPNAME: 点の集まり/点の集まりをクリッピング
+DESCRIPTION: 点の集まりをクリッピングします。
+FUNCTION: pos_clipping
 ---->DEFINE
 
 KIND: 処理
@@ -125,15 +139,6 @@ DISPNAME: 線の集まり/点を線で結ぶ
 DESCRIPTION: 点を線で結びます。
 FUNCTION: line_from_1_series
 ---->DEFINE
-
-
-KIND: 処理
-TYPE: POS_LIST
-DISPNAME: 点の集まり/点の集まりをクリッピング
-DESCRIPTION: 点の集まりをクリッピングします。
-FUNCTION: pos_clipping
----->DEFINE
-
 
 KIND: 処理
 TYPE: LINE_LIST
@@ -412,7 +417,7 @@ true;定数 :as-boolean
 KIND: 変数を参照
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: 変数/既存の変数を参照/{exist-variable-ref}
+DISPNAME: 変数 - 既存の変数を参照/{exist-variable-ref}
 DESCRIPTION: 変数を参照します。
 '{exist-variable-ref} :recall-variable
 -->RPN
@@ -421,7 +426,7 @@ DESCRIPTION: 変数を参照します。
 KIND: 変数を設定
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: 変数/既存の変数を書き換え/{exist-variable}
+DISPNAME: 変数 - 既存の変数を書き換え/{exist-variable}
 DESCRIPTION: 変数を設定します。
 <value:ANY> '{exist-variable} :set-variable
 -->RPN
@@ -430,7 +435,7 @@ DESCRIPTION: 変数を設定します。
 KIND: 変数を設定
 TYPE: NONE
 HEIGHT: 35
-DISPNAME: 変数/新しい変数に設定 {new-variable}
+DISPNAME: 変数 - 新しい変数に設定 ( {new-variable} )
 DESCRIPTION: 新しい変数
 <value:ANY> '{new-variable};変数名 :set-variable
 -->RPN
@@ -768,6 +773,8 @@ DESCRIPTION: IF式です。
 -->RPN
 ---->DEFINE
 
+------------------------------------------------------------
+
 KIND: 表示
 TYPE: NONE
 DISPNAME: 出力/テキスト出力
@@ -828,6 +835,7 @@ DESCRIPTION: PNGの描画を対象に線分の太さを指定します。
 FUNCTION: set_stroke_width_png
 ---->DEFINE
 
+------------------------------------------------------------
 
 KIND: 制御
 TYPE: NONE
