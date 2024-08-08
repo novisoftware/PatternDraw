@@ -1,0 +1,133 @@
+PD_FORMAT_REV: 1.1
+TITLE:ドット模様
+
+PARAMETER: θ パターン配置への回転 0 FLOAT false "" true 0 360
+PARAMETER: span パターン配置の間隔 0.1 FLOAT false "" true 0.01 1
+PARAMETER: v 明るさ 0.7 FLOAT false "" true 0 1
+PARAMETER: d ずらし 0.01 FLOAT false "" true 0.01 0.1
+PARAMETER: d2 ずらし角度 5 FLOAT false "" true -30 30
+PARAMETER: s 彩度 0.7 FLOAT false "" true 0 1
+PARAMETER: r ドットの大きさ 0.5 FLOAT false "" true 0.1 1
+PARAMETER: α 非透明度 0.5 FLOAT false "" true 0 1
+PARAMETER: hue1 色相1 0 FLOAT false "" true 0 360
+PARAMETER: hue_diff1 色相差1 180 FLOAT false "" true 0 360
+PARAMETER: hue_diff2 色相差2 270 FLOAT false "" true 0 360
+
+CONTROL: 144 410 1500 2676 制御1 制御 REPEAT "9;n,X方向の個数 8;n,Y方向の個数 transform;v,移動変換の代入先変数名 x;v,X方向の添字の代入先変数名 y;v,Y方向の添字の代入先変数名 :index_2d_loop_honeycomb"
+RPN_ELEMENT: 232 473 120 35 変数を参照1 変数を参照 NONE "'transform :recall-variable" 変数を参照します。
+FNC_ELEMENT: 564 2249 120 60 処理1 処理 series_on_circle
+RPN_ELEMENT: 280 2178 120 35 定数1 定数 INTEGER "1000;定数 :as-numeric" 定数値です。
+FNC_ELEMENT: 518 589 120 60 処理2 処理 create_simple_scale_transform
+FNC_ELEMENT: 832 565 120 60 処理3 処理 combine_transforms
+RPN_ELEMENT: 289 2362 120 35 定数4 定数 FLOAT "0;定数 :as-numeric" 定数値です。
+FNC_ELEMENT: 1220 2284 120 60 表示1 表示 pos_to_fill
+RPN_ELEMENT: 1350 603 120 35 変数を設定1 変数を設定 NONE "<value:ANY> '変換1;変数名 :set-variable" 新しい変数
+RPN_ELEMENT: 724 2384 120 35 変数を設定2 変数を参照 NONE "'変換1; :recall-variable" 新しい変数
+FNC_ELEMENT: 935 2284 120 60 処理4 処理 do_transform_pos
+RPN_ELEMENT: 256 2262 120 35 変数を設定4 変数を参照 NONE "'r :recall-variable" 変数を設定します。
+RPN_ELEMENT: 307 628 120 35 変数を参照2 変数を参照 NONE "'span; :recall-variable" 変数を参照します。
+FNC_ELEMENT: 1017 1774 120 60 処理5 処理 hsv_to_color
+RPN_ELEMENT: 248 1263 120 35 変数を参照3 変数を参照 NONE "'hue1; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 350 1533 120 35 変数を参照4 変数を参照 NONE "'hue_diff1; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 173 1394 80 35 変数を参照5 変数を参照 NONE "'x :recall-variable" 変数を参照します。
+RPN_ELEMENT: 229 1458 47 35 定数2 定数 INTEGER "2;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 318 1389 50 50 演算子1 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> %" 数値1を数値2で割った余りです。
+RPN_ELEMENT: 603 1490 50 50 演算子2 演算子 SCALAR "<cond:BOOLEAN> <if-true:SCALAR> <if-false:SCALAR> :if" IF式です。
+RPN_ELEMENT: 347 1457 50 35 定数3 定数 INTEGER "0;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 416 1398 50 50 演算子3 演算子 BOOLEAN "<input1:SCALAR> <input2:SCALAR> ==" aとbが等しい場合、真になります。
+RPN_ELEMENT: 710 1971 120 35 変数を参照6 変数を参照 NONE "'s :recall-variable" 変数を参照します。
+RPN_ELEMENT: 718 2099 120 35 変数を参照7 変数を参照 NONE "'v :recall-variable" 変数を参照します。
+FNC_ELEMENT: 1484 1884 120 60 表示2 表示 set_color_png
+FNC_ELEMENT: 1467 1780 120 60 表示3 表示 set_color_svg
+RPN_ELEMENT: 447 1616 40 35 定数5 定数 FLOAT "0;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 207 1724 99 35 変数を参照8 変数を参照 NONE "'y :recall-variable" 変数を参照します。
+RPN_ELEMENT: 369 1717 50 50 演算子4 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> %" 数値1を数値2で割った余りです。
+RPN_ELEMENT: 250 1785 40 35 定数6 定数 INTEGER "2;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 463 1727 50 50 演算子5 演算子 BOOLEAN "<input1:SCALAR> <input2:SCALAR> ==" aとbが等しい場合、真になります。
+RPN_ELEMENT: 374 1794 40 35 定数7 定数 INTEGER "0;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 636 1834 50 50 演算子6 演算子 SCALAR "<cond:BOOLEAN> <if-true:SCALAR> <if-false:SCALAR> :if" IF式です。
+RPN_ELEMENT: 324 1859 120 35 変数を参照9 変数を参照 NONE "'hue_diff2 :recall-variable" 変数を参照します。
+RPN_ELEMENT: 512 1903 40 35 定数8 定数 FLOAT "0;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 858 1526 50 50 演算子7 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,3" 2つの数値を足します。
+RPN_ELEMENT: 659 698 120 35 変数を参照10 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
+FNC_ELEMENT: 877 681 120 60 処理6 処理 create_rot_transform
+FNC_ELEMENT: 1082 598 120 60 処理7 処理 combine_transforms
+RPN_ELEMENT: 390 250 120 35 変数を設定3 変数を設定 NONE "<value:ANY> 'hue1 :set-variable" 変数を設定します。
+RPN_ELEMENT: 139 238 120 35 変数を参照11 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
+COMMENT: 43 29 170 35 コメント1 big - ドット模様
+RPN_ELEMENT: 223 838 120 35 変数を参照12 変数を参照 NONE "'transform :recall-variable" 変数を参照します。
+FNC_ELEMENT: 813 898 120 60 処理8 処理 combine_transforms
+FNC_ELEMENT: 563 979 120 60 処理9 処理 create_simple_scale_transform
+RPN_ELEMENT: 223 979 120 35 変数を参照13 変数を参照 NONE "'span; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 267 1042 120 35 変数を参照14 変数を参照 NONE "'d :recall-variable" 変数を参照します。
+RPN_ELEMENT: 430 986 50 50 演算子8 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,2" 2つの数値を足します。
+FNC_ELEMENT: 927 1034 120 60 処理10 処理 create_rot_transform
+RPN_ELEMENT: 585 1101 120 35 変数を参照15 変数を参照 NONE "'θ :recall-variable" 変数を参照します。
+FNC_ELEMENT: 1151 937 120 60 処理11 処理 combine_transforms
+RPN_ELEMENT: 1372 987 120 35 変数を設定5 変数を設定 NONE "<value:ANY> '変換2;変数名 :set-variable" 新しい変数
+FNC_ELEMENT: 1252 1778 120 60 処理12 処理 set_alpha
+RPN_ELEMENT: 1033 1695 120 35 変数を参照16 変数を参照 NONE "'α :recall-variable" 変数を参照します。
+FNC_ELEMENT: 543 2594 120 60 処理13 処理 series_on_circle
+RPN_ELEMENT: 271 2545 120 35 定数9 定数 INTEGER "1000;定数 :as-numeric" 定数値です。
+RPN_ELEMENT: 285 2651 120 35 変数を設定6 変数を参照 NONE "'r :recall-variable" 変数を設定します。
+RPN_ELEMENT: 291 2724 120 35 定数10 定数 FLOAT "0;定数 :as-numeric" 定数値です。
+FNC_ELEMENT: 850 2625 120 60 処理14 処理 do_transform_pos
+RPN_ELEMENT: 648 2716 120 35 変数を参照17 変数を参照 NONE "'変換2 :recall-variable" 変数を参照します。
+FNC_ELEMENT: 1142 2621 120 60 表示4 表示 pos_to_fill
+RPN_ELEMENT: 587 1171 120 35 変数を参照18 変数を参照 NONE "'d2; :recall-variable" 変数を参照します。
+RPN_ELEMENT: 784 1089 50 50 演算子9 演算子 SCALAR "<input1:SCALAR> <input2:SCALAR> + :MACRO_REPEAT=2,2" 2つの数値を足します。
+REF: 処理1 r 変数を設定4
+REF: 処理1 angle 定数4
+REF: 処理1 n 定数1
+REF: 処理2 scale 変数を参照2
+REF: 処理3 transform2 処理2
+REF: 処理3 transform1 変数を参照1
+REF: 表示1 points 処理4
+REF: 変数を設定1 value 処理7
+REF: 処理4 transform 変数を設定2
+REF: 処理4 points 処理1
+REF: 処理5 saturation 変数を参照6
+REF: 処理5 hue 演算子7
+REF: 処理5 value 変数を参照7
+REF: 演算子1 input2 定数2
+REF: 演算子1 input1 変数を参照5
+REF: 演算子2 if-true 変数を参照4
+REF: 演算子2 cond 演算子3
+REF: 演算子2 if-false 定数5
+REF: 演算子3 input2 定数3
+REF: 演算子3 input1 演算子1
+REF: 表示2 color 処理12
+REF: 表示3 color 処理12
+REF: 演算子4 input2 定数6
+REF: 演算子4 input1 変数を参照8
+REF: 演算子5 input2 定数7
+REF: 演算子5 input1 演算子4
+REF: 演算子6 if-true 変数を参照9
+REF: 演算子6 cond 演算子5
+REF: 演算子6 if-false 定数8
+REF: 演算子7 input3 演算子6
+REF: 演算子7 input2 演算子2
+REF: 演算子7 input1 変数を参照3
+REF: 処理6 angle 変数を参照10
+REF: 処理7 transform2 処理6
+REF: 処理7 transform1 処理3
+REF: 変数を設定3 value 変数を参照11
+REF: 処理8 transform2 処理9
+REF: 処理8 transform1 変数を参照12
+REF: 処理9 scale 演算子8
+REF: 演算子8 input2 変数を参照14
+REF: 演算子8 input1 変数を参照13
+REF: 処理10 angle 演算子9
+REF: 処理11 transform2 処理10
+REF: 処理11 transform1 処理8
+REF: 変数を設定5 value 処理11
+REF: 処理12 color 処理5
+REF: 処理12 alpha 変数を参照16
+REF: 処理13 r 変数を設定6
+REF: 処理13 angle 定数10
+REF: 処理13 n 定数9
+REF: 処理14 transform 変数を参照17
+REF: 処理14 points 処理13
+REF: 表示4 points 処理14
+REF: 演算子9 input2 変数を参照18
+REF: 演算子9 input1 変数を参照15
