@@ -779,6 +779,19 @@ DESCRIPTION: IF式です。
 -->RPN
 ---->DEFINE
 
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 条件演算子/色情報のIF式
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: IF式です。
+<cond:BOOLEAN>
+<if-true:COLOR>
+<if-false:COLOR>
+:if
+-->RPN
+---->DEFINE
+
 ------------------------------------------------------------
 
 KIND: 表示
