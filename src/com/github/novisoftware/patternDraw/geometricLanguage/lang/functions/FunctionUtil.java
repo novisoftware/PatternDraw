@@ -148,6 +148,9 @@ public class FunctionUtil {
 		if (name.equals(SetAlpha.NAME)) {
 			return new SetAlpha();
 		}
+		if (name.equals(SetColor.NAME)) {
+			return new SetColor();
+		}
 		if (name.equals(SetColorPNG.NAME)) {
 			return new SetColorPNG();
 		}

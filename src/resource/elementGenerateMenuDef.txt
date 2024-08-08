@@ -270,14 +270,21 @@ DISPNAME: 色/--------------------------
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 色/色を設定(PNG)
+DISPNAME: 色/色を設定
+DESCRIPTION: 色を設定します(PNG、SVG両方)。
+FUNCTION: set_color
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 色/色を設定(PNGのみ)
 DESCRIPTION: 色を設定します(PNG)。
 FUNCTION: set_color_png
 ---->DEFINE
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 色/色を設定(SVG)
+DISPNAME: 色/色を設定(SVGのみ)
 DESCRIPTION: 色を設定します(SVG)。
 FUNCTION: set_color_svg
 ---->DEFINE

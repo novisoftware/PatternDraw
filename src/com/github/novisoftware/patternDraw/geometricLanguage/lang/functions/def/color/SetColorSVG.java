@@ -27,7 +27,7 @@ public class SetColorSVG implements FunctionDefInterface {
 
 	@Override
 	public String getDescription() {
-		return "色を設定します(SVG)。";
+		return "色を設定します(SVGのみ)。";
 	}
 
 	@Override

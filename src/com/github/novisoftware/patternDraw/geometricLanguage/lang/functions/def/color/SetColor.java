@@ -10,10 +10,11 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value.ValueT
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.ValueColor;
 import com.github.novisoftware.patternDraw.geometricLanguage.lang.InstructionRenderer;
 import com.github.novisoftware.patternDraw.geometricLanguage.primitives.ColorSetterPNG;
+import com.github.novisoftware.patternDraw.geometricLanguage.primitives.ColorSetterSVG;
 
 // set_stroke_width_png
-public class SetColorPNG implements FunctionDefInterface {
-	public static final String NAME = "set_color_png";
+public class SetColor implements FunctionDefInterface {
+	public static final String NAME = "set_color";
 
 	@Override
 	public String getName() {
@@ -22,12 +23,12 @@ public class SetColorPNG implements FunctionDefInterface {
 
 	@Override
 	public String getDisplayName() {
-		return "色を設定(PNG)";
+		return "色を設定";
 	}
 
 	@Override
 	public String getDescription() {
-		return "色を設定します(PNGのみ)。";
+		return "色を設定します(PNG、SVG両方)。";
 	}
 
 	@Override
@@ -67,8 +68,9 @@ public class SetColorPNG implements FunctionDefInterface {
 
 		ColorSetterPNG s = new ColorSetterPNG(c);
 		t.primitiveList.add(s);
+		ColorSetterSVG s2 = new ColorSetterSVG(c);
+		t.primitiveList.add(s2);
 
-		// t.currentStrokeWidth = "" + width;
 		return null;
 	}
 }
