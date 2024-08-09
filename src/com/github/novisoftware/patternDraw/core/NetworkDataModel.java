@@ -1164,7 +1164,8 @@ public class NetworkDataModel {
 	}
 
 	static final String FORMAT_STR = "PD_FORMAT_REV: ";
-	static final String FORMAT_REV = "1.1";
+	// 機能追加した場合は数字を大きくする
+	static final String FORMAT_REV = "1.10001";
 
 	private static void checkFileRevision(String firstLine) throws LangSpecException {
 		boolean formatSettingCheckError = false;
