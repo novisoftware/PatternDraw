@@ -212,11 +212,23 @@ FUNCTION: create_skew_transform
 
 DISPNAME: 座標の変換/-----------------------------------------------
 
+# KIND: 処理
+# TYPE: TRANSFORM
+# DISPNAME: 座標の変換/変換を結合
+# DESCRIPTION: 2つの変換を結合します
+# FUNCTION: combine_transforms
+# ---->DEFINE
+
 KIND: 処理
 TYPE: TRANSFORM
 DISPNAME: 座標の変換/変換を結合
-DESCRIPTION: 2つの変換を結合します
+DESCRIPTION: 変換を結合します
 FUNCTION: combine_transforms
+<transform1:TRANSFORM>
+<transform2:TRANSFORM>
+:combine_transforms
+:MACRO_REPEAT=2,2
+-->RPN
 ---->DEFINE
 
 DISPNAME: 座標の変換/-----------------------------------------------

@@ -12,6 +12,16 @@ import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.def.
 
 public class FunctionUtil {
 	public static FunctionDefInterface getFunctionDef(String name) throws LangSpecException {
+		FunctionDefInterface f = getFunctionDef_internal(name);
+		
+		if (f == null) {
+			throw new LangSpecException("Specified function name '" + name + "' does not found.");
+		}
+
+		return f;
+	}
+
+	public static FunctionDefInterface getFunctionDef_internal(String name) {
 		// 注:
 		// return しているので else if にする必要なし。
 		// (幅を揃えて誤記があったら分かるようにしている)
@@ -158,6 +168,6 @@ public class FunctionUtil {
 			return new SetColorSVG();
 		}
 
-		throw new LangSpecException("Specified function name '" + name + "' does not found.");
+		return null;
 	}
 }

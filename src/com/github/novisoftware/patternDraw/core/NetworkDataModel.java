@@ -50,6 +50,7 @@ public class NetworkDataModel {
 	 * <ul>
 	 * <li> 機能追加した場合は数字を大きくする。
 	 * <li> (プログラムのバージョン × 0.1 にする)
+	 * <li> 最初に「1.1」を使ってしまっているため、1.1 未満にする。
 	 * </ul>
 	 */
 	static final String FORMAT_REV = "0.002";
@@ -1198,7 +1199,7 @@ public class NetworkDataModel {
 					e.printStackTrace();
 				}
 			}
-			if ((verInFile < 1.01) /* ← 汚点 */
+			if ((verInFile != 1.1) /* ← 汚点ファイルフォーマットバージョン */
 					&&
 					verInFile > nowVer) {
 				throw new LangSpecException("ファイル側のフォーマット版数の方が新しいため、読み込むには新しい版数のプログラムが必要です。");

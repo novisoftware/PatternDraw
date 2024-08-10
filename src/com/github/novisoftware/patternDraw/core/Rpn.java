@@ -12,6 +12,8 @@ import com.github.novisoftware.patternDraw.core.exception.BreakSignal;
 import com.github.novisoftware.patternDraw.core.exception.CaliculateException;
 import com.github.novisoftware.patternDraw.core.exception.ContinueSignal;
 import com.github.novisoftware.patternDraw.core.exception.EvaluateException;
+import com.github.novisoftware.patternDraw.core.exception.LangSpecException;
+import com.github.novisoftware.patternDraw.core.langSpec.functions.FunctionDefInterface;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.TypeUtil.TwoValues;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.Value;
@@ -22,6 +24,7 @@ import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.Value
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueFloat;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueInteger;
 import com.github.novisoftware.patternDraw.core.langSpec.typeSystem.scalar.ValueNumeric;
+import com.github.novisoftware.patternDraw.geometricLanguage.lang.functions.FunctionUtil;
 import com.github.novisoftware.patternDraw.geometricLanguage.parameter.ParameterDefine;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P021____AbstractGraphNodeElement;
 import com.github.novisoftware.patternDraw.gui.editor.guiDiagramParts.P022_____RpnGraphNodeElement;
@@ -81,6 +84,14 @@ public class Rpn {
 		Stack<String> stack = new Stack<>();
 
 		for(String op : this.getExpandedArray()) {
+			if (op.startsWith(":")) {
+				FunctionDefInterface f = FunctionUtil.getFunctionDef_internal(op.substring(1));
+				if (f != null) {
+					stack.push(':' + f.getDisplayName());
+					break;
+				}
+			}
+			
 			if (op.startsWith("'")) {
 				stack.push( op.substring(1));
 			}
@@ -432,6 +443,19 @@ public class Rpn {
 				*/
 				return ValueType.STRING;
 			}
+			else if (s.startsWith(":")) {
+				FunctionDefInterface f;
+				try {
+					f = FunctionUtil.getFunctionDef(s.substring(1));
+					return f.getReturnType();
+				} catch (LangSpecException e) {
+					System.err.println("解決不能な rpn 参照 " + s);
+					e.printStackTrace();
+					System.exit(1);
+				}
+			}
+			
+			
 			else if (s.startsWith("'")) {
 				stringStack.push( RpnUtil.getRepresent(s.substring(1)) );
 			}
@@ -825,6 +849,30 @@ public class Rpn {
 					}
 				} catch (Exception e) {
 					throw new CaliculateException(CaliculateException.MESSAGE_NOT_ENOUGH_INPUT);
+				}
+			}
+			else if (s.startsWith(":")) {
+				try {
+					FunctionDefInterface f = FunctionUtil.getFunctionDef(s.substring(1));
+					Value[] v = new Value[f.getParameterTypes().length];
+					for (int i = 0; i < v.length; i++) {
+						v[v.length - 1 - i] = stack.pop();
+					}
+					ArrayList<Value> vArray = new ArrayList<Value>();
+					for (Value v_ : v) {
+						vArray.add(v_);
+					}
+					// TODO
+					// 注:
+					// 現時点では出力系の関数は呼び出す実装が無いので
+					// InstructionRender に null を指定している。
+					// もし今後、出力系の関数をrpn 経由で呼び出す場合は InstructionRender を取ってくるような
+					// 実装を追加する必要あり。
+					f.exec(stack, null);
+				} catch (LangSpecException e) {
+					// 使用されていた関数が、定義されないものだった場合。
+					// (通常のユーザーオペレーションでは再現不能な状況のはず)
+					throw new CaliculateException(CaliculateException.MESSAGE_OTHER_ERROR);
 				}
 			}
 			else if (s.endsWith(";コメント")) {
