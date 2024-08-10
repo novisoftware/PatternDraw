@@ -203,3 +203,4 @@
 - 「高度なグラフ電卓」として、数学を対象領域とした [desmos](https://www.desmos.com/?lang=ja) があり、非常に機能が充実しています。
 
 
+[specification.mdに戻る](./specification.md)
