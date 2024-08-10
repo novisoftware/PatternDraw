@@ -212,11 +212,23 @@ FUNCTION: create_skew_transform
 
 DISPNAME: 座標の変換/-----------------------------------------------
 
+# KIND: 処理
+# TYPE: TRANSFORM
+# DISPNAME: 座標の変換/変換を結合
+# DESCRIPTION: 2つの変換を結合します
+# FUNCTION: combine_transforms
+# ---->DEFINE
+
 KIND: 処理
 TYPE: TRANSFORM
 DISPNAME: 座標の変換/変換を結合
-DESCRIPTION: 2つの変換を結合します
+DESCRIPTION: 変換を結合します
 FUNCTION: combine_transforms
+<transform1:TRANSFORM>
+<transform2:TRANSFORM>
+:combine_transforms
+:MACRO_REPEAT=2,2
+-->RPN
 ---->DEFINE
 
 DISPNAME: 座標の変換/-----------------------------------------------
@@ -270,14 +282,21 @@ DISPNAME: 色/--------------------------
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 色/色を設定(PNG)
+DISPNAME: 色/色を設定
+DESCRIPTION: 色を設定します(PNG、SVG両方)。
+FUNCTION: set_color
+---->DEFINE
+
+KIND: 表示
+TYPE: NONE
+DISPNAME: 色/色を設定(PNGのみ)
 DESCRIPTION: 色を設定します(PNG)。
 FUNCTION: set_color_png
 ---->DEFINE
 
 KIND: 表示
 TYPE: NONE
-DISPNAME: 色/色を設定(SVG)
+DISPNAME: 色/色を設定(SVGのみ)
 DESCRIPTION: 色を設定します(SVG)。
 FUNCTION: set_color_svg
 ---->DEFINE
@@ -768,6 +787,19 @@ DESCRIPTION: IF式です。
 <cond:BOOLEAN>
 <if-true:BOOLEAN>
 <if-false:BOOLEAN>
+:if
+-->RPN
+---->DEFINE
+
+KIND: 演算子
+TYPE: BOOLEAN
+DISPNAME: 条件演算子/色情報のIF式
+WIDTH: 50
+HEIGHT: 50
+DESCRIPTION: IF式です。
+<cond:BOOLEAN>
+<if-true:COLOR>
+<if-false:COLOR>
 :if
 -->RPN
 ---->DEFINE

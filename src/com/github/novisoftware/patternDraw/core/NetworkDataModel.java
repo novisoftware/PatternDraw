@@ -42,6 +42,20 @@ import com.github.novisoftware.patternDraw.utils.OtherUtil;
 
 public class NetworkDataModel {
 	/**
+	 * ファイルフォーマット識別用の文字列
+	 */
+	static final String FORMAT_STR = "PD_FORMAT_REV: ";
+	/**
+	 * ファイルフォーマット識別用の文字列（版数）
+	 * <ul>
+	 * <li> 機能追加した場合は数字を大きくする。
+	 * <li> (プログラムのバージョン × 0.1 にする)
+	 * <li> 最初に「1.1」を使ってしまっているため、1.1 未満にする。
+	 * </ul>
+	 */
+	static final String FORMAT_REV = "0.002";
+
+	/**
 	 * 変数
 	 */
 	final public HashMap<String, Value> variables;
@@ -1163,9 +1177,6 @@ public class NetworkDataModel {
 		}
 	}
 
-	static final String FORMAT_STR = "PD_FORMAT_REV: ";
-	static final String FORMAT_REV = "1.1";
-
 	private static void checkFileRevision(String firstLine) throws LangSpecException {
 		boolean formatSettingCheckError = false;
 		if (firstLine == null) {
@@ -1181,15 +1192,17 @@ public class NetworkDataModel {
 			double nowVer = Double.parseDouble(FORMAT_REV);
 			try {
 				verInFile = Double.parseDouble(revStr);
-				if (verInFile < nowVer) {
-					throw new LangSpecException("ファイル側のフォーマット版数の方が新しいです。");
-				}
 			} catch (Exception e) {
 				// リビジョン識別の parseDouble に失敗した場合
 				formatSettingCheckError = true;
 				if (Debug.enable) {
 					e.printStackTrace();
 				}
+			}
+			if ((verInFile != 1.1) /* ← 汚点ファイルフォーマットバージョン */
+					&&
+					verInFile > nowVer) {
+				throw new LangSpecException("ファイル側のフォーマット版数の方が新しいため、読み込むには新しい版数のプログラムが必要です。");
 			}
 		}
 		if (formatSettingCheckError) {

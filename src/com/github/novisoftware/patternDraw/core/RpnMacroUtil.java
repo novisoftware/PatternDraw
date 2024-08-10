@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class RpnMacroUtil {
 	/**
 	 * リピートマクロ。
+	 * (多入力演算子で使う)
+	 * 
 	 * :MACRO_REPEAT=2,5 とあったら、直前の2個を繰り返し、5個になるようにする。
 	 */
 	static final String WORD_MACRO_REPEAT = ":MACRO_REPEAT=";
