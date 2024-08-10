@@ -41,10 +41,18 @@ import com.github.novisoftware.patternDraw.utils.FileWriteUtil;
 import com.github.novisoftware.patternDraw.utils.OtherUtil;
 
 public class NetworkDataModel {
+	/**
+	 * ファイルフォーマット識別用の文字列
+	 */
 	static final String FORMAT_STR = "PD_FORMAT_REV: ";
-	// 機能追加した場合は数字を大きくする
-	static final String FORMAT_REV = "1.10001";
-
+	/**
+	 * ファイルフォーマット識別用の文字列（版数）
+	 * <ul>
+	 * <li> 機能追加した場合は数字を大きくする。
+	 * <li> (プログラムのバージョン × 0.1 にする)
+	 * </ul>
+	 */
+	static final String FORMAT_REV = "0.002";
 
 	/**
 	 * 変数
@@ -1190,7 +1198,9 @@ public class NetworkDataModel {
 					e.printStackTrace();
 				}
 			}
-			if (verInFile > nowVer) {
+			if ((verInFile < 1.01) /* ← 汚点 */
+					&&
+					verInFile > nowVer) {
 				throw new LangSpecException("ファイル側のフォーマット版数の方が新しいため、読み込むには新しい版数のプログラムが必要です。");
 			}
 		}
