@@ -197,5 +197,8 @@
 	- 安全性が高い
 	- 学習するための環境が整っている
 
-- 「動的幾何ソフト」の一種とする [Cinderella](https://sites.google.com/site/cinderellajapan/Home) があり、これも領域に特化されたプログラミング言語の一種です。
+- 「動的幾何ソフト」の一種とする [Cinderella](https://sites.google.com/site/cinderellajapan/) があり、これも領域に特化されたプログラミング言語の一種です。
+
+- 「高度なグラフ電卓」として、数学を対象領域とした [desmos](https://www.desmos.com/?lang=ja) があり、非常に機能が充実しています。
+
 
