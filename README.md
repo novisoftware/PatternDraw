@@ -21,15 +21,19 @@ SVG形式のファイルは、Webブラウザにドラッグ&ドロップして�
 ### 前提とする環境・ソフトウェア
 
 Windows PC と PCにソフトウェアをインストールできる権限が必要です。
+または Java を実行できる Ubuntu Linux の環境が必要です。
+
 以下に前提とするソフトウェアを記載します。
 ( また、 [ここ](./doc/more.md) に「なくても大丈夫だけど、あるとさらに良い」という位置づけのソフトウェアを記載します。 )
 
 #### OS
 
 Windows 10環境で動作確認をしています。
-メモリ8GBの環境で確認しています(メモリ4GBでの動作確認はしていません)。
+メモリ8GBの環境で確認しています(Windows環境では、メモリ4GBでの動作確認はしていません)。
 
-Ubuntu 等でも動かせるようになるかもしれませんが、動作確認をしていません。
+Ubuntu 環境( Ubuntu は Linux ディストリビューションのひとつです )で動作確認をしています。
+Ubuntu の場合、メモリ4GBの環境で確認しています。
+
 
 #### 画面の解像度
 
@@ -38,12 +42,15 @@ Ubuntu 等でも動かせるようになるかもしれませんが、動作確�
 #### Java
 
 Javaの実行環境が必要です。
-無料で使える OpenJDK の Microsoft Build がいいと思います。
+Windowsの場合、無料で使える OpenJDK の Microsoft Build がいいと思います。
 
 https://learn.microsoft.com/ja-jp/java/openjdk/download#openjdk-21
 
-#### フォント
-BIZ UDGothic をインストールしてください。
+Ubuntuの場合、OSインストール時に選択できる Java 実行環境で問題ありません。
+OpenJDK (Java 11) の JRE で簡単な動作確認をしています。
+
+#### フォント(推奨)
+Windows環境の場合、BIZ UDGothic をインストールすることを推奨します。
 
 https://fonts.google.com/specimen/BIZ+UDGothic
 
@@ -101,6 +108,8 @@ java -jar lalala.jar
 パラメーターを変えると、グラフィックの出力に反映されます。
 
 また、「グラフィックの出力」のメニューから画像ファイルを保存できます。
+画像ファイル保存時、jsonファイルにパラメーターの値を保存しています。
+(テキストエディタで開き、値を見ることができます)
 
 ![「画像を出力」メニュー](./doc/image/graphics_save_menu.png "キャプチャ(「画像を出力」メニュー)")
 
