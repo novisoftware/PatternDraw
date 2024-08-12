@@ -149,10 +149,12 @@ public class PosClipUtil {
 		return outerX;
 	}
 
+	static final double Y_ADDER = 1.13333;
+	// static final double Y_ADDER = 0;
 
 	public static boolean isIn(double outerX, Pos pos, ArrayList<Line> lineList) {
 		// 「完全に外側の適当な点」から。
-		Line line00 = new Line(new Pos(outerX, pos.getY()), pos);
+		Line line00 = new Line(new Pos(outerX, pos.getY() + Y_ADDER), pos);
 		if (crossPoints(line00, lineList).size() % 2 != 0) {
 			// 交差回数が奇数なら内側
 			return true;
